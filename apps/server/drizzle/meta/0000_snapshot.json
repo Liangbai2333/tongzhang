@@ -1,0 +1,1744 @@
+{
+  "id": "aebcecff-f39e-46cb-a927-f9bbf7a31211",
+  "prevId": "00000000-0000-0000-0000-000000000000",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.auth_sessions": {
+      "name": "auth_sessions",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "token_hash": {
+          "name": "token_hash",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "expires_at": {
+          "name": "expires_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "revoked_at": {
+          "name": "revoked_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "ix_auth_sessions_user": {
+          "name": "ix_auth_sessions_user",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "ix_auth_sessions_expiry": {
+          "name": "ix_auth_sessions_expiry",
+          "columns": [
+            {
+              "expression": "expires_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "fk_auth_sessions_user_id": {
+          "name": "fk_auth_sessions_user_id",
+          "tableFrom": "auth_sessions",
+          "tableTo": "users",
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
+          "onDelete": "restrict",
+          "onUpdate": "restrict"
+        }
+      },
+      "compositePrimaryKeys": {
+        "pk_auth_sessions": {
+          "name": "pk_auth_sessions",
+          "columns": ["id"]
+        }
+      },
+      "uniqueConstraints": {
+        "uq_auth_sessions_token_hash": {
+          "name": "uq_auth_sessions_token_hash",
+          "nullsNotDistinct": false,
+          "columns": ["token_hash"]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {
+        "ck_auth_sessions_hash": {
+          "name": "ck_auth_sessions_hash",
+          "value": "token_hash ~ '^[0-9a-f]{64}$'"
+        },
+        "ck_auth_sessions_expiry": {
+          "name": "ck_auth_sessions_expiry",
+          "value": "expires_at > created_at"
+        },
+        "ck_auth_sessions_revoked": {
+          "name": "ck_auth_sessions_revoked",
+          "value": "revoked_at IS NULL OR revoked_at >= created_at"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.expense_images": {
+      "name": "expense_images",
+      "schema": "",
+      "columns": {
+        "expense_id": {
+          "name": "expense_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ledger_id": {
+          "name": "ledger_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "image_id": {
+          "name": "image_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "fk_expense_images_ledger_id_expense_id": {
+          "name": "fk_expense_images_ledger_id_expense_id",
+          "tableFrom": "expense_images",
+          "tableTo": "expenses",
+          "columnsFrom": ["ledger_id", "expense_id"],
+          "columnsTo": ["ledger_id", "id"],
+          "onDelete": "restrict",
+          "onUpdate": "restrict"
+        },
+        "fk_expense_images_ledger_id_image_id": {
+          "name": "fk_expense_images_ledger_id_image_id",
+          "tableFrom": "expense_images",
+          "tableTo": "image_assets",
+          "columnsFrom": ["ledger_id", "image_id"],
+          "columnsTo": ["ledger_id", "id"],
+          "onDelete": "restrict",
+          "onUpdate": "restrict"
+        }
+      },
+      "compositePrimaryKeys": {
+        "pk_expense_images": {
+          "name": "pk_expense_images",
+          "columns": ["expense_id"]
+        }
+      },
+      "uniqueConstraints": {
+        "uq_expense_images_image": {
+          "name": "uq_expense_images_image",
+          "nullsNotDistinct": false,
+          "columns": ["image_id"]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.expense_splits": {
+      "name": "expense_splits",
+      "schema": "",
+      "columns": {
+        "expense_id": {
+          "name": "expense_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "member_id": {
+          "name": "member_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ledger_id": {
+          "name": "ledger_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "shares": {
+          "name": "shares",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "amount_cents": {
+          "name": "amount_cents",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "ix_expense_splits_member": {
+          "name": "ix_expense_splits_member",
+          "columns": [
+            {
+              "expression": "ledger_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "member_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "fk_expense_splits_ledger_id_expense_id": {
+          "name": "fk_expense_splits_ledger_id_expense_id",
+          "tableFrom": "expense_splits",
+          "tableTo": "expenses",
+          "columnsFrom": ["ledger_id", "expense_id"],
+          "columnsTo": ["ledger_id", "id"],
+          "onDelete": "restrict",
+          "onUpdate": "restrict"
+        },
+        "fk_expense_splits_ledger_id_member_id": {
+          "name": "fk_expense_splits_ledger_id_member_id",
+          "tableFrom": "expense_splits",
+          "tableTo": "ledger_members",
+          "columnsFrom": ["ledger_id", "member_id"],
+          "columnsTo": ["ledger_id", "id"],
+          "onDelete": "restrict",
+          "onUpdate": "restrict"
+        }
+      },
+      "compositePrimaryKeys": {
+        "pk_expense_splits": {
+          "name": "pk_expense_splits",
+          "columns": ["expense_id", "member_id"]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "ck_expense_splits_amount": {
+          "name": "ck_expense_splits_amount",
+          "value": "amount_cents BETWEEN 0 AND 999999999"
+        },
+        "ck_expense_splits_shares": {
+          "name": "ck_expense_splits_shares",
+          "value": "shares IS NULL OR shares BETWEEN 1 AND 10000"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.expenses": {
+      "name": "expenses",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "ledger_id": {
+          "name": "ledger_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "recorder_member_id": {
+          "name": "recorder_member_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "payer_member_id": {
+          "name": "payer_member_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "title": {
+          "name": "title",
+          "type": "varchar(60)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "amount_cents": {
+          "name": "amount_cents",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "category": {
+          "name": "category",
+          "type": "varchar(16)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "occurred_on": {
+          "name": "occurred_on",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "split_mode": {
+          "name": "split_mode",
+          "type": "varchar(8)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "note": {
+          "name": "note",
+          "type": "varchar(500)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "version": {
+          "name": "version",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 1
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "ix_expenses_list": {
+          "name": "ix_expenses_list",
+          "columns": [
+            {
+              "expression": "ledger_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "occurred_on",
+              "isExpression": false,
+              "asc": false,
+              "nulls": "last"
+            },
+            {
+              "expression": "id",
+              "isExpression": false,
+              "asc": false,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "where": "deleted_at IS NULL",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "ix_expenses_category": {
+          "name": "ix_expenses_category",
+          "columns": [
+            {
+              "expression": "ledger_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "category",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "occurred_on",
+              "isExpression": false,
+              "asc": false,
+              "nulls": "last"
+            },
+            {
+              "expression": "id",
+              "isExpression": false,
+              "asc": false,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "where": "deleted_at IS NULL",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "ix_expenses_payer": {
+          "name": "ix_expenses_payer",
+          "columns": [
+            {
+              "expression": "ledger_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "payer_member_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "occurred_on",
+              "isExpression": false,
+              "asc": false,
+              "nulls": "last"
+            },
+            {
+              "expression": "id",
+              "isExpression": false,
+              "asc": false,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "where": "deleted_at IS NULL",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "fk_expenses_ledger_id": {
+          "name": "fk_expenses_ledger_id",
+          "tableFrom": "expenses",
+          "tableTo": "ledgers",
+          "columnsFrom": ["ledger_id"],
+          "columnsTo": ["id"],
+          "onDelete": "restrict",
+          "onUpdate": "restrict"
+        },
+        "fk_expenses_ledger_id_recorder_member_id": {
+          "name": "fk_expenses_ledger_id_recorder_member_id",
+          "tableFrom": "expenses",
+          "tableTo": "ledger_members",
+          "columnsFrom": ["ledger_id", "recorder_member_id"],
+          "columnsTo": ["ledger_id", "id"],
+          "onDelete": "restrict",
+          "onUpdate": "restrict"
+        },
+        "fk_expenses_ledger_id_payer_member_id": {
+          "name": "fk_expenses_ledger_id_payer_member_id",
+          "tableFrom": "expenses",
+          "tableTo": "ledger_members",
+          "columnsFrom": ["ledger_id", "payer_member_id"],
+          "columnsTo": ["ledger_id", "id"],
+          "onDelete": "restrict",
+          "onUpdate": "restrict"
+        }
+      },
+      "compositePrimaryKeys": {
+        "pk_expenses": {
+          "name": "pk_expenses",
+          "columns": ["id"]
+        }
+      },
+      "uniqueConstraints": {
+        "uq_expenses_ledger_id_id": {
+          "name": "uq_expenses_ledger_id_id",
+          "nullsNotDistinct": false,
+          "columns": ["ledger_id", "id"]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {
+        "ck_expenses_title": {
+          "name": "ck_expenses_title",
+          "value": "char_length(btrim(title)) BETWEEN 1 AND 60"
+        },
+        "ck_expenses_amount": {
+          "name": "ck_expenses_amount",
+          "value": "amount_cents BETWEEN 1 AND 999999999"
+        },
+        "ck_expenses_category": {
+          "name": "ck_expenses_category",
+          "value": "category IN ('DINING','TRANSPORT','TICKET','LODGING','SHOPPING','OTHER')"
+        },
+        "ck_expenses_split_mode": {
+          "name": "ck_expenses_split_mode",
+          "value": "split_mode IN ('EQUAL','SHARES','AMOUNT')"
+        },
+        "ck_expenses_version": {
+          "name": "ck_expenses_version",
+          "value": "version > 0"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.idempotency_keys": {
+      "name": "idempotency_keys",
+      "schema": "",
+      "columns": {
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "operation": {
+          "name": "operation",
+          "type": "varchar(160)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "key": {
+          "name": "key",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "request_hash": {
+          "name": "request_hash",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "response_status": {
+          "name": "response_status",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "response_body": {
+          "name": "response_body",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "expires_at": {
+          "name": "expires_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "ix_idempotency_keys_expiry": {
+          "name": "ix_idempotency_keys_expiry",
+          "columns": [
+            {
+              "expression": "expires_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "fk_idempotency_keys_user_id": {
+          "name": "fk_idempotency_keys_user_id",
+          "tableFrom": "idempotency_keys",
+          "tableTo": "users",
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
+          "onDelete": "restrict",
+          "onUpdate": "restrict"
+        }
+      },
+      "compositePrimaryKeys": {
+        "pk_idempotency_keys": {
+          "name": "pk_idempotency_keys",
+          "columns": ["user_id", "operation", "key"]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "ck_idempotency_keys_hash": {
+          "name": "ck_idempotency_keys_hash",
+          "value": "request_hash ~ '^[0-9a-f]{64}$'"
+        },
+        "ck_idempotency_keys_status": {
+          "name": "ck_idempotency_keys_status",
+          "value": "response_status BETWEEN 200 AND 299"
+        },
+        "ck_idempotency_keys_expiry": {
+          "name": "ck_idempotency_keys_expiry",
+          "value": "expires_at > created_at"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.image_assets": {
+      "name": "image_assets",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "ledger_id": {
+          "name": "ledger_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "uploaded_by_user_id": {
+          "name": "uploaded_by_user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "kind": {
+          "name": "kind",
+          "type": "varchar(8)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "mime_type": {
+          "name": "mime_type",
+          "type": "varchar(16)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "byte_size": {
+          "name": "byte_size",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "width": {
+          "name": "width",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "height": {
+          "name": "height",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "sha256": {
+          "name": "sha256",
+          "type": "varchar(64)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "content": {
+          "name": "content",
+          "type": "bytea",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "ix_image_assets_temporary": {
+          "name": "ix_image_assets_temporary",
+          "columns": [
+            {
+              "expression": "created_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "where": "ledger_id IS NULL",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "ix_image_assets_ledger": {
+          "name": "ix_image_assets_ledger",
+          "columns": [
+            {
+              "expression": "ledger_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "fk_image_assets_ledger_id": {
+          "name": "fk_image_assets_ledger_id",
+          "tableFrom": "image_assets",
+          "tableTo": "ledgers",
+          "columnsFrom": ["ledger_id"],
+          "columnsTo": ["id"],
+          "onDelete": "restrict",
+          "onUpdate": "restrict"
+        },
+        "fk_image_assets_uploaded_by_user_id": {
+          "name": "fk_image_assets_uploaded_by_user_id",
+          "tableFrom": "image_assets",
+          "tableTo": "users",
+          "columnsFrom": ["uploaded_by_user_id"],
+          "columnsTo": ["id"],
+          "onDelete": "restrict",
+          "onUpdate": "restrict"
+        }
+      },
+      "compositePrimaryKeys": {
+        "pk_image_assets": {
+          "name": "pk_image_assets",
+          "columns": ["id"]
+        }
+      },
+      "uniqueConstraints": {
+        "uq_image_assets_ledger_id_id": {
+          "name": "uq_image_assets_ledger_id_id",
+          "nullsNotDistinct": false,
+          "columns": ["ledger_id", "id"]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {
+        "ck_image_assets_kind": {
+          "name": "ck_image_assets_kind",
+          "value": "kind IN ('COVER','RECEIPT')"
+        },
+        "ck_image_assets_mime": {
+          "name": "ck_image_assets_mime",
+          "value": "mime_type IN ('image/jpeg','image/png')"
+        },
+        "ck_image_assets_bytes": {
+          "name": "ck_image_assets_bytes",
+          "value": "byte_size BETWEEN 1 AND 1048576 AND octet_length(content) = byte_size"
+        },
+        "ck_image_assets_pixels": {
+          "name": "ck_image_assets_pixels",
+          "value": "width BETWEEN 1 AND 4096 AND height BETWEEN 1 AND 4096 AND width::bigint * height <= 16000000"
+        },
+        "ck_image_assets_hash": {
+          "name": "ck_image_assets_hash",
+          "value": "sha256 ~ '^[0-9a-f]{64}$'"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.invitations": {
+      "name": "invitations",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "ledger_id": {
+          "name": "ledger_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_by_member_id": {
+          "name": "created_by_member_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "code": {
+          "name": "code",
+          "type": "varchar(6)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "expires_at": {
+          "name": "expires_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "revoked_at": {
+          "name": "revoked_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "ix_invitations_ledger_time": {
+          "name": "ix_invitations_ledger_time",
+          "columns": [
+            {
+              "expression": "ledger_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "created_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "uq_invitations_current": {
+          "name": "uq_invitations_current",
+          "columns": [
+            {
+              "expression": "ledger_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": true,
+          "where": "revoked_at IS NULL",
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "fk_invitations_ledger_id": {
+          "name": "fk_invitations_ledger_id",
+          "tableFrom": "invitations",
+          "tableTo": "ledgers",
+          "columnsFrom": ["ledger_id"],
+          "columnsTo": ["id"],
+          "onDelete": "restrict",
+          "onUpdate": "restrict"
+        },
+        "fk_invitations_ledger_id_created_by_member_id": {
+          "name": "fk_invitations_ledger_id_created_by_member_id",
+          "tableFrom": "invitations",
+          "tableTo": "ledger_members",
+          "columnsFrom": ["ledger_id", "created_by_member_id"],
+          "columnsTo": ["ledger_id", "id"],
+          "onDelete": "restrict",
+          "onUpdate": "restrict"
+        }
+      },
+      "compositePrimaryKeys": {
+        "pk_invitations": {
+          "name": "pk_invitations",
+          "columns": ["id"]
+        }
+      },
+      "uniqueConstraints": {
+        "uq_invitations_code": {
+          "name": "uq_invitations_code",
+          "nullsNotDistinct": false,
+          "columns": ["code"]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {
+        "ck_invitations_code": {
+          "name": "ck_invitations_code",
+          "value": "code ~ '^[23456789ABCDEFGHJKLMNPQRSTUVWXYZ]{6}$'"
+        },
+        "ck_invitations_expiry": {
+          "name": "ck_invitations_expiry",
+          "value": "expires_at > created_at"
+        },
+        "ck_invitations_revoked": {
+          "name": "ck_invitations_revoked",
+          "value": "revoked_at IS NULL OR revoked_at >= created_at"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.ledger_members": {
+      "name": "ledger_members",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "ledger_id": {
+          "name": "ledger_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "archived_at": {
+          "name": "archived_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "joined_at": {
+          "name": "joined_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "ix_ledger_members_user_archive": {
+          "name": "ix_ledger_members_user_archive",
+          "columns": [
+            {
+              "expression": "user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "archived_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "joined_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "fk_ledger_members_ledger_id": {
+          "name": "fk_ledger_members_ledger_id",
+          "tableFrom": "ledger_members",
+          "tableTo": "ledgers",
+          "columnsFrom": ["ledger_id"],
+          "columnsTo": ["id"],
+          "onDelete": "restrict",
+          "onUpdate": "restrict"
+        },
+        "fk_ledger_members_user_id": {
+          "name": "fk_ledger_members_user_id",
+          "tableFrom": "ledger_members",
+          "tableTo": "users",
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
+          "onDelete": "restrict",
+          "onUpdate": "restrict"
+        }
+      },
+      "compositePrimaryKeys": {
+        "pk_ledger_members": {
+          "name": "pk_ledger_members",
+          "columns": ["id"]
+        }
+      },
+      "uniqueConstraints": {
+        "uq_ledger_members_ledger_user": {
+          "name": "uq_ledger_members_ledger_user",
+          "nullsNotDistinct": false,
+          "columns": ["ledger_id", "user_id"]
+        },
+        "uq_ledger_members_ledger_id_id": {
+          "name": "uq_ledger_members_ledger_id_id",
+          "nullsNotDistinct": false,
+          "columns": ["ledger_id", "id"]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "public.ledgers": {
+      "name": "ledgers",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "created_by_user_id": {
+          "name": "created_by_user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(40)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "cover_key": {
+          "name": "cover_key",
+          "type": "varchar(30)",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'mountain'"
+        },
+        "cover_image_id": {
+          "name": "cover_image_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "status": {
+          "name": "status",
+          "type": "varchar(16)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'ACTIVE'"
+        },
+        "version": {
+          "name": "version",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "default": 1
+        },
+        "settled_at": {
+          "name": "settled_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "ix_ledgers_creator": {
+          "name": "ix_ledgers_creator",
+          "columns": [
+            {
+              "expression": "created_by_user_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "created_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "fk_ledgers_created_by_user_id": {
+          "name": "fk_ledgers_created_by_user_id",
+          "tableFrom": "ledgers",
+          "tableTo": "users",
+          "columnsFrom": ["created_by_user_id"],
+          "columnsTo": ["id"],
+          "onDelete": "restrict",
+          "onUpdate": "restrict"
+        },
+        "fk_ledgers_cover": {
+          "name": "fk_ledgers_cover",
+          "tableFrom": "ledgers",
+          "tableTo": "image_assets",
+          "columnsFrom": ["id", "cover_image_id"],
+          "columnsTo": ["ledger_id", "id"],
+          "onDelete": "restrict",
+          "onUpdate": "restrict"
+        }
+      },
+      "compositePrimaryKeys": {
+        "pk_ledgers": {
+          "name": "pk_ledgers",
+          "columns": ["id"]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "ck_ledgers_name": {
+          "name": "ck_ledgers_name",
+          "value": "char_length(btrim(name)) BETWEEN 1 AND 40"
+        },
+        "ck_ledgers_cover": {
+          "name": "ck_ledgers_cover",
+          "value": "num_nonnulls(cover_key, cover_image_id) = 1"
+        },
+        "ck_ledgers_status": {
+          "name": "ck_ledgers_status",
+          "value": "status IN ('ACTIVE','SETTLING','SETTLED')"
+        },
+        "ck_ledgers_version": {
+          "name": "ck_ledgers_version",
+          "value": "version > 0"
+        },
+        "ck_ledgers_settled": {
+          "name": "ck_ledgers_settled",
+          "value": "(status = 'SETTLED') = (settled_at IS NOT NULL)"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.operation_logs": {
+      "name": "operation_logs",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "actor_user_id": {
+          "name": "actor_user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "ledger_id": {
+          "name": "ledger_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "action": {
+          "name": "action",
+          "type": "varchar(40)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "target_type": {
+          "name": "target_type",
+          "type": "varchar(30)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "target_id": {
+          "name": "target_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "request_id": {
+          "name": "request_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "details": {
+          "name": "details",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'{}'::jsonb"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "ix_operation_logs_ledger_time": {
+          "name": "ix_operation_logs_ledger_time",
+          "columns": [
+            {
+              "expression": "ledger_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            },
+            {
+              "expression": "created_at",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        },
+        "ix_operation_logs_request": {
+          "name": "ix_operation_logs_request",
+          "columns": [
+            {
+              "expression": "request_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "fk_operation_logs_actor_user_id": {
+          "name": "fk_operation_logs_actor_user_id",
+          "tableFrom": "operation_logs",
+          "tableTo": "users",
+          "columnsFrom": ["actor_user_id"],
+          "columnsTo": ["id"],
+          "onDelete": "restrict",
+          "onUpdate": "restrict"
+        },
+        "fk_operation_logs_ledger_id": {
+          "name": "fk_operation_logs_ledger_id",
+          "tableFrom": "operation_logs",
+          "tableTo": "ledgers",
+          "columnsFrom": ["ledger_id"],
+          "columnsTo": ["id"],
+          "onDelete": "restrict",
+          "onUpdate": "restrict"
+        }
+      },
+      "compositePrimaryKeys": {
+        "pk_operation_logs": {
+          "name": "pk_operation_logs",
+          "columns": ["id"]
+        }
+      },
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "ck_operation_logs_details": {
+          "name": "ck_operation_logs_details",
+          "value": "jsonb_typeof(details) = 'object'"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.settlement_batches": {
+      "name": "settlement_batches",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "ledger_id": {
+          "name": "ledger_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_by_member_id": {
+          "name": "created_by_member_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "source_version": {
+          "name": "source_version",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "expense_total_cents": {
+          "name": "expense_total_cents",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "transfer_total_cents": {
+          "name": "transfer_total_cents",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "transfer_count": {
+          "name": "transfer_count",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "net_snapshot": {
+          "name": "net_snapshot",
+          "type": "jsonb",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "algorithm_version": {
+          "name": "algorithm_version",
+          "type": "varchar(30)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "fk_settlement_batches_ledger_id": {
+          "name": "fk_settlement_batches_ledger_id",
+          "tableFrom": "settlement_batches",
+          "tableTo": "ledgers",
+          "columnsFrom": ["ledger_id"],
+          "columnsTo": ["id"],
+          "onDelete": "restrict",
+          "onUpdate": "restrict"
+        },
+        "fk_settlement_batches_ledger_id_created_by_member_id": {
+          "name": "fk_settlement_batches_ledger_id_created_by_member_id",
+          "tableFrom": "settlement_batches",
+          "tableTo": "ledger_members",
+          "columnsFrom": ["ledger_id", "created_by_member_id"],
+          "columnsTo": ["ledger_id", "id"],
+          "onDelete": "restrict",
+          "onUpdate": "restrict"
+        }
+      },
+      "compositePrimaryKeys": {
+        "pk_settlement_batches": {
+          "name": "pk_settlement_batches",
+          "columns": ["id"]
+        }
+      },
+      "uniqueConstraints": {
+        "uq_settlement_batches_ledger": {
+          "name": "uq_settlement_batches_ledger",
+          "nullsNotDistinct": false,
+          "columns": ["ledger_id"]
+        },
+        "uq_settlement_batches_ledger_id_id": {
+          "name": "uq_settlement_batches_ledger_id_id",
+          "nullsNotDistinct": false,
+          "columns": ["ledger_id", "id"]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {
+        "ck_settlement_batches_version": {
+          "name": "ck_settlement_batches_version",
+          "value": "source_version > 0"
+        },
+        "ck_settlement_batches_totals": {
+          "name": "ck_settlement_batches_totals",
+          "value": "expense_total_cents >= 0 AND transfer_total_cents >= 0"
+        },
+        "ck_settlement_batches_count": {
+          "name": "ck_settlement_batches_count",
+          "value": "transfer_count BETWEEN 0 AND 11"
+        },
+        "ck_settlement_batches_snapshot": {
+          "name": "ck_settlement_batches_snapshot",
+          "value": "jsonb_typeof(net_snapshot) = 'array'"
+        },
+        "ck_settlement_batches_zero": {
+          "name": "ck_settlement_batches_zero",
+          "value": "(transfer_count = 0) = (transfer_total_cents = 0)"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.settlement_transfers": {
+      "name": "settlement_transfers",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "ledger_id": {
+          "name": "ledger_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "batch_id": {
+          "name": "batch_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "sequence": {
+          "name": "sequence",
+          "type": "smallint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "payer_member_id": {
+          "name": "payer_member_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "payee_member_id": {
+          "name": "payee_member_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "amount_cents": {
+          "name": "amount_cents",
+          "type": "bigint",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "varchar(8)",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'PENDING'"
+        },
+        "registered_by_member_id": {
+          "name": "registered_by_member_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "registered_at": {
+          "name": "registered_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "registration_note": {
+          "name": "registration_note",
+          "type": "varchar(200)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "fk_settlement_transfers_ledger_id": {
+          "name": "fk_settlement_transfers_ledger_id",
+          "tableFrom": "settlement_transfers",
+          "tableTo": "ledgers",
+          "columnsFrom": ["ledger_id"],
+          "columnsTo": ["id"],
+          "onDelete": "restrict",
+          "onUpdate": "restrict"
+        },
+        "fk_settlement_transfers_ledger_id_batch_id": {
+          "name": "fk_settlement_transfers_ledger_id_batch_id",
+          "tableFrom": "settlement_transfers",
+          "tableTo": "settlement_batches",
+          "columnsFrom": ["ledger_id", "batch_id"],
+          "columnsTo": ["ledger_id", "id"],
+          "onDelete": "restrict",
+          "onUpdate": "restrict"
+        },
+        "fk_settlement_transfers_ledger_id_payer_member_id": {
+          "name": "fk_settlement_transfers_ledger_id_payer_member_id",
+          "tableFrom": "settlement_transfers",
+          "tableTo": "ledger_members",
+          "columnsFrom": ["ledger_id", "payer_member_id"],
+          "columnsTo": ["ledger_id", "id"],
+          "onDelete": "restrict",
+          "onUpdate": "restrict"
+        },
+        "fk_settlement_transfers_ledger_id_payee_member_id": {
+          "name": "fk_settlement_transfers_ledger_id_payee_member_id",
+          "tableFrom": "settlement_transfers",
+          "tableTo": "ledger_members",
+          "columnsFrom": ["ledger_id", "payee_member_id"],
+          "columnsTo": ["ledger_id", "id"],
+          "onDelete": "restrict",
+          "onUpdate": "restrict"
+        },
+        "fk_settlement_transfers_ledger_id_registered_by_member_id": {
+          "name": "fk_settlement_transfers_ledger_id_registered_by_member_id",
+          "tableFrom": "settlement_transfers",
+          "tableTo": "ledger_members",
+          "columnsFrom": ["ledger_id", "registered_by_member_id"],
+          "columnsTo": ["ledger_id", "id"],
+          "onDelete": "restrict",
+          "onUpdate": "restrict"
+        }
+      },
+      "compositePrimaryKeys": {
+        "pk_settlement_transfers": {
+          "name": "pk_settlement_transfers",
+          "columns": ["id"]
+        }
+      },
+      "uniqueConstraints": {
+        "uq_settlement_transfers_batch_sequence": {
+          "name": "uq_settlement_transfers_batch_sequence",
+          "nullsNotDistinct": false,
+          "columns": ["batch_id", "sequence"]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {
+        "ck_settlement_transfers_amount": {
+          "name": "ck_settlement_transfers_amount",
+          "value": "amount_cents > 0"
+        },
+        "ck_settlement_transfers_sequence": {
+          "name": "ck_settlement_transfers_sequence",
+          "value": "sequence BETWEEN 1 AND 11"
+        },
+        "ck_settlement_transfers_parties": {
+          "name": "ck_settlement_transfers_parties",
+          "value": "payer_member_id <> payee_member_id"
+        },
+        "ck_settlement_transfers_status": {
+          "name": "ck_settlement_transfers_status",
+          "value": "status IN ('PENDING','PAID')"
+        },
+        "ck_settlement_transfers_registration": {
+          "name": "ck_settlement_transfers_registration",
+          "value": "(status = 'PENDING' AND registered_by_member_id IS NULL AND registered_at IS NULL AND registration_note IS NULL) OR (status = 'PAID' AND registered_by_member_id IS NOT NULL AND registered_at IS NOT NULL)"
+        }
+      },
+      "isRLSEnabled": false
+    },
+    "public.users": {
+      "name": "users",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "username": {
+          "name": "username",
+          "type": "varchar(30)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "email": {
+          "name": "email",
+          "type": "varchar(254)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "password_hash": {
+          "name": "password_hash",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "notification_enabled": {
+          "name": "notification_enabled",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "pk_users": {
+          "name": "pk_users",
+          "columns": ["id"]
+        }
+      },
+      "uniqueConstraints": {
+        "uq_users_email": {
+          "name": "uq_users_email",
+          "nullsNotDistinct": false,
+          "columns": ["email"]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {
+        "ck_users_username": {
+          "name": "ck_users_username",
+          "value": "char_length(username) BETWEEN 2 AND 30"
+        },
+        "ck_users_email": {
+          "name": "ck_users_email",
+          "value": "email = lower(btrim(email)) AND char_length(email) BETWEEN 3 AND 254"
+        },
+        "ck_users_password_hash": {
+          "name": "ck_users_password_hash",
+          "value": "password_hash LIKE '$argon2id$%'"
+        }
+      },
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}

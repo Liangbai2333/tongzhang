@@ -21,6 +21,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
+    "@tongzhang/domain": "workspace:*",
     "zod": "4.6.7"
   }
 }
