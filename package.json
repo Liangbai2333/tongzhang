@@ -1,0 +1,41 @@
+{
+  "name": "tongzhang",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@12.6.0",
+  "engines": {
+    "node": ">=24 <25",
+    "pnpm": ">=12.6.0 <13"
+  },
+  "scripts": {
+    "env:setup": "node scripts/setup-env.mjs",
+    "build:shared": "pnpm -r --filter \"./packages/*\" build",
+    "dev:shared": "pnpm --parallel --filter \"./packages/*\" dev",
+    "dev:api": "pnpm build:shared && pnpm --filter @tongzhang/api build && concurrently -k -n shared,api \"pnpm dev:shared\" \"pnpm --filter @tongzhang/api dev\"",
+    "dev:mobile": "pnpm build:shared && concurrently -k -n shared,mobile \"pnpm dev:shared\" \"pnpm --filter @tongzhang/mobile dev\"",
+    "build:api": "pnpm build:shared && pnpm --filter @tongzhang/api build",
+    "check": "pnpm build:shared && pnpm typecheck && pnpm lint && pnpm format:check",
+    "typecheck": "pnpm -r typecheck",
+    "lint": "eslint . --max-warnings=0",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "pnpm build:shared && vitest run",
+    "test:integration": "pnpm build:shared && vitest run --config vitest.integration.config.ts",
+    "db:up": "docker compose -f infra/compose.dev.yml up -d --wait",
+    "db:down": "docker compose -f infra/compose.dev.yml down",
+    "db:generate": "pnpm --filter @tongzhang/api db:generate",
+    "db:migrate": "pnpm --filter @tongzhang/api db:migrate",
+    "mobile:export": "pnpm build:shared && pnpm --filter @tongzhang/mobile export:check"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@types/node": "^24.0.0",
+    "concurrently": "10.0.6",
+    "eslint": "10.12.0",
+    "prettier": "3.9.10",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.71.2",
+    "vitest": "5.0.4"
+  },
+  "type": "module"
+}

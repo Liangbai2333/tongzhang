@@ -1,0 +1,34 @@
+# 同账工程约定
+
+## 范围
+
+- 阅读 README、docs/product-spec.md 和相关模块后修改。完整目标见 docs/architecture.md。
+- 这是移动端项目，不新增 Web 页面或 Web 构建。
+- 当前仅工程骨架，不用假登录、假账本或模拟余额冒充业务实现。
+- 路由位于 apps/mobile/app；页面实现位于 src/features，面板和错误状态不单独建全屏路由。
+
+## 边界
+
+- apps/mobile 和 apps/api 只通过 packages/contracts、packages/domain 共享代码。
+- 共享包不可依赖 Node 专有 API、React Native、Fastify 或数据库；移动端不导入服务端代码。
+- 金额用 bigint 整数分计算，API 用整数字符串，禁止浮点金额计算。
+- 最多 12 人；精确最少笔数算法放服务端。分摊保存时由服务端重新校验。
+- 所有业务操作在线，不持久化业务缓存，不建立离线队列，不自动重试写操作。
+- 生命周期 ACTIVE → SETTLING → SETTLED；预览不冻结；还款不是消费；个人归档不改财务状态。
+- 图片独立 bytea 表，业务仅保存引用，读取也检查成员权限。
+- 数据库事务由 service 管理，跨 Repository 共用 tx；写接口实现幂等与权限校验。
+
+## 工程
+
+- pnpm 工作区统一锁文件，使用 workspace:* 引用本地包，不另生成 npm/yarn 锁文件。
+- 原生依赖使用对应 SDK 的 expo install；不要独立升级 React / React Native。
+- 业务表定义放 apps/api/src/db/schema，迁移放 apps/api/drizzle。审查并提交生成的 SQL，不对共享环境使用 schema push。
+- 凭据只在未提交的 .env 或部署环境中；EXPO_PUBLIC_ 变量不得包含密钥。
+- 不手工编辑生成的 ios、android 目录，使用 Expo config plugin。
+
+## 验证
+
+- 修改代码后运行 pnpm check；业务或基础设施逻辑变更运行相应测试。
+- pnpm test 为无数据库测试；集成测试显式设置 TEST_DATABASE_URL 后运行 pnpm test:integration。
+- 修改共享包/原生依赖/路由后运行 pnpm mobile:export 和 Expo Doctor。
+- 不将 JS 打包通过描述为真机验收通过；区分模拟接口、实际数据库及原生安装验证。
