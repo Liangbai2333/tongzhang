@@ -8,6 +8,10 @@ coverage/
 !.env.example
 !**/.env.example
 .DS_Store
+mise.local.toml
 *.log
 apps/mobile/android/
 apps/mobile/ios/
+infra/backups/
+infra/.deploy.lock/
+infra/.deployments.log

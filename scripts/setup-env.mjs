@@ -1,6 +1,6 @@
 import { copyFileSync, existsSync } from 'node:fs';
 
-for (const name of ['api', 'mobile']) {
+for (const name of ['server', 'mobile']) {
   const destination = new URL(`../apps/${name}/.env`, import.meta.url);
   if (!existsSync(destination)) {
     copyFileSync(new URL(`../apps/${name}/.env.example`, import.meta.url), destination);

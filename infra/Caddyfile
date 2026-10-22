@@ -1,3 +1,3 @@
 {$API_DOMAIN} {
-    reverse_proxy api:3300
+	reverse_proxy server:3300
 }
