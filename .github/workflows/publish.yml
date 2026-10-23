@@ -1,0 +1,40 @@
+name: Publish server image
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  checks:
+    uses: ./.github/workflows/ci.yml
+  publish:
+    needs: checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Resolve image name
+        id: image
+        env:
+          REPOSITORY: ${{ github.repository }}
+        run: echo "name=ghcr.io/${REPOSITORY,,}-server" >> "$GITHUB_OUTPUT"
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and validate the image to publish
+        env:
+          SERVER_IMAGE: ${{ steps.image.outputs.name }}:sha-${{ github.sha }}
+        run: |
+          docker build --build-arg NODE_VERSION="$(cat .node-version)" -f infra/server.Dockerfile -t "$SERVER_IMAGE" .
+          bash scripts/test-container.sh
+      - name: Publish validated image
+        env:
+          SERVER_IMAGE: ${{ steps.image.outputs.name }}:sha-${{ github.sha }}
+        run: |
+          docker push "$SERVER_IMAGE"
+          digest=$(docker image inspect "$SERVER_IMAGE" --format '{{index .RepoDigests 0}}')
+          echo "Deploy with SERVER_IMAGE=$digest" >> "$GITHUB_STEP_SUMMARY"
