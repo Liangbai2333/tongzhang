@@ -9,7 +9,7 @@
 
 ## 边界
 
-- apps/mobile 和 apps/api 只通过 packages/contracts、packages/domain 共享代码。
+- apps/mobile 和 apps/server 只通过 packages/contracts、packages/domain 共享代码。
 - 共享包不可依赖 Node 专有 API、React Native、Fastify 或数据库；移动端不导入服务端代码。
 - 金额用 bigint 整数分计算，API 用整数字符串，禁止浮点金额计算。
 - 最多 12 人；精确最少笔数算法放服务端。分摊保存时由服务端重新校验。
@@ -21,14 +21,18 @@
 ## 工程
 
 - pnpm 工作区统一锁文件，使用 workspace:* 引用本地包，不另生成 npm/yarn 锁文件。
-- 原生依赖使用对应 SDK 的 expo install；不要独立升级 React / React Native。
-- 业务表定义放 apps/api/src/db/schema，迁移放 apps/api/drizzle。审查并提交生成的 SQL，不对共享环境使用 schema push。
+- 原生依赖在 apps/mobile 使用 pnpm exec expo install；不要独立升级 React / React Native。
+- 当前为 Expo SDK 57，涉及 Expo / React Native API 时查阅 https://docs.expo.dev/versions/v57.0.0/，不凭旧版本记忆编写。
+- 业务表定义放 apps/server/src/db/schema，迁移放 apps/server/drizzle。审查并提交生成的 SQL，不对共享环境使用 schema push。
 - 凭据只在未提交的 .env 或部署环境中；EXPO_PUBLIC_ 变量不得包含密钥。
+- 本机 API 与开发 Compose 共用 apps/server/.env 的 PG* 参数；生产仅由 Compose 注入变量，禁止加载本地 .env。生产镜像由发布流程构建，服务器不编译源码。
+- setup 负责初始化；dev 只检查数据库、编译并启动开发进程；原生构建与迁移独立执行，不在 API 启动时迁移。
 - 不手工编辑生成的 ios、android 目录，使用 Expo config plugin。
 
 ## 验证
 
 - 修改代码后运行 pnpm check；业务或基础设施逻辑变更运行相应测试。
 - pnpm test 为无数据库测试；集成测试显式设置 TEST_DATABASE_URL 后运行 pnpm test:integration。
-- 修改共享包/原生依赖/路由后运行 pnpm mobile:export 和 Expo Doctor。
+- 修改共享包/原生依赖/路由后运行 pnpm mobile:export 和 Expo Doctor；依赖变更另运行 expo install --check。
+- 新增原生依赖或修改原生配置后需重建开发客户端（pnpm ios:build 或 pnpm android:build，包含 Prebuild）。
 - 不将 JS 打包通过描述为真机验收通过；区分模拟接口、实际数据库及原生安装验证。

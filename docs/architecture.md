@@ -4,6 +4,8 @@
 
 本文确定工程选型、目录和开发边界。业务细节沿用《同账-原型使用说明与功能设计文档》；早期方案中的候选技术，以本文为准。本文保留完整目标架构；当前实现范围与实际可用命令以 README 和 development.md 为准。
 
+模块具体职责、接口与事务划分见 [模块架构与开发入口](modules/README.md)。
+
 ## 1. 架构决定
 
 采用 **pnpm Monorepo + React Native / Expo 移动端 + Fastify 模块化单体 API + PostgreSQL**。
@@ -98,40 +100,44 @@ tongzhang/
 │   │   ├── eas.json               # development / preview / production
 │   │   ├── .env.example
 │   │   └── package.json
-│   └── api/                       # @tongzhang/api
+│   └── server/                    # @tongzhang/server
 │       ├── src/
 │       │   ├── app.ts             # 创建 Fastify 实例，供运行与测试共用
 │       │   ├── server.ts          # 启动监听、关闭信号
 │       │   ├── config/            # 环境变量解析与校验
-│       │   ├── plugins/           # db、auth、errors、OpenAPI、限流
-│       │   ├── modules/           # 业务路由、服务、Repository
-│       │   ├── db/
+│       │   ├── http/              # 契约路由适配、请求上下文、错误处理、健康检查
+│       │   ├── db/                # 连接、表定义、事务、幂等锁、审计写入
 │       │   │   ├── client.ts
-│       │   │   └── schema/        # 按业务拆分的数据库表定义
-│       │   ├── jobs/             # 临时图片、过期会话等清理任务
-│       │   └── shared/           # 服务端错误、事务辅助、幂等处理
+│       │   │   └── schema/        # 数据库表定义
+│       │   ├── modules/           # 业务模块：routes、service、repository
+│       │   └── jobs/             # 临时图片、过期会话等清理任务
 │       ├── drizzle/              # SQL 迁移与迁移元数据
-│       ├── tests/                # API 集成测试、数据库测试夹具
+│       ├── tests/                # 服务端单元、集成测试与数据库夹具
 │       ├── drizzle.config.ts
 │       ├── .env.example
 │       └── package.json
 ├── packages/
 │   ├── contracts/                # @tongzhang/contracts
 │   │   ├── src/
-│   │   │   ├── common.ts         # ID、金额字符串、分页、错误结构
+│   │   │   ├── http.ts           # 错误结构、响应包装、分页
+│   │   │   ├── scalars.ts        # ID、时间、金额字符串、枚举
+│   │   │   ├── limits.ts         # 人数、金额、图片大小上限
+│   │   │   ├── system.ts         # 健康检查
 │   │   │   ├── auth.ts
-│   │   │   ├── users.ts
+│   │   │   ├── profile.ts
 │   │   │   ├── ledgers.ts
 │   │   │   ├── invitations.ts
 │   │   │   ├── expenses.ts
-│   │   │   ├── settlements.ts
-│   │   │   ├── insights.ts
 │   │   │   ├── images.ts
+│   │   │   ├── balances.ts
+│   │   │   ├── settlements.ts
+│   │   │   ├── endpoints.ts      # 接口登记表
 │   │   │   └── index.ts
 │   │   └── package.json
 │   └── domain/                   # @tongzhang/domain
 │       ├── src/
 │       │   ├── money.ts          # 十进制金额解析、格式化、边界检查
+│       │   ├── limits.ts         # 人数与单笔金额上限
 │       │   ├── split.ts          # 人均、按份、按金额与余分分配
 │       │   └── index.ts
 │       ├── tests/
@@ -144,13 +150,13 @@ tongzhang/
 ├── infra/
 │   ├── compose.dev.yml          # 本地 PostgreSQL
 │   ├── compose.prod.yml         # API、PostgreSQL、反向代理
-│   ├── api.Dockerfile
+│   ├── server.Dockerfile
+│   ├── deploy.sh                # 拉取镜像、备份、迁移与健康验收
 │   └── Caddyfile
-├── scripts/                     # 开发种子、备份等工程脚本
-├── .github/workflows/ci.yml
+├── scripts/                     # 环境初始化、开发进程编排与容器验证
+├── .github/workflows/            # 持续验证与镜像发布
 ├── .gitignore
 ├── .node-version
-├── .npmrc
 ├── pnpm-workspace.yaml
 ├── pnpm-lock.yaml
 ├── package.json
@@ -236,7 +242,7 @@ apps/mobile/app/
 
 ### 4.2 业务目录
 
-`src/features/` 使用 `auth`、`ledgers`、`invitations`、`expenses`、`settlements`、`insights`、`profile`。
+`src/features/` 使用 `auth`、`ledgers`、`invitations`、`expenses`、`settlements`、`balances`、`profile`。
 
 以记账为例：
 
@@ -288,14 +294,15 @@ TanStack Query 的网络模式会影响暂停与恢复行为，因此不能仅�
 | `modules/` 子目录 | 职责                                                   |
 | ----------------- | ------------------------------------------------------ |
 | `auth`            | 注册、登录、会话验证、退出登录                         |
-| `users`           | 当前用户资料、通知偏好                                 |
+| `profile`         | 当前用户资料、通知偏好                                 |
 | `ledgers`         | 创建、列表、详情、成员查询、个人归档、公共成员权限检查 |
 | `invitations`     | 邀请码、二维码载荷、重置、加入预览与确认加入           |
 | `expenses`        | 新增、编辑、删除、流水筛选、分摊明细                   |
-| `insights`        | 总支出、成员余额、类别统计、成员已付与应摊             |
+| `balances`        | 总支出、成员余额、类别统计、成员已付与应摊             |
 | `settlements`     | 预览、最少笔数计算、正式冻结、已还登记、整本结清       |
 | `images`          | 图片上传、访问校验、二进制读取、临时图片清理           |
-| `audit`           | 写入关键操作记录；首版不提供动态信息流                 |
+
+审计写入不是独立业务模块，由 `db/audit.ts` 提供，在业务事务内与业务写入共用 `tx`；首版不提供动态信息流。健康检查与系统信息属于 `http/system.ts`，不放入 `modules/`。
 
 账本状态转换统一由 `settlements` 服务管理；通用成员访问检查由 `ledgers` 提供。模块不能绕过对应服务直接修改别的模块的业务状态。
 
@@ -324,13 +331,13 @@ modules/settlements/
 
 业务事务由 service 开启，涉及的 Repository 与审计写入共用同一个 `tx`。不引入通用 BaseService、BaseRepository、依赖注入容器或空接口层。单纯查询可以保持较短的实现。
 
-Fastify 的数据库、会话和错误插件先注册，业务模块随后注册；需要全局暴露的装饰器显式处理插件作用域。[Fastify 插件指南](https://fastify.dev/docs/latest/Guides/Plugins-Guide/)
+Fastify 的数据库和错误插件先注册，业务模块随后注册。`http/`、`db/`、`config/` 不依赖任何业务模块：会话校验由 `auth` 模块通过 `app.authenticate` 装饰器注入，跨模块只导入对方的 `index.ts` 出口，ESLint 强制执行这两条规则。[Fastify 插件指南](https://fastify.dev/docs/latest/Guides/Plugins-Guide/)
 
 ## 6. 数据、认证与接口约定
 
 ### 6.1 数据库归属
 
-表定义全部放 `apps/api/src/db/schema/`，按 `auth.ts`、`ledgers.ts`、`expenses.ts`、`settlements.ts`、`images.ts`、`audit.ts`、`idempotency.ts` 分文件。
+表定义全部放 `apps/server/src/db/schema/`，集中在 `tables.ts`，避免相互引用的复合外键分散后产生循环初始化问题。
 
 核心表延续现有类图：`users`、`ledgers`、`ledger_members`、`invitations`、`expenses`、`expense_splits`、`settlement_batches`、`settlement_transfers`、`image_assets`、`expense_images`、`operation_logs`。
 
@@ -421,22 +428,25 @@ Expo Go 可用于早期界面查看，项目联调与验收使用 Development Bu
 
 服务器数据库不暴露公网端口；API 记录请求 ID 与脱敏日志，提供存活及数据库就绪检查。迁移由部署步骤单独执行，不让每个 API 进程在启动时自行修改表结构。每日备份并在验收前完成一次恢复检查。
 
-### 7.2 目标脚本
+### 7.2 运行与发布入口
 
-| 命令               | 搭建后应实现的行为                          |
-| ------------------ | ------------------------------------------- |
-| `pnpm install`     | 安装工作区依赖                              |
-| `pnpm db:up`       | 启动本地 PostgreSQL                         |
-| `pnpm db:generate` | 根据表定义生成待审查 SQL 迁移               |
-| `pnpm db:migrate`  | 执行已提交迁移                              |
-| `pnpm db:seed`     | 仅对开发 / 测试库写入可重复的“鼓山一日”数据 |
-| `pnpm dev:api`     | 先构建共享包，随后同时监听共享包和 API      |
-| `pnpm dev:mobile`  | 先构建共享包，随后同时监听共享包并启动 Expo |
-| `pnpm check`       | 共享包构建、类型检查、Lint、格式检查        |
-| `pnpm test`        | 纯函数、API 集成、关键移动端交互测试        |
-| `pnpm build:api`   | 构建共享包与 API 生产产物                   |
+配置与可执行操作以 [开发与部署说明](development.md) 为准。
 
-使用 pnpm 工作区脚本配合轻量进程并行工具即可，首版不引入 Nx / Turborepo。
+| 命令                                   | 职责                                                       |
+| -------------------------------------- | ---------------------------------------------------------- |
+| `pnpm install --frozen-lockfile`       | 安装锁定依赖                                               |
+| `pnpm setup`                           | 创建缺失的开发配置、启动数据库、首次迁移                   |
+| `pnpm db:up` / `db:down`               | 开发数据库启动/停止，保留卷                                |
+| `pnpm db:generate` / `db:migrate`      | 生成待审查迁移 / 应用已提交迁移                            |
+| `pnpm dev` / `dev:ios` / `dev:android` | 首次编译后启动共享包、API、Metro；平台入口由 Expo 打开 App |
+| `pnpm ios:build` / `android:build`     | Prebuild 后编译安装开发客户端，不启动 Metro                |
+| `pnpm check` / `test`                  | 静态检查 / 无数据库测试                                    |
+| `pnpm test:integration`                | 显式使用 TEST_DATABASE_URL 的真实数据库测试                |
+| `pnpm build:server` / `mobile:export`  | 服务端构建 / 两个原生平台的 JS 导出                        |
+| `pnpm container:test`                  | 对已构建镜像进行隔离数据库、迁移、HTTP 和原生依赖验证      |
+| `bash infra/deploy.sh`                 | 生产镜像拉取、备份、独立迁移、更新及 HTTPS 验收            |
+
+开发 API 与 Compose 共用服务端 `.env` 的 PG* 参数；移动端只有公开配置。生产配置由 Compose 显式注入，服务器只运行发布镜像，不现场编译。普通 CI 不部署生产，镜像发布为独立手动工作流。开发启动不执行迁移、不编译原生 App、不管理模拟器内部配置。
 
 ### 7.3 必须覆盖的验证
 
