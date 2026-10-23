@@ -45,12 +45,10 @@
   },
   "scripts": {
     "dev": "expo start --dev-client",
-    "android": "expo run:android",
-    "ios": "expo run:ios",
-    "typecheck": "tsc --noEmit",
-    "export:check": "expo export --platform android --platform ios",
-    "native:ios": "expo prebuild --platform ios && expo run:ios --no-bundler",
-    "native:android": "expo prebuild --platform android && expo run:android --no-bundler"
+    "build:ios": "expo prebuild --platform ios && expo run:ios --no-bundler",
+    "build:android": "expo prebuild --platform android && expo run:android --no-bundler",
+    "export": "expo export --platform android --platform ios",
+    "typecheck": "tsc --noEmit"
   },
   "private": true
 }

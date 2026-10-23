@@ -51,7 +51,7 @@ emulator -list-avds
 ```bash
 pnpm install --frozen-lockfile
 pnpm setup
-pnpm android:build
+pnpm build:android
 adb reverse tcp:3300 tcp:3300
 pnpm dev:android
 ```
@@ -145,10 +145,10 @@ $env:Path = "$env:JAVA_HOME\bin;$env:ANDROID_HOME\platform-tools;$env:ANDROID_HO
 Set-Location C:\dev\tongzhang
 pnpm.cmd install --frozen-lockfile
 pnpm.cmd setup
-pnpm.cmd android:build
+pnpm.cmd build:android
 ```
 
-`setup` 创建缺失的应用 `.env`、启动数据库并迁移；Docker Desktop 必须已启动。`android:build` 生成原生工程并编译、安装开发客户端；首次下载 SDK/NDK/CMake 和 Gradle/Maven 依赖可能较久。多设备时可使用 `pnpm.cmd android:build --device` 选择设备。
+`setup` 创建缺失的应用 `.env`、启动数据库并迁移；Docker Desktop 必须已启动。`build:android` 生成原生工程并编译、安装开发客户端；首次下载 SDK/NDK/CMake 和 Gradle/Maven 依赖可能较久。多设备时可使用 `pnpm.cmd build:android --device` 选择设备。
 
 保留 `apps/mobile/.env` 的 `EXPO_PUBLIC_API_BASE_URL=http://localhost:3300`，在模拟器启动后执行：
 
@@ -166,7 +166,7 @@ adb reverse --list
 先在 Device Manager 启动模拟器。终端 A 进入仓库根目录，执行：
 
 ```powershell
-pnpm.cmd db:up
+pnpm.cmd up:db
 adb reverse tcp:3300 tcp:3300
 pnpm.cmd dev:server
 ```
@@ -183,7 +183,7 @@ pnpm.cmd dev:mobile
 Invoke-RestMethod http://localhost:3300/health/ready
 ```
 
-结束时分别在两个终端按 Ctrl+C；数据库和模拟器保留。新迁移用 `pnpm.cmd db:migrate`；新增原生依赖或修改原生配置后，先停止开发进程，再执行 `pnpm.cmd android:build`。
+结束时分别在两个终端按 Ctrl+C；数据库和模拟器保留。新迁移用 `pnpm.cmd migrate:db`；新增原生依赖或修改原生配置后，先停止开发进程，再执行 `pnpm.cmd build:android`。
 
 ### 5. 检查与平台边界
 
@@ -201,7 +201,7 @@ try { pnpm.cmd test:integration } finally { Remove-Item Env:TEST_DATABASE_URL }
 
 测试库只需创建一次。PowerShell 不使用 Bash 的 `变量=值 命令` 写法。
 
-`pnpm test` 中包含 Bash 部署脚本测试；`container:test` 与 `infra/deploy.sh` 也依赖 Bash/POSIX 工具。这部分以 Linux CI/部署环境为验证基线，不能将 Windows 上的类型检查通过当作全部测试通过。
+`pnpm test` 中包含 Bash 部署脚本测试；`test:container` 与 `infra/deploy.sh` 也依赖 Bash/POSIX 工具。这部分以 Linux CI/部署环境为验证基线，不能将 Windows 上的类型检查通过当作全部测试通过。
 
 Windows/Linux 可开发 Android、共享代码和服务端；本地 iOS 编译及 iOS 模拟器需要 macOS/Xcode。没有 Mac 而有 iPhone 的成员可使用团队提供的签名开发客户端或 EAS 云构建，但项目尚未绑定 EAS 项目与 iOS 签名，不能直接当成已配置好的流程。
 

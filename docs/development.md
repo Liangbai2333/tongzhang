@@ -7,9 +7,9 @@
 | 应用配置   | 校验变量、生成数据库连接参数；不启动容器               | 服务端 `src/config/env.ts`、移动端 `app.config.ts` |
 | 开发初始化 | 创建缺失的配置、启动开发数据库、执行首次迁移           | `pnpm setup`                                       |
 | 开发运行   | 检查数据库与端口、首次编译、启动 watcher / API / Metro | `pnpm dev`、`dev:ios`、`dev:android`               |
-| 原生构建   | Prebuild 应用 config plugin，然后编译安装开发客户端    | `pnpm ios:build`、`android:build`                  |
+| 原生构建   | Prebuild 应用 config plugin，然后编译安装开发客户端    | `pnpm build:ios`、`build:android`                  |
 | 基础设施   | 数据库、卷、容器网络、HTTPS                            | `infra/compose.*.yml`                              |
-| 数据库迁移 | 独立执行已提交 SQL；失败即中止                         | `pnpm db:migrate`、生产 `migrate` 服务             |
+| 数据库迁移 | 独立执行已提交 SQL；失败即中止                         | `pnpm migrate:db`、生产 `migrate` 服务             |
 | CI         | 检查、测试、构建及容器验证，不访问生产                 | `.github/workflows/ci.yml`                         |
 | 镜像发布   | 手动触发检查，发布验证过的镜像到 GHCR                  | `.github/workflows/publish.yml`                    |
 | 生产部署   | 拉取指定镜像、备份、迁移、更新、健康验收               | `bash infra/deploy.sh`                             |
@@ -22,7 +22,7 @@
 | `apps/mobile/.env`    | 本机 Expo                    | 公开 API 地址、构建类型              |
 | 服务器的 `infra/.env` | 生产 Compose                 | 发布镜像、域名、数据库凭据与日志设置 |
 
-真实 `.env` 不提交、不进入镜像。模板为对应 `.env.example`。`env:setup` 只创建缺失文件，不覆盖已有值，也不生成生产配置。服务端仅在本地开发加载自己的 `.env`，生产、测试和 CI 只使用进程环境变量；进程中已设置的值优先。移动端发布配置由 EAS 的对应 environment 提供，API 地址会进入安装包，绝不能填密钥。
+真实 `.env` 不提交、不进入镜像。模板为对应 `.env.example`。`setup:env` 只创建缺失文件，不覆盖已有值，也不生成生产配置。服务端仅在本地开发加载自己的 `.env`，生产、测试和 CI 只使用进程环境变量；进程中已设置的值优先。移动端发布配置由 EAS 的对应 environment 提供，API 地址会进入安装包，绝不能填密钥。
 
 Compose 的 `--env-file` 给 `${变量}` 提供值，只有 `environment` 显式声明的变量才进入容器。宿主机 shell 中的同名变量优先于 env 文件；部署时避免遗留同名变量。不要把整个部署文件用 `env_file` 注入所有服务。
 
@@ -46,16 +46,41 @@ Compose 的 `--env-file` 给 `${变量}` 提供值，只有 `environment` 显式
 
 ## 2. 首次准备与日常开发
 
+### 命令命名与分类
+
+项目脚本统一采用“动作:对象”，例如 `build:ios`、`migrate:db`；`setup`、`dev`、`check`、`test` 是根目录的组合入口。单个包内对象已经明确的命令保留 `dev`、`build`、`start`、`export`、`typecheck` 等简短名称。冒号只是名称分隔符，不会自动建立依赖或执行顺序。
+
+根目录 `package.json` 按初始化、开发、构建与导出、数据库、检查与格式化、测试排列。日常从仓库根目录运行下列命令：
+
+| 类别       | 命令                                         | 职责                                                        |
+| ---------- | -------------------------------------------- | ----------------------------------------------------------- |
+| 初始化     | `setup`、`setup:env`                         | 完整开发初始化 / 仅创建缺失的应用环境文件                   |
+| 开发       | `dev`、`dev:ios`、`dev:android`              | 启动共享包监听、API 和 Metro；可指定打开的平台              |
+| 单独开发   | `dev:shared`、`dev:server`、`dev:mobile`     | 共享包监听 / 服务端及共享包监听 / Metro                     |
+| 构建       | `build:shared`、`build:server`               | 编译共享包 / 先编译共享包再编译服务端                       |
+| 原生构建   | `build:ios`、`build:android`                 | 先编译共享包，再 Prebuild、编译安装开发客户端，不启动 Metro |
+| 导出       | `export:mobile`                              | 先编译共享包，再导出 Android / iOS JavaScript 包            |
+| 数据库启停 | `up:db`、`down:db`                           | 启动 / 停止开发数据库，保留数据卷                           |
+| 数据库迁移 | `generate:db`、`migrate:db`                  | 生成待审查的迁移文件 / 应用已提交的迁移                     |
+| 静态检查   | `check`、`typecheck`、`lint`、`check:format` | 完整静态检查 / 类型检查 / ESLint / 格式检查                 |
+| 移动端检查 | `check:mobile-deps`、`doctor:mobile`         | Expo 依赖兼容性检查 / Expo Doctor                           |
+| 格式化     | `format`                                     | 用 Prettier 改写格式                                        |
+| 测试       | `test`、`test:integration`、`test:container` | 无数据库测试 / 专用数据库集成测试 / 已构建镜像验证          |
+
+工作区依赖不会自动触发共享包构建；需要先后执行的步骤由脚本中的 `&&` 明确串联。根目录 `build:ios` 调用移动端包的同名命令，不会递归调用自身，因为 `--filter @tongzhang/mobile` 已选择目标包。旧命令名不保留别名，避免出现重复入口。
+
+### 首次准备
+
 环境使用 `.node-version` 指定的 Node 24 和根 `packageManager` 指定的 pnpm。安装 JDK/SDK、设置环境变量与 PATH 的步骤见 [成员环境配置](environment-setup.md)。Windows 成员使用其中的 [PowerShell 双终端流程](environment-setup.md#windows)，当前一键开发脚本尚未完成 Windows 兼容验收。手动启动 Docker Desktop；脚本不会打开桌面应用。以下以 macOS/iOS 为例：
 
 ```bash
 pnpm install --frozen-lockfile
 pnpm setup
-pnpm ios:build
+pnpm build:ios
 pnpm dev:ios
 ```
 
-Android 将后两条换成 `pnpm android:build`、`pnpm dev:android`，需要本机 Android SDK。iOS 需要 macOS、Xcode、模拟器 runtime 和 CocoaPods。原生构建不依赖 API 或数据库，也不启动 Metro。
+Android 将后两条换成 `pnpm build:android`、`pnpm dev:android`，需要本机 Android SDK。iOS 需要 macOS、Xcode、模拟器 runtime 和 CocoaPods。原生构建不依赖 API 或数据库，也不启动 Metro。
 
 ### Android 本机工具链
 
@@ -67,7 +92,7 @@ Android 将后两条换成 `pnpm android:build`、`pnpm dev:android`，需要本
 java -version
 adb devices
 emulator -list-avds
-pnpm android:build --device Medium_Phone  # 替换为上一步列出的模拟器名称
+pnpm build:android --device Medium_Phone  # 替换为上一步列出的模拟器名称
 ```
 
 若 iOS 与 Android 共用 `http://localhost:3300`，在 Android 模拟器启动后执行 `adb reverse tcp:3300 tcp:3300`，将设备的 API 端口转发到电脑。然后执行 `pnpm dev:android`；已有 Metro 时直接在其终端按 `a`，无需启动第二套开发进程。设备重启或重新连接后需重新执行端口转发；多设备时用 `adb -s <序列号> reverse ...`。也可按下表将 Android 的 API 地址设为 `10.0.2.2`。
@@ -79,7 +104,7 @@ pnpm android:build --device Medium_Phone  # 替换为上一步列出的模拟器
 日常使用：
 
 ```bash
-pnpm db:up       # 数据库没运行时执行
+pnpm up:db       # 数据库没运行时执行
 pnpm dev:ios     # 或 dev:android；dev 不自动打开平台
 ```
 
@@ -87,7 +112,7 @@ pnpm dev:ios     # 或 dev:android；dev 不自动打开平台
 
 Metro 独占终端输入和原生终端输出；其他进程的日志带名称前缀。可以按 `i` / `a` 打开平台、`Shift+i` / `Shift+a` 选设备、`r` 刷新。设备选择、安装和 deep link 由 Expo CLI 管理。
 
-添加原生依赖、修改 app config/config plugin 后，停止 dev，再执行 `pnpm ios:build` 或 `pnpm android:build`。命令先运行 Prebuild，再执行 `expo run:* --no-bundler`。可传 `--device` 进入 Expo 设备选择，例如 `pnpm ios:build --device`。保留 SDK 57 的 `enableSceneSupport`，满足 Xcode 27 / iOS 27 要求。不要手工修改生成的 ios/android。
+添加原生依赖、修改 app config/config plugin 后，停止 dev，再执行 `pnpm build:ios` 或 `pnpm build:android`。命令先运行 Prebuild，再执行 `expo run:* --no-bundler`。可传 `--device` 进入 Expo 设备选择，例如 `pnpm build:ios --device`。保留 SDK 57 的 `enableSceneSupport`，满足 Xcode 27 / iOS 27 要求。不要手工修改生成的 ios/android。
 
 仅启动 API 可用 `pnpm dev:server`（包含共享包 watcher）。配合它时，在另一终端执行 `pnpm dev:mobile`；后者只做一次共享包构建并启动 Metro，不再开第二组 watcher。
 
@@ -109,18 +134,18 @@ Metro 独占终端输入和原生终端输出；其他进程的日志带名称�
 首次迁移由 setup 执行；拉到新迁移后执行：
 
 ```bash
-pnpm db:migrate
+pnpm migrate:db
 ```
 
-修改 Schema 后执行 `pnpm db:generate`，审查并提交 `apps/server/drizzle` SQL，再迁移。迁移入口使用同一连接持有 advisory lock，串行执行；缺失迁移清单会失败。API 启动不会修改表结构，`/health/ready` 只证明数据库可连接，不代表迁移已应用。
+修改 Schema 后执行 `pnpm generate:db`，审查并提交 `apps/server/drizzle` SQL，再迁移。迁移入口使用同一连接持有 advisory lock，串行执行；缺失迁移清单会失败。API 启动不会修改表结构，`/health/ready` 只证明数据库可连接，不代表迁移已应用。
 
 ```bash
 pnpm check
 pnpm test
 pnpm build:server
-pnpm mobile:deps
-pnpm mobile:doctor
-pnpm mobile:export
+pnpm check:mobile-deps
+pnpm doctor:mobile
+pnpm export:mobile
 ```
 
 真实数据库测试使用名称以 `_test` 结尾的专用库。以下命令采用模板的默认开发参数；若修改了凭据或端口，请对应调整：
@@ -130,13 +155,13 @@ docker compose --env-file apps/server/.env -f infra/compose.dev.yml exec -T post
 TEST_DATABASE_URL=postgresql://tongzhang:tongzhang_local_only@127.0.0.1:35432/tongzhang_test pnpm test:integration
 ```
 
-测试库创建一次即可；测试自行应用迁移。`pnpm test` 不需要数据库。`mobile:export` 只验证 Android / iOS JavaScript 打包，不生成 APK/IPA，不等于原生安装或真机验收。
+测试库创建一次即可；测试自行应用迁移。`pnpm test` 不需要数据库。`export:mobile` 只验证 Android / iOS JavaScript 打包，不生成 APK/IPA，不等于原生安装或真机验收。
 
 容器验证使用临时 Compose 项目和独立数据库，不读取开发或生产 `.env`：
 
 ```bash
 docker build --build-arg NODE_VERSION="$(cat .node-version)" -f infra/server.Dockerfile -t tongzhang-server:check .
-pnpm container:test
+pnpm test:container
 ```
 
 它验证真实数据库、两次迁移、HTTP 健康接口、生产 docs 关闭、原生 Node 依赖、非 root 用户和 Caddy 配置，并清理自己的临时卷。它不验证域名 DNS 或真实 TLS 证书。默认测试网段为 `172.31.240.0/28`，冲突时设置 `TEST_PROXY_SUBNET`。
@@ -204,7 +229,7 @@ docker compose --env-file infra/.env -f infra/compose.prod.yml exec -T postgres 
 ### 提交与验证
 
 - 一次提交围绕一个明确目的；无关修改分开提交。提交说明交代实际改动，沿用仓库的 `docs:`、`fix:`、`feat:`、`chore:`、`ci:` 等前缀。
-- 纯文档修改检查命令、路径、链接与当前实现一致，运行 `pnpm format:check` 和 `git diff --check`；不因修改说明文字而重建原生客户端。
+- 纯文档修改检查命令、路径、链接与当前实现一致，运行 `pnpm check:format` 和 `git diff --check`；不因修改说明文字而重建原生客户端。
 - 修改代码运行 `pnpm check`，并按 [AGENTS.md](../AGENTS.md) 补充相应测试、导出或原生构建验证。未运行的验证明确说明，不能写成通过。
 - 需要 PR 的改动在独立分支上提交并推送，PR 描述问题、最终行为、验证结果及尚未验证的部分；审查和适用的 CI 检查通过后合并。
 - 真实凭据、本机 `.env`、数据库备份和构建产物不提交；需要共享配置时更新不含凭据的示例文件。

@@ -436,14 +436,14 @@ Expo Go 可用于早期界面查看，项目联调与验收使用 Development Bu
 | -------------------------------------- | ---------------------------------------------------------- |
 | `pnpm install --frozen-lockfile`       | 安装锁定依赖                                               |
 | `pnpm setup`                           | 创建缺失的开发配置、启动数据库、首次迁移                   |
-| `pnpm db:up` / `db:down`               | 开发数据库启动/停止，保留卷                                |
-| `pnpm db:generate` / `db:migrate`      | 生成待审查迁移 / 应用已提交迁移                            |
+| `pnpm up:db` / `down:db`               | 开发数据库启动/停止，保留卷                                |
+| `pnpm generate:db` / `migrate:db`      | 生成待审查迁移 / 应用已提交迁移                            |
 | `pnpm dev` / `dev:ios` / `dev:android` | 首次编译后启动共享包、API、Metro；平台入口由 Expo 打开 App |
-| `pnpm ios:build` / `android:build`     | Prebuild 后编译安装开发客户端，不启动 Metro                |
+| `pnpm build:ios` / `build:android`     | Prebuild 后编译安装开发客户端，不启动 Metro                |
 | `pnpm check` / `test`                  | 静态检查 / 无数据库测试                                    |
 | `pnpm test:integration`                | 显式使用 TEST_DATABASE_URL 的真实数据库测试                |
-| `pnpm build:server` / `mobile:export`  | 服务端构建 / 两个原生平台的 JS 导出                        |
-| `pnpm container:test`                  | 对已构建镜像进行隔离数据库、迁移、HTTP 和原生依赖验证      |
+| `pnpm build:server` / `export:mobile`  | 服务端构建 / 两个原生平台的 JS 导出                        |
+| `pnpm test:container`                  | 对已构建镜像进行隔离数据库、迁移、HTTP 和原生依赖验证      |
 | `bash infra/deploy.sh`                 | 生产镜像拉取、备份、独立迁移、更新及 HTTPS 验收            |
 
 开发 API 与 Compose 共用服务端 `.env` 的 PG* 参数；移动端只有公开配置。生产配置由 Compose 显式注入，服务器只运行发布镜像，不现场编译。普通 CI 不部署生产，镜像发布为独立手动工作流。开发启动不执行迁移、不编译原生 App、不管理模拟器内部配置。

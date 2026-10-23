@@ -21,10 +21,10 @@
 | `pnpm test`                      | 6个文件、22项测试通过                            |
 | `pnpm test:integration`          | 专用PostgreSQL 17测试库，2个文件、4项测试通过    |
 | `pnpm build:api`                 | 服务端及共享包编译通过                           |
-| `pnpm mobile:export`             | Android / iOS JavaScript与Hermes包导出通过       |
+| `pnpm export:mobile`             | Android / iOS JavaScript与Hermes包导出通过       |
 | `expo install --check`           | SDK 57依赖版本匹配                               |
 | Expo Doctor                      | 21/21通过                                        |
-| `pnpm db:generate`               | Schema与迁移快照一致，无新增迁移                 |
+| `pnpm generate:db`               | Schema与迁移快照一致，无新增迁移                 |
 | sharp本机绑定                    | PNG编码/解码与元数据读取通过                     |
 | Docker构建复验                   | 基础镜像下载持续无进展后主动中止，未验证本次镜像 |
 | `pnpm peers check`               | 无peer依赖冲突                                   |
@@ -40,10 +40,10 @@
 本次未重新编译安装iOS/Android原生客户端。新增原生依赖后，已有开发客户端需要重建一次：
 
 ```bash
-pnpm ios:build
+pnpm build:ios
 ```
 
-后续按账号 → 账本/邀请 → 消费/图片 → 余额/结算 → 结清/归档顺序接通用例。开发库使用 `pnpm db:migrate` 应用已审查的迁移，不单独运行说明书中的建表SQL。
+后续按账号 → 账本/邀请 → 消费/图片 → 余额/结算 → 结清/归档顺序接通用例。开发库使用 `pnpm migrate:db` 应用已审查的迁移，不单独运行说明书中的建表SQL。
 
 ## 4 结构调整（同日）
 
@@ -60,4 +60,4 @@ pnpm ios:build
 | 骨架清理   | 删除只有接口声明、无实现的 Repository 文件；删除 auth 无用查询键；迁移重命名为 `0000_init`（内容不变，未在共享环境执行过）                                                                  |
 | 模板残留   | 删除 Expo 模板 LICENSE、`react-dom` 直接依赖、空目录占位；`apps/mobile/AGENTS.md` 中的项目约定并入根目录 AGENTS.md 后删除                                                                   |
 
-复验：`pnpm check`、`pnpm test`（22项）、`pnpm build:server`、`pnpm db:generate`（无新增迁移）、`pnpm mobile:export`、`expo install --check`、Expo Doctor 21/21 通过；临时 PostgreSQL 17 测试库执行 `pnpm test:integration` 4项通过，验证后已移除容器。未重新编译安装原生客户端；`react-dom` 仅为 Web 可选依赖，移除后建议下次原生构建时确认。
+复验：`pnpm check`、`pnpm test`（22项）、`pnpm build:server`、`pnpm generate:db`（无新增迁移）、`pnpm export:mobile`、`expo install --check`、Expo Doctor 21/21 通过；临时 PostgreSQL 17 测试库执行 `pnpm test:integration` 4项通过，验证后已移除容器。未重新编译安装原生客户端；`react-dom` 仅为 Web 可选依赖，移除后建议下次原生构建时确认。

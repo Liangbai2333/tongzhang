@@ -41,7 +41,7 @@ try {
     if (env.NODE_ENV !== 'development') throw new Error('dev 只能使用 NODE_ENV=development。');
     await requireFreePort(env.PORT, env.HOST);
     await requireFreePort(8081);
-    run(['--filter', '@tongzhang/server', 'db:check']);
+    run(['--filter', '@tongzhang/server', 'check:db']);
     run(['build:server']);
     console.log('启动开发服务；Ctrl+C 停止本次进程，数据库保留。Metro 使用原生终端快捷键。');
     await concurrently(

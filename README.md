@@ -11,11 +11,11 @@
 ```bash
 pnpm install --frozen-lockfile
 pnpm setup       # Docker Desktop 需已启动
-pnpm ios:build   # 首次或原生依赖/配置变化后
+pnpm build:ios   # 首次或原生依赖/配置变化后
 pnpm dev:ios
 ```
 
-日常先按需执行 `pnpm db:up`，再执行 `pnpm dev:ios`（或 `dev:android`）。`dev` 只检查数据库、编译并启动 API、共享包监听与 Metro，不执行迁移或原生安装；Ctrl+C 停止本次进程，保留数据库。拉到新迁移后执行 `pnpm db:migrate`。Android 首次使用 `pnpm android:build`。
+日常先按需执行 `pnpm up:db`，再执行 `pnpm dev:ios`（或 `dev:android`）。`dev` 只检查数据库、编译并启动 API、共享包监听与 Metro，不执行迁移或原生安装；Ctrl+C 停止本次进程，保留数据库。拉到新迁移后执行 `pnpm migrate:db`。Android 首次使用 `pnpm build:android`。
 
 Android、指定模拟器、配置真机 IP 等步骤见 [开发说明](docs/development.md)。
 
@@ -44,10 +44,10 @@ scripts             环境初始化、开发进程编排与容器验证
 pnpm check
 pnpm test
 pnpm build:server
-pnpm mobile:export
+pnpm export:mobile
 ```
 
-真实数据库集成测试单独运行，需要专用测试库，详见开发说明。`mobile:export` 检查 Android / iOS JavaScript 打包，不等于已生成或安装原生 App。
+真实数据库集成测试单独运行，需要专用测试库，详见开发说明。`export:mobile` 检查 Android / iOS JavaScript 打包，不等于已生成或安装原生 App。
 
 ## 配置与部署
 

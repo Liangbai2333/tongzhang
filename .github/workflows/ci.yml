@@ -41,12 +41,12 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm check
       - run: pnpm test
-      - run: pnpm db:migrate
+      - run: pnpm migrate:db
       - run: pnpm test:integration
       - run: pnpm build:server
-      - run: pnpm mobile:deps
-      - run: pnpm mobile:doctor
-      - run: pnpm mobile:export
+      - run: pnpm check:mobile-deps
+      - run: pnpm doctor:mobile
+      - run: pnpm export:mobile
         env:
           NODE_ENV: production
   container:

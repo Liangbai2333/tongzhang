@@ -88,4 +88,4 @@ packages/domain/src/     金额、分摊纯函数与人数/金额上限
 
 [依赖清单](dependencies.md)说明每个依赖由哪个模块使用；[验证记录](../module-skeleton-validation.md)记录本次检查。原生依赖使用Expo SDK 57的expo install解析；已有Development Build需重新构建一次。
 
-验证命令：`pnpm check`、`pnpm test`、`pnpm build:server`、`pnpm mobile:export`。集成测试显式设置TEST_DATABASE_URL到名称以_test结尾的专用库后执行`pnpm test:integration`。开发库应用迁移使用`pnpm db:migrate`，不要重复执行说明书中的独立建表SQL。
+验证命令：`pnpm check`、`pnpm test`、`pnpm build:server`、`pnpm export:mobile`。集成测试显式设置TEST_DATABASE_URL到名称以_test结尾的专用库后执行`pnpm test:integration`。开发库应用迁移使用`pnpm migrate:db`，不要重复执行说明书中的独立建表SQL。

@@ -21,6 +21,7 @@
 ## 工程
 
 - pnpm 工作区统一锁文件，使用 workspace:* 引用本地包，不另生成 npm/yarn 锁文件。
+- 脚本命名采用“动作:对象”（如 build:ios、migrate:db）；组合入口及包内对象明确的命令可保留简短名称。按初始化、开发、构建与导出、数据库、检查与格式化、测试排列，修改命令时同步更新调用方、CI 和文档。
 - 原生依赖在 apps/mobile 使用 pnpm exec expo install；不要独立升级 React / React Native。
 - 当前为 Expo SDK 57，涉及 Expo / React Native API 时查阅 https://docs.expo.dev/versions/v57.0.0/，不凭旧版本记忆编写。
 - 业务表定义放 apps/server/src/db/schema，迁移放 apps/server/drizzle。审查并提交生成的 SQL，不对共享环境使用 schema push。
@@ -33,6 +34,6 @@
 
 - 修改代码后运行 pnpm check；业务或基础设施逻辑变更运行相应测试。
 - pnpm test 为无数据库测试；集成测试显式设置 TEST_DATABASE_URL 后运行 pnpm test:integration。
-- 修改共享包/原生依赖/路由后运行 pnpm mobile:export 和 Expo Doctor；依赖变更另运行 expo install --check。
-- 新增原生依赖或修改原生配置后需重建开发客户端（pnpm ios:build 或 pnpm android:build，包含 Prebuild）。
+- 修改共享包/原生依赖/路由后运行 pnpm export:mobile 和 Expo Doctor；依赖变更另运行 expo install --check。
+- 新增原生依赖或修改原生配置后需重建开发客户端（pnpm build:ios 或 pnpm build:android，包含 Prebuild）。
 - 不将 JS 打包通过描述为真机验收通过；区分模拟接口、实际数据库及原生安装验证。

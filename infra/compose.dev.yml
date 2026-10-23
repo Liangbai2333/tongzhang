@@ -3,7 +3,7 @@ services:
   postgres:
     image: postgres:17-alpine
     environment:
-      POSTGRES_USER: ${PGUSER:?Run pnpm env:setup}
+      POSTGRES_USER: ${PGUSER:?Run pnpm setup:env}
       POSTGRES_PASSWORD: ${PGPASSWORD:?Set PGPASSWORD in apps/server/.env}
       POSTGRES_DB: ${PGDATABASE:?Set PGDATABASE in apps/server/.env}
     ports:
