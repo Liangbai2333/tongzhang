@@ -1,1 +1,1 @@
-export { default } from '@/features/system/screens/ConnectionScreen';
+export { default } from '@/features/auth/screens/WelcomeScreen';

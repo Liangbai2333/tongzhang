@@ -2,7 +2,7 @@
 
 多人共享记账与结算移动端 App。React Native / Expo + Fastify + PostgreSQL，全栈 TypeScript。
 
-当前包含模块工程骨架：29项接口契约与路由、13张业务/支撑表及迁移、前后端模块边界、分摊与结算算法、移动端API与面板状态模型。默认启动仍为真实联调页，账号注册/登录/退出与 `getMe` 已接通，其余业务 Service 占位接口返回501；应用图标和启动图暂用Expo模板资源。
+当前包含模块工程骨架：29项接口契约与路由、13张业务/支撑表及迁移、前后端模块边界、分摊与结算算法、移动端API与面板状态模型。默认启动为 Figma 欢迎页，右上角“界面预览”可浏览首批 13 个页面与面板交互；预览使用明确标注的设计样例，不提交或持久化业务数据。账号注册/登录/退出与 `getMe` 的 API 已接通，但本批账号页面尚未绑定接口；其余业务 Service 占位接口返回501。真实联调页保留在 `/connection`（预览→我的→设置→工程联调）；应用图标和启动图暂用Expo模板资源。
 
 ## 快速开始
 
@@ -29,7 +29,7 @@ API 默认 `http://localhost:3300`：
 ## 目录
 
 ```text
-apps/mobile         Expo Router、联调页、业务 feature、主题与请求封装
+apps/mobile         Expo Router、页面预览、联调页、业务 feature、主题与请求封装
 apps/server         Fastify 服务端：http 适配、db 基础、业务模块、迁移与测试
 packages/contracts  Zod 请求/响应 Schema 与接口登记表
 packages/domain     整数金额、分摊纯函数与业务上限
@@ -60,6 +60,7 @@ pnpm export:mobile
 
 - [模块架构、职责与开发入口](docs/modules/README.md)
 - [模块骨架验证记录](docs/module-skeleton-validation.md)
+- [移动端界面预览与验证范围](docs/mobile-ui-preview.md)
 - [架构与目录约定](docs/architecture.md)
 - [业务约束](docs/product-spec.md)
 - [原型操作与功能设计](docs/prototype-guide.md)
