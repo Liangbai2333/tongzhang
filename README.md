@@ -6,7 +6,7 @@
 
 ## 快速开始
 
-环境：Node.js 24、pnpm 12.6.0、Docker Desktop；iOS 模拟器还需 macOS、Xcode 和 CocoaPods。
+环境：Node.js 24、pnpm 12.6.0、Docker Desktop。安装与环境变量设置见[成员环境配置](docs/environment-setup.md)，Windows 成员从其中的 [Windows 步骤](docs/environment-setup.md#windows)开始。下面以 macOS 的 iOS 开发为例，iOS 模拟器还需 Xcode 和 CocoaPods。
 
 ```bash
 pnpm install --frozen-lockfile
@@ -65,6 +65,7 @@ pnpm mobile:export
 - [原型操作与功能设计](docs/prototype-guide.md)
 - [原型设计目标与原则](docs/prototype-design-principles.md)
 - [环境、启动、数据库与部署](docs/development.md)
+- [macOS、Linux 与 Windows 成员环境配置](docs/environment-setup.md)
 - [本次工程验收记录](docs/engineering-status.md)
 
 开发顺序：接通账号页面与已有账号接口，再完成创建/加入账本、消费分摊、结算与归档。详见模块架构文档。

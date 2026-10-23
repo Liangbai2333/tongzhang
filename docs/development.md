@@ -46,7 +46,7 @@ Compose 的 `--env-file` 给 `${变量}` 提供值，只有 `environment` 显式
 
 ## 2. 首次准备与日常开发
 
-环境使用 `.node-version` 指定的 Node 24 和根 `packageManager` 指定的 pnpm。手动启动 Docker Desktop；脚本不会打开桌面应用。
+环境使用 `.node-version` 指定的 Node 24 和根 `packageManager` 指定的 pnpm。安装 JDK/SDK、设置环境变量与 PATH 的步骤见 [成员环境配置](environment-setup.md)。Windows 成员使用其中的 [PowerShell 双终端流程](environment-setup.md#windows)，当前一键开发脚本尚未完成 Windows 兼容验收。手动启动 Docker Desktop；脚本不会打开桌面应用。以下以 macOS/iOS 为例：
 
 ```bash
 pnpm install --frozen-lockfile
@@ -61,21 +61,7 @@ Android 将后两条换成 `pnpm android:build`、`pnpm dev:android`，需要本
 
 安装 Android Studio，并在 SDK Manager 中安装 Android SDK Platform 36、Build-Tools 36.0.0、Platform-Tools 和 Android Emulator。当前 React Native 依赖使用 NDK 27.1.12297006；首次 Gradle 构建会在已接受 SDK 许可后下载缺少的组件。Apple Silicon 使用 ARM64 模拟器，已有 Android 14 或更高版本的模拟器即可，不必为编译 API 36 另建同版本模拟器。
 
-使用 JDK 17，将 `ANDROID_HOME` 指向本机 SDK，将其 `platform-tools` 和 `emulator` 目录加入 PATH。使用 mise 时，可将本机配置放在根目录 `mise.local.toml`（已忽略，不提交机器路径）：
-
-```toml
-[tools]
-java = "corretto-17"
-
-[env]
-ANDROID_HOME = "/你的用户目录/Library/Android/sdk"
-GRADLE_OPTS = "-Dorg.gradle.workers.max=2"
-
-[env._]
-path = ["/你的用户目录/Library/Android/sdk/platform-tools", "/你的用户目录/Library/Android/sdk/emulator"]
-```
-
-`mise install` 后可通过 `mise exec -- pnpm android:build` 使用这套工具链。已在 shell 激活 mise 时，进入项目后直接执行 pnpm 命令即可。两名 Gradle worker 用于降低本机首次构建负载；不影响发布配置。
+使用 JDK 17，将 `JAVA_HOME` 指向 JDK 根目录，`ANDROID_HOME` 指向本机 SDK，并将 JDK 的 `bin`、SDK 的 `platform-tools` 和 `emulator` 目录加入 PATH。按 [macOS、Linux 与 Windows 配置步骤](environment-setup.md)完成设置，重新打开终端后检查版本并构建：
 
 ```bash
 java -version
@@ -200,5 +186,29 @@ docker compose --env-file infra/.env -f infra/compose.prod.yml exec -T postgres 
 ## 6. 模块开发入口
 
 接口与类型放 `packages/contracts`；业务表放 `apps/server/src/db/schema`；服务端模块执行权限、事务和业务规则；移动端页面放 `src/features`，`app` 仅放路由入口。模块边界与验收要求见 [模块架构](modules/README.md) 和 [AGENTS.md](../AGENTS.md)。
+
+## 7. 提交与 PR
+
+所有需要保留的修改都通过 Git commit 记录。PR 用于将分支上的提交审查后合入主分支；“直接提交”指直接向 `main` 提交并推送，不经过 PR。
+
+| 变更范围                                                               | 提交方式                        |
+| ---------------------------------------------------------------------- | ------------------------------- |
+| 文档错字、排版、链接修复、补充已有行为的使用说明；不影响行为的注释修改 | 可以直接提交                    |
+| 已确认没有引用、不参与构建和运行的临时文件或残余备份清理               | 可以直接提交；不确定用途时走 PR |
+| 业务功能、页面交互、接口契约、权限、金额计算、数据库结构与迁移         | 走 PR                           |
+| 依赖升级、原生配置、环境变量约定、启动脚本、Docker、CI、生产发布流程   | 走 PR                           |
+| 跨模块重构，或改变产品规则、架构边界、运维操作要求的文档               | 走 PR                           |
+
+按改动的影响判断，不只看文件扩展名。比如补充 Windows 环境安装步骤可以直接提交；改变生产迁移顺序，即使只修改 Markdown，也需要 PR。文档与代码一起改变行为时，放在同一个 PR 中。
+
+### 提交与验证
+
+- 一次提交围绕一个明确目的；无关修改分开提交。提交说明交代实际改动，沿用仓库的 `docs:`、`fix:`、`feat:`、`chore:`、`ci:` 等前缀。
+- 纯文档修改检查命令、路径、链接与当前实现一致，运行 `pnpm format:check` 和 `git diff --check`；不因修改说明文字而重建原生客户端。
+- 修改代码运行 `pnpm check`，并按 [AGENTS.md](../AGENTS.md) 补充相应测试、导出或原生构建验证。未运行的验证明确说明，不能写成通过。
+- 需要 PR 的改动在独立分支上提交并推送，PR 描述问题、最终行为、验证结果及尚未验证的部分；审查和适用的 CI 检查通过后合并。
+- 真实凭据、本机 `.env`、数据库备份和构建产物不提交；需要共享配置时更新不含凭据的示例文件。
+
+以上是协作约定；是否由 GitHub 强制执行取决于仓库的分支保护设置，文档本身不会开启保护。
 
 参考：[Expo CLI](https://docs.expo.dev/more/expo-cli/)、[SDK 57 BuildProperties](https://docs.expo.dev/versions/v57.0.0/sdk/build-properties/)、[Compose 环境变量插值](https://docs.docker.com/compose/how-tos/environment-variables/variable-interpolation/)。

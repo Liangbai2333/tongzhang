@@ -42,7 +42,7 @@ iOS 已通过 `expo-build-properties` 启用 `enableSceneSupport`，修复 iOS 2
 
 ## 2026-10-22 Android 本机配置与原生验收
 
-- 本机通过未提交的 `mise.local.toml` 使用 Corretto JDK 17、现有 Android SDK 路径和两个 Gradle worker；保留其他项目的全局 Java 设置。
+- 本机验收使用已安装的 Corretto JDK 17、现有 Android SDK 路径和两个 Gradle worker；机器路径未提交到仓库。
 - Gradle 安装了 Platform 36、NDK 27.1.12297006、Build-Tools 35.0.0 和 CMake 3.22.1；已有 Build-Tools 36.0.0 继续作为项目配置值。未手工修改生成的 Android 源码。
 - `pnpm android:build --device Medium_Phone` 完成 Prebuild 并启动首次构建；下载长时间无输出后中止该次构建，使用同一工具链、详细日志和较短网络超时重新执行 `expo run:android --no-bundler --device Medium_Phone`，最终原生构建成功，APK 安装并打开。
 - 验收设备为现有 Medium_Phone 模拟器（Android 14、ARM64）。`adb reverse tcp:3300 tcp:3300` 后共用现有 `localhost:3300` API 地址和 Metro，联调页显示“API 与数据库已连接”，Android 崩溃日志为空。
