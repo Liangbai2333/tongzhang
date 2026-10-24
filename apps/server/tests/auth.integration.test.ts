@@ -8,6 +8,7 @@ import { authResultSchema, tokenPairSchema } from '@tongzhang/contracts';
 import { createAccessTokens } from '../src/modules/auth/tokens.js';
 import { digestToken } from '../src/modules/auth/credentials.js';
 import { testDatabaseUrl } from './fixtures/database.js';
+import { waitForBlockedQueries } from './fixtures/locks.js';
 const url = testDatabaseUrl();
 const db = createDatabase(url);
 let app: Awaited<ReturnType<typeof buildApp>>;
@@ -155,6 +156,55 @@ describe('real PostgreSQL dual-token authentication', () => {
       expect((await refresh(pair.refreshToken)).statusCode).toBe(401);
     }
   });
+  it.each(['refresh', 'logout'] as const)(
+    'keeps the session revoked when %s queues first on the session lock',
+    async (first) => {
+      const account = await register();
+      const sessionId = String(decodeJwt(account.accessToken).sid);
+      const blocker = await db.pool.connect();
+      const pending: Promise<Awaited<ReturnType<typeof refresh>>>[] = [];
+      try {
+        await blocker.query('begin');
+        const pid = await blocker.query<{ pid: number }>('select pg_backend_pid() as pid');
+        await blocker.query('select id from auth_sessions where id=$1 for update', [sessionId]);
+        const requests = {
+          refresh: () => refresh(account.refreshToken).then((response) => response),
+          logout: () => logout(account.accessToken).then((response) => response),
+        };
+        pending.push(requests[first]());
+        await waitForBlockedQueries(db.pool, pid.rows[0]!.pid, 1);
+        pending.push(requests[first === 'refresh' ? 'logout' : 'refresh']());
+        await waitForBlockedQueries(db.pool, pid.rows[0]!.pid, 2);
+        await blocker.query('commit');
+
+        const results = await Promise.all(pending);
+        expect(results.map((response) => response.statusCode)).toEqual(
+          first === 'refresh' ? [200, 200] : [200, 401],
+        );
+        expect((await getMe(account.accessToken)).statusCode).toBe(401);
+        expect((await refresh(account.refreshToken)).statusCode).toBe(401);
+        if (first === 'refresh') {
+          const pair = tokenPairSchema.parse(results[0]!.json().data);
+          expect((await getMe(pair.accessToken)).statusCode).toBe(401);
+          expect((await refresh(pair.refreshToken)).statusCode).toBe(401);
+        } else {
+          expect(results[1]!.json().error.code).toBe('UNAUTHENTICATED');
+        }
+        const state = await db.pool.query('select revoked_at from auth_sessions where id=$1', [
+          sessionId,
+        ]);
+        expect(state.rows[0].revoked_at).not.toBeNull();
+      } finally {
+        // Release the gate and drain HTTP requests before fixture cleanup, even on assertion failure.
+        try {
+          await blocker.query('rollback');
+        } finally {
+          blocker.release();
+          await Promise.allSettled(pending);
+        }
+      }
+    },
+  );
   it('rejects expired access but allows refresh until the absolute session expiry', async () => {
     const account = await register();
     const sessionId = String(decodeJwt(account.accessToken).sid);
