@@ -221,6 +221,66 @@ describe('createExpense', () => {
     ).toHaveLength(0);
   });
 
+  it('accepts uppercase and mixed-case member UUIDs and stores canonical lowercase IDs', async () => {
+    const s = await seed();
+    const upperPayer = await post(
+      s.owner.accessToken,
+      bodyFor(s, { payerMemberId: s.ownerMember.toUpperCase() }),
+    );
+    expect(upperPayer.statusCode).toBe(201);
+    expect(upperPayer.json().data.payerMemberId).toBe(s.ownerMember);
+    const mixed = await post(
+      s.owner.accessToken,
+      bodyFor(s, {
+        splits: [
+          { memberId: s.ownerMember.toUpperCase() },
+          { memberId: s.friendMember.replace(/^(.{4})/, (m) => m.toUpperCase()) },
+        ],
+      }),
+    );
+    expect(mixed.statusCode).toBe(201);
+    expect(
+      mixed
+        .json()
+        .data.splits.map((x: { memberId: string }) => x.memberId)
+        .sort(),
+    ).toEqual([s.ownerMember, s.friendMember].sort());
+    const sharesUpper = await post(
+      s.owner.accessToken,
+      bodyFor(s, {
+        splitMode: 'SHARES',
+        splits: [
+          { memberId: s.ownerMember.toUpperCase(), shares: 1 },
+          { memberId: s.friendMember.toUpperCase(), shares: 1 },
+        ],
+      }),
+    );
+    expect(sharesUpper.statusCode).toBe(201);
+    expect(sharesUpper.json().data.splits.map((x: { shares: number }) => x.shares)).toEqual([1, 1]);
+  });
+
+  it('rejects the same member repeated in different cases without partial rows', async () => {
+    const s = await seed();
+    const res = await post(
+      s.owner.accessToken,
+      bodyFor(s, {
+        splits: [{ memberId: s.ownerMember }, { memberId: s.ownerMember.toUpperCase() }],
+      }),
+    );
+    expect(res.statusCode).toBe(400);
+    expect(
+      await fixture.db.orm.select().from(expenses).where(eq(expenses.ledgerId, ledgerId!)),
+    ).toHaveLength(0);
+    expect(
+      await fixture.db.orm
+        .select()
+        .from(expenseSplits)
+        .where(eq(expenseSplits.ledgerId, ledgerId!)),
+    ).toHaveLength(0);
+    const [ledger] = await fixture.db.orm.select().from(ledgers).where(eq(ledgers.id, ledgerId!));
+    expect(ledger!.version).toBe(1);
+  });
+
   it('blocks receipt binding until the image module is wired', async () => {
     const s = await seed();
     const res = await post(s.owner.accessToken, bodyFor(s, { receiptImageId: randomUUID() }));
