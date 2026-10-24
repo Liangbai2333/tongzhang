@@ -439,15 +439,12 @@ export const authSessions = pgTable(
   {
     id: uuid('id').notNull().defaultRandom(),
     userId: uuid('user_id').notNull(),
-    tokenHash: varchar('token_hash', { length: 64 }).notNull(),
     expiresAt: timestamp('expires_at', { withTimezone: true, mode: 'date' }).notNull(),
     revokedAt: timestamp('revoked_at', { withTimezone: true, mode: 'date' }),
     createdAt: timestamp('created_at', { withTimezone: true, mode: 'date' }).notNull().defaultNow(),
   },
   (t): PgTableExtraConfigValue[] => [
     primaryKey({ name: 'pk_auth_sessions', columns: [t.id] }),
-    unique('uq_auth_sessions_token_hash').on(t.tokenHash),
-    check('ck_auth_sessions_hash', sql`token_hash ~ '^[0-9a-f]{64}$'`),
     check('ck_auth_sessions_expiry', sql`expires_at > created_at`),
     check('ck_auth_sessions_revoked', sql`revoked_at IS NULL OR revoked_at >= created_at`),
     foreignKey({
@@ -459,6 +456,24 @@ export const authSessions = pgTable(
       .onUpdate('restrict'),
     index('ix_auth_sessions_user').on(t.userId),
     index('ix_auth_sessions_expiry').on(t.expiresAt),
+  ],
+);
+
+// Keep consumed hashes until the session is cleaned up, so replay remains detectable.
+export const authRefreshTokens = pgTable(
+  'auth_refresh_tokens',
+  {
+    tokenHash: varchar('token_hash', { length: 64 }).primaryKey(),
+    sessionId: uuid('session_id')
+      .notNull()
+      .references(() => authSessions.id, { onDelete: 'cascade' }),
+    consumedAt: timestamp('consumed_at', { withTimezone: true, mode: 'date' }),
+    createdAt: timestamp('created_at', { withTimezone: true, mode: 'date' }).notNull().defaultNow(),
+  },
+  (t): PgTableExtraConfigValue[] => [
+    check('ck_auth_refresh_tokens_hash', sql`token_hash ~ '^[0-9a-f]{64}$'`),
+    check('ck_auth_refresh_tokens_consumed', sql`consumed_at IS NULL OR consumed_at >= created_at`),
+    index('ix_auth_refresh_tokens_session').on(t.sessionId),
   ],
 );
 

@@ -1,0 +1,120 @@
+import type { PropsWithChildren, ReactNode } from 'react';
+import {
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  type StyleProp,
+  type ViewStyle,
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { router } from 'expo-router';
+import { FigmaAsset, figmaAssets } from '@/icons/FigmaAsset';
+import { colors } from '@/theme/tokens';
+import { Touch } from './Touch';
+
+export function Screen({
+  title,
+  children,
+  footer,
+  action,
+  back = true,
+  backDisabled = false,
+  contentStyle,
+}: PropsWithChildren<{
+  title?: string;
+  footer?: ReactNode;
+  action?: ReactNode;
+  back?: boolean;
+  backDisabled?: boolean;
+  contentStyle?: StyleProp<ViewStyle>;
+}>) {
+  return (
+    <SafeAreaView style={styles.root} edges={['top', 'bottom']}>
+      <KeyboardAvoidingView
+        style={styles.root}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
+        {title && (
+          <View style={styles.header}>
+            {back && (
+              <Touch
+                accessibilityLabel="返回"
+                hitSlop={4}
+                disabled={backDisabled}
+                style={styles.back}
+                onPress={() => (router.canGoBack() ? router.back() : router.replace('/'))}
+              >
+                <FigmaAsset asset={figmaAssets['5-30'].imgIconBack} />
+              </Touch>
+            )}
+            <Text accessibilityRole="header" style={styles.title}>
+              {title}
+            </Text>
+            {action}
+          </View>
+        )}
+        <ScrollView
+          keyboardShouldPersistTaps="handled"
+          keyboardDismissMode="on-drag"
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={[styles.content, contentStyle]}
+        >
+          {children}
+        </ScrollView>
+        {footer && <View style={styles.footer}>{footer}</View>}
+      </KeyboardAvoidingView>
+    </SafeAreaView>
+  );
+}
+export const ui = StyleSheet.create({
+  row: { flexDirection: 'row', alignItems: 'center', gap: 12 },
+  between: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 12 },
+  grow: { flex: 1, minWidth: 0 },
+  card: { backgroundColor: colors.surface, borderRadius: 20, padding: 20, gap: 12 },
+  bordered: { borderWidth: 1, borderColor: colors.border },
+  title: { fontSize: 24, lineHeight: 34, fontWeight: '700', color: colors.text },
+  heading: { fontSize: 18, lineHeight: 27, fontWeight: '700', color: colors.text },
+  body: { fontSize: 15, lineHeight: 23, color: colors.text },
+  strong: { fontSize: 15, lineHeight: 23, color: colors.text, fontWeight: '600' },
+  caption: { fontSize: 12, lineHeight: 18, color: colors.muted },
+  muted: { fontSize: 14, lineHeight: 22, color: colors.muted },
+  amount: {
+    fontSize: 36,
+    lineHeight: 48,
+    fontWeight: '700',
+    color: colors.text,
+    fontVariant: ['tabular-nums'],
+  },
+  divider: { height: 1, backgroundColor: colors.border },
+  gap: { gap: 12 },
+});
+const styles = StyleSheet.create({
+  root: { flex: 1, backgroundColor: colors.background },
+  header: {
+    minHeight: 56,
+    paddingHorizontal: 24,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  title: { flex: 1, fontSize: 18, fontWeight: '700', color: colors.text },
+  back: {
+    minWidth: 44,
+    minHeight: 44,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.surface,
+    borderRadius: 22,
+  },
+  content: { flexGrow: 1, paddingHorizontal: 24, paddingTop: 12, paddingBottom: 24, gap: 20 },
+  footer: {
+    paddingHorizontal: 24,
+    paddingTop: 12,
+    paddingBottom: 8,
+    gap: 8,
+    backgroundColor: colors.background,
+  },
+});

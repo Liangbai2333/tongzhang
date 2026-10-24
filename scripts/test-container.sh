@@ -4,6 +4,7 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 export SERVER_IMAGE="${SERVER_IMAGE:-tongzhang-server:check}"
 export POSTGRES_USER=tongzhang POSTGRES_PASSWORD='container_test:$@/#' POSTGRES_DB=tongzhang_container_test
+export AUTH_JWT_SECRET=bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
 export API_DOMAIN=localhost PROXY_SUBNET="${TEST_PROXY_SUBNET:-172.31.240.0/28}"
 compose=(docker compose --env-file infra/.env.example -p "tongzhang-check-$$" -f infra/compose.prod.yml)
 cleanup() {
@@ -36,8 +37,26 @@ for (const [path, status] of [['/health/live',200],['/health/ready',200],['/docs
 const pool = new pg.Pool();
 try {
   const tables = await pool.query("select count(*)::int as count from information_schema.tables where table_schema='public'");
-  assert.equal(tables.rows[0].count, 13);
+  assert.equal(tables.rows[0].count, 14);
+  const json = (path, body, token) => fetch(`http://127.0.0.1:3300${path}`, {
+    method: 'POST',
+    headers: { ...(body ? {'Content-Type':'application/json'} : {}), ...(token ? {Authorization:`Bearer ${token}`} : {}) },
+    body: body ? JSON.stringify(body) : undefined,
+  });
+  const registered = await json('/api/v1/auth/register', {
+    username:'容器验证', email:`${crypto.randomUUID()}@example.test`, password:'container-password', acceptTerms:true,
+  });
+  assert.equal(registered.status, 201);
+  const {data:account} = await registered.json();
+  const refreshed = await json('/api/v1/auth/refresh', {refreshToken:account.refreshToken});
+  assert.equal(refreshed.status, 200);
+  const {data:pair} = await refreshed.json();
+  assert.notEqual(pair.refreshToken, account.refreshToken);
+  assert.equal((await fetch('http://127.0.0.1:3300/api/v1/me', {headers:{Authorization:`Bearer ${pair.accessToken}`}})).status, 200);
+  assert.equal((await json('/api/v1/auth/logout', undefined, pair.accessToken)).status, 200);
+  assert.equal((await fetch('http://127.0.0.1:3300/api/v1/me', {headers:{Authorization:`Bearer ${account.accessToken}`}})).status, 401);
+  assert.equal((await json('/api/v1/auth/refresh', {refreshToken:pair.refreshToken})).status, 401);
 } finally { await pool.end(); }
-console.log('Container checks passed: real PostgreSQL, repeatable migration, HTTP, native dependencies, non-root, production files.');
+console.log('Container checks passed: real PostgreSQL, repeatable migration, dual-token auth and immediate revocation, HTTP, native dependencies, non-root, production files.');
 NODE
 "${compose[@]}" run --rm --no-deps caddy caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile

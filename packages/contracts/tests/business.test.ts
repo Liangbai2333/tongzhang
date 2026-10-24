@@ -57,10 +57,10 @@ describe('business contracts', () => {
     expect(updateExpenseBodySchema.safeParse({ ...expense, version: 1 }).success).toBe(true);
     expect(ledgerListQuerySchema.parse({ archived: 'false' }).archived).toBe(false);
   });
-  it('defines 29 distinct routes and operation IDs', () => {
+  it('defines 30 distinct routes and operation IDs', () => {
     const all = Object.values(endpoints);
-    expect(all).toHaveLength(29);
-    expect(new Set(all.map((e) => e.method + ' ' + e.path)).size).toBe(29);
-    expect(new Set(all.map((e) => e.id)).size).toBe(29);
+    expect(all).toHaveLength(30);
+    expect(new Set(all.map((e) => e.method + ' ' + e.path)).size).toBe(30);
+    expect(new Set(all.map((e) => e.id)).size).toBe(30);
   });
 });

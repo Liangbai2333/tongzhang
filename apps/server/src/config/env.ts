@@ -9,6 +9,7 @@ const envSchema = z.object({
   PGPORT: z.coerce.number().int().min(1).max(65535),
   PGUSER: z.string().min(1),
   PGPASSWORD: z.string().min(1),
+  AUTH_JWT_SECRET: z.string().regex(/^[0-9a-f]{64}$/),
   PGDATABASE: z.string().min(1),
   TRUST_PROXY: z.union([z.ipv4(), z.ipv6(), z.cidrv4(), z.cidrv6(), z.literal('')]).default(''),
   LOG_LEVEL: z.enum(['silent', 'fatal', 'error', 'warn', 'info', 'debug', 'trace']).default('info'),

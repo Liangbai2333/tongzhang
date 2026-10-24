@@ -1,0 +1,16 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Frame">
+<g clip-path="url(#clip0_0_43)">
+<rect width="60" height="60" rx="30" fill="#DDF3E8"/>
+<path id="Shoulders" d="M8 60C9 43 19 38 30 38C42 38 51 44 53 60H8Z" fill="#588474" stroke="black"/>
+<rect id="Neck" x="26" y="30" width="8" height="12" rx="3" fill="#F4D6BD"/>
+<circle id="Face" cx="30.5" cy="25.5" r="10.5" fill="#F4D6BD"/>
+<path id="Hair fringe" d="M19 24C16 12 38 8 43 23L38 21L36 17C29 21 24 18 19 24Z" fill="#262626" stroke="black"/>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_0_43">
+<rect width="60" height="60" rx="30" fill="white"/>
+</clipPath>
+</defs>
+</svg>

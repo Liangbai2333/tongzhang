@@ -30,9 +30,14 @@ export const userSelfSchema = z.object({
   email: z.email(),
   notificationEnabled: z.boolean(),
 });
-export const authResultSchema = z.object({
-  user: userSelfSchema,
-  token: z.string().min(1),
-  expiresAt: instantSchema,
+export const refreshTokenSchema = z.string().regex(/^[A-Za-z0-9_-]{43}$/);
+export const refreshBodySchema = z.strictObject({ refreshToken: refreshTokenSchema });
+export const tokenPairSchema = z.object({
+  accessToken: z.string().min(1).max(2048),
+  accessTokenExpiresAt: instantSchema,
+  refreshToken: refreshTokenSchema,
+  refreshTokenExpiresAt: instantSchema,
 });
+export const authResultSchema = tokenPairSchema.extend({ user: userSelfSchema });
+export type TokenPair = z.infer<typeof tokenPairSchema>;
 export type UserSelf = z.infer<typeof userSelfSchema>;

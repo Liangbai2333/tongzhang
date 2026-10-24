@@ -1,6 +1,7 @@
 # 模块骨架验证记录
 
 > 启动与部署入口已调整；本页历史验收不代表新流程验收，当前命令见 [开发说明](development.md)。历史命令 `pnpm build:api` 现已更名为 `pnpm build:server`。
+> 双令牌认证后的接口、表结构和检查结果见 [双令牌认证变更与验证](auth-token-validation.md)。
 > 日期：2026-10-22。入口：[模块架构与设计](modules/README.md)。
 
 ## 1 交付范围

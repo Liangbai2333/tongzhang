@@ -5,6 +5,7 @@ const source = {
   NODE_ENV: 'development',
   PGHOST: '127.0.0.1',
   PGPORT: '35432',
+  AUTH_JWT_SECRET: 'ab'.repeat(32),
   PGUSER: 'tongzhang',
   PGPASSWORD: 'p@ss:$word/#?%',
   PGDATABASE: 'tongzhang',
@@ -48,4 +49,18 @@ it('does not load local credentials in CI and uses an explicit local path otherw
   vi.stubEnv('CI', '');
   loadLocalEnv('/local/.env');
   expect(load).toHaveBeenCalledWith('/local/.env');
+});
+
+it('requires a 256-bit hex signing secret without exposing its value', () => {
+  for (const secret of [undefined, '', 'short', 'z'.repeat(64)]) {
+    expect(() => readEnv({ ...source, AUTH_JWT_SECRET: secret })).toThrow('AUTH_JWT_SECRET');
+  }
+  const privateValue = 'private-invalid-signing-secret';
+  try {
+    readEnv({ ...source, AUTH_JWT_SECRET: privateValue });
+    throw new Error('Expected validation failure');
+  } catch (error) {
+    expect(String(error)).not.toContain(privateValue);
+    expect(String(error)).toContain('AUTH_JWT_SECRET');
+  }
 });

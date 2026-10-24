@@ -1,0 +1,32 @@
+{
+  "date": "2026-10-24",
+  "environment": "local development API and PostgreSQL; iPhone 17 / iOS 27.0",
+  "checks": [
+    {
+      "operation": "register",
+      "sessions": 1,
+      "refreshTokens": 1,
+      "consumedRefreshTokens": 0,
+      "revokedSessions": 0
+    },
+    {
+      "operation": "cold_restart",
+      "refreshTokens": 2,
+      "consumedRefreshTokens": 1
+    },
+    {
+      "operation": "revoke_for_invalid_session",
+      "revokedSessions": 1
+    },
+    {
+      "operation": "login_then_logout",
+      "totalSessions": 2,
+      "activeSessions": 0
+    }
+  ],
+  "cleanup": {
+    "sessionsRemoved": 2,
+    "accountsRemoved": 1,
+    "refreshHashes": "cascade deleted"
+  }
+}

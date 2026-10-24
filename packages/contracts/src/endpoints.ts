@@ -11,6 +11,18 @@ import * as st from './settlements.js';
 import * as pr from './profile.js';
 
 export const endpoints = {
+  refresh: {
+    id: 'A30',
+    module: 'auth',
+    method: 'POST',
+    path: '/api/v1/auth/refresh',
+    authenticated: false,
+    idempotent: false,
+    transport: 'json',
+    statusCode: 200,
+    input: z.object({ params: z.object({}), query: z.object({}), body: a.refreshBodySchema }),
+    response: envelope(a.tokenPairSchema),
+  },
   register: {
     id: 'A01',
     module: 'auth',

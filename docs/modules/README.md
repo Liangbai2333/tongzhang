@@ -45,7 +45,7 @@ apps/server/src/
     repository.ts   数据访问函数，接通用例时按需添加
   http/             契约路由适配、请求上下文、AppError与错误处理、健康检查、501占位
   db/               连接与插件、事务、幂等锁、审计写入
-  db/schema/        13张表、约束、索引
+  db/schema/        14张表、约束、索引
 apps/server/drizzle/   生成的SQL及迁移元数据
 apps/mobile/src/
   features/{auth,profile,ledgers,invitations,expenses,balances,settlements}/
@@ -54,11 +54,11 @@ apps/mobile/src/
     query-keys.ts   按用户隔离的查询键（有查询的feature）
   features/images/ 原生上传/授权读取适配器
   lib/              HTTP、会话令牌、查询客户端
-packages/contracts/src/  分模块Schema及29项接口登记表
+packages/contracts/src/  分模块Schema及30项接口登记表
 packages/domain/src/     金额、分摊纯函数与人数/金额上限
 ```
 
-账号的注册、登录、退出和`getMe`已接通；其余业务Service占位方法统一返回501 FEATURE_NOT_READY，不返回假账号、假账本或成功写入；受保护入口先验证真实会话。已有联调页与系统接口继续作为默认启动入口。业务页面按下表逐个接入，避免先堆放不可操作的空路由。
+账号的注册、登录、刷新、退出和`getMe`已接通；其余业务Service占位方法统一返回501 FEATURE_NOT_READY，不返回假账号、假账本或成功写入；受保护入口先验证真实会话。默认进入欢迎/登录流程，启动在线恢复会话；已登录后展示真实账号资料及退出入口。账本页面等待对应真实服务接通，验收见[移动端认证实现与验证](../mobile-auth-validation.md)。业务页面按下表逐个接入，避免先堆放不可操作的空路由。
 
 ## 4 页面与面板边界
 
@@ -88,4 +88,4 @@ packages/domain/src/     金额、分摊纯函数与人数/金额上限
 
 [依赖清单](dependencies.md)说明每个依赖由哪个模块使用；[验证记录](../module-skeleton-validation.md)记录本次检查。原生依赖使用Expo SDK 57的expo install解析；已有Development Build需重新构建一次。
 
-验证命令：`pnpm check`、`pnpm test`、`pnpm build:server`、`pnpm export:mobile`。集成测试显式设置TEST_DATABASE_URL到名称以_test结尾的专用库后执行`pnpm test:integration`。开发库应用迁移使用`pnpm migrate:db`，不要重复执行说明书中的独立建表SQL。
+验证命令：`pnpm check`、`pnpm test`、`pnpm test:mobile`、`pnpm build:server`、`pnpm export:mobile`。集成测试显式设置TEST_DATABASE_URL到名称以_test结尾的专用库后执行`pnpm test:integration`。开发库应用迁移使用`pnpm migrate:db`，不要重复执行说明书中的独立建表SQL。

@@ -43,6 +43,6 @@ export async function buildApp(env: Env, database: Database = createDatabase(dat
   });
   await app.register(rateLimit, { global: false });
   await app.register(systemRoutes);
-  registerBusinessModules(app);
+  registerBusinessModules(app, env.AUTH_JWT_SECRET);
   return app;
 }

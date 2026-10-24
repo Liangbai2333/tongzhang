@@ -2,25 +2,28 @@
 
 以package.json与唯一pnpm-lock.yaml为安装依据，不独立升级Expo配套React / React Native。Expo已通过安装器对齐SDK 57补丁版本（expo 57.0.31），配套constants、linking、network和router同步对齐。
 
-| 应用   | 依赖                      | 声明版本   | 用途                                      |
-| ------ | ------------------------- | ---------- | ----------------------------------------- |
-| api    | `@fastify/multipart`      | `^9.4.0`   | images：限制文件大小、数量并读取multipart |
-| api    | `@fastify/rate-limit`     | `^10.3.0`  | auth/invitations：限制请求频率            |
-| api    | `argon2`                  | `0.45.1`   | auth：密码哈希与校验                      |
-| api    | `sharp`                   | `0.35.5`   | images：服务端图片解码、尺寸与格式检查    |
-| mobile | `react-hook-form`         | `7.90.0`   | 表单状态与字段错误                        |
-| mobile | `@hookform/resolvers`     | `6.0.0`    | Zod表单校验适配                           |
-| mobile | `expo-camera`             | `~57.0.6`  | invitations：二维码扫描                   |
-| mobile | `expo-image-picker`       | `~57.0.20` | images：相册选图、拍照                    |
-| mobile | `expo-image-manipulator`  | `~57.0.21` | images：压缩与尺寸处理                    |
-| mobile | `expo-clipboard`          | `~57.0.2`  | 邀请、结算文案复制                        |
-| mobile | `expo-sharing`            | `~57.0.24` | 二维码图片的系统分享                      |
-| mobile | `expo-file-system`        | `~57.0.7`  | 分享/上传所需临时文件，不作业务离线库     |
-| mobile | `expo-crypto`             | `~57.0.4`  | 生成安全UUID幂等键                        |
-| mobile | `react-native-svg`        | `15.15.4`  | 线性图标与图表                            |
-| mobile | `react-native-qrcode-svg` | `6.3.26`   | 渲染邀请二维码                            |
-| mobile | `expo-secure-store`       | `~57.0.4`  | 保存会话原令牌                            |
-| mobile | `@tanstack/react-query`   | `5.104.2`  | 在线查询、缓存失效与提交状态              |
+| 应用   | 依赖                      | 声明版本   | 用途                                        |
+| ------ | ------------------------- | ---------- | ------------------------------------------- |
+| api    | `@fastify/multipart`      | `^9.4.0`   | images：限制文件大小、数量并读取multipart   |
+| api    | `@fastify/rate-limit`     | `^10.3.0`  | auth/invitations：限制请求频率              |
+| api    | `argon2`                  | `0.45.1`   | auth：密码哈希与校验                        |
+| api    | `jose`                    | `^6.2.13`  | auth：签发和严格校验 JWT Access Token       |
+| api    | `sharp`                   | `0.35.5`   | images：服务端图片解码、尺寸与格式检查      |
+| mobile | `react-hook-form`         | `7.90.0`   | 表单状态与字段错误                          |
+| mobile | `@hookform/resolvers`     | `6.0.0`    | Zod表单校验适配                             |
+| mobile | `expo-camera`             | `~57.0.6`  | invitations：二维码扫描                     |
+| mobile | `expo-image-picker`       | `~57.0.20` | images：相册选图、拍照                      |
+| mobile | `expo-image-manipulator`  | `~57.0.21` | images：压缩与尺寸处理                      |
+| mobile | `expo-clipboard`          | `~57.0.2`  | 邀请、结算文案复制                          |
+| mobile | `expo-sharing`            | `~57.0.24` | 二维码图片的系统分享                        |
+| mobile | `expo-file-system`        | `~57.0.7`  | 分享/上传所需临时文件，不作业务离线库       |
+| mobile | `expo-crypto`             | `~57.0.4`  | 生成安全UUID幂等键                          |
+| mobile | `react-native-svg`        | `15.15.4`  | 线性图标与图表                              |
+| mobile | `react-native-qrcode-svg` | `6.3.26`   | 渲染邀请二维码                              |
+| mobile | `expo-secure-store`       | `~57.0.4`  | 仅保存 Refresh Token，Access Token 留在内存 |
+| mobile | `@tanstack/react-query`   | `5.104.2`  | 在线查询、缓存失效与提交状态                |
+
+移动端测试开发依赖为 `jest` / `@jest/globals` 29.7.0、`@types/jest` 29.5.14、`jest-expo` ~57.0.6、`@testing-library/react-native` 14.1.0、`test-renderer` 1.2.0，Babel 使用 `babel-preset-expo` ~57.0.16。iOS / Android preset 运行同一批组件及认证边界测试；`test-renderer` 固定兼容当前 React 19.2，不据此升级 React / React Native。
 
 ## 配置
 

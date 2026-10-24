@@ -4,5 +4,6 @@ import type { AuthService } from './service.js';
 export function registerAuthRoutes(app: FastifyInstance, service: AuthService) {
   registerOperation(app, 'register', service.register);
   registerOperation(app, 'login', service.login);
+  registerOperation(app, 'refresh', service.refresh);
   registerOperation(app, 'logout', service.logout);
 }

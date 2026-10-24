@@ -33,6 +33,7 @@
     "doctor:mobile": "pnpm dlx expo-doctor@1.21.5 apps/mobile",
     "format": "prettier --write .",
     "test": "pnpm build:shared && vitest run",
+    "test:mobile": "pnpm build:shared && pnpm --filter @tongzhang/mobile test",
     "test:integration": "pnpm build:shared && vitest run --config vitest.integration.config.ts",
     "test:container": "bash scripts/test-container.sh"
   },

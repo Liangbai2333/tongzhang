@@ -22,23 +22,26 @@
 | `apps/mobile/.env`    | 本机 Expo                    | 公开 API 地址、构建类型              |
 | 服务器的 `infra/.env` | 生产 Compose                 | 发布镜像、域名、数据库凭据与日志设置 |
 
-真实 `.env` 不提交、不进入镜像。模板为对应 `.env.example`。`setup:env` 只创建缺失文件，不覆盖已有值，也不生成生产配置。服务端仅在本地开发加载自己的 `.env`，生产、测试和 CI 只使用进程环境变量；进程中已设置的值优先。移动端发布配置由 EAS 的对应 environment 提供，API 地址会进入安装包，绝不能填密钥。
+真实 `.env` 不提交、不进入镜像。模板为对应 `.env.example`。`setup:env` 创建缺失文件；为缺失或空的本地 `AUTH_JWT_SECRET` 生成随机值，保留其余已有值，不生成生产配置。服务端仅在本地开发加载自己的 `.env`，生产、测试和 CI 只使用进程环境变量；进程中已设置的值优先。移动端发布配置由 EAS 的对应 environment 提供，API 地址会进入安装包，绝不能填密钥。
 
 Compose 的 `--env-file` 给 `${变量}` 提供值，只有 `environment` 显式声明的变量才进入容器。宿主机 shell 中的同名变量优先于 env 文件；部署时避免遗留同名变量。不要把整个部署文件用 `env_file` 注入所有服务。
 
 ### 服务端与数据库变量
 
-| 变量                                   | 开发示例           | 说明                                              |
-| -------------------------------------- | ------------------ | ------------------------------------------------- |
-| `NODE_ENV`                             | `development`      | 生产 Compose 固定为 `production`                  |
-| `HOST` / `PORT`                        | `0.0.0.0` / `3300` | API 监听地址与端口                                |
-| `PGHOST`                               | `127.0.0.1`        | 本机 API 访问宿主机；容器里固定为 `postgres`      |
-| `PGPORT`                               | `35432`            | 开发数据库发布到宿主机的端口；容器间固定为 `5432` |
-| `PGUSER` / `PGPASSWORD` / `PGDATABASE` | 见模板             | 同时提供给开发数据库和本机 API                    |
-| `LOG_LEVEL`                            | `info`             | 服务端日志级别                                    |
-| `TRUST_PROXY`                          | 空                 | 本机不信任转发头；生产只信任专用代理网段          |
+| 变量                                   | 开发示例            | 说明                                                        |
+| -------------------------------------- | ------------------- | ----------------------------------------------------------- |
+| `NODE_ENV`                             | `development`       | 生产 Compose 固定为 `production`                            |
+| `HOST` / `PORT`                        | `0.0.0.0` / `3300`  | API 监听地址与端口                                          |
+| `PGHOST`                               | `127.0.0.1`         | 本机 API 访问宿主机；容器里固定为 `postgres`                |
+| `PGPORT`                               | `35432`             | 开发数据库发布到宿主机的端口；容器间固定为 `5432`           |
+| `PGUSER` / `PGPASSWORD` / `PGDATABASE` | 见模板              | 同时提供给开发数据库和本机 API                              |
+| `AUTH_JWT_SECRET`                      | 由 `setup:env` 生成 | 32 随机字节的 64 位小写 hex；服务端签发 JWT，禁止进入移动端 |
+| `LOG_LEVEL`                            | `info`              | 服务端日志级别                                              |
+| `TRUST_PROXY`                          | 空                  | 本机不信任转发头；生产只信任专用代理网段                    |
 
 生产只定义一次 `POSTGRES_USER`、`POSTGRES_PASSWORD`、`POSTGRES_DB`，Compose 将其分别映射给 PostgreSQL 和 API 的 `PG*` 变量。密码直接传给数据库驱动，无需 URL 编码。含 `$` 的 dotenv 值用单引号包裹，其他引号按 dotenv 规则转义。
+
+生产首次部署须在 `infra/.env` 设置独立随机 `AUTH_JWT_SECRET`，可用 `node -e "console.log(require('node:crypto').randomBytes(32).toString('hex'))"` 生成并妥善保存。Compose 显式注入 API 与迁移容器，不注入 PostgreSQL 或移动端；不得使用测试密钥。已有本地环境拉取变更后执行 `pnpm setup:env`、`pnpm migrate:db`；新迁移撤销旧单令牌会话，所有旧客户端需要重新登录。
 
 旧版 `DATABASE_URL` 已停用；已有开发文件需要拆成上述五个 `PG*` 参数，并移除旧变量。`TEST_DATABASE_URL` 专供真实数据库测试，不是应用运行配置。
 
@@ -52,20 +55,20 @@ Compose 的 `--env-file` 给 `${变量}` 提供值，只有 `environment` 显式
 
 根目录 `package.json` 按初始化、开发、构建与导出、数据库、检查与格式化、测试排列。日常从仓库根目录运行下列命令：
 
-| 类别       | 命令                                         | 职责                                                        |
-| ---------- | -------------------------------------------- | ----------------------------------------------------------- |
-| 初始化     | `setup`、`setup:env`                         | 完整开发初始化 / 仅创建缺失的应用环境文件                   |
-| 开发       | `dev`、`dev:ios`、`dev:android`              | 启动共享包监听、API 和 Metro；可指定打开的平台              |
-| 单独开发   | `dev:shared`、`dev:server`、`dev:mobile`     | 共享包监听 / 服务端及共享包监听 / Metro                     |
-| 构建       | `build:shared`、`build:server`               | 编译共享包 / 先编译共享包再编译服务端                       |
-| 原生构建   | `build:ios`、`build:android`                 | 先编译共享包，再 Prebuild、编译安装开发客户端，不启动 Metro |
-| 导出       | `export:mobile`                              | 先编译共享包，再导出 Android / iOS JavaScript 包            |
-| 数据库启停 | `up:db`、`down:db`                           | 启动 / 停止开发数据库，保留数据卷                           |
-| 数据库迁移 | `generate:db`、`migrate:db`                  | 生成待审查的迁移文件 / 应用已提交的迁移                     |
-| 静态检查   | `check`、`typecheck`、`lint`、`check:format` | 完整静态检查 / 类型检查 / ESLint / 格式检查                 |
-| 移动端检查 | `check:mobile-deps`、`doctor:mobile`         | Expo 依赖兼容性检查 / Expo Doctor                           |
-| 格式化     | `format`                                     | 用 Prettier 改写格式                                        |
-| 测试       | `test`、`test:integration`、`test:container` | 无数据库测试 / 专用数据库集成测试 / 已构建镜像验证          |
+| 类别       | 命令                                                        | 职责                                                              |
+| ---------- | ----------------------------------------------------------- | ----------------------------------------------------------------- |
+| 初始化     | `setup`、`setup:env`                                        | 完整开发初始化 / 仅创建缺失的应用环境文件                         |
+| 开发       | `dev`、`dev:ios`、`dev:android`                             | 启动共享包监听、API 和 Metro；可指定打开的平台                    |
+| 单独开发   | `dev:shared`、`dev:server`、`dev:mobile`                    | 共享包监听 / 服务端及共享包监听 / Metro                           |
+| 构建       | `build:shared`、`build:server`                              | 编译共享包 / 先编译共享包再编译服务端                             |
+| 原生构建   | `build:ios`、`build:android`                                | 先编译共享包，再 Prebuild、编译安装开发客户端，不启动 Metro       |
+| 导出       | `export:mobile`                                             | 先编译共享包，再导出 Android / iOS JavaScript 包                  |
+| 数据库启停 | `up:db`、`down:db`                                          | 启动 / 停止开发数据库，保留数据卷                                 |
+| 数据库迁移 | `generate:db`、`migrate:db`                                 | 生成待审查的迁移文件 / 应用已提交的迁移                           |
+| 静态检查   | `check`、`typecheck`、`lint`、`check:format`                | 完整静态检查 / 类型检查 / ESLint / 格式检查                       |
+| 移动端检查 | `check:mobile-deps`、`doctor:mobile`                        | Expo 依赖兼容性检查 / Expo Doctor                                 |
+| 格式化     | `format`                                                    | 用 Prettier 改写格式                                              |
+| 测试       | `test`、`test:mobile`、`test:integration`、`test:container` | 纯逻辑测试 / 移动端组件测试 / 专用数据库集成测试 / 已构建镜像验证 |
 
 工作区依赖不会自动触发共享包构建；需要先后执行的步骤由脚本中的 `&&` 明确串联。根目录 `build:ios` 调用移动端包的同名命令，不会递归调用自身，因为 `--filter @tongzhang/mobile` 已选择目标包。旧命令名不保留别名，避免出现重复入口。
 
@@ -142,6 +145,7 @@ pnpm migrate:db
 ```bash
 pnpm check
 pnpm test
+pnpm test:mobile
 pnpm build:server
 pnpm check:mobile-deps
 pnpm doctor:mobile
@@ -155,7 +159,7 @@ docker compose --env-file apps/server/.env -f infra/compose.dev.yml exec -T post
 TEST_DATABASE_URL=postgresql://tongzhang:tongzhang_local_only@127.0.0.1:35432/tongzhang_test pnpm test:integration
 ```
 
-测试库创建一次即可；测试自行应用迁移。`pnpm test` 不需要数据库。`export:mobile` 只验证 Android / iOS JavaScript 打包，不生成 APK/IPA，不等于原生安装或真机验收。
+测试库创建一次即可；测试自行应用迁移。`pnpm test` 不需要数据库；`pnpm test:mobile` 使用 Jest Expo 的 iOS / Android preset 与 React Native Testing Library，覆盖真实组件和 Provider，原生网络/存储依赖在这些组件测试中使用替身。`test-renderer` 固定为兼容 React 19.2 的 1.2.0，不单独升级 React。CI 同步运行两个入口。`export:mobile` 只验证 Android / iOS JavaScript 打包，不生成 APK/IPA，不等于原生安装或真机验收。
 
 容器验证使用临时 Compose 项目和独立数据库，不读取开发或生产 `.env`：
 

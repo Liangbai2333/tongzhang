@@ -3,7 +3,7 @@ import { requireExpenseEditor, requireTransferRegistrar } from '../src/modules/l
 import {
   hashPassword,
   verifyPassword,
-  issueSessionToken,
+  issueRefreshToken,
   digestToken,
 } from '../src/modules/auth/credentials.js';
 it('allows creator overrides but rejects unrelated members and frozen edits', () => {
@@ -28,8 +28,8 @@ it('hashes passwords and produces expiring, digest-only session storage material
   expect(hash).toMatch(/^\$argon2id\$/);
   expect(await verifyPassword(hash, 'secret-password')).toBe(true);
   expect(await verifyPassword(hash, 'wrong-password')).toBe(false);
-  const issued = issueSessionToken(new Date('2026-10-22T00:00:00Z'));
+  const issued = issueRefreshToken();
   expect(issued.tokenHash).toBe(digestToken(issued.token));
   expect(issued.tokenHash).not.toBe(issued.token);
-  expect(issued.expiresAt.toISOString()).toBe('2026-11-21T00:00:00.000Z');
+  expect(issued.token).toMatch(/^[A-Za-z0-9_-]{43}$/);
 });

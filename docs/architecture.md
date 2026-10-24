@@ -48,30 +48,30 @@ Expo 官方支持 pnpm workspace 和共享包；工程使用标准工作区配�
 
 ## 2. 技术选型
 
-| 范围              | 定案                                                    | 项目中的用途                                         |
-| ----------------- | ------------------------------------------------------- | ---------------------------------------------------- |
-| 运行时与包管理    | Node.js 24 LTS、pnpm workspace                          | API 运行、依赖管理、工作区脚本                       |
-| 语言              | TypeScript，开启 `strict`                               | 前后端及共享包统一类型检查                           |
-| 移动端            | React Native + Expo                                     | Android / iOS 原生应用                               |
-| 导航              | Expo Router                                             | 登录区、主导航、业务详情路由                         |
-| UI                | React Native 基础组件 + `StyleSheet`                    | 按 Figma 实现自有组件，不引入整套视觉组件库          |
-| 图标与简单图表    | `react-native-svg`                                      | 统一线性图标、类别饼图；图标颜色由组件属性控制       |
-| 服务端数据状态    | TanStack Query                                          | 查询、刷新、提交结果及相关列表失效                   |
-| 表单              | React Hook Form + Zod                                   | 输入、字段错误、分摊表单；提交失败保留当前输入       |
-| 本地 UI 状态      | React `useState` / Context                              | 弹窗、筛选条件、登录会话；首版不增加 Redux / Zustand |
-| HTTP              | 原生 `fetch` 的薄封装                                   | 认证头、超时、错误转换、幂等键                       |
-| 服务端            | Fastify 5                                               | HTTP 路由、插件、日志、请求生命周期                  |
-| 接口校验          | Zod 4 + `fastify-type-provider-zod`                     | 请求与响应运行时校验、TypeScript 类型推导            |
-| 接口文档          | `@fastify/swagger` + Swagger UI                         | 从路由 Schema 生成 OpenAPI，开发环境查看             |
-| 数据库            | PostgreSQL 17                                           | 事务、约束、业务记录、图片二进制                     |
-| 数据库访问        | Drizzle ORM + `pg`                                      | 类型化查询、显式事务；复杂约束和锁使用 SQL           |
-| 数据库迁移        | Drizzle Kit + 已提交的 SQL 迁移                         | 开发、测试、部署使用同一版本的表结构                 |
-| 认证              | 随机会话令牌 + PostgreSQL 会话表                        | Bearer Token 鉴权、到期校验、退出撤销                |
-| 密码              | Argon2id                                                | 保存密码哈希                                         |
-| 图片              | 独立图片表 `bytea`                                      | 封面、收据；业务表只引用图片 ID                      |
-| 质量检查          | ESLint、Prettier、TypeScript                            | 代码约束、格式、类型检查                             |
-| 测试              | Vitest；移动端 Jest Expo + React Native Testing Library | 金额算法、API 集成、关键表单交互                     |
-| 本地数据库 / 部署 | Docker Compose                                          | 本地 PostgreSQL；服务器 API + PostgreSQL + Caddy     |
+| 范围              | 定案                                                      | 项目中的用途                                         |
+| ----------------- | --------------------------------------------------------- | ---------------------------------------------------- |
+| 运行时与包管理    | Node.js 24 LTS、pnpm workspace                            | API 运行、依赖管理、工作区脚本                       |
+| 语言              | TypeScript，开启 `strict`                                 | 前后端及共享包统一类型检查                           |
+| 移动端            | React Native + Expo                                       | Android / iOS 原生应用                               |
+| 导航              | Expo Router                                               | 登录区、主导航、业务详情路由                         |
+| UI                | React Native 基础组件 + `StyleSheet`                      | 按 Figma 实现自有组件，不引入整套视觉组件库          |
+| 图标与简单图表    | `react-native-svg`                                        | 统一线性图标、类别饼图；图标颜色由组件属性控制       |
+| 服务端数据状态    | TanStack Query                                            | 查询、刷新、提交结果及相关列表失效                   |
+| 表单              | React Hook Form + Zod                                     | 输入、字段错误、分摊表单；提交失败保留当前输入       |
+| 本地 UI 状态      | React `useState` / Context                                | 弹窗、筛选条件、登录会话；首版不增加 Redux / Zustand |
+| HTTP              | 原生 `fetch` 的薄封装                                     | 认证头、超时、错误转换、幂等键                       |
+| 服务端            | Fastify 5                                                 | HTTP 路由、插件、日志、请求生命周期                  |
+| 接口校验          | Zod 4 + `fastify-type-provider-zod`                       | 请求与响应运行时校验、TypeScript 类型推导            |
+| 接口文档          | `@fastify/swagger` + Swagger UI                           | 从路由 Schema 生成 OpenAPI，开发环境查看             |
+| 数据库            | PostgreSQL 17                                             | 事务、约束、业务记录、图片二进制                     |
+| 数据库访问        | Drizzle ORM + `pg`                                        | 类型化查询、显式事务；复杂约束和锁使用 SQL           |
+| 数据库迁移        | Drizzle Kit + 已提交的 SQL 迁移                           | 开发、测试、部署使用同一版本的表结构                 |
+| 认证              | JWT Access Token + 随机 Refresh Token + PostgreSQL 会话表 | 短期访问、刷新轮换、会话在线检查与退出即时撤销       |
+| 密码              | Argon2id                                                  | 保存密码哈希                                         |
+| 图片              | 独立图片表 `bytea`                                        | 封面、收据；业务表只引用图片 ID                      |
+| 质量检查          | ESLint、Prettier、TypeScript                              | 代码约束、格式、类型检查                             |
+| 测试              | Vitest；移动端 Jest Expo + React Native Testing Library   | 金额算法、API 集成、关键表单交互                     |
+| 本地数据库 / 部署 | Docker Compose                                            | 本地 PostgreSQL；服务器 API + PostgreSQL + Caddy     |
 
 **版本管理：** Node 固定 24 系列，pnpm 具体版本写入根 `packageManager`；Expo 使用搭建时稳定 SDK 配套的 React / React Native 版本，通过 `expo install` 安装原生依赖。依赖组合验证后提交唯一的 `pnpm-lock.yaml`，CI 使用冻结锁文件安装，不单独追升 React Native。
 
@@ -224,6 +224,8 @@ apps/mobile/app/
         └── app.tsx
 ```
 
+当前认证阶段的已登录落点为 `(app)/account.tsx`，展示真实 `getMe` 账号信息并提供退出入口；账本与主导航由后续模块接通。未登录区域为 `(auth)/welcome.tsx`、`login.tsx`、`register.tsx`；根 Stack 使用 Protected 守卫，恢复与网络错误在根容器显示，不独立建立路由。
+
 路由文件只读取参数、组装导航并导出业务 Screen；不在里面写金额算法、请求实现或大段表单。
 
 **原型画板不等于路由。** 以下统一作为当前页组件：
@@ -266,13 +268,13 @@ features/expenses/
 
 ### 4.3 状态归属
 
-| 数据                             | 存放方式                                   |
-| -------------------------------- | ------------------------------------------ |
-| 账本、流水、余额、统计、结算记录 | TanStack Query 内存缓存，服务端为事实来源  |
-| 金额、备注、分摊人等未提交输入   | React Hook Form，当前页面内存              |
-| 面板开关、当前筛选项             | 页面局部状态                               |
-| 登录令牌                         | Expo SecureStore；用户资料每次启动在线校验 |
-| 设计 Token、图标、预设封面       | 应用资源                                   |
+| 数据                             | 存放方式                                                                      |
+| -------------------------------- | ----------------------------------------------------------------------------- |
+| 账本、流水、余额、统计、结算记录 | TanStack Query 内存缓存，服务端为事实来源                                     |
+| 金额、备注、分摊人等未提交输入   | React Hook Form，当前页面内存                                                 |
+| 面板开关、当前筛选项             | 页面局部状态                                                                  |
+| 登录令牌                         | Access Token 仅内存，Refresh Token 用 SecureStore；启动在线刷新并获取用户资料 |
+| 设计 Token、图标、预设封面       | 应用资源                                                                      |
 
 新增或修改消费成功后，失效该账本的详情、流水、余额、统计和结算预览查询。首版不对金额和还款使用乐观更新，成功提示以服务器返回为准。
 
@@ -341,12 +343,13 @@ Fastify 的数据库和错误插件先注册，业务模块随后注册。`http/
 
 核心表延续现有类图：`users`、`ledgers`、`ledger_members`、`invitations`、`expenses`、`expense_splits`、`settlement_batches`、`settlement_transfers`、`image_assets`、`expense_images`、`operation_logs`。
 
-工程补充两张技术表：
+工程补充三张技术表：
 
-| 表                 | 关键字段与用途                                                                                                          |
-| ------------------ | ----------------------------------------------------------------------------------------------------------------------- |
-| `auth_sessions`    | `id`、`user_id`、`token_hash`、`created_at`、`expires_at`、`revoked_at`；控制会话有效性                                 |
-| `idempotency_keys` | `user_id`、`operation`、`key`、`request_hash`、`response_status`、`response_body`、`expires_at`；记录已完成写操作的结果 |
+| 表                    | 关键字段与用途                                                                                                          |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `auth_sessions`       | `id`、`user_id`、`created_at`、`expires_at`、`revoked_at`；控制会话有效性                                               |
+| `auth_refresh_tokens` | `token_hash`、`session_id`、`consumed_at`、`created_at`；保存当前及已消费摘要，用于刷新轮换与重放检测                   |
+| `idempotency_keys`    | `user_id`、`operation`、`key`、`request_hash`、`response_status`、`response_body`、`expires_at`；记录已完成写操作的结果 |
 
 金额 `BIGINT`；运行时使用 `bigint`；JSON 中使用整数分字符串。例如 `¥120.00 → 12000n → "12000"`。禁止将 `bigint` 直接交给 JSON 序列化，也不通过浮点数计算金额。
 
@@ -354,15 +357,18 @@ Fastify 的数据库和错误插件先注册，业务模块随后注册。`http/
 
 ### 6.2 登录会话
 
-1. 注册或登录成功，服务器生成密码学安全的 256 位随机令牌。
-2. 原令牌仅返回客户端，数据库保存 SHA-256 摘要和有效期；会话固定有效 30 天，到期重新登录。
-3. App 用 SecureStore 保存令牌，请求携带 `Authorization: Bearer <token>`。
-4. API 每次验证摘要对应的会话未过期、未撤销，再获取用户身份。
-5. 在线退出撤销当前会话并清除本地状态；本地清除失败或服务端失败均给出明确反馈，不声称已完成服务端撤销。
+1. 注册或登录成功，服务器创建固定最长 30 天的会话，返回用户资料及 `accessToken`、`accessTokenExpiresAt`、`refreshToken`、`refreshTokenExpiresAt`。
+2. Access Token 为 HS256 JWT，最长有效 15 分钟，且不能超过会话绝对到期时间；只携带 `sub`（用户 ID）、`sid`（会话 ID）、`iss`、`aud`、`iat`、`exp`。服务端固定算法、`typ=at+jwt`、签发者和受众，并验证身份字段、时间与签名。签名不提供保密性，不在载荷中放密码或业务权限。
+3. Refresh Token 为 256 位随机字符串，数据库 `auth_refresh_tokens` 只保存 SHA-256 摘要及所属会话。`POST /api/v1/auth/refresh` 在会话行锁保护的同一事务内消费旧令牌、保存新摘要并签发新令牌对；不延长会话的 30 天绝对期限。
+4. 已消费摘要保留至会话清理，旧令牌重用会撤销整个对应会话，包括最新令牌对。撤销事务提交后才返回 401。不同登录各自拥有会话，不相互撤销。
+5. App 仅在内存保存 Access Token，用 SecureStore 保存 Refresh Token。启动时在线刷新并通过 `getMe` 核验用户；受保护的 JSON、图片上传与读取共用会话管理器，请求发送前提前 30 秒检查到期，同一会话的并发请求只发起一次刷新。
+6. API 每次先验 JWT，再查 PostgreSQL 确认 `sid`、`sub` 对应会话未到期、未撤销，随后执行实际业务权限检查。在线退出撤销当前会话；提交撤销后发起的请求即使持有尚未过期的 JWT 也会被拒绝，已进入处理的请求不承诺取消。
+7. 客户端不自动重发业务请求，也不自动重试刷新。预检查发现离线或服务端明确返回 429 时保留凭据供后续显式尝试；刷新超时、连接中断、响应无法解析或服务端失败导致轮换结果不确定时清除本地凭据，提示重新登录，避免重用可能已消费的令牌。业务请求的 401 清除本地会话，保留表单供用户处理。
+8. 退出无论网络成功与否都尝试清除本地令牌和用户查询缓存；失败必须明确反馈，不声称服务端已撤销。刷新迟到响应不能恢复已清除或切换的会话。旧单令牌会话在新迁移中全部撤销，客户端移除旧 SecureStore 项，需要重新登录。
 
-首版无需 JWT / Refresh Token 双令牌刷新流程。数据库本就参与业务请求，集中会话便于立即撤销和排查。令牌、密码和完整图片不进入日志；登录与邀请码查询配置限流。
+`AUTH_JWT_SECRET` 为服务端独有的 32 字节随机密钥，以 64 位小写 hex 配置；本地由 `setup:env` 初始化，生产通过 Compose 注入，禁止使用 `EXPO_PUBLIC_`。更换密钥会使已有 Access Token 失效，数据库会话和 Refresh Token 的撤销仍由会话表控制。密码继续使用 Argon2id；令牌、密码不进入日志或幂等结果；注册、登录和刷新均限流。详细职责、失败语义和验收见 [账号与会话模块](modules/auth.md)。
 
-SecureStore 用于小型敏感凭据，不承载账本内容。[Expo SecureStore 文档](https://docs.expo.dev/versions/latest/sdk/securestore/)
+参考：[JWT 安全规范](https://www.rfc-editor.org/rfc/rfc8725.html)、[Refresh Token 安全规范](https://www.rfc-editor.org/rfc/rfc9700.html#section-4.14)、[Expo SDK 57 SecureStore](https://docs.expo.dev/versions/v57.0.0/sdk/securestore/)。
 
 ### 6.3 API 约定
 
@@ -372,13 +378,13 @@ SecureStore 用于小型敏感凭据，不承载账本内容。[Expo SecureStore
 - 错误返回 `{ "error": { "code": "...", "message": "...", "fieldErrors": {} }, "requestId": "..." }`。
 - 常用错误：`VALIDATION_ERROR`、`UNAUTHENTICATED`、`FORBIDDEN`、`LEDGER_FROZEN`、`VERSION_CONFLICT`、`INVITE_EXPIRED`、`MEMBER_LIMIT_REACHED`。
 - 分页按日期和 ID 构成稳定顺序；筛选、分页在服务端执行，不一次下载全部流水。
-- `401` 引导重新登录；字段错误留在表单；版本冲突提示刷新；网络错误留在原页重试。
+- 发送前按需刷新访问令牌；业务请求 `401` 清除会话并引导重新登录，不自动重发；字段错误留在表单；版本冲突提示刷新；网络错误留在原页重试。
 
 接口分组：
 
 | 分组 | 主要入口                                                                                                                                                          |
 | ---- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 账号 | `/auth/register`、`/auth/login`、`/auth/logout`、`/me`、`/me/preferences`                                                                                         |
+| 账号 | `/auth/register`、`/auth/login`、`/auth/logout`、`/auth/refresh`、`/me`、`/me/preferences`                                                                        |
 | 账本 | `/ledgers`、`/ledgers/:ledgerId`、`/ledgers/:ledgerId/members`、`/ledgers/:ledgerId/archive`                                                                      |
 | 邀请 | `/ledgers/:ledgerId/invitation`、`/invitations/preview`、`/invitations/join`                                                                                      |
 | 消费 | `/ledgers/:ledgerId/expenses`、`/ledgers/:ledgerId/expenses/:expenseId`                                                                                           |
@@ -432,19 +438,20 @@ Expo Go 可用于早期界面查看，项目联调与验收使用 Development Bu
 
 配置与可执行操作以 [开发与部署说明](development.md) 为准。
 
-| 命令                                   | 职责                                                       |
-| -------------------------------------- | ---------------------------------------------------------- |
-| `pnpm install --frozen-lockfile`       | 安装锁定依赖                                               |
-| `pnpm setup`                           | 创建缺失的开发配置、启动数据库、首次迁移                   |
-| `pnpm up:db` / `down:db`               | 开发数据库启动/停止，保留卷                                |
-| `pnpm generate:db` / `migrate:db`      | 生成待审查迁移 / 应用已提交迁移                            |
-| `pnpm dev` / `dev:ios` / `dev:android` | 首次编译后启动共享包、API、Metro；平台入口由 Expo 打开 App |
-| `pnpm build:ios` / `build:android`     | Prebuild 后编译安装开发客户端，不启动 Metro                |
-| `pnpm check` / `test`                  | 静态检查 / 无数据库测试                                    |
-| `pnpm test:integration`                | 显式使用 TEST_DATABASE_URL 的真实数据库测试                |
-| `pnpm build:server` / `export:mobile`  | 服务端构建 / 两个原生平台的 JS 导出                        |
-| `pnpm test:container`                  | 对已构建镜像进行隔离数据库、迁移、HTTP 和原生依赖验证      |
-| `bash infra/deploy.sh`                 | 生产镜像拉取、备份、独立迁移、更新及 HTTPS 验收            |
+| 命令                                   | 职责                                                                                               |
+| -------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| `pnpm install --frozen-lockfile`       | 安装锁定依赖                                                                                       |
+| `pnpm setup`                           | 创建缺失的开发配置、启动数据库、首次迁移                                                           |
+| `pnpm up:db` / `down:db`               | 开发数据库启动/停止，保留卷                                                                        |
+| `pnpm generate:db` / `migrate:db`      | 生成待审查迁移 / 应用已提交迁移                                                                    |
+| `pnpm dev` / `dev:ios` / `dev:android` | 首次编译后启动共享包、API、Metro；平台入口由 Expo 打开 App                                         |
+| `pnpm build:ios` / `build:android`     | Prebuild 后编译安装开发客户端，不启动 Metro                                                        |
+| `pnpm check` / `test`                  | 静态检查 / 无数据库测试                                                                            |
+| `pnpm test:mobile`                     | Jest Expo + React Native Testing Library 的 iOS / Android 组件与 Provider 测试（原生依赖使用替身） |
+| `pnpm test:integration`                | 显式使用 TEST_DATABASE_URL 的真实数据库测试                                                        |
+| `pnpm build:server` / `export:mobile`  | 服务端构建 / 两个原生平台的 JS 导出                                                                |
+| `pnpm test:container`                  | 对已构建镜像进行隔离数据库、迁移、HTTP 和原生依赖验证                                              |
+| `bash infra/deploy.sh`                 | 生产镜像拉取、备份、独立迁移、更新及 HTTPS 验收                                                    |
 
 开发 API 与 Compose 共用服务端 `.env` 的 PG* 参数；移动端只有公开配置。生产配置由 Compose 显式注入，服务器只运行发布镜像，不现场编译。普通 CI 不部署生产，镜像发布为独立手动工作流。开发启动不执行迁移、不编译原生 App、不管理模拟器内部配置。
 

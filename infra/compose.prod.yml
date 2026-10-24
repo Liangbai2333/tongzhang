@@ -11,6 +11,7 @@ x-server: &server
     PGUSER: ${POSTGRES_USER:?Set POSTGRES_USER}
     PGPASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}
     PGDATABASE: ${POSTGRES_DB:?Set POSTGRES_DB}
+    AUTH_JWT_SECRET: ${AUTH_JWT_SECRET:?Set a random 64-character lowercase hex signing secret}
     LOG_LEVEL: ${LOG_LEVEL:-info}
     TRUST_PROXY: ${PROXY_SUBNET:-172.30.0.0/28}
   networks: [backend, proxy]
