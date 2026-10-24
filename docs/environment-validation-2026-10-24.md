@@ -18,16 +18,17 @@
 
 ## 工具与修复
 
-`pnpm check:env` 检查 Node/pnpm、Docker/Compose、服务端配置、真实 PostgreSQL 与移动端 API 地址/健康。`--tools-only` 供无本机 .env 的 CI 检查工具；`--ios` / `--android` 追加对应工具检查，`--json` 便于成员保留结果。报告不输出签名密钥、数据库口令、URL 中的凭据或接口原始响应；失败返回非零。工具不运行 setup、迁移、安装或 adb reverse。
+`pnpm check:env` 检查 Node/pnpm、Docker/Compose、服务端配置、真实 PostgreSQL 与移动端 API 地址/健康。`--tools-only` 供无本机 .env 的环境检查工具；`--skip-docker` 可显式跳过 Docker/Compose 探测，普通 CI 组合这两个参数仅检查 Node/pnpm，独立 container 任务实际执行 Compose 配置、镜像构建及容器测试；`--ios` / `--android` 追加对应工具检查，`--json` 便于成员保留结果。报告不输出签名密钥、数据库口令、URL 中的凭据或接口原始响应；失败返回非零。工具不运行 setup、迁移、安装或 adb reverse。
 
 `dev.mjs` 原来直接 spawnSync('pnpm') 执行预检查，在 Windows 的 .cmd 分发上存在已知兼容缺口。现通过当前 Node 的 `--run` 在对应包目录执行脚本，避免把 .cmd 当可直接执行文件；测试覆盖带空格目录和非零退出传播。依据 [Node --run 文档](https://nodejs.org/api/cli.html#--run)。Windows 的完整安装、Metro 交互和退出清理仍需成员本机复测，不能仅凭这些脚本测试宣称通过。
 
-新增工具已加入 CI。常规脚本测试覆盖危险 API 地址拒绝、Node 版本偏差、缺失工具、安全输出及 tools-only 不读取凭据/连接数据库。本轮实际执行 pnpm check、pnpm test、pnpm test:mobile、服务端构建、双端 JS 导出和 Expo Doctor；结果与范围见其他验证记录。
+新增工具已加入 CI。常规脚本测试覆盖危险 API 地址拒绝、Node 版本偏差、缺失工具、安全输出及 tools-only 不读取凭据/连接数据库、显式跳过 Docker 时仍检查 Node/pnpm。Docker/Compose 失败仅附退出状态或白名单错误码对应原因，不输出原始 stderr 或异常内容。本轮实际执行 pnpm check、pnpm test、pnpm test:mobile、服务端构建、双端 JS 导出和 Expo Doctor；结果与范围见其他验证记录。
 
 ## 实际 CI 故障与结果
 
 - [失败 Checks #21](https://github.com/Liangbai2333/tongzhang/actions/runs/40080865511)：Android 首个表单用例超过默认 5 秒，其他 31 项及容器任务通过。通过 0.5 CPU Linux 冷缓存复现，已用 be8268b 将单项预算设为 15 秒，保留全部断言；同一环境通过。
 - [修复后的 push 检查](https://github.com/Liangbai2333/tongzhang/actions/runs/40081300183)及 [pull_request 检查](https://github.com/Liangbai2333/tongzhang/actions/runs/40081303887)：check/container 共 4 项均成功，包含真实数据库与镜像验证。
+- [扩展提交 98dcd58 的 pull_request 检查](https://github.com/Liangbai2333/tongzhang/actions/runs/40082889096)：普通 check 任务的宿主 Compose 版本探测失败；当时未记录底层失败原因，不能确定为缺失或超时。两项独立 container 任务均通过真实 Compose 验证。后续将普通任务的探测限制为 Node/pnpm，保留 container 的完整验证和本机默认 Docker/Compose 检查，另补安全诊断原因与回归测试。
 - 本轮扩展提交另触发新的 [PR #9 Checks](https://github.com/Liangbai2333/tongzhang/pull/9/checks)，最终状态按当前 head 核对，不把旧提交的绿色结果冒充新版本已通过。
 
 ## 成员接力与剩余范围
