@@ -51,6 +51,12 @@ controller 测试另覆盖恢复合并、核验失败不显示登录成功、失
 
 修复后重跑全部静态检查、79 项无数据库测试、32 项移动端测试和 11 项专用数据库测试，服务端构建、双端 JS 导出、Expo Doctor、依赖及 peer 检查通过。生产镜像重新构建并运行独立容器认证与迁移验证；结果见双令牌验证记录。审查未发现剩余阻塞问题，下面的原生人工验收限制仍保留。
 
+## CI 首次加载超时修复
+
+PR #9 的 [Checks #21](https://github.com/Liangbai2333/tongzhang/actions/runs/40080865511) 在 `pnpm test:mobile` 失败：Android 首个空表单校验用例超过 Jest 默认 5 秒，其余 31 项测试、静态检查、无数据库测试与独立容器检查均通过。使用 Node 24.21.0 Linux 容器、0.5 CPU、CI 环境变量和 `--no-cache` 重现同一用例的 5 秒超时；1 CPU 的冷缓存运行及本机冷缓存运行通过，确认资源受限时的首次 React Native 加载开销会触及默认预算。
+
+将移动端 Jest 全局单项超时明确设为 15 秒，覆盖 iOS / Android 两个项目；保留原有全部断言、查询超时、失败退出行为，不增加测试自动重试。此项仅修改测试配置，不改应用或接口行为。修复后在相同 0.5 CPU Linux 冷缓存环境重跑 32 项测试，并执行 `pnpm check`、`pnpm test` 和常规 `pnpm test:mobile`；远端最终结果以 PR Checks 为准。
+
 ## 实际 iOS 模拟器验收
 
 使用 iPhone 17 / iOS 27.0 模拟器，安装现有 Expo SDK 57 开发客户端并连接本仓库 Metro；实际请求本机 API `:3300` 与开发 PostgreSQL。没有增加原生依赖或配置，本轮未重建原生二进制。测试账号为本轮单独创建的 `native-auth-20261024-2@example.test`，未使用个人真实凭据。
