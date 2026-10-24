@@ -7,6 +7,8 @@ const shared = {
   setupFilesAfterEnv: ['<rootDir>/tests/setup.cjs'],
 };
 module.exports = {
+  // Cold CI workers can spend more than 5 seconds loading React Native on the first render.
+  testTimeout: 15_000,
   projects: [
     { ...shared, preset: 'jest-expo/ios', displayName: 'iOS' },
     { ...shared, preset: 'jest-expo/android', displayName: 'Android' },
