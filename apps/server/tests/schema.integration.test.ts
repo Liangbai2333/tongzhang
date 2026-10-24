@@ -3,9 +3,8 @@ import { fileURLToPath } from 'node:url';
 import { afterAll, beforeAll, expect, it } from 'vitest';
 import { migrate } from 'drizzle-orm/node-postgres/migrator';
 import { createDatabase } from '../src/db/client.js';
-const url = process.env.TEST_DATABASE_URL;
-if (!url || !new URL(url).pathname.endsWith('_test'))
-  throw new Error('Use TEST_DATABASE_URL pointing to a dedicated database ending in _test.');
+import { testDatabaseUrl } from './fixtures/database.js';
+const url = testDatabaseUrl();
 const db = createDatabase(url);
 beforeAll(async () => {
   await migrate(db.orm, {
