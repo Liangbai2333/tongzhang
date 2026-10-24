@@ -104,5 +104,6 @@ export const lockIdempotencyKey = (
   key: string,
 ) =>
   tx.execute(
-    sql`SELECT pg_advisory_xact_lock(hashtextextended(${JSON.stringify([userId, operation, key])}, 0))`,
+    // PostgreSQL UUID equality ignores case; the lock must use the same identity.
+    sql`SELECT pg_advisory_xact_lock(hashtextextended(${JSON.stringify([userId.toLowerCase(), operation, key.toLowerCase()])}, 0))`,
   );
