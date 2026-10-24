@@ -28,7 +28,7 @@ export function createExpensesService(
       throw new AppError('VALIDATION_ERROR', '缺少有效的 Idempotency-Key', 400);
     const userId = context.principal.userId;
     const { ledgerId } = input.params;
-    const body = input.body;
+    const rawBody = input.body;
 
     const result = await withTransaction(db, (tx) =>
       executeIdempotent(
@@ -37,7 +37,7 @@ export function createExpensesService(
           userId,
           operation: `POST /api/v1/ledgers/${ledgerId.toLowerCase()}/expenses`,
           key: context.idempotencyKey!,
-          request: { ledgerId: ledgerId.toLowerCase(), body },
+          request: { ledgerId: ledgerId.toLowerCase(), body: rawBody },
           responseStatus: 201,
           // Membership is re-checked even before a replay.
           authorize: async () => {
@@ -45,6 +45,14 @@ export function createExpensesService(
           },
         },
         async () => {
+          // PostgreSQL treats UUID case-insensitively; normalize before any comparison or lookup.
+          const body = {
+            ...rawBody,
+            payerMemberId: rawBody.payerMemberId.toLowerCase(),
+            splits: rawBody.splits.map((s) => ({ ...s, memberId: s.memberId.toLowerCase() })),
+          } as typeof rawBody;
+          if (new Set(body.splits.map((s) => s.memberId)).size !== body.splits.length)
+            throw new AppError('VALIDATION_ERROR', '分摊成员不能重复', 400);
           // Ledger lock: serialises with settlement start/freeze and other writers.
           const [ledger] = await tx
             .select({ id: ledgers.id })
