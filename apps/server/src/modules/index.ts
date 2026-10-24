@@ -20,7 +20,7 @@ export function registerBusinessModules(app: FastifyInstance, jwtSecret: string)
   registerProfileRoutes(app, createProfileService(app.db.orm));
   registerLedgersRoutes(app, createLedgersService(app.db.orm));
   registerInvitationsRoutes(app, createInvitationsService());
-  registerExpensesRoutes(app, createExpensesService());
+  registerExpensesRoutes(app, createExpensesService(app.db.orm));
   registerImagesRoutes(app, createImagesService());
   registerBalancesRoutes(app, createBalancesService(app.db.orm));
   registerSettlementsRoutes(app, createSettlementsService(app.db.orm));
