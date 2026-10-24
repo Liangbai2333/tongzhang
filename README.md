@@ -2,7 +2,7 @@
 
 多人共享记账与结算移动端 App。React Native / Expo + Fastify + PostgreSQL，全栈 TypeScript。
 
-当前包含模块工程骨架：29项接口契约与路由、13张业务/支撑表及迁移、前后端模块边界、分摊与结算算法、移动端API与面板状态模型。默认启动仍为真实联调页，账号注册/登录/退出与 `getMe` 已接通，其余业务 Service 占位接口返回501；应用图标和启动图暂用Expo模板资源。
+当前包含模块工程骨架：30项接口契约与路由、14张业务/支撑表及迁移、前后端模块边界、分摊与结算算法、移动端API与面板状态模型。默认启动欢迎与登录流程，已接通移动端注册、登录、在线会话恢复和退出；登录后展示真实账号资料。账号注册/登录/刷新/退出与 `getMe` 已接通，采用 15 分钟 JWT Access Token + 最长 30 天 Refresh Token，支持刷新轮换和退出即时撤销；其余业务 Service 占位接口返回501；应用图标和启动图暂用Expo模板资源。
 
 ## 快速开始
 
@@ -29,7 +29,7 @@ API 默认 `http://localhost:3300`：
 ## 目录
 
 ```text
-apps/mobile         Expo Router、联调页、业务 feature、主题与请求封装
+apps/mobile         Expo Router、认证页面、业务 feature、主题与请求封装
 apps/server         Fastify 服务端：http 适配、db 基础、业务模块、迁移与测试
 packages/contracts  Zod 请求/响应 Schema 与接口登记表
 packages/domain     整数金额、分摊纯函数与业务上限
@@ -43,6 +43,7 @@ scripts             环境初始化、开发进程编排与容器验证
 ```bash
 pnpm check
 pnpm test
+pnpm test:mobile
 pnpm build:server
 pnpm export:mobile
 ```
@@ -59,6 +60,8 @@ pnpm export:mobile
 ## 文档
 
 - [模块架构、职责与开发入口](docs/modules/README.md)
+- [移动端认证实现与验证](docs/mobile-auth-validation.md)
+- [双令牌认证变更与验证](docs/auth-token-validation.md)
 - [模块骨架验证记录](docs/module-skeleton-validation.md)
 - [架构与目录约定](docs/architecture.md)
 - [业务约束](docs/product-spec.md)
@@ -68,4 +71,4 @@ pnpm export:mobile
 - [macOS、Linux 与 Windows 成员环境配置](docs/environment-setup.md)
 - [本次工程验收记录](docs/engineering-status.md)
 
-开发顺序：接通账号页面与已有账号接口，再完成创建/加入账本、消费分摊、结算与归档。详见模块架构文档。
+账号页面与真实接口已接通；后续完成创建/加入账本、消费分摊、结算与归档。详见模块架构文档。

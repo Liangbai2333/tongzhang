@@ -24,8 +24,6 @@ export async function callOperation<K extends JsonOperation>(
   if (!parsed.success) throw new ApiError('VALIDATION_ERROR', '请检查填写内容');
   if (endpoint.idempotent && !uuidSchema.safeParse(options.idempotencyKey).success)
     throw new ApiError('VALIDATION_ERROR', '提交需要稳定的请求标识');
-  const token = endpoint.authenticated ? await sessionToken.read() : null;
-  if (endpoint.authenticated && !token) throw new ApiError('UNAUTHENTICATED', '请先登录');
   let path: string = endpoint.path;
   for (const [key, value] of Object.entries(parsed.data.params))
     path = path.replace(`:${key}`, encodeURIComponent(String(value)));
@@ -33,12 +31,16 @@ export async function callOperation<K extends JsonOperation>(
   for (const [key, value] of Object.entries(parsed.data.query))
     if (value !== undefined) query.set(key, String(value));
   if (query.size) path += `?${query}`;
-  return (await requestJson<unknown>(path, endpoint.response, {
-    method: endpoint.method,
-    token,
-    body: parsed.data.body,
-    idempotencyKey: options.idempotencyKey,
-  })) as EndpointOutput<K>;
+  const send = (token: string | null) =>
+    requestJson<unknown>(path, endpoint.response, {
+      method: endpoint.method,
+      token,
+      body: parsed.data.body,
+      idempotencyKey: options.idempotencyKey,
+    });
+  return (await (endpoint.authenticated
+    ? sessionToken.authorized(send)
+    : send(null))) as EndpointOutput<K>;
 }
 export function operationClient<K extends JsonOperation>(operation: K) {
   return (input: EndpointInput<K>, options?: CallOptions) =>

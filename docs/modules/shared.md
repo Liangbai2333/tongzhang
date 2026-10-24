@@ -2,7 +2,7 @@
 
 ## 1 契约与纯计算
 
-`packages/contracts/src/endpoints.ts` 是29个业务接口的登记表；每项包含编号、路径、认证、幂等、请求与响应Schema。各业务Schema分文件维护；通用Schema分为`http.ts`（错误结构、响应包装、分页）、`scalars.ts`（ID、时间、金额字符串、枚举）和`limits.ts`（上限；人数与单笔金额上限源自domain，避免多处硬编码）。JSON为默认传输方式，图片上传使用multipart，读取使用二进制。输出DTO只包含契约声明字段，不直接返回数据库整行。`packages/domain` 仅做整数金额和分摊，不导入Node、数据库或移动端模块。精确结算算法只放服务端settlements/solver.ts。
+`packages/contracts/src/endpoints.ts` 是30个业务接口的登记表；每项包含编号、路径、认证、幂等、请求与响应Schema。各业务Schema分文件维护；通用Schema分为`http.ts`（错误结构、响应包装、分页）、`scalars.ts`（ID、时间、金额字符串、枚举）和`limits.ts`（上限；人数与单笔金额上限源自domain，避免多处硬编码）。JSON为默认传输方式，图片上传使用multipart，读取使用二进制。输出DTO只包含契约声明字段，不直接返回数据库整行。`packages/domain` 仅做整数金额和分摊，不导入Node、数据库或移动端模块。精确结算算法只放服务端settlements/solver.ts。
 
 ## 2 事务与锁
 
@@ -44,7 +44,7 @@ HTTP层集中处理鉴权、错误、超时和响应Schema；无离线持久缓�
 | 余额与统计           | balances只读派生                             |
 | 审计、幂等           | 外层业务service传入同一tx                    |
 
-所有13张表集中由`db/schema/tables.ts`导出，避免相互引用的复合外键散落后产生循环初始化问题。Schema变化先生成迁移、审查SQL，再执行测试库迁移；不在共享环境schema push。
+所有14张表集中由`db/schema/tables.ts`导出，避免相互引用的复合外键散落后产生循环初始化问题。Schema变化先生成迁移、审查SQL，再执行测试库迁移；不在共享环境schema push。
 
 ## 7 开发接入约定
 

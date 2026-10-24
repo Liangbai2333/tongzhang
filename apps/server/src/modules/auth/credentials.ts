@@ -11,11 +11,10 @@ export const hashPassword = (password: string) =>
   });
 export const verifyPassword = (encoded: string, password: string) => verify(encoded, password);
 export const digestToken = (token: string) => createHash('sha256').update(token).digest('hex');
-export function issueSessionToken(now = new Date()) {
+export function issueRefreshToken() {
   const token = randomBytes(32).toString('base64url');
   return {
     token,
     tokenHash: digestToken(token),
-    expiresAt: new Date(now.getTime() + 30 * 86400000),
   };
 }

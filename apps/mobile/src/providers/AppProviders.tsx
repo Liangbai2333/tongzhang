@@ -3,6 +3,7 @@ import { AppState } from 'react-native';
 import { focusManager, onlineManager, QueryClientProvider } from '@tanstack/react-query';
 import * as Network from 'expo-network';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { AuthProvider } from './AuthProvider';
 import { createQueryClient } from '@/lib/query-client';
 
 export function AppProviders({ children }: PropsWithChildren) {
@@ -21,7 +22,9 @@ export function AppProviders({ children }: PropsWithChildren) {
   }, []);
   return (
     <SafeAreaProvider>
-      <QueryClientProvider client={client}>{children}</QueryClientProvider>
+      <QueryClientProvider client={client}>
+        <AuthProvider>{children}</AuthProvider>
+      </QueryClientProvider>
     </SafeAreaProvider>
   );
 }

@@ -5,16 +5,8 @@ export const apiBaseUrl = (process.env.EXPO_PUBLIC_API_BASE_URL ?? 'http://local
   /\/$/,
   '',
 );
-export class ApiError extends Error {
-  constructor(
-    public readonly code: string,
-    message: string,
-    public readonly status?: number,
-    public readonly fieldErrors?: Record<string, string[]>,
-  ) {
-    super(message);
-  }
-}
+import { ApiError } from './api-error';
+export { ApiError } from './api-error';
 export interface HttpOptions {
   method?: string;
   token?: string | null;

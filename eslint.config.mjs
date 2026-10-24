@@ -13,6 +13,10 @@ export default [
     ],
   },
   js.configs.recommended,
+  {
+    files: ['**/*.cjs'],
+    languageOptions: { globals: { module: 'readonly', require: 'readonly', jest: 'readonly' } },
+  },
   ...tseslint.configs.recommended,
   {
     files: ['**/*.{ts,tsx,mjs}'],
