@@ -119,13 +119,85 @@ describe('real auth page interactions with isolated API callbacks', () => {
       }),
     );
   });
-  it('opens and closes the legal sheet without losing form input', async () => {
-    await render(<AuthScreen register />);
-    await fireEvent.changeText(screen.getByLabelText('用户名'), '保留输入');
-    await userEvent.press(screen.getByRole('button', { name: '隐私说明' }));
-    expect(await screen.findByText('隐私说明 · 课程联调版')).toBeOnTheScreen();
-    await userEvent.press(screen.getByRole('button', { name: '返回表单' }));
-    expect(screen.getByLabelText('用户名')).toHaveDisplayValue('保留输入');
+  it.each([false, true])(
+    'reads both documents and preserves auth state (register=%s)',
+    async (register) => {
+      await render(<AuthScreen register={register} />);
+      await fireEvent.changeText(screen.getByLabelText(register ? '用户名' : '账号'), '保留输入');
+      await fireEvent.changeText(screen.getByLabelText('密码'), 'correct-password');
+      await userEvent.press(screen.getAllByRole('button', { name: '显示密码' })[0]!);
+      if (register) {
+        await fireEvent.changeText(screen.getByLabelText('邮箱'), 'reader@example.test');
+        await fireEvent.changeText(screen.getByLabelText('确认密码'), 'mismatch');
+        await userEvent.press(screen.getByRole('checkbox'));
+      } else {
+        mockLogin.mockRejectedValueOnce(new ApiError('INVALID_CREDENTIALS', '账号或密码错误', 401));
+      }
+      await userEvent.press(screen.getByRole('button', { name: register ? '注册并开始' : '登录' }));
+      const error = register ? '两次输入的密码不一致' : '账号或密码错误';
+      expect(await screen.findByText(error)).toBeOnTheScreen();
+      const calls = mockLogin.mock.calls.length;
+      for (const [title, firstSection] of [
+        ['用户协议', '一、服务范围'],
+        ['隐私说明', '一、账号信息与登录凭据'],
+      ]) {
+        await userEvent.press(screen.getByRole('button', { name: title }));
+        expect(screen.getByRole('header', { name: title })).toBeOnTheScreen();
+        expect(screen.getByRole('header', { name: firstSection })).toBeOnTheScreen();
+        await userEvent.press(screen.getByRole('button', { name: '关闭' }));
+        await waitFor(() => expect(screen.queryByRole('header', { name: title })).toBeNull());
+        expect(screen.getByLabelText(register ? '用户名' : '账号')).toHaveDisplayValue('保留输入');
+        expect(screen.getByLabelText('密码')).toHaveDisplayValue('correct-password');
+        expect(screen.getByLabelText('密码')).toHaveProp('secureTextEntry', false);
+        expect(screen.getByText(error)).toBeOnTheScreen();
+        if (register) {
+          expect(screen.getByLabelText('邮箱')).toHaveDisplayValue('reader@example.test');
+          expect(screen.getByLabelText('确认密码')).toHaveDisplayValue('mismatch');
+          expect(screen.getByRole('checkbox')).toBeChecked();
+        }
+      }
+      expect(mockLogin).toHaveBeenCalledTimes(calls);
+      expect(mockRegister).not.toHaveBeenCalled();
+    },
+  );
+  it.each(['关闭面板', '关闭面板遮罩', 'system'])(
+    'dismisses reading via %s without consenting',
+    async (method) => {
+      await render(<AuthScreen register />);
+      await fireEvent.changeText(screen.getByLabelText('用户名'), '未勾选');
+      await userEvent.press(screen.getByRole('button', { name: '用户协议' }));
+      if (method === 'system') {
+        let modal = screen.getByRole('button', { name: '关闭面板' });
+        while (modal.parent && !modal.props.onRequestClose) modal = modal.parent;
+        await fireEvent(modal, 'requestClose');
+      } else
+        await userEvent.press(
+          screen.getByRole('button', { name: method, includeHiddenElements: true }),
+        );
+      await waitFor(() => expect(screen.queryByRole('header', { name: '用户协议' })).toBeNull());
+      expect(screen.getByLabelText('用户名')).toHaveDisplayValue('未勾选');
+      expect(screen.getByRole('checkbox')).not.toBeChecked();
+      expect(mockRegister).not.toHaveBeenCalled();
+      expect(mockLogin).not.toHaveBeenCalled();
+    },
+  );
+  it('opens all profile documents and returns to the same verified account', async () => {
+    await render(<AccountScreen />);
+    for (const [title, section] of [
+      ['关于同账', '共同记录，清楚分摊'],
+      ['用户协议', '一、服务范围'],
+      ['隐私说明', '一、账号信息与登录凭据'],
+    ]) {
+      await userEvent.press(screen.getByRole('button', { name: title }));
+      expect(screen.getByRole('header', { name: title })).toBeOnTheScreen();
+      expect(screen.getByRole('header', { name: section })).toBeOnTheScreen();
+      expect(screen.getByText('修订日期：2026-10-24')).toBeOnTheScreen();
+      await userEvent.press(screen.getByRole('button', { name: '关闭面板' }));
+      await waitFor(() => expect(screen.queryByRole('header', { name: title })).toBeNull());
+      expect(screen.getByText('test@example.test')).toBeOnTheScreen();
+    }
+    expect(mockLogout).not.toHaveBeenCalled();
+    expect(mockAuth.restore).not.toHaveBeenCalled();
   });
   it('toggles password visibility', async () => {
     await render(<AuthScreen />);

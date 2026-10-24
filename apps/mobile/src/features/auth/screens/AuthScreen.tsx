@@ -11,7 +11,8 @@ import { colors } from '@/theme/tokens';
 import { useAuth } from '@/providers/AuthProvider';
 import { requestErrorMessage } from '@/components/Feedback';
 import { createAuthResolver, emptyAuthForm, type AuthFormValues } from '../form';
-import { AuthNotice, FormError, LegalSheet } from '../components';
+import { AuthNotice, FormError } from '../components';
+import { DocumentSheet } from '@/features/profile';
 
 export default function AuthScreen({ register = false }: { register?: boolean }) {
   const auth = useAuth();
@@ -206,7 +207,7 @@ export default function AuthScreen({ register = false }: { register?: boolean })
             </View>
             <Text style={[ui.muted, ui.grow]}>
               {register
-                ? '请阅读并同意课程联调版用户协议与隐私说明。'
+                ? '请阅读并同意用户协议与隐私说明。'
                 : '登录即表示你已阅读并同意用户协议与隐私说明。'}
             </Text>
           </View>
@@ -247,7 +248,7 @@ export default function AuthScreen({ register = false }: { register?: boolean })
             </Touch>
           </View>
         </View>
-        <LegalSheet document={legal} onClose={() => setLegal(null)} />
+        <DocumentSheet document={legal} onClose={() => setLegal(null)} />
       </Screen>
     </>
   );

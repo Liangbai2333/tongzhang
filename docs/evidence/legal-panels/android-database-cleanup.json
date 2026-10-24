@@ -1,0 +1,7 @@
+{
+  "environment": "local development PostgreSQL",
+  "dedicatedUsersRemoved": 1,
+  "sessionsRemoved": 2,
+  "refreshDigestsRemoved": 2,
+  "businessRecordsCreated": 0
+}
