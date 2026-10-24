@@ -4,6 +4,7 @@ import { FigmaAsset, figmaAssets, type DesignAsset } from '@/icons/FigmaAsset';
 import { colors } from '@/theme/tokens';
 import { Touch } from './Touch';
 import { ui } from './Screen';
+import { InlineError } from './Feedback';
 
 export function Field({
   label,
@@ -65,14 +66,7 @@ export function Field({
           </Touch>
         )}
       </View>
-      {error && (
-        <Text
-          accessibilityRole="alert"
-          style={{ color: colors.danger, fontSize: 13, lineHeight: 20 }}
-        >
-          {error}
-        </Text>
-      )}
+      <InlineError message={error} />
     </View>
   );
 }

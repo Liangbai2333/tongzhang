@@ -4,6 +4,7 @@ import { Sheet } from '@/components/Sheet';
 import { ui } from '@/components/Screen';
 import { colors } from '@/theme/tokens';
 import { useAuth } from '@/providers/AuthProvider';
+export { InlineError as FormError } from '@/components/Feedback';
 
 export function AuthNotice() {
   const { notice, dismissNotice, clearLocal, operation } = useAuth();
@@ -24,13 +25,6 @@ export function AuthNotice() {
       )}
     </View>
   );
-}
-export function FormError({ message }: { message?: string | null }) {
-  return message ? (
-    <Text accessibilityRole="alert" accessibilityLiveRegion="polite" style={styles.error}>
-      {message}
-    </Text>
-  ) : null;
 }
 export function LegalSheet({
   document,
@@ -85,5 +79,4 @@ export function LegalSheet({
 }
 const styles = StyleSheet.create({
   notice: { backgroundColor: colors.primarySoft, padding: 16, borderRadius: 16, gap: 4 },
-  error: { color: colors.danger, fontSize: 13, lineHeight: 20 },
 });

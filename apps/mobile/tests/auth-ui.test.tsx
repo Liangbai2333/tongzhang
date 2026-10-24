@@ -79,6 +79,21 @@ describe('real auth page interactions with isolated API callbacks', () => {
     finish();
     await waitFor(() => expect(screen.getByLabelText('账号')).toBeEnabled());
   });
+  it('preserves credentials after an offline failure and only retries on another explicit submit', async () => {
+    mockLogin.mockRejectedValueOnce(
+      new ApiError('NETWORK_UNAVAILABLE', '网络未连接，请联网后重试'),
+    );
+    await render(<AuthScreen />);
+    await fireEvent.changeText(screen.getByLabelText('账号'), 'offline@example.test');
+    await fireEvent.changeText(screen.getByLabelText('密码'), 'correct-password');
+    await userEvent.press(screen.getByRole('button', { name: '登录' }));
+    expect(await screen.findByText('网络未连接，请联网后重试')).toBeOnTheScreen();
+    expect(screen.getByLabelText('账号')).toHaveDisplayValue('offline@example.test');
+    expect(screen.getByLabelText('密码')).toHaveDisplayValue('correct-password');
+    expect(mockLogin).toHaveBeenCalledTimes(1);
+    await userEvent.press(screen.getByRole('button', { name: '登录' }));
+    expect(mockLogin).toHaveBeenCalledTimes(2);
+  });
   it('requires consent and matching passwords, then registers with the real contract fields', async () => {
     await render(<AuthScreen register />);
     await fireEvent.changeText(screen.getByLabelText('用户名'), '新用户');

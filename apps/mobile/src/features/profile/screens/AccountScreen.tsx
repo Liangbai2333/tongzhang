@@ -6,6 +6,7 @@ import { Sheet } from '@/components/Sheet';
 import { FigmaAsset, figmaAssets } from '@/icons/FigmaAsset';
 import { useAuth } from '@/providers/AuthProvider';
 import { colors } from '@/theme/tokens';
+import { EmptyState } from '@/components/Feedback';
 
 export default function AccountScreen() {
   const { user, operation, logout, restore } = useAuth();
@@ -46,10 +47,7 @@ export default function AccountScreen() {
           }}
         />
       </View>
-      <View style={ui.card}>
-        <Text style={ui.heading}>共同账本</Text>
-        <Text style={ui.muted}>账本功能尚未接通，接通后即可创建或加入共同账本。</Text>
-      </View>
+      <EmptyState title="共同账本" description="账本功能尚未接通，接通后即可创建或加入共同账本。" />
       <Button title="退出登录" variant="danger" disabled={busy} onPress={() => setConfirm(true)} />
       <Sheet
         visible={confirm}
