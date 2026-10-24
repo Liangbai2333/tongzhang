@@ -1,17 +1,12 @@
-import { spawnSync } from 'node:child_process';
 import { createServer } from 'node:net';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { parseArgs, parseEnv } from 'node:util';
 import concurrently from 'concurrently';
 import { readEnv } from '../apps/server/src/config/env.ts';
+import { runScript } from './lib/run-script.mjs';
 
 process.chdir(fileURLToPath(new URL('../', import.meta.url)));
-
-function run(args) {
-  const result = spawnSync('pnpm', args, { stdio: 'inherit' });
-  if (result.error || result.status !== 0) throw new Error(`pnpm ${args.join(' ')} 失败。`);
-}
 
 async function requireFreePort(port, host = '0.0.0.0') {
   await new Promise((resolve, reject) => {
@@ -41,8 +36,8 @@ try {
     if (env.NODE_ENV !== 'development') throw new Error('dev 只能使用 NODE_ENV=development。');
     await requireFreePort(env.PORT, env.HOST);
     await requireFreePort(8081);
-    run(['--filter', '@tongzhang/server', 'check:db']);
-    run(['build:server']);
+    runScript('check:db', { cwd: fileURLToPath(new URL('../apps/server/', import.meta.url)) });
+    runScript('build:server');
     console.log('启动开发服务；Ctrl+C 停止本次进程，数据库保留。Metro 使用原生终端快捷键。');
     await concurrently(
       [

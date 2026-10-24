@@ -4,6 +4,8 @@
 
 本文面向本机开发；生产服务器配置见 [开发与部署说明](development.md)。工具链变量 `JAVA_HOME`、`ANDROID_HOME` 和 PATH 配在本机 shell 或系统中；应用变量仍放在 `apps/server/.env`、`apps/mobile/.env`，不把数据库凭据写进全局环境配置。
 
+可先执行 `pnpm check:env --tools-only` 检查 Node/pnpm 与 Docker/Compose。完成初始化并启动 API 后，执行 `pnpm check:env --ios --json` 或 `pnpm check:env --android --json` 核对原生工具、真实数据库和移动端 API 连通；Windows 使用 `pnpm.cmd`。工具只读，不迁移、不安装、不输出凭据，失败返回非零；Node 24 的 patch 与仓库固定版本不同时明确警告。保留输出时同时记录实际安装/启动结果，不能仅凭工具检查认定原生应用已验收。当前实际环境和 CI 记录见[环境验证](environment-validation-2026-10-24.md)。
+
 ## 工具与版本
 
 | 工具         | 项目要求与来源                                                                                                   |
@@ -159,9 +161,11 @@ adb reverse --list
 
 转发需要在设备重启/重连后重设；多个设备时加 `-s <序列号>`。Android 模拟器也可将 API 地址改为 `http://10.0.2.2:3300`，改后重启 Metro。通过局域网使用真机时，按 [移动端地址说明](development.md#3-移动端地址与发布配置) 设置电脑局域网 IP，并按需允许 Node 通过 Windows 防火墙的专用网络。
 
-### 4. 日常开发：两个 PowerShell 终端
+### 4. 日常开发与排障
 
-当前统一入口 `pnpm dev` / `dev:android` 中的 `scripts/dev.mjs` 直接用 Node `spawnSync('pnpm', ...)` 启动预检查，尚未对 Windows npm 安装生成的 `.cmd` 启动文件做兼容验收。Windows 成员先使用已有的双终端入口，避开这段调用。[Node 对 Windows `.cmd` 子进程的说明](https://nodejs.org/api/child_process.html#spawning-bat-and-cmd-files-on-windows)
+统一入口 `pnpm dev` / `dev:android` 的预检查已改用当前 Node 的 `--run` 在目标包目录分发脚本，避免直接 spawn Windows `.cmd` 的兼容问题；带空格路径及失败传播已有脚本测试。仍需 Windows 成员在本机核对原生安装、Metro 交互和退出清理，不将跨平台设计与 macOS/Linux 测试描述为 Windows 整机验收。[Node --run 说明](https://nodejs.org/api/cli.html#--run)
+
+启动数据库和模拟器、完成端口转发后，可执行 `pnpm.cmd dev:android`。需要分别观察服务端和 Metro 时，使用下面的双终端方式排障。
 
 先在 Device Manager 启动模拟器。终端 A 进入仓库根目录，执行：
 
@@ -177,7 +181,7 @@ pnpm.cmd dev:server
 pnpm.cmd dev:mobile
 ```
 
-待 Metro 就绪后按 `a` 打开 Android，按 `Shift+a` 选择设备。看到联调页“API 与数据库已连接”才算完成连接验证。也可在另一个 PowerShell 中检查 API：
+待 Metro 就绪后按 `a` 打开 Android，按 `Shift+a` 选择设备。默认进入真实欢迎/登录页；在另一个终端执行 `pnpm.cmd check:env --android` 核对 API/数据库，再用真实账号验证客户端请求。也可在另一个 PowerShell 中检查 API：
 
 ```powershell
 Invoke-RestMethod http://localhost:3300/health/ready
