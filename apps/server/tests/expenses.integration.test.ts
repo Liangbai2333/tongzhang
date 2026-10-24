@@ -173,6 +173,54 @@ describe('createExpense', () => {
     expect((await post(s.owner.accessToken, bodyFor(s))).statusCode).toBe(409);
   });
 
+  it('recomputes SHARES splits on the server with conserved remainder', async () => {
+    const s = await seed();
+    const res = await post(
+      s.owner.accessToken,
+      bodyFor(s, {
+        amountCents: '10000',
+        splitMode: 'SHARES',
+        splits: [
+          { memberId: s.ownerMember, shares: 1 },
+          { memberId: s.friendMember, shares: 2 },
+        ],
+      }),
+    );
+    expect(res.statusCode).toBe(201);
+    const amounts = res
+      .json()
+      .data.splits.map((x: { amountCents: string }) => BigInt(x.amountCents));
+    expect(amounts.reduce((a: bigint, b: bigint) => a + b, 0n)).toBe(10000n);
+    const byMember = Object.fromEntries(
+      res
+        .json()
+        .data.splits.map((x: { memberId: string; amountCents: string }) => [
+          x.memberId,
+          x.amountCents,
+        ]),
+    );
+    expect(byMember[s.ownerMember]).toBe('3333');
+    expect(byMember[s.friendMember]).toBe('6667');
+  });
+
+  it('rejects AMOUNT splits that do not add up to the total', async () => {
+    const s = await seed();
+    const res = await post(
+      s.owner.accessToken,
+      bodyFor(s, {
+        splitMode: 'AMOUNT',
+        splits: [
+          { memberId: s.ownerMember, amountCents: '5000' },
+          { memberId: s.friendMember, amountCents: '5000' },
+        ],
+      }),
+    );
+    expect(res.statusCode).toBe(400);
+    expect(
+      await fixture.db.orm.select().from(expenses).where(eq(expenses.ledgerId, ledgerId!)),
+    ).toHaveLength(0);
+  });
+
   it('blocks receipt binding until the image module is wired', async () => {
     const s = await seed();
     const res = await post(s.owner.accessToken, bodyFor(s, { receiptImageId: randomUUID() }));
