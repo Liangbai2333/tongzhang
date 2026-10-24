@@ -1,5 +1,8 @@
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
-  test: { include: ['apps/server/tests/**/*.integration.test.ts'] },
+  test: {
+    globalSetup: ['apps/server/tests/fixtures/migrate-database.ts'],
+    include: ['apps/server/tests/**/*.integration.test.ts'],
+  },
 });

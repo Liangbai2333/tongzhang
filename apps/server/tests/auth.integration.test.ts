@@ -7,9 +7,8 @@ import { testEnv } from './fixtures/env.js';
 import { authResultSchema, tokenPairSchema } from '@tongzhang/contracts';
 import { createAccessTokens } from '../src/modules/auth/tokens.js';
 import { digestToken } from '../src/modules/auth/credentials.js';
-const url = process.env.TEST_DATABASE_URL;
-if (!url || !new URL(url).pathname.endsWith('_test'))
-  throw new Error('Use TEST_DATABASE_URL pointing to a dedicated database ending in _test.');
+import { testDatabaseUrl } from './fixtures/database.js';
+const url = testDatabaseUrl();
 const db = createDatabase(url);
 let app: Awaited<ReturnType<typeof buildApp>>;
 const userIds: string[] = [];
@@ -59,6 +58,25 @@ afterAll(async () => {
 });
 
 describe('real PostgreSQL dual-token authentication', () => {
+  it('rejects unknown accounts and ambiguous usernames with independent contract expectations', async () => {
+    const account = await register();
+    await register();
+    const unknown = await app.inject({
+      method: 'POST',
+      url: '/api/v1/auth/login',
+      payload: { account: `${randomUUID()}@example.test`, password },
+    });
+    expect(unknown.statusCode).toBe(401);
+    expect(unknown.json().error.code).toBe('INVALID_CREDENTIALS');
+    const ambiguous = await app.inject({
+      method: 'POST',
+      url: '/api/v1/auth/login',
+      payload: { account: '认证测试', password },
+    });
+    expect(ambiguous.statusCode).toBe(409);
+    expect(ambiguous.json().error.code).toBe('ACCOUNT_AMBIGUOUS');
+    expect((await getMe(account.accessToken)).statusCode).toBe(200);
+  });
   it('registers, logs in, rotates without extending the session, and immediately revokes on logout', async () => {
     const account = await register();
     expect((await getMe(account.accessToken)).json().data.id).toBe(account.user.id);
