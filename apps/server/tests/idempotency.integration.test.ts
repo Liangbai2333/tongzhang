@@ -9,6 +9,7 @@ import { idempotencyKeys, ledgerMembers, ledgers, operationLogs } from '../src/d
 import { AppError } from '../src/http/errors.js';
 import { requireLedgerMember, requireActive } from '../src/modules/ledgers/index.js';
 import { integrationFixture, type TestAccount } from './fixtures/integration.js';
+import { waitForBlockedQueries } from './fixtures/locks.js';
 
 let fixture: Awaited<ReturnType<typeof integrationFixture>>;
 let owner: TestAccount;
@@ -210,6 +211,38 @@ describe('real PostgreSQL idempotency through an isolated HTTP adapter', () => {
     expect(denied.statusCode).toBe(403);
     expect(errorResponseSchema.parse(denied.json()).error.code).toBe('FORBIDDEN');
     expect(await counts()).toMatchObject({ version: 2, audits: 1, keys: 1 });
+  });
+  it('rejects replay when membership is revoked while waiting for the idempotency lock', async () => {
+    const key = randomUUID();
+    expect((await submit(key, '成员提交', member)).statusCode).toBe(200);
+    const blocker = await fixture.db.pool.connect();
+    let pending: Promise<Awaited<ReturnType<typeof submit>>> | undefined;
+    try {
+      await blocker.query('begin');
+      const pid = await blocker.query<{ pid: number }>('select pg_backend_pid() as pid');
+      await blocker.query('select pg_advisory_xact_lock(hashtextextended($1,0))', [
+        JSON.stringify([member.user.id, `POST /__tests/ledgers/${ledgerId}/name`, key]),
+      ]);
+      pending = submit(key, '成员提交', member).then((response) => response);
+      await waitForBlockedQueries(fixture.db.pool, pid.rows[0]!.pid, 1);
+      await fixture.db.orm
+        .delete(ledgerMembers)
+        .where(and(eq(ledgerMembers.ledgerId, ledgerId), eq(ledgerMembers.userId, member.user.id)));
+      await blocker.query('commit');
+
+      const denied = await pending;
+      expect(denied.statusCode).toBe(403);
+      expect(errorResponseSchema.parse(denied.json()).error.code).toBe('FORBIDDEN');
+      expect(denied.json()).not.toHaveProperty('data');
+      expect(await counts()).toMatchObject({ version: 2, name: '成员提交', audits: 1, keys: 1 });
+    } finally {
+      try {
+        await blocker.query('rollback');
+      } finally {
+        blocker.release();
+        if (pending) await Promise.allSettled([pending]);
+      }
+    }
   });
   it('replaces an expired replay record without extending active replay retention', async () => {
     const key = randomUUID();
