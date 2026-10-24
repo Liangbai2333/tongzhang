@@ -26,6 +26,6 @@
 
 ## 实际运行
 
-在本机 PostgreSQL 17.11 的独立测试库运行；另创建临时空白 `_test` 库验证全局迁移、并行测试及清理，结束后删除该临时库。命令：显式设置 TEST_DATABASE_URL 后执行 `pnpm test:integration`。最终 5 个数据库测试文件、24 项通过；`pnpm test` 为 16 个文件、101 项无数据库测试通过。相关 UI/Provider 的双平台测试 46 项通过，详见 [公共反馈组件验收](common-feedback-validation.md)。
+在本机 PostgreSQL 17.11 的独立测试库运行；另创建临时空白 `_test` 库验证全局迁移、并行测试及清理，结束后删除该临时库。命令：显式设置 TEST_DATABASE_URL 后执行 `pnpm test:integration`。最终 5 个数据库测试文件、24 项通过；`pnpm test` 为 16 个文件、102 项无数据库测试通过。相关 UI/Provider 的双平台测试 46 项通过，详见 [公共反馈组件验收](common-feedback-validation.md)。
 
 测试命令输出以 Vitest 的文件/通过计数核对；失败诊断包括公共能力缺失（补齐 #2）、首次加载超时（已有 CI 修复记录）及本轮测试开发中的 macOS 临时目录真实路径差异、无障碍元素标记/匹配器问题，均修复后重跑。数据库闭环、业务金额/状态与正式写入接口的后续回归仍属于 T15 / T26 范围，不能据此关闭整项任务。

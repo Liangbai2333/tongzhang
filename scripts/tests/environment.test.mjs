@@ -60,7 +60,12 @@ it('reports missing tools and connectivity safely without executing setup or wri
       join(root, 'apps/mobile/.env'),
       'EXPO_PUBLIC_API_BASE_URL=https://user:private-password@example.com',
     );
-    const run = vi.fn(() => ({ status: 1, stdout: '', stderr: 'private-password' }));
+    const run = vi.fn(() => ({
+      status: null,
+      stdout: '',
+      stderr: 'private-password',
+      error: { code: 'ETIMEDOUT', message: 'private-secret' },
+    }));
     const get = vi.fn();
     const report = await inspectEnvironment({
       root,
@@ -72,6 +77,9 @@ it('reports missing tools and connectivity safely without executing setup or wri
     expect(report.ok).toBe(false);
     expect(JSON.stringify(report)).not.toContain('private-password');
     expect(JSON.stringify(report)).not.toContain('private-secret');
+    expect(report.checks.find((check) => check.name === 'Compose')?.detail).toContain(
+      'probe timed out',
+    );
     expect(get).not.toHaveBeenCalled();
     expect(run.mock.calls.map((call) => call[0])).toEqual(['pnpm', 'docker', 'docker']);
   } finally {
@@ -95,4 +103,22 @@ it('keeps tools-only checks independent of local credentials, API and database',
   expect(report.ok).toBe(true);
   expect(get).not.toHaveBeenCalled();
   expect(run).toHaveBeenCalledTimes(3);
+});
+it('checks Node and pnpm without Docker when the CI container job owns Compose verification', async () => {
+  const run = vi.fn(() => ({ status: 0, stdout: '12.6.0', stderr: '' }));
+  const get = vi.fn();
+  const report = await inspectEnvironment({
+    toolsOnly: true,
+    skipDocker: true,
+    run,
+    get,
+    environment: {},
+    nodeVersion: 'v24.21.0',
+  });
+  expect(report.ok).toBe(true);
+  expect(report.checks.map((check) => check.name)).toEqual(['Node', 'pnpm']);
+  expect(run.mock.calls.map(([command, args]) => [command, args])).toEqual([
+    ['pnpm', ['--version']],
+  ]);
+  expect(get).not.toHaveBeenCalled();
 });

@@ -41,6 +41,7 @@ export function versionCheck(actual, expected, majorOnly = false) {
 export async function inspectEnvironment({
   root = projectRoot,
   toolsOnly = false,
+  skipDocker = false,
   android = false,
   ios = false,
   run = spawnSync,
@@ -71,6 +72,14 @@ export async function inspectEnvironment({
       return { status: 1, stdout: '', stderr: '' };
     }
   }
+  function failureReason(result) {
+    if (result.error?.code === 'ETIMEDOUT') return 'probe timed out';
+    if (result.error?.code === 'ENOENT') return 'executable not found';
+    if (result.error?.code === 'EACCES') return 'execution permission denied';
+    if (Number.isInteger(result.status)) return `exit status ${result.status}`;
+    if (['SIGTERM', 'SIGKILL'].includes(result.signal)) return `terminated by ${result.signal}`;
+    return 'probe did not complete';
+  }
   // The only shell command is a fixed pnpm version probe; it contains no user input.
   const pnpm = probe('pnpm', ['--version'], { shell: platform === 'win32' });
   const pnpmVersion = pnpm.status === 0 ? pnpm.stdout.trim() : 'unavailable';
@@ -79,18 +88,24 @@ export async function inspectEnvironment({
     pnpm.status === 0 ? versionCheck(pnpmVersion, pinnedPnpm) : 'fail',
     `${pnpmVersion}; repository ${pinnedPnpm}`,
   );
-  const docker = probe('docker', ['version', '--format', '{{.Server.Version}}']);
-  add(
-    'Docker',
-    docker.status === 0 ? 'pass' : 'fail',
-    docker.status === 0 ? docker.stdout.trim() : 'Docker daemon unavailable; start Docker first.',
-  );
-  const compose = probe('docker', ['compose', 'version', '--short']);
-  add(
-    'Compose',
-    compose.status === 0 ? 'pass' : 'fail',
-    compose.status === 0 ? compose.stdout.trim() : 'Docker Compose unavailable.',
-  );
+  if (!skipDocker) {
+    const docker = probe('docker', ['version', '--format', '{{.Server.Version}}']);
+    add(
+      'Docker',
+      docker.status === 0 ? 'pass' : 'fail',
+      docker.status === 0
+        ? docker.stdout.trim()
+        : `Docker daemon unavailable (${failureReason(docker)}); start Docker first.`,
+    );
+    const compose = probe('docker', ['compose', 'version', '--short']);
+    add(
+      'Compose',
+      compose.status === 0 ? 'pass' : 'fail',
+      compose.status === 0
+        ? compose.stdout.trim()
+        : `Docker Compose unavailable (${failureReason(compose)}).`,
+    );
+  }
   if (android) {
     const java = probe('java', ['-version']);
     const version =
@@ -199,6 +214,7 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
     const { values } = parseArgs({
       options: {
         'tools-only': { type: 'boolean' },
+        'skip-docker': { type: 'boolean' },
         android: { type: 'boolean' },
         ios: { type: 'boolean' },
         json: { type: 'boolean' },
@@ -206,6 +222,7 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
     });
     const report = await inspectEnvironment({
       toolsOnly: values['tools-only'],
+      skipDocker: values['skip-docker'],
       android: values.android,
       ios: values.ios,
     });
@@ -216,7 +233,7 @@ if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.ur
     if (!report.ok) process.exitCode = 1;
   } catch {
     console.error(
-      'Environment check failed. Use --tools-only, --android, --ios or --json; private configuration is never printed.',
+      'Environment check failed. Use --tools-only, --skip-docker, --android, --ios or --json; private configuration is never printed.',
     );
     process.exitCode = 1;
   }
