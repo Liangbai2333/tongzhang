@@ -6,7 +6,7 @@
 
 ## 2 事务与锁
 
-写请求顺序：会话 → 参数 → 幂等锁 → 账本行锁 → 角色/状态/版本 → 成员和图片关联 → 写入业务、审计和成功结果 → 提交。事务入口为db/transaction.ts的withTransaction，Repository接受同一Transaction。幂等事务锁入口为db/idempotency.ts；完整用例还必须查询结果、校验请求摘要和保存结果，不能把取得锁当作完整幂等。
+写请求顺序：会话 → 参数 → 幂等锁 → 即时访问校验 → 成功结果重放或账本行锁 → 角色/状态/版本 → 成员和图片关联 → 写入业务、审计和成功结果 → 提交。事务入口为db/transaction.ts的withTransaction，Repository接受同一Transaction。db/idempotency.ts的executeIdempotent接收同一tx及service提供的authorize/work回调；取得锁后重新授权，避免等待并发请求期间发生的权限变化被缓存结果绕过。
 
 读取预览或汇总使用一个SQL快照，或只读REPEATABLE READ事务。业务写事务的lock_timeout为2秒。邀请加入、消费变更、正式结算共同锁同一账本，防止满员及冻结竞争。
 
@@ -20,6 +20,10 @@
 | 内容变化 | 同键不同请求摘要拒绝；不能盲目生成新键重交             |
 | 客户端   | 结果未知且24小时内可手动同键重试；不持久化离线队列     |
 | 版本     | 消费编辑校验消费version；影响结算的变化递增账本version |
+
+executeIdempotent 对 JSON 对象递归排序后计算 SHA-256，保留数组顺序和标量类型；同键异内容返回 `IDEMPOTENCY_CONFLICT`（409）。成功体与状态码同事务保存，重放不续期；过期记录在持锁事务内替换。回调失败、响应包含 bigint 等非 JSON 值或提交失败时，业务、审计与幂等结果一同回滚。身份认证、登录令牌和刷新接口不使用此结果存储。HTTP 适配器不会替业务 Service 自动开启幂等事务。
+
+成员入口为 ledgers 模块出口的 requireLedgerMember，返回数据库核对后的 memberId、isCreator 与 status；不存在或非成员统一 403。账本详情、成员列表和个人归档入口已接入该检查，成员通过后仍明确返回未接通的 501；创建账本、消费和结算写接口继续由对应业务任务接入上述公共能力，不能将基础测试适配器当作正式业务闭环。
 
 ## 4 审计与错误
 
