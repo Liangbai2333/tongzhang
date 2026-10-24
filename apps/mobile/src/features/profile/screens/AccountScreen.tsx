@@ -7,10 +7,13 @@ import { FigmaAsset, figmaAssets } from '@/icons/FigmaAsset';
 import { useAuth } from '@/providers/AuthProvider';
 import { colors } from '@/theme/tokens';
 import { EmptyState } from '@/components/Feedback';
+import { DocumentSheet } from '../components/DocumentSheet';
+import type { DocumentKind } from '../documents';
 
 export default function AccountScreen() {
   const { user, operation, logout, restore } = useAuth();
   const [confirm, setConfirm] = useState(false);
+  const [document, setDocument] = useState<DocumentKind | null>(null);
   const busy = operation !== null;
   if (!user) return null;
   return (
@@ -48,6 +51,28 @@ export default function AccountScreen() {
         />
       </View>
       <EmptyState title="共同账本" description="账本功能尚未接通，接通后即可创建或加入共同账本。" />
+      <View style={ui.card}>
+        <Text style={ui.heading}>了解同账</Text>
+        <Button
+          title="关于同账"
+          variant="quiet"
+          disabled={busy}
+          onPress={() => setDocument('about')}
+        />
+        <Button
+          title="用户协议"
+          variant="quiet"
+          disabled={busy}
+          onPress={() => setDocument('terms')}
+        />
+        <Button
+          title="隐私说明"
+          variant="quiet"
+          disabled={busy}
+          onPress={() => setDocument('privacy')}
+        />
+      </View>
+      <DocumentSheet document={document} onClose={() => setDocument(null)} />
       <Button title="退出登录" variant="danger" disabled={busy} onPress={() => setConfirm(true)} />
       <Sheet
         visible={confirm}

@@ -62,6 +62,7 @@ pnpm export:mobile
 
 - [模块架构、职责与开发入口](docs/modules/README.md)
 - [移动端认证实现与验证](docs/mobile-auth-validation.md)
+- [关于、协议与隐私面板验证](docs/legal-panels-validation.md)
 - [双令牌认证变更与验证](docs/auth-token-validation.md)
 - [登录、权限与幂等回归](docs/auth-regression-validation.md)
 - [公共反馈组件与登录复测](docs/common-feedback-validation.md)

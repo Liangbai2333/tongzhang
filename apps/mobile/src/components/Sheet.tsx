@@ -23,17 +23,23 @@ export function Sheet({
   title,
   onClose,
   children,
-}: PropsWithChildren<{ visible: boolean; title: string; onClose: () => void }>) {
+  contentKey,
+}: PropsWithChildren<{
+  visible: boolean;
+  title: string;
+  onClose: () => void;
+  contentKey?: string;
+}>) {
   const [mounted, setMounted] = useState(visible);
   const progress = useRef(new Animated.Value(0)).current;
   const reduced = useReducedMotion();
   const insets = useSafeAreaInsets();
   // Retain the visible panel while its exit animation completes.
-  const lastVisible = useRef({ title, children });
+  const lastVisible = useRef({ title, children, contentKey });
   useEffect(() => {
-    if (visible) lastVisible.current = { title, children };
-  }, [visible, title, children]);
-  const content = visible ? { title, children } : lastVisible.current;
+    if (visible) lastVisible.current = { title, children, contentKey };
+  }, [visible, title, children, contentKey]);
+  const content = visible ? { title, children, contentKey } : lastVisible.current;
   useEffect(() => {
     if (visible) setMounted(true);
     const animation = Animated.timing(progress, {
@@ -69,7 +75,7 @@ export function Sheet({
           ]}
         />
         <Pressable
-          accessibilityLabel="关闭面板"
+          accessibilityLabel="关闭面板遮罩"
           accessibilityRole="button"
           style={StyleSheet.absoluteFill}
           onPress={onClose}
@@ -102,9 +108,11 @@ export function Sheet({
             </Touch>
           </View>
           <ScrollView
+            key={content.contentKey}
+            style={styles.scroll}
             keyboardShouldPersistTaps="handled"
             contentContainerStyle={styles.content}
-            showsVerticalScrollIndicator={false}
+            showsVerticalScrollIndicator
           >
             {content.children}
           </ScrollView>
@@ -130,6 +138,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   header: {
+    flexShrink: 0,
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 24,
@@ -137,5 +146,6 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   close: { width: 44, height: 44, alignItems: 'center', justifyContent: 'center' },
+  scroll: { flexShrink: 1 },
   content: { padding: 24, paddingTop: 16, gap: 16 },
 });

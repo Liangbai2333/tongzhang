@@ -1,0 +1,179 @@
+{
+  "date": "2026-10-24",
+  "runtime": {
+    "package": "com.tongzhang.app",
+    "versionName": "0.1.0",
+    "nativeClient": "existing Expo SDK 57 development build",
+    "installedApkSha256": "354c65b16add56c1b6cc3b9d80561a362dc8985889ce06e80b0e8b1f7f39861e",
+    "deviceSerial": "emulator-5554",
+    "avd": "Medium_Phone",
+    "androidRelease": "14",
+    "apiLevel": 34,
+    "originalPixels": [1080, 2400],
+    "originalDensityDpi": 420,
+    "originalShowImeWithHardwareKeyboard": "1",
+    "captureMethod": "ADB screencap of the actual native screen; UIAutomator assertions and native input events authorized by user",
+    "backend": "actual local Fastify API and development PostgreSQL for account login; no mock login",
+    "restoredOriginalSizeAndDensity": true,
+    "showImeWithHardwareKeyboardUnchanged": true,
+    "temporaryAdbReverseMappingsRemoved": true,
+    "temporaryUiDumpRemoved": true,
+    "ownedEmulatorStopped": true
+  },
+  "checks": {
+    "androidStandard": {
+      "api": 34,
+      "androidRelease": "14",
+      "physicalPixels": [1080, 2400],
+      "densityDpi": 420,
+      "systemBackClosesDocument": true,
+      "headerClose": true,
+      "backdropClose": true,
+      "footerClose": true,
+      "preservesRegistrationFieldsErrorAndUncheckedConsentAfterBack": true,
+      "preservesLoginCredentialsAfterAllCloseMethods": true,
+      "privacyScrolledToEnd": true,
+      "realLocalAccountLoginAndAllProfileDocuments": true
+    },
+    "androidSmall": {
+      "overridePixels": [720, 1280],
+      "densityDpi": 320,
+      "logicalDp": [360, 640],
+      "softwareKeyboardObserved": true,
+      "loginSubmitAboveIme": true,
+      "dragDismissesImeAndRevealsDocumentLinks": true,
+      "privacyScrollToEndAndHeaderClose": true,
+      "loginCredentialsPreservedAndTypingResumed": true,
+      "registrationKeyboardObserved": true,
+      "registrationTermsOpenAndBackClose": true,
+      "registrationFieldsErrorsAndUncheckedConsentPreserved": true
+    }
+  },
+  "screenshots": [
+    {
+      "file": "android-account-about.png",
+      "width": 1080,
+      "height": 2400,
+      "sha256": "fe378fca8ea04327a62a5733b121c0b173c25355a0cbf4608c917770c6bb7285"
+    },
+    {
+      "file": "android-account-entries.png",
+      "width": 1080,
+      "height": 2400,
+      "sha256": "ec73ef9c78152cff287390eebe6b8643524a29a923a3c032958dfbbc277232d5"
+    },
+    {
+      "file": "android-back-restored.png",
+      "width": 1080,
+      "height": 2400,
+      "sha256": "74f2835d5ef0826536cd61b41e1ffca58736816553bee290ac5a60a066cd22b6"
+    },
+    {
+      "file": "android-login-back-restored.png",
+      "width": 1080,
+      "height": 2400,
+      "sha256": "276e7ed15b8a15bcf8a824eba8e5aa9c80c593a9c181b96f07668f3c156224ff"
+    },
+    {
+      "file": "android-login-header-restored.png",
+      "width": 1080,
+      "height": 2400,
+      "sha256": "276e7ed15b8a15bcf8a824eba8e5aa9c80c593a9c181b96f07668f3c156224ff"
+    },
+    {
+      "file": "android-login-terms-top.png",
+      "width": 1080,
+      "height": 2400,
+      "sha256": "4cd19cea1efb9304984a66d5a6ed8ee3b45aeffc81f43e6ae0afd56ac0e70be7"
+    },
+    {
+      "file": "android-register-before-reading.png",
+      "width": 1080,
+      "height": 2400,
+      "sha256": "947a4098bc6e8c43eccad67c92db9bc1268b0152eeced97335415872205db0be"
+    },
+    {
+      "file": "android-register-privacy-bottom.png",
+      "width": 1080,
+      "height": 2400,
+      "sha256": "d42ce35c32cdbeca8c723da24f57158ce3a778384f361661f02e4a91d59e64c3"
+    },
+    {
+      "file": "android-register-privacy-top.png",
+      "width": 1080,
+      "height": 2400,
+      "sha256": "b8686036f13ed7412cd528fa6e43c7d1c75b1e3ba7c7e1afd55e0127b06b7282"
+    },
+    {
+      "file": "android-small-login-keyboard.png",
+      "width": 720,
+      "height": 1280,
+      "sha256": "9d11d584a105b336ecf46e737d165eaf965bfce48b34578a87c57364b0277231"
+    },
+    {
+      "file": "android-small-login-links-after-drag.png",
+      "width": 720,
+      "height": 1280,
+      "sha256": "376ab40e43a16daa71a0f7e1050a14727102eb0add41a23b5661470f3d924471"
+    },
+    {
+      "file": "android-small-login-restored.png",
+      "width": 720,
+      "height": 1280,
+      "sha256": "ab071d4829aa3ccfbe1abc75861e4c6303f450103a40c766e47660385b1fa08b"
+    },
+    {
+      "file": "android-small-login-resumed-keyboard.png",
+      "width": 720,
+      "height": 1280,
+      "sha256": "ac7408909968a4e8b025dd2113505500290e28024f390853812e0c26454d724d"
+    },
+    {
+      "file": "android-small-privacy-bottom.png",
+      "width": 720,
+      "height": 1280,
+      "sha256": "bc0289526aac24bb66b93feabef175845281f84159f8ebb9a45565a3bf55f8dd"
+    },
+    {
+      "file": "android-small-privacy-top.png",
+      "width": 720,
+      "height": 1280,
+      "sha256": "ba1572a388d35bf41c0e5fe63e9c26e85a4e61593af6519ca8b1d538ca2e9524"
+    },
+    {
+      "file": "android-small-register-keyboard.png",
+      "width": 720,
+      "height": 1280,
+      "sha256": "56150df355de2922389379f6113fc6649b85fb797f45dfe10b498b61bd84e618"
+    },
+    {
+      "file": "android-small-register-restored-fields.png",
+      "width": 720,
+      "height": 1280,
+      "sha256": "e02e2f9ec70ca5bbbaa3029d98fa0acf61eeb547c284183e183322dca8246041"
+    },
+    {
+      "file": "android-small-register-restored.png",
+      "width": 720,
+      "height": 1280,
+      "sha256": "08e948d97c8e997135b090d732742d3fa54114e7d0b771bda2ca8850205fb073"
+    },
+    {
+      "file": "android-small-register-terms.png",
+      "width": 720,
+      "height": 1280,
+      "sha256": "3de57ebd946d3fc4719bc1c76fd1b0774c7b002df7b4bcf6c03787fadc987c57"
+    }
+  ],
+  "limitations": [
+    "Emulator testing; no physical Android handset",
+    "Small display is a native Android wm override on the same AVD",
+    "Dragging the auth form dismisses IME before opening a document; no forced document-plus-IME overlay",
+    "No new application code, dependency or native configuration changes in this validation pass",
+    "No large-font or screen-reader manual acceptance"
+  ],
+  "captureNotes": [
+    "Privacy opening screenshot uses the settled native frame from the first opening; an immediately-after-tap frame showing the source form was discarded.",
+    "Small registration values were rechecked by scrolling the source form after Back; off-screen fields are not treated as missing data."
+  ]
+}
