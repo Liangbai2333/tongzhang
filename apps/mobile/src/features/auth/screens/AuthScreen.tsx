@@ -9,7 +9,7 @@ import { Touch } from '@/components/Touch';
 import { FigmaAsset, figmaAssets } from '@/icons/FigmaAsset';
 import { colors } from '@/theme/tokens';
 import { useAuth } from '@/providers/AuthProvider';
-import { ApiError } from '@/lib/api-error';
+import { requestErrorMessage } from '@/components/Feedback';
 import { createAuthResolver, emptyAuthForm, type AuthFormValues } from '../form';
 import { AuthNotice, FormError, LegalSheet } from '../components';
 
@@ -53,7 +53,10 @@ export default function AuthScreen({ register = false }: { register?: boolean })
         });
     } catch (error) {
       setRequestError(
-        error instanceof ApiError ? error.message : '暂时无法完成登录，请稍后手动重试',
+        requestErrorMessage(
+          error,
+          register ? '暂时无法创建账号，请稍后手动重试' : '暂时无法完成登录，请稍后手动重试',
+        ),
       );
     }
   });
