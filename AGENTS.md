@@ -7,6 +7,15 @@
 - 当前仅工程骨架，不用假登录、假账本或模拟余额冒充业务实现。
 - 路由位于 apps/mobile/app；页面实现位于 src/features，面板和错误状态不单独建全屏路由。
 
+## 协作
+
+- 开始任务前阅读 [CONTRIBUTING.md](CONTRIBUTING.md)，遵守其中的 Issue、提交、PR 和验收流程。
+- 新任务分支按改动类型使用 `feat/`、`fix/`、`test/`、`docs/`、`chore/`、`ci/` 前缀，不使用 `codex/`；已有分支不擅自重命名。
+- PR 不使用固定模板，简要说明关联任务、修改内容和实际验证结果；界面改动附截图，不新增 PR 固定模板。
+- 成员通过 PR 提交，由系统架构负责人审核并以 Rebase and merge 合并，保持线性历史；未经用户明确要求，不提交、推送、合并或改写共享历史。
+- 只处理本次任务相关修改，保留他人未提交工作，不擅自更改作者、提交者或时间。
+- 部分完成用 `Refs #编号`，完整解决才用 `Closes #编号`；任务验收通过后再更新完成状态和剩余点数。
+
 ## 边界
 
 - apps/mobile 和 apps/server 只通过 packages/contracts、packages/domain 共享代码。
