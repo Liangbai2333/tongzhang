@@ -151,9 +151,11 @@ describe('real PostgreSQL idempotency through an isolated HTTP adapter', () => {
       keys: 1,
     });
   });
-  it('serializes four simultaneous identical requests into one committed effect', async () => {
-    const key = randomUUID();
-    const responses = await Promise.all(Array.from({ length: 4 }, () => submit(key)));
+  it('serializes concurrent requests using differently cased UUIDs into one committed effect', async () => {
+    const key = `aaaaaaaa-${randomUUID().slice(9)}`;
+    const responses = await Promise.all(
+      Array.from({ length: 4 }, (_, index) => submit(index % 2 ? key.toUpperCase() : key)),
+    );
     expect(responses.map((r) => r.statusCode)).toEqual([200, 200, 200, 200]);
     for (const response of responses) expect(response.json()).toEqual(responses[0]!.json());
     expect(await counts()).toMatchObject({ version: 2, audits: 1, keys: 1 });
