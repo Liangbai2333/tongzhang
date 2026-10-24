@@ -1,0 +1,53 @@
+{
+  "date": "2026-10-24",
+  "platform": "darwin",
+  "architecture": "arm64",
+  "checks": [
+    {
+      "name": "Node",
+      "status": "warn",
+      "detail": "v24.22.0; repository 24.21.0"
+    },
+    {
+      "name": "pnpm",
+      "status": "pass",
+      "detail": "12.6.0; repository 12.6.0"
+    },
+    {
+      "name": "Docker",
+      "status": "pass",
+      "detail": "29.8.2"
+    },
+    {
+      "name": "Compose",
+      "status": "pass",
+      "detail": "5.5.1"
+    },
+    {
+      "name": "iOS tools",
+      "status": "pass",
+      "detail": "Requires macOS, Xcode and an installed simulator runtime; this check does not install the app."
+    },
+    {
+      "name": "Server configuration",
+      "status": "pass",
+      "detail": "PostgreSQL 127.0.0.1:35432/tongzhang; private credentials validated without printing them."
+    },
+    {
+      "name": "PostgreSQL",
+      "status": "pass",
+      "detail": "SELECT 1 succeeded."
+    },
+    {
+      "name": "Mobile API configuration",
+      "status": "pass",
+      "detail": "http://localhost:3300"
+    },
+    {
+      "name": "API readiness",
+      "status": "pass",
+      "detail": "API reports a real PostgreSQL connection."
+    }
+  ],
+  "ok": true
+}

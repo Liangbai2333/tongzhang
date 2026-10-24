@@ -29,6 +29,7 @@
     "typecheck": "pnpm -r typecheck",
     "lint": "eslint . --max-warnings=0",
     "check:format": "prettier --check .",
+    "check:env": "node scripts/check-env.mjs",
     "check:mobile-deps": "pnpm --filter @tongzhang/mobile exec expo install --check",
     "doctor:mobile": "pnpm dlx expo-doctor@1.21.5 apps/mobile",
     "format": "prettier --write .",

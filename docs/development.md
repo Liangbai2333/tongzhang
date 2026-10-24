@@ -55,20 +55,21 @@ Compose 的 `--env-file` 给 `${变量}` 提供值，只有 `environment` 显式
 
 根目录 `package.json` 按初始化、开发、构建与导出、数据库、检查与格式化、测试排列。日常从仓库根目录运行下列命令：
 
-| 类别       | 命令                                                        | 职责                                                              |
-| ---------- | ----------------------------------------------------------- | ----------------------------------------------------------------- |
-| 初始化     | `setup`、`setup:env`                                        | 完整开发初始化 / 仅创建缺失的应用环境文件                         |
-| 开发       | `dev`、`dev:ios`、`dev:android`                             | 启动共享包监听、API 和 Metro；可指定打开的平台                    |
-| 单独开发   | `dev:shared`、`dev:server`、`dev:mobile`                    | 共享包监听 / 服务端及共享包监听 / Metro                           |
-| 构建       | `build:shared`、`build:server`                              | 编译共享包 / 先编译共享包再编译服务端                             |
-| 原生构建   | `build:ios`、`build:android`                                | 先编译共享包，再 Prebuild、编译安装开发客户端，不启动 Metro       |
-| 导出       | `export:mobile`                                             | 先编译共享包，再导出 Android / iOS JavaScript 包                  |
-| 数据库启停 | `up:db`、`down:db`                                          | 启动 / 停止开发数据库，保留数据卷                                 |
-| 数据库迁移 | `generate:db`、`migrate:db`                                 | 生成待审查的迁移文件 / 应用已提交的迁移                           |
-| 静态检查   | `check`、`typecheck`、`lint`、`check:format`                | 完整静态检查 / 类型检查 / ESLint / 格式检查                       |
-| 移动端检查 | `check:mobile-deps`、`doctor:mobile`                        | Expo 依赖兼容性检查 / Expo Doctor                                 |
-| 格式化     | `format`                                                    | 用 Prettier 改写格式                                              |
-| 测试       | `test`、`test:mobile`、`test:integration`、`test:container` | 纯逻辑测试 / 移动端组件测试 / 专用数据库集成测试 / 已构建镜像验证 |
+| 类别       | 命令                                                        | 职责                                                                      |
+| ---------- | ----------------------------------------------------------- | ------------------------------------------------------------------------- |
+| 初始化     | `setup`、`setup:env`                                        | 完整开发初始化 / 仅创建缺失的应用环境文件                                 |
+| 开发       | `dev`、`dev:ios`、`dev:android`                             | 启动共享包监听、API 和 Metro；可指定打开的平台                            |
+| 单独开发   | `dev:shared`、`dev:server`、`dev:mobile`                    | 共享包监听 / 服务端及共享包监听 / Metro                                   |
+| 构建       | `build:shared`、`build:server`                              | 编译共享包 / 先编译共享包再编译服务端                                     |
+| 原生构建   | `build:ios`、`build:android`                                | 先编译共享包，再 Prebuild、编译安装开发客户端，不启动 Metro               |
+| 导出       | `export:mobile`                                             | 先编译共享包，再导出 Android / iOS JavaScript 包                          |
+| 数据库启停 | `up:db`、`down:db`                                          | 启动 / 停止开发数据库，保留数据卷                                         |
+| 数据库迁移 | `generate:db`、`migrate:db`                                 | 生成待审查的迁移文件 / 应用已提交的迁移                                   |
+| 静态检查   | `check`、`typecheck`、`lint`、`check:format`                | 完整静态检查 / 类型检查 / ESLint / 格式检查                               |
+| 环境检查   | `check:env`                                                 | 只读检查工具链、数据库及 API；支持 --tools-only、--ios、--android、--json |
+| 移动端检查 | `check:mobile-deps`、`doctor:mobile`                        | Expo 依赖兼容性检查 / Expo Doctor                                         |
+| 格式化     | `format`                                                    | 用 Prettier 改写格式                                                      |
+| 测试       | `test`、`test:mobile`、`test:integration`、`test:container` | 纯逻辑测试 / 移动端组件测试 / 专用数据库集成测试 / 已构建镜像验证         |
 
 工作区依赖不会自动触发共享包构建；需要先后执行的步骤由脚本中的 `&&` 明确串联。根目录 `build:ios` 调用移动端包的同名命令，不会递归调用自身，因为 `--filter @tongzhang/mobile` 已选择目标包。旧命令名不保留别名，避免出现重复入口。
 
@@ -159,7 +160,7 @@ docker compose --env-file apps/server/.env -f infra/compose.dev.yml exec -T post
 TEST_DATABASE_URL=postgresql://tongzhang:tongzhang_local_only@127.0.0.1:35432/tongzhang_test pnpm test:integration
 ```
 
-测试库创建一次即可；测试自行应用迁移。`pnpm test` 不需要数据库；`pnpm test:mobile` 使用 Jest Expo 的 iOS / Android preset 与 React Native Testing Library，覆盖真实组件和 Provider，原生网络/存储依赖在这些组件测试中使用替身。`test-renderer` 固定为兼容 React 19.2 的 1.2.0，不单独升级 React。CI 同步运行两个入口。`export:mobile` 只验证 Android / iOS JavaScript 打包，不生成 APK/IPA，不等于原生安装或真机验收。
+测试库创建一次即可；全局 setup 在并发用例启动前应用已审查迁移，防止空库建表与账号请求竞争。账号和账本夹具按本次跟踪的 ID 清理，不清空全表；测试专用幂等 HTTP 适配器不会注册到生产应用。实际覆盖与边界见[认证/权限/幂等回归](auth-regression-validation.md)。`pnpm test` 不需要数据库；`pnpm test:mobile` 使用 Jest Expo 的 iOS / Android preset 与 React Native Testing Library，覆盖真实组件和 Provider，原生网络/存储依赖在这些组件测试中使用替身。`test-renderer` 固定为兼容 React 19.2 的 1.2.0，不单独升级 React。CI 同步运行两个入口。`export:mobile` 只验证 Android / iOS JavaScript 打包，不生成 APK/IPA，不等于原生安装或真机验收。
 
 容器验证使用临时 Compose 项目和独立数据库，不读取开发或生产 `.env`：
 

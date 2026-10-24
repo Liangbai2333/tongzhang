@@ -27,6 +27,7 @@ export default [
         URL: 'readonly',
         fetch: 'readonly',
         AbortController: 'readonly',
+        AbortSignal: 'readonly',
         setTimeout: 'readonly',
         clearTimeout: 'readonly',
         __DEV__: 'readonly',

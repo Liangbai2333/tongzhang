@@ -42,6 +42,7 @@ scripts             环境初始化、开发进程编排与容器验证
 
 ```bash
 pnpm check
+pnpm check:env --tools-only
 pnpm test
 pnpm test:mobile
 pnpm build:server
@@ -62,6 +63,9 @@ pnpm export:mobile
 - [模块架构、职责与开发入口](docs/modules/README.md)
 - [移动端认证实现与验证](docs/mobile-auth-validation.md)
 - [双令牌认证变更与验证](docs/auth-token-validation.md)
+- [登录、权限与幂等回归](docs/auth-regression-validation.md)
+- [公共反馈组件与登录复测](docs/common-feedback-validation.md)
+- [成员环境、启动与 CI 支持](docs/environment-validation-2026-10-24.md)
 - [模块骨架验证记录](docs/module-skeleton-validation.md)
 - [架构与目录约定](docs/architecture.md)
 - [业务约束](docs/product-spec.md)
