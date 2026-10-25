@@ -12,12 +12,12 @@
 
 ### 联调契约与错误说明
 
-| 接口           | 成功                                                                                              | 说明                                                                                                 |
-| -------------- | ------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| `createLedger` | 201 `{ ledger, invitation }`                                                                      | 必带 `Idempotency-Key`；`coverKey` 与 `coverImageId` 二选一，目前仅支持 `coverKey`                   |
-| `listLedgers`  | 200 `{ data, page.nextCursor }`                                                                   | `archived=false`（默认）为进行中，`true` 为个人已归档；按加入时间倒序，`cursor` 只用服务端返回的原值 |
-| `getLedger`    | 200 `{ data }`，含 `members`、`myPaidCents`、`mySharedCents`、`myNetCents`、`myRemainingNetCents` | 与成员接口、列表摘要来自同一份真实数据                                                               |
-| `listMembers`  | 200 `{ data: Member[] }`                                                                          | `netCents`、`remainingNetCents` 复用余额模块公式                                                     |
+| 接口           | 成功                                                                                              | 说明                                                                                                                     |
+| -------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `createLedger` | 201 `{ data: { ledger, invitation } }`                                                            | 必带 `Idempotency-Key`；`coverKey` 与 `coverImageId` 二选一，目前仅支持 `coverKey`                                       |
+| `listLedgers`  | 200 `{ data, page: { nextCursor } }`                                                              | `archived=false`（默认）为未个人归档（不限财务状态），`true` 为个人已归档；按加入时间倒序，`cursor` 只用服务端返回的原值 |
+| `getLedger`    | 200 `{ data }`，含 `members`、`myPaidCents`、`mySharedCents`、`myNetCents`、`myRemainingNetCents` | 与成员接口、列表摘要来自同一份真实数据                                                                                   |
+| `listMembers`  | 200 `{ data: Member[] }`                                                                          | `netCents`、`remainingNetCents` 复用余额模块公式                                                                         |
 
 | HTTP | `error.code`           | 触发                                                            | 前端处理                   |
 | ---- | ---------------------- | --------------------------------------------------------------- | -------------------------- |
@@ -69,3 +69,7 @@
 建议贯通路径：创建 → 加入三人 → 详情 → 结算结清 → 个人归档。
 
 验收覆盖：重复创建重试、未结清归档、跨账本访问、个人归档不影响其他人、无效封面引用。
+
+## 7 当前操作索引与实测
+
+完整路径、请求/响应字段、错误及双账号 App 步骤见[建账与邀请操作索引](../ledger-invitation-api-guide.md)；当前主线原生实操和 CI 证据见 [Issue #19 验证](../issue19-native-environment-validation.md)。列表 archived 条件是个人归档筛选，不是 ACTIVE 状态筛选。

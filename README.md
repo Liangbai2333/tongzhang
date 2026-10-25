@@ -72,6 +72,8 @@ pnpm export:mobile
 - [双令牌认证变更与验证](docs/auth-token-validation.md)
 - [登录、权限与幂等回归](docs/auth-regression-validation.md)
 - [Issue #18 建账、邀请码与加入自动化测试](docs/issue18-ledger-invitation-tests.md)
+- [Issue #19 建账、加入原生联调与 CI](docs/issue19-native-environment-validation.md)
+- [建账与邀请接口索引、双账号操作说明（#20）](docs/ledger-invitation-api-guide.md)
 - [公共反馈组件与登录复测](docs/common-feedback-validation.md)
 - [成员环境、启动与 CI 支持](docs/environment-validation-2026-10-24.md)
 - [模块骨架验证记录](docs/module-skeleton-validation.md)
@@ -85,4 +87,4 @@ pnpm export:mobile
 
 账号、账本、邀请、消费新增/查询、收据、余额和只读结算预览的移动端页面已接通真实接口；完整结算和个人归档流程仍待后续实现。
 
-移动端建账、账本列表/详情、成员面板和邀请码预览/加入已按真实接口契约接线，登录后进入账本列表。对应服务端 [PR #21](https://github.com/Liangbai2333/tongzhang/pull/21) 已合入主线，当前任务分支已同步到 `574d58b`，可直接联调当前工作区 API。原生截图、历史隔离联调及本次主线回归结果见 [建账与邀请界面验证](docs/ledger-invitation-ui-validation.md)。本轮已接通消费与收据的移动端流程、成员余额和只读结算预览，见 [实际验证](docs/mobile-expenses-validation.md)；结算进度读取、登记已还、确认结清、消费改删、自定义封面绑定和个人归档服务端仍未实现。
+移动端建账、账本列表/详情、成员面板和邀请码预览/加入已按真实接口契约接线，登录后进入账本列表。对应服务端 [PR #21](https://github.com/Liangbai2333/tongzhang/pull/21) 与移动端 [PR #25](https://github.com/Liangbai2333/tongzhang/pull/25) 均已合入主线；当前版本的接口与双账号操作见 [接口索引](docs/ledger-invitation-api-guide.md)，主线 `3cb6e0b` 的本轮复测见 [原生联调记录](docs/issue19-native-environment-validation.md)。原生截图、历史隔离联调及本次主线回归结果见 [建账与邀请界面验证](docs/ledger-invitation-ui-validation.md)。本轮已接通消费与收据的移动端流程、成员余额和只读结算预览，见 [实际验证](docs/mobile-expenses-validation.md)；结算进度读取、登记已还、确认结清、消费改删、自定义封面绑定和个人归档服务端仍未实现。
