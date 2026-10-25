@@ -1,14 +1,24 @@
-import { eq, sql } from 'drizzle-orm';
+import { and, eq, isNull, sql } from 'drizzle-orm';
+import { expenseDetailSchema } from '@tongzhang/contracts';
 import { allocateExpense, type SplitInput } from '@tongzhang/domain';
 import type { Handler } from '../../http/context.js';
 import { notReady } from '../../http/not-ready.js';
 import { withTransaction, type Orm } from '../../db/transaction.js';
 import { executeIdempotent } from '../../db/idempotency.js';
 import { appendAudit } from '../../db/audit.js';
-import { expenseSplits, expenses, ledgerMembers, ledgers, users } from '../../db/schema/index.js';
+import {
+  expenseImages,
+  expenseSplits,
+  expenses,
+  ledgerMembers,
+  ledgers,
+  users,
+} from '../../db/schema/index.js';
 import { AppError } from '../../http/errors.js';
 import { requireActive, requireLedgerMember } from '../ledgers/index.js';
-import { receiptBindingNotReady, type ReceiptBinder } from './receipt.js';
+import type { ReceiptBinder } from './receipt.js';
+import { receiptBinder } from '../images/index.js';
+import { queryExpenses } from './queries.js';
 
 export interface ExpensesService {
   createExpense: Handler<'createExpense'>;
@@ -20,7 +30,7 @@ export interface ExpensesService {
 
 export function createExpensesService(
   db: Orm,
-  receipts: ReceiptBinder = receiptBindingNotReady,
+  receipts: ReceiptBinder = receiptBinder,
 ): ExpensesService {
   const createExpense: Handler<'createExpense'> = async (input, context) => {
     if (!context.principal) throw new AppError('UNAUTHENTICATED', '请先登录', 401);
@@ -182,10 +192,79 @@ export function createExpensesService(
     return result.body as Awaited<ReturnType<Handler<'createExpense'>>>;
   };
 
+  const listExpenses: Handler<'listExpenses'> = async (input, context) => {
+    if (!context.principal) throw new AppError('UNAUTHENTICATED', '请先登录', 401);
+    const userId = context.principal.userId;
+    return db.transaction(
+      async (tx) => {
+        await requireLedgerMember(tx, input.params.ledgerId, userId);
+        return queryExpenses(tx, input.params.ledgerId, input.query);
+      },
+      { isolationLevel: 'repeatable read', accessMode: 'read only' },
+    );
+  };
+
+  const getExpense: Handler<'getExpense'> = async (input, context) => {
+    if (!context.principal) throw new AppError('UNAUTHENTICATED', '请先登录', 401);
+    const userId = context.principal.userId;
+    const { ledgerId, expenseId } = input.params;
+    return db.transaction(
+      async (tx) => {
+        const access = await requireLedgerMember(tx, ledgerId, userId);
+        const [expense] = await tx
+          .select()
+          .from(expenses)
+          .where(
+            and(
+              eq(expenses.ledgerId, ledgerId),
+              eq(expenses.id, expenseId),
+              isNull(expenses.deletedAt),
+            ),
+          );
+        if (!expense) throw new AppError('NOT_FOUND', '消费记录不存在', 404);
+        const members = await tx
+          .select({ id: ledgerMembers.id, username: users.username })
+          .from(ledgerMembers)
+          .innerJoin(users, eq(users.id, ledgerMembers.userId))
+          .where(eq(ledgerMembers.ledgerId, ledgerId));
+        const names = new Map(members.map((m) => [m.id, m.username]));
+        const splits = await tx
+          .select()
+          .from(expenseSplits)
+          .where(eq(expenseSplits.expenseId, expense.id))
+          .orderBy(expenseSplits.memberId);
+        const [receipt] = await tx
+          .select({ imageId: expenseImages.imageId })
+          .from(expenseImages)
+          .where(eq(expenseImages.expenseId, expense.id));
+        return {
+          data: expenseDetailSchema.parse({
+            ...expense,
+            amountCents: expense.amountCents.toString(),
+            payerName: names.get(expense.payerMemberId),
+            recorderName: names.get(expense.recorderMemberId),
+            splits: splits.map((s) => ({
+              ...s,
+              username: names.get(s.memberId),
+              amountCents: s.amountCents.toString(),
+            })),
+            receiptImageId: receipt?.imageId ?? null,
+            createdAt: expense.createdAt.toISOString(),
+            updatedAt: expense.updatedAt.toISOString(),
+            canEdit:
+              access.status === 'ACTIVE' &&
+              (access.isCreator || access.memberId === expense.recorderMemberId),
+          }),
+        };
+      },
+      { isolationLevel: 'repeatable read', accessMode: 'read only' },
+    );
+  };
+
   return {
     createExpense,
-    listExpenses: notReady('listExpenses'),
-    getExpense: notReady('getExpense'),
+    listExpenses,
+    getExpense,
     updateExpense: notReady('updateExpense'),
     deleteExpense: notReady('deleteExpense'),
   };

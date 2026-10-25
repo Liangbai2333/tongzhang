@@ -281,12 +281,151 @@ describe('createExpense', () => {
     expect(ledger!.version).toBe(1);
   });
 
-  it('blocks receipt binding until the image module is wired', async () => {
+  it('rejects a missing receipt without leaving a partial expense', async () => {
     const s = await seed();
     const res = await post(s.owner.accessToken, bodyFor(s, { receiptImageId: randomUUID() }));
-    expect(res.statusCode).toBe(501);
+    expect(res.statusCode).toBe(403);
     expect(
       await fixture.db.orm.select().from(expenses).where(eq(expenses.ledgerId, ledgerId!)),
     ).toHaveLength(0);
+  });
+});
+
+const get = (token: string, suffix = '', query = '') =>
+  fixture.app.inject({
+    url: `/api/v1/ledgers/${ledgerId}/expenses${suffix}${query}`,
+    headers: { authorization: `Bearer ${token}` },
+  });
+
+describe('expense queries', () => {
+  it('reads the real two-person expense and server allocation from either member, with one record after replay', async () => {
+    const s = await seed();
+    const key = randomUUID();
+    const created = await post(s.owner.accessToken, bodyFor(s, { note: '保留备注' }), key);
+    await post(s.owner.accessToken, bodyFor(s, { note: '保留备注' }), key);
+    const id = created.json().data.id;
+    for (const account of [s.owner, s.friend]) {
+      const list = await get(account.accessToken);
+      expect(list.statusCode).toBe(200);
+      expect(list.headers['cache-control']).toBe('no-store');
+      expect(list.json().data).toHaveLength(1);
+      expect(list.json().data[0]).toMatchObject({
+        id,
+        amountCents: '12000',
+        payerMemberId: s.ownerMember,
+      });
+      const detail = await get(account.accessToken, `/${id}`);
+      expect(detail.statusCode).toBe(200);
+      expect(detail.json().data).toMatchObject({
+        id,
+        note: '保留备注',
+        receiptImageId: null,
+        recorderMemberId: s.ownerMember,
+        canEdit: account === s.owner,
+      });
+      expect(detail.json().data.splits.map((x: { amountCents: string }) => x.amountCents)).toEqual([
+        '6000',
+        '6000',
+      ]);
+    }
+    await fixture.db.orm
+      .update(ledgers)
+      .set({ status: 'SETTLING' })
+      .where(eq(ledgers.id, ledgerId!));
+    expect((await get(s.owner.accessToken, `/${id}`)).json().data.canEdit).toBe(false);
+  });
+
+  it('only recorder or creator can edit; payer identity alone does not grant permission', async () => {
+    const s = await seed();
+    const third = await fixture.register();
+    await fixture.db.orm
+      .insert(ledgerMembers)
+      .values({ ledgerId: ledgerId!, userId: third.user.id });
+    const created = await post(s.friend.accessToken, bodyFor(s));
+    for (const account of [s.owner, s.friend, third]) {
+      expect(
+        (await get(account.accessToken, `/${created.json().data.id}`)).json().data.canEdit,
+      ).toBe(account !== third);
+    }
+  });
+
+  it('denies anonymous and nonmember list/detail reads, including missing ledgers', async () => {
+    const s = await seed();
+    const created = await post(s.owner.accessToken, bodyFor(s));
+    for (const suffix of ['', `/${created.json().data.id}`, `/${randomUUID()}`]) {
+      expect(
+        (await fixture.app.inject(`/api/v1/ledgers/${ledgerId}/expenses${suffix}`)).statusCode,
+      ).toBe(401);
+      expect((await get(s.outsider.accessToken, suffix)).statusCode).toBe(403);
+      const missingLedger = await fixture.app.inject({
+        url: `/api/v1/ledgers/${randomUUID()}/expenses${suffix}`,
+        headers: { authorization: `Bearer ${s.owner.accessToken}` },
+      });
+      expect(missingLedger.statusCode).toBe(403);
+    }
+    const otherLedger = await fixture.ledger(s.owner);
+    const crossLedger = await fixture.app.inject({
+      url: `/api/v1/ledgers/${otherLedger}/expenses/${created.json().data.id}`,
+      headers: { authorization: `Bearer ${s.owner.accessToken}` },
+    });
+    expect(crossLedger.statusCode).toBe(404);
+    expect((await get(s.owner.accessToken, `/${randomUUID()}`)).statusCode).toBe(404);
+  });
+
+  it('combines inclusive date, payer and category filters and excludes deleted rows', async () => {
+    const s = await seed();
+    const target = await post(s.owner.accessToken, bodyFor(s));
+    await post(s.owner.accessToken, bodyFor(s, { category: 'OTHER' }));
+    await post(s.owner.accessToken, bodyFor(s, { payerMemberId: s.friendMember }));
+    await post(s.owner.accessToken, bodyFor(s, { occurredOn: '2026-10-23' }));
+    const removed = await post(s.owner.accessToken, bodyFor(s));
+    await fixture.db.orm
+      .update(expenses)
+      .set({ deletedAt: new Date() })
+      .where(eq(expenses.id, removed.json().data.id));
+    const result = await get(
+      s.friend.accessToken,
+      '',
+      `?from=2026-10-24&to=2026-10-24&payerMemberId=${s.ownerMember.toUpperCase()}&category=DINING`,
+    );
+    expect(result.statusCode).toBe(200);
+    expect(result.json().data.map((x: { id: string }) => x.id)).toEqual([target.json().data.id]);
+    expect((await get(s.owner.accessToken, `/${removed.json().data.id}`)).statusCode).toBe(404);
+    expect((await get(s.owner.accessToken, '', '?from=2026-10-25&to=2026-10-24')).statusCode).toBe(
+      400,
+    );
+  });
+
+  it('paginates same-day ties by descending id without duplicates and rejects malformed cursors', async () => {
+    const s = await seed();
+    const ids: string[] = [];
+    for (let i = 0; i < 4; i++)
+      ids.push((await post(s.owner.accessToken, bodyFor(s))).json().data.id);
+    const older = (await post(s.owner.accessToken, bodyFor(s, { occurredOn: '2026-10-23' }))).json()
+      .data.id;
+    const collected: string[] = [];
+    let cursor: string | null = null;
+    do {
+      const page = await get(
+        s.friend.accessToken,
+        '',
+        `?limit=2${cursor ? `&cursor=${cursor}` : ''}`,
+      );
+      expect(page.statusCode).toBe(200);
+      collected.push(...page.json().data.map((x: { id: string }) => x.id));
+      cursor = page.json().page.nextCursor;
+    } while (cursor);
+    expect(collected).toEqual([...ids.sort().reverse(), older]);
+    for (const cursor of [
+      'not_base64',
+      '!!!',
+      Buffer.from(JSON.stringify(['2026-02-30', randomUUID()])).toString('base64url'),
+      Buffer.from(JSON.stringify(['2026-10-24', 'bad-id'])).toString('base64url'),
+    ]) {
+      expect(
+        (await get(s.owner.accessToken, '', `?cursor=${encodeURIComponent(cursor)}`)).statusCode,
+      ).toBe(400);
+    }
+    expect((await get(s.owner.accessToken, '', '?limit=51')).statusCode).toBe(400);
   });
 });
