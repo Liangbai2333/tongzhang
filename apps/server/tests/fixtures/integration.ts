@@ -10,6 +10,7 @@ import {
   expenses,
   imageAssets,
   idempotencyKeys,
+  invitations,
   ledgerMembers,
   ledgers,
   operationLogs,
@@ -48,6 +49,19 @@ export async function integrationFixture() {
       userIds.push(account.user.id);
       return account;
     },
+    /** Database-only user for bulk membership setup; registration is rate limited per app. */
+    async seedUser(username: string) {
+      const [row] = await db.orm
+        .insert(users)
+        .values({
+          username,
+          email: `${randomUUID()}@example.test`,
+          passwordHash: '$argon2id$v=19$m=19456,t=2,p=1$c2VlZGVkLW9ubHk$c2VlZGVkLW9ubHktaGFzaA',
+        })
+        .returning({ id: users.id });
+      userIds.push(row!.id);
+      return row!.id;
+    },
     async ledger(owner: TestAccount, members: TestAccount[] = []) {
       const id = randomUUID();
       ledgerIds.push(id);
@@ -73,7 +87,16 @@ export async function integrationFixture() {
               await tx.delete(operationLogs).where(inArray(operationLogs.actorUserId, userIds));
               await tx.delete(idempotencyKeys).where(inArray(idempotencyKeys.userId, userIds));
             }
+            // Ledgers created through the HTTP API are owned by fixture users; clean them as well.
+            const owned = userIds.length
+              ? await tx
+                  .select({ id: ledgers.id })
+                  .from(ledgers)
+                  .where(inArray(ledgers.createdByUserId, userIds))
+              : [];
+            for (const row of owned) if (!ledgerIds.includes(row.id)) ledgerIds.push(row.id);
             if (ledgerIds.length) {
+              await tx.delete(operationLogs).where(inArray(operationLogs.ledgerId, ledgerIds));
               await tx.delete(expenseImages).where(inArray(expenseImages.ledgerId, ledgerIds));
               await tx.delete(expenseSplits).where(inArray(expenseSplits.ledgerId, ledgerIds));
               await tx.delete(expenses).where(inArray(expenses.ledgerId, ledgerIds));
@@ -85,6 +108,7 @@ export async function integrationFixture() {
             if (userIds.length)
               await tx.delete(imageAssets).where(inArray(imageAssets.uploadedByUserId, userIds));
             if (ledgerIds.length) {
+              await tx.delete(invitations).where(inArray(invitations.ledgerId, ledgerIds));
               await tx.delete(ledgerMembers).where(inArray(ledgerMembers.ledgerId, ledgerIds));
               await tx.delete(ledgers).where(inArray(ledgers.id, ledgerIds));
             }

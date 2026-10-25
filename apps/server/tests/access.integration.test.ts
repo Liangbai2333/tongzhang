@@ -43,8 +43,9 @@ describe('real HTTP ledger access foundations', () => {
       expect.objectContaining({ statusCode: 403 }),
     );
     const response = await fixture.app.inject({
-      url: `/api/v1/ledgers/${ledgerId}`,
-      headers: { authorization: `Bearer ${member.accessToken}` },
+      method: 'POST',
+      url: `/api/v1/ledgers/${ledgerId}/archive`,
+      headers: { authorization: `Bearer ${member.accessToken}`, 'idempotency-key': randomUUID() },
     });
     expect(response.statusCode).toBe(501);
     expect(response.json().error.code).toBe('FEATURE_NOT_READY');
