@@ -1,0 +1,60 @@
+{
+  "sourceCommit": "3cb6e0bc7e5167d991b8454b1fce084739077b41",
+  "platform": "iPhone 18 Pro / iOS 27.0 Simulator",
+  "screenshots": [
+    {
+      "file": "01-created-invitation.png",
+      "width": 1206,
+      "height": 2622,
+      "sha256": "fb793a5fc1731112358fb0aed2023f4f8a56dfb12c10482272fac6fac36035eb"
+    },
+    {
+      "file": "02-invalid-code.png",
+      "width": 1206,
+      "height": 2622,
+      "sha256": "9f52d43fe2ef6dd8a50c8bdcd536d132eb3b187dffb31a8e8137045315bc468c"
+    },
+    {
+      "file": "03-expired-code.png",
+      "width": 1206,
+      "height": 2622,
+      "sha256": "db3d906d78e2e11ca74f9f64a0144571065ffed11b1942d9388e954ffa55bdca"
+    },
+    {
+      "file": "04-preview-one-member.png",
+      "width": 1206,
+      "height": 2622,
+      "sha256": "1caadc1366093807c2740739b53caef711813fe48dc9a65dc1f7156654e4ccc4"
+    },
+    {
+      "file": "05-b-members.png",
+      "width": 1206,
+      "height": 2622,
+      "sha256": "27959ea773b32050052598b71dcfd28de505c7fdd6bc3f44aa2f0032dcb890e9"
+    },
+    {
+      "file": "06-already-member.png",
+      "width": 1206,
+      "height": 2622,
+      "sha256": "7eb57ce582df33abb0cf49a98be3d7804de4ea0f4097728b321fac4cbd265301"
+    },
+    {
+      "file": "07-b-cold-start.png",
+      "width": 1206,
+      "height": 2622,
+      "sha256": "b6a4fc6a36042eee7431f43873275b2ab2988be191af2a88b6d0dbbfb1500252"
+    },
+    {
+      "file": "08-a-members.png",
+      "width": 1206,
+      "height": 2622,
+      "sha256": "182d0e0c887dadd1a558083371b3e9d9d724679150102c46f98709e1498bfa1b"
+    },
+    {
+      "file": "09-reset-invitation.png",
+      "width": 1206,
+      "height": 2622,
+      "sha256": "a05a7633ef0932c27d9c5a07906468516e85b7750591f30e0487b6da8584dc9f"
+    }
+  ]
+}

@@ -1,0 +1,412 @@
+{
+  "checkedAt": "2026-10-25T14:32:03.217Z",
+  "sourceCommit": "3cb6e0bc7e5167d991b8454b1fce084739077b41",
+  "api": "http://127.0.0.1:3319",
+  "database": {
+    "version": "PostgreSQL 17.11 on aarch64-unknown-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit",
+    "current_database": "tongzhang_issue19_test",
+    "connected": 1
+  },
+  "db": {
+    "id": "976c298a-668b-4449-860b-cda727273726",
+    "name": "Issue19-20 Native",
+    "status": "ACTIVE",
+    "version": 2,
+    "members": 2,
+    "current_invitations": 1,
+    "expenses": 0
+  },
+  "cases": [
+    {
+      "label": "A list",
+      "method": "GET",
+      "path": "/api/v1/ledgers",
+      "status": 200,
+      "response": {
+        "data": [
+          {
+            "id": "976c298a-668b-4449-860b-cda727273726",
+            "name": "Issue19-20 Native",
+            "coverKey": "city",
+            "coverImageId": null,
+            "status": "ACTIVE",
+            "version": 2,
+            "memberCount": 2,
+            "expenseTotalCents": "0",
+            "myRemainingNetCents": "0",
+            "archivedAt": null,
+            "createdAt": "2026-10-25T14:27:14.781Z"
+          }
+        ],
+        "page": {
+          "nextCursor": null
+        }
+      }
+    },
+    {
+      "label": "A detail",
+      "method": "GET",
+      "path": "/api/v1/ledgers/976c298a-668b-4449-860b-cda727273726",
+      "status": 200,
+      "response": {
+        "data": {
+          "id": "976c298a-668b-4449-860b-cda727273726",
+          "name": "Issue19-20 Native",
+          "coverKey": "city",
+          "coverImageId": null,
+          "status": "ACTIVE",
+          "version": 2,
+          "memberCount": 2,
+          "expenseTotalCents": "0",
+          "myRemainingNetCents": "0",
+          "archivedAt": null,
+          "createdAt": "2026-10-25T14:27:14.781Z",
+          "creatorUserId": "3ee575ba-f7ea-4c2d-9b73-37a0fb4e8807",
+          "myMemberId": "407e08be-b3e3-4d23-bc42-26142dce9508",
+          "myPaidCents": "0",
+          "mySharedCents": "0",
+          "myNetCents": "0",
+          "members": [
+            {
+              "id": "407e08be-b3e3-4d23-bc42-26142dce9508",
+              "userId": "3ee575ba-f7ea-4c2d-9b73-37a0fb4e8807",
+              "username": "验收甲19",
+              "role": "CREATOR",
+              "joinedAt": "2026-10-25T14:27:14.781Z",
+              "netCents": "0",
+              "remainingNetCents": "0"
+            },
+            {
+              "id": "b1eecff1-6ec9-43e6-9497-7e78ca7c723b",
+              "userId": "704dcb68-0be0-4e21-83e9-87823f93b85f",
+              "username": "验收乙19",
+              "role": "MEMBER",
+              "joinedAt": "2026-10-25T14:28:58.185Z",
+              "netCents": "0",
+              "remainingNetCents": "0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "label": "A members",
+      "method": "GET",
+      "path": "/api/v1/ledgers/976c298a-668b-4449-860b-cda727273726/members",
+      "status": 200,
+      "response": {
+        "data": [
+          {
+            "id": "407e08be-b3e3-4d23-bc42-26142dce9508",
+            "userId": "3ee575ba-f7ea-4c2d-9b73-37a0fb4e8807",
+            "username": "验收甲19",
+            "role": "CREATOR",
+            "joinedAt": "2026-10-25T14:27:14.781Z",
+            "netCents": "0",
+            "remainingNetCents": "0"
+          },
+          {
+            "id": "b1eecff1-6ec9-43e6-9497-7e78ca7c723b",
+            "userId": "704dcb68-0be0-4e21-83e9-87823f93b85f",
+            "username": "验收乙19",
+            "role": "MEMBER",
+            "joinedAt": "2026-10-25T14:28:58.185Z",
+            "netCents": "0",
+            "remainingNetCents": "0"
+          }
+        ]
+      }
+    },
+    {
+      "label": "B list",
+      "method": "GET",
+      "path": "/api/v1/ledgers",
+      "status": 200,
+      "response": {
+        "data": [
+          {
+            "id": "976c298a-668b-4449-860b-cda727273726",
+            "name": "Issue19-20 Native",
+            "coverKey": "city",
+            "coverImageId": null,
+            "status": "ACTIVE",
+            "version": 2,
+            "memberCount": 2,
+            "expenseTotalCents": "0",
+            "myRemainingNetCents": "0",
+            "archivedAt": null,
+            "createdAt": "2026-10-25T14:27:14.781Z"
+          }
+        ],
+        "page": {
+          "nextCursor": null
+        }
+      }
+    },
+    {
+      "label": "B detail",
+      "method": "GET",
+      "path": "/api/v1/ledgers/976c298a-668b-4449-860b-cda727273726",
+      "status": 200,
+      "response": {
+        "data": {
+          "id": "976c298a-668b-4449-860b-cda727273726",
+          "name": "Issue19-20 Native",
+          "coverKey": "city",
+          "coverImageId": null,
+          "status": "ACTIVE",
+          "version": 2,
+          "memberCount": 2,
+          "expenseTotalCents": "0",
+          "myRemainingNetCents": "0",
+          "archivedAt": null,
+          "createdAt": "2026-10-25T14:27:14.781Z",
+          "creatorUserId": "3ee575ba-f7ea-4c2d-9b73-37a0fb4e8807",
+          "myMemberId": "b1eecff1-6ec9-43e6-9497-7e78ca7c723b",
+          "myPaidCents": "0",
+          "mySharedCents": "0",
+          "myNetCents": "0",
+          "members": [
+            {
+              "id": "407e08be-b3e3-4d23-bc42-26142dce9508",
+              "userId": "3ee575ba-f7ea-4c2d-9b73-37a0fb4e8807",
+              "username": "验收甲19",
+              "role": "CREATOR",
+              "joinedAt": "2026-10-25T14:27:14.781Z",
+              "netCents": "0",
+              "remainingNetCents": "0"
+            },
+            {
+              "id": "b1eecff1-6ec9-43e6-9497-7e78ca7c723b",
+              "userId": "704dcb68-0be0-4e21-83e9-87823f93b85f",
+              "username": "验收乙19",
+              "role": "MEMBER",
+              "joinedAt": "2026-10-25T14:28:58.185Z",
+              "netCents": "0",
+              "remainingNetCents": "0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "label": "B members",
+      "method": "GET",
+      "path": "/api/v1/ledgers/976c298a-668b-4449-860b-cda727273726/members",
+      "status": 200,
+      "response": {
+        "data": [
+          {
+            "id": "407e08be-b3e3-4d23-bc42-26142dce9508",
+            "userId": "3ee575ba-f7ea-4c2d-9b73-37a0fb4e8807",
+            "username": "验收甲19",
+            "role": "CREATOR",
+            "joinedAt": "2026-10-25T14:27:14.781Z",
+            "netCents": "0",
+            "remainingNetCents": "0"
+          },
+          {
+            "id": "b1eecff1-6ec9-43e6-9497-7e78ca7c723b",
+            "userId": "704dcb68-0be0-4e21-83e9-87823f93b85f",
+            "username": "验收乙19",
+            "role": "MEMBER",
+            "joinedAt": "2026-10-25T14:28:58.185Z",
+            "netCents": "0",
+            "remainingNetCents": "0"
+          }
+        ]
+      }
+    },
+    {
+      "label": "A invitation",
+      "method": "GET",
+      "path": "/api/v1/ledgers/976c298a-668b-4449-860b-cda727273726/invitation",
+      "status": 200,
+      "response": {
+        "data": {
+          "id": "e334433d-9f44-4259-a91f-6ec1a278732f",
+          "code": "F2KNYV",
+          "expiresAt": "2026-11-01T14:31:04.024Z",
+          "expired": false,
+          "qrPayload": "tongzhang:invite:v1:F2KNYV"
+        }
+      }
+    },
+    {
+      "label": "B invitation denied",
+      "method": "GET",
+      "path": "/api/v1/ledgers/976c298a-668b-4449-860b-cda727273726/invitation",
+      "status": 403,
+      "response": {
+        "error": {
+          "code": "FORBIDDEN",
+          "message": "你没有权限执行此操作"
+        },
+        "requestId": "005b0c11-be88-4fa4-8ddb-95dff79f3106"
+      }
+    },
+    {
+      "label": "B reset denied",
+      "method": "POST",
+      "path": "/api/v1/ledgers/976c298a-668b-4449-860b-cda727273726/invitation/reset",
+      "status": 403,
+      "response": {
+        "error": {
+          "code": "FORBIDDEN",
+          "message": "你没有权限执行此操作"
+        },
+        "requestId": "49ab17b3-cd2d-4e6b-9574-e2ed49fbbbeb"
+      }
+    },
+    {
+      "label": "Missing access token",
+      "method": "GET",
+      "path": "/api/v1/ledgers/976c298a-668b-4449-860b-cda727273726",
+      "status": 401,
+      "response": {
+        "error": {
+          "code": "UNAUTHENTICATED",
+          "message": "请先登录"
+        },
+        "requestId": "b78271b4-00cc-46f8-a83a-b47c73c39443"
+      }
+    },
+    {
+      "label": "Missing idempotency key",
+      "method": "POST",
+      "path": "/api/v1/ledgers",
+      "status": 400,
+      "response": {
+        "error": {
+          "code": "VALIDATION_ERROR",
+          "message": "缺少有效的 Idempotency-Key"
+        },
+        "requestId": "478f95e3-f359-471d-ba83-34cf475cc074"
+      }
+    },
+    {
+      "label": "Custom cover unavailable",
+      "method": "POST",
+      "path": "/api/v1/ledgers",
+      "status": 501,
+      "response": {
+        "error": {
+          "code": "FEATURE_NOT_READY",
+          "message": "自定义封面图片暂未开放，请选择预设封面"
+        },
+        "requestId": "f77a7082-ec0b-4b76-b1bb-4acddc19ee50"
+      }
+    },
+    {
+      "label": "Invalid cursor",
+      "method": "GET",
+      "path": "/api/v1/ledgers?cursor=broken",
+      "status": 400,
+      "response": {
+        "error": {
+          "code": "VALIDATION_ERROR",
+          "message": "分页游标无效"
+        },
+        "requestId": "c5a31350-d44b-400e-84c9-01051515804e"
+      }
+    },
+    {
+      "label": "Invalid code format",
+      "method": "POST",
+      "path": "/api/v1/invitations/preview",
+      "status": 400,
+      "response": {
+        "error": {
+          "code": "VALIDATION_ERROR",
+          "message": "请求参数不正确"
+        },
+        "requestId": "bce467fb-1de4-437d-99fb-2713d09bffd2"
+      }
+    },
+    {
+      "label": "Revoked old code",
+      "method": "POST",
+      "path": "/api/v1/invitations/preview",
+      "status": 400,
+      "response": {
+        "error": {
+          "code": "INVITE_INVALID",
+          "message": "邀请码无效，请核对后重试"
+        },
+        "requestId": "208853da-9c45-4485-a6ed-2a016a001ae1"
+      }
+    },
+    {
+      "label": "Already member preview",
+      "method": "POST",
+      "path": "/api/v1/invitations/preview",
+      "status": 200,
+      "response": {
+        "data": {
+          "ledgerId": "976c298a-668b-4449-860b-cda727273726",
+          "name": "Issue19-20 Native",
+          "creatorName": "验收甲19",
+          "memberCount": 2,
+          "alreadyMember": true,
+          "canJoin": false
+        }
+      }
+    },
+    {
+      "label": "Duplicate join HTTP only",
+      "method": "POST",
+      "path": "/api/v1/invitations/join",
+      "status": 200,
+      "response": {
+        "data": {
+          "ledgerId": "976c298a-668b-4449-860b-cda727273726",
+          "memberId": "b1eecff1-6ec9-43e6-9497-7e78ca7c723b",
+          "alreadyMember": true
+        }
+      }
+    },
+    {
+      "label": "Replay native create",
+      "method": "POST",
+      "path": "/api/v1/ledgers",
+      "status": 201,
+      "response": {
+        "data": {
+          "ledger": {
+            "id": "976c298a-668b-4449-860b-cda727273726",
+            "name": "Issue19-20 Native",
+            "coverKey": "city",
+            "coverImageId": null,
+            "status": "ACTIVE",
+            "version": 1,
+            "memberCount": 1,
+            "expenseTotalCents": "0",
+            "myRemainingNetCents": "0",
+            "archivedAt": null,
+            "createdAt": "2026-10-25T14:27:14.781Z"
+          },
+          "invitation": {
+            "id": "70f4f236-592c-4a8c-abe7-e314be9a5b52",
+            "code": "ATTJK6",
+            "expiresAt": "2026-11-01T14:27:14.791Z",
+            "expired": false,
+            "qrPayload": "tongzhang:invite:v1:ATTJK6"
+          }
+        }
+      }
+    },
+    {
+      "label": "Conflicting create payload",
+      "method": "POST",
+      "path": "/api/v1/ledgers",
+      "status": 409,
+      "response": {
+        "error": {
+          "code": "IDEMPOTENCY_CONFLICT",
+          "message": "该请求标识已用于其他内容，请核对原提交"
+        },
+        "requestId": "31c2c39c-c15f-4466-b660-376c45efd158"
+      }
+    }
+  ]
+}
