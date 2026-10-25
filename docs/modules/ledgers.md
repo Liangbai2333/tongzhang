@@ -6,7 +6,32 @@
 
 成员关系归本模块所有；邀请模块加入时使用同一tx写成员。所有影响结算的消费或成员变化递增账本version。
 
-当前公共成员检查 `requireLedgerMember(dbOrTx, ledgerId, userId)` 已实现，并从本模块 `index.ts` 导出；其他模块通过该出口复用。详情、成员和归档入口会先检查真实成员身份，非成员/不存在的账本统一拒绝 403；通过检查后的具体业务仍返回 501，尚未实现账本读写流程。权限/幂等基础验证见 [自动化回归记录](../auth-regression-validation.md)。
+当前公共成员检查 `requireLedgerMember(dbOrTx, ledgerId, userId)` 已实现，并从本模块 `index.ts` 导出；其他模块通过该出口复用。详情、成员和归档入口会先检查真实成员身份，非成员/不存在的账本统一拒绝 403。权限/幂等基础验证见 [自动化回归记录](../auth-regression-validation.md)。
+
+**已实现（A05–A08）：** `createLedger`、`listLedgers`、`getLedger`、`listMembers`。**未实现（A27）：** `archiveLedger` 先检查成员身份，再返回 501 `FEATURE_NOT_READY`，由后续个人归档任务实现。
+
+### 联调契约与错误说明
+
+| 接口           | 成功                                                                                              | 说明                                                                                                 |
+| -------------- | ------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `createLedger` | 201 `{ ledger, invitation }`                                                                      | 必带 `Idempotency-Key`；`coverKey` 与 `coverImageId` 二选一，目前仅支持 `coverKey`                   |
+| `listLedgers`  | 200 `{ data, page.nextCursor }`                                                                   | `archived=false`（默认）为进行中，`true` 为个人已归档；按加入时间倒序，`cursor` 只用服务端返回的原值 |
+| `getLedger`    | 200 `{ data }`，含 `members`、`myPaidCents`、`mySharedCents`、`myNetCents`、`myRemainingNetCents` | 与成员接口、列表摘要来自同一份真实数据                                                               |
+| `listMembers`  | 200 `{ data: Member[] }`                                                                          | `netCents`、`remainingNetCents` 复用余额模块公式                                                     |
+
+| HTTP | `error.code`           | 触发                                                            | 前端处理                   |
+| ---- | ---------------------- | --------------------------------------------------------------- | -------------------------- |
+| 400  | `VALIDATION_ERROR`     | 名称为空/超长、封面同时给出或都没给、缺少或非法幂等键、游标无效 | 留在表单显示字段错误       |
+| 401  | `UNAUTHENTICATED`      | 未登录或会话失效                                                | 清除会话并回到登录         |
+| 403  | `FORBIDDEN`            | 非成员，或账本不存在（二者响应相同，不泄露账本是否存在）        | 提示无权访问，返回列表     |
+| 409  | `IDEMPOTENCY_CONFLICT` | 同一幂等键复用于不同内容                                        | 提示核对原提交，不换键重发 |
+| 501  | `FEATURE_NOT_READY`    | `coverImageId` 自定义封面、`archiveLedger`                      | 隐藏入口或提示暂未开放     |
+
+创建事务一次写入账本、创建者成员、邀请、审计和幂等结果；任一步失败整体回滚。同一键重放返回首次的响应，不新增账本。
+
+### 个人归档接口边界（后续任务）
+
+`POST /ledgers/:ledgerId/archive`（A27，需 `Idempotency-Key`）只修改当前成员的 `ledger_members.archived_at`，仅允许 `SETTLED` 账本，不改变账本版本与财务状态，也不影响其他成员；成功后该账本从 `listLedgers` 默认列表移到 `archived=true`。本任务不实现，调用时在成员检查通过后返回 501。
 
 | 项目     | 归属                                                                                       |
 | -------- | ------------------------------------------------------------------------------------------ |
