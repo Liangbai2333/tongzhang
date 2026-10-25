@@ -22,6 +22,23 @@ A08成员列表归ledgers；码预览只返回账本名、创建者、人数和�
 | A11  | `previewJoin`     | `POST /api/v1/invitations/preview`                | 不使用 |
 | A12  | `joinLedger`      | `POST /api/v1/invitations/join`                   | 必需   |
 
+### 联调契约与错误说明
+
+当前已实现 A09–A12。`previewJoin` 只读，不加锁、不写入；`joinLedger` 与 `resetInvitation` 必带 `Idempotency-Key`。邀请码为 6 位，字符集 `23456789ABCDEFGHJKLMNPQRSTUVWXYZ`（不含 0/1/I/O），二维码载荷 `tongzhang:invite:v1:<码>`。
+
+| HTTP | `error.code`           | 触发                                 | 前端处理               |
+| ---- | ---------------------- | ------------------------------------ | ---------------------- |
+| 400  | `VALIDATION_ERROR`     | 码格式不是 6 位合法字符、缺少幂等键  | 输入框内提示           |
+| 400  | `INVITE_INVALID`       | 码不存在或已被重置作废               | 提示邀请码无效         |
+| 409  | `INVITE_EXPIRED`       | 码超过 7 天有效期（非成员）          | 提示联系创建者重新生成 |
+| 409  | `MEMBER_LIMIT_REACHED` | 账本已有 12 人                       | 提示人数已满           |
+| 409  | `LEDGER_FROZEN`        | 账本已进入结算或已结清，不再接受加入 | 提示账本不可加入       |
+| 401  | `UNAUTHENTICATED`      | 未登录                               | 回到登录               |
+| 403  | `FORBIDDEN`            | 非成员或非创建者读取/重置邀请        | 隐藏创建者操作         |
+| 409  | `IDEMPOTENCY_CONFLICT` | 同一幂等键复用于不同内容             | 核对原提交，不换键重发 |
+
+预览返回 `canJoin`、`alreadyMember`、`memberCount`；已是成员的用户重复加入返回 200 `alreadyMember: true`，不新增成员、不递增版本。加入事务按“幂等键锁 → 账本行锁 → 重读邀请 → 查成员 → 计数 → 写成员/版本/审计/幂等结果”执行，任一步失败整体回滚；被拒绝的加入不留成员行与幂等结果。
+
 ## 3 调用过程
 
 手输六位码或解析tongzhang:invite:v1:载荷 → 查询最小预览 → 确认加入 → 重新核验邀请和人数 → 新增成员。
