@@ -1,4 +1,5 @@
 import { and, desc, eq, isNotNull, isNull, sql } from 'drizzle-orm';
+import { uuidSchema } from '@tongzhang/contracts';
 import type { Handler } from '../../http/context.js';
 import { notReady } from '../../http/not-ready.js';
 import { withTransaction, type Orm } from '../../db/transaction.js';
@@ -21,6 +22,13 @@ export interface LedgersService {
 const READ_ONLY = { isolationLevel: 'repeatable read', accessMode: 'read only' } as const;
 const badCursor = () => new AppError('VALIDATION_ERROR', '分页游标无效', 400);
 
+/** Reject impossible dates (month 99, Feb 30) that PostgreSQL would fail to cast. */
+function isRealInstant(at: string) {
+  const seconds = at.slice(0, 19);
+  const date = new Date(`${seconds}Z`);
+  return !Number.isNaN(date.getTime()) && date.toISOString().startsWith(seconds);
+}
+
 /** Cursor = last (joined_at, member id); the timestamp keeps microsecond precision as text. */
 function decodeCursor(cursor: string) {
   try {
@@ -31,7 +39,8 @@ function decodeCursor(cursor: string) {
         typeof at === 'string' &&
         typeof id === 'string' &&
         /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d\.\d{6}Z$/.test(at) &&
-        /^[0-9a-f-]{36}$/i.test(id)
+        isRealInstant(at) &&
+        uuidSchema.safeParse(id).success
       )
         return { at, id };
     }
