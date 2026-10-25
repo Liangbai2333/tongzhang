@@ -2,7 +2,7 @@
 
 多人共享记账与结算移动端 App。React Native / Expo + Fastify + PostgreSQL，全栈 TypeScript。
 
-当前包含模块工程骨架：30项接口契约与路由、14张业务/支撑表及迁移、前后端模块边界、分摊与结算算法、移动端API与面板状态模型。默认启动欢迎与登录流程，已接通移动端注册、登录、在线会话恢复和退出；登录后展示真实账号资料。账号注册/登录/刷新/退出与 `getMe` 已接通，采用 15 分钟 JWT Access Token + 最长 30 天 Refresh Token，支持刷新轮换和退出即时撤销；其余业务 Service 占位接口返回501；应用图标和启动图暂用Expo模板资源。
+当前包含模块工程骨架：30项接口契约与路由、14张业务/支撑表及迁移、前后端模块边界、分摊与结算算法、移动端API与面板状态模型。默认启动欢迎与登录流程，已接通移动端注册、登录、在线会话恢复和退出；登录后展示真实账号资料。账号注册/登录/刷新/退出与 `getMe` 已接通，采用 15 分钟 JWT Access Token + 最长 30 天 Refresh Token，支持刷新轮换和退出即时撤销；消费新增、列表和详情查询、图片上传与授权读取已接通真实数据库；其余未接通业务 Service 仍返回501；应用图标和启动图暂用Expo模板资源。
 
 ## 快速开始
 
@@ -63,6 +63,7 @@ pnpm export:mobile
 - [模块架构、职责与开发入口](docs/modules/README.md)
 - [移动端认证实现与验证](docs/mobile-auth-validation.md)
 - [关于、协议与隐私面板验证](docs/legal-panels-validation.md)
+- [消费查询、图片与收据绑定阶段验证](docs/expense-images-validation.md)
 - [双令牌认证变更与验证](docs/auth-token-validation.md)
 - [登录、权限与幂等回归](docs/auth-regression-validation.md)
 - [公共反馈组件与登录复测](docs/common-feedback-validation.md)

@@ -5,6 +5,10 @@ import { buildApp } from '../../src/app.js';
 import { createDatabase } from '../../src/db/client.js';
 import {
   authSessions,
+  expenseImages,
+  expenseSplits,
+  expenses,
+  imageAssets,
   idempotencyKeys,
   ledgerMembers,
   ledgers,
@@ -69,6 +73,17 @@ export async function integrationFixture() {
               await tx.delete(operationLogs).where(inArray(operationLogs.actorUserId, userIds));
               await tx.delete(idempotencyKeys).where(inArray(idempotencyKeys.userId, userIds));
             }
+            if (ledgerIds.length) {
+              await tx.delete(expenseImages).where(inArray(expenseImages.ledgerId, ledgerIds));
+              await tx.delete(expenseSplits).where(inArray(expenseSplits.ledgerId, ledgerIds));
+              await tx.delete(expenses).where(inArray(expenses.ledgerId, ledgerIds));
+              await tx
+                .update(ledgers)
+                .set({ coverImageId: null, coverKey: 'plain' })
+                .where(inArray(ledgers.id, ledgerIds));
+            }
+            if (userIds.length)
+              await tx.delete(imageAssets).where(inArray(imageAssets.uploadedByUserId, userIds));
             if (ledgerIds.length) {
               await tx.delete(ledgerMembers).where(inArray(ledgerMembers.ledgerId, ledgerIds));
               await tx.delete(ledgers).where(inArray(ledgers.id, ledgerIds));

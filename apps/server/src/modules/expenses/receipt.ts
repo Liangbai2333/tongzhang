@@ -1,5 +1,4 @@
 import type { Transaction } from '../../db/transaction.js';
-import { AppError } from '../../http/errors.js';
 
 export interface ReceiptBindingInput {
   ledgerId: string;
@@ -18,10 +17,3 @@ export interface ReceiptBindingInput {
 export interface ReceiptBinder {
   bind(tx: Transaction, input: ReceiptBindingInput): Promise<void>;
 }
-
-/** Until T22 lands, an expense with a receipt is rejected rather than saved without it. */
-export const receiptBindingNotReady: ReceiptBinder = {
-  async bind() {
-    throw new AppError('FEATURE_NOT_READY', '凭证图片绑定尚未接通，请暂不附带图片', 501);
-  },
-};

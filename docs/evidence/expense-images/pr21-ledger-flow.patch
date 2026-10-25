@@ -1,0 +1,67 @@
+diff --git a/apps/server/tests/issue15-ledger-flow.integration.test.ts b/apps/server/tests/issue15-ledger-flow.integration.test.ts
+new file mode 100644
+--- /dev/null
++++ b/apps/server/tests/issue15-ledger-flow.integration.test.ts
+@@ -0,0 +1,62 @@
++import { randomUUID } from 'node:crypto';
++import { expect, it } from 'vitest';
++import { inArray } from 'drizzle-orm';
++import { integrationFixture } from './fixtures/integration.js';
++import { imageBytes, imageMultipart } from './fixtures/images.js';
++import { expenseImages, imageAssets } from '../src/db/schema/index.js';
++
++it('Issue #15 + PR #21: real create/invite/join/member/upload/expense/query flow', async () => {
++  const f = await integrationFixture();
++  const imageIds: string[] = [];
++  try {
++    const owner = await f.register('甲方');
++    const friend = await f.register('乙方');
++    const outsider = await f.register('路人');
++    const auth = (token: string) => ({ authorization: `Bearer ${token}` });
++    const post = (url: string, payload: object, token = owner.accessToken, key = randomUUID()) => f.app.inject({ method: 'POST', url, headers: { ...auth(token), 'idempotency-key': key }, payload });
++    const created = await post('/api/v1/ledgers', { name: '真实两人收据账本', coverKey: 'dining' });
++    expect(created.statusCode).toBe(201);
++    const { ledger, invitation } = created.json().data;
++    expect((await post('/api/v1/invitations/join', { code: invitation.code }, friend.accessToken)).statusCode).toBe(200);
++    const members = await f.app.inject({ url: `/api/v1/ledgers/${ledger.id}/members`, headers: auth(owner.accessToken) });
++    expect(members.statusCode).toBe(200);
++    expect(members.json().data).toHaveLength(2);
++    const payerMemberId = members.json().data.find((m: { userId: string }) => m.userId === owner.user.id).id;
++    const bytes = await imageBytes('jpeg');
++    const multipart = imageMultipart(bytes, 'image/jpeg', [['kind', 'RECEIPT'], ['ledgerId', ledger.id]]);
++    const uploaded = await f.app.inject({ method: 'POST', url: '/api/v1/images', payload: multipart.payload, headers: { ...multipart.headers, ...auth(owner.accessToken) } });
++    expect(uploaded.statusCode).toBe(201);
++    const receiptImageId = uploaded.json().data.imageId;
++    imageIds.push(receiptImageId);
++    const expenseBody = { title: '晚餐', amountCents: '12000', category: 'DINING', occurredOn: '2026-10-25', payerMemberId, splitMode: 'EQUAL', splits: members.json().data.map((m: { id: string }) => ({ memberId: m.id })), receiptImageId };
++    const expenseUrl = `/api/v1/ledgers/${ledger.id}/expenses`;
++    const key = randomUUID();
++    const expense = await post(expenseUrl, expenseBody, owner.accessToken, key);
++    expect(expense.statusCode).toBe(201);
++    expect(expense.json().data.splits.map((s: { amountCents: string }) => s.amountCents)).toEqual(['6000', '6000']);
++    expect((await post(expenseUrl, expenseBody, owner.accessToken, key)).json()).toEqual(expense.json());
++    const list = await f.app.inject({ url: expenseUrl, headers: auth(friend.accessToken) });
++    expect(list.statusCode).toBe(200);
++    expect(list.json().data).toHaveLength(1);
++    const detail = await f.app.inject({ url: `${expenseUrl}/${expense.json().data.id}`, headers: auth(friend.accessToken) });
++    expect(detail.statusCode).toBe(200);
++    expect(detail.json().data.receiptImageId).toBe(receiptImageId);
++    const image = await f.app.inject({ url: `/api/v1/images/${receiptImageId}`, headers: auth(friend.accessToken) });
++    expect(image.statusCode).toBe(200);
++    expect(image.rawPayload).toEqual(bytes);
++    for (const url of [expenseUrl, `${expenseUrl}/${expense.json().data.id}`, `/api/v1/images/${receiptImageId}`]) {
++      expect((await f.app.inject({ url, headers: auth(outsider.accessToken) })).statusCode).toBe(403);
++    }
++    expect((await post(expenseUrl, expenseBody, outsider.accessToken)).statusCode).toBe(403);
++    const ownerView = await f.app.inject({ url: `/api/v1/ledgers/${ledger.id}`, headers: auth(owner.accessToken) });
++    const friendView = await f.app.inject({ url: `/api/v1/ledgers/${ledger.id}`, headers: auth(friend.accessToken) });
++    expect(ownerView.json().data).toMatchObject({ expenseTotalCents: '12000', memberCount: 2, myPaidCents: '12000', mySharedCents: '6000', myNetCents: '6000' });
++    expect(friendView.json().data).toMatchObject({ expenseTotalCents: '12000', memberCount: 2, myPaidCents: '0', mySharedCents: '6000', myNetCents: '-6000' });
++  } finally {
++    if (imageIds.length) {
++      await f.db.orm.delete(expenseImages).where(inArray(expenseImages.imageId, imageIds));
++      await f.db.orm.delete(imageAssets).where(inArray(imageAssets.id, imageIds));
++    }
++    await f.close();
++  }
++});
