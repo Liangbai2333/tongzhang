@@ -6,4 +6,8 @@ export {
   type MemberBalance,
   type MemberTotals,
 } from './calculator.js';
-export { readLedgerSnapshot, type LedgerSnapshot } from './snapshot.js';
+export {
+  readLedgerSnapshot,
+  readLedgerSnapshotInTransaction,
+  type LedgerSnapshot,
+} from './snapshot.js';
