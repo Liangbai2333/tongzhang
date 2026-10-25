@@ -1,0 +1,12 @@
+$ pnpm build:shared && vitest run --config vitest.integration.config.ts apps/server/tests/ledgers.integration.test.ts apps/server/tests/ledger-invitation-regression.integration.test.ts
+$ pnpm -r --filter "./packages/*" build
+$ tsc -p tsconfig.json
+$ tsc -p tsconfig.json
+
+ RUN  v5.0.4 /Users/liangbai/Homework/tongzhang
+
+
+ Test Files  2 passed (2)
+      Tests  23 passed (23)
+   Start at  07:05:30
+   Duration  2.70s (tests 78%, import 16%, transform 6%)

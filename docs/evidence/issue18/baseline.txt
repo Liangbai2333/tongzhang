@@ -1,0 +1,12 @@
+$ pnpm build:shared && vitest run --config vitest.integration.config.ts apps/server/tests/ledgers.integration.test.ts
+$ pnpm -r --filter "./packages/*" build
+$ tsc -p tsconfig.json
+$ tsc -p tsconfig.json
+
+ RUN  v5.0.4 /Users/liangbai/Homework/tongzhang
+
+
+ Test Files  1 passed (1)
+      Tests  12 passed (12)
+   Start at  07:04:38
+   Duration  1.92s (tests 75%, import 17%, transform 8%)

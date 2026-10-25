@@ -1,0 +1,68 @@
+{
+  "issue": 18,
+  "verifiedAt": "2026-10-25T14:06:59.479Z",
+  "branch": "test/18-ledgers-invitations",
+  "baseCommit": "574d58bad7cfd2c71f8f1a66ec40e340afb6b2e0",
+  "node": "v24.22.0",
+  "pnpm": "12.6.0",
+  "postgres": "17.11",
+  "database": {
+    "name": "tongzhang_issue18_6100ab14_test",
+    "createdFresh": true,
+    "migratedBy": "vitest globalSetup: apps/server/tests/fixtures/migrate-database.ts",
+    "businessTableCountsAfterFullSuite": {
+      "auth_refresh_tokens": 0,
+      "auth_sessions": 0,
+      "expense_images": 0,
+      "expense_splits": 0,
+      "expenses": 0,
+      "idempotency_keys": 0,
+      "image_assets": 0,
+      "invitations": 0,
+      "ledger_members": 0,
+      "ledgers": 0,
+      "operation_logs": 0,
+      "settlement_batches": 0,
+      "settlement_transfers": 0,
+      "users": 0
+    },
+    "droppedAfterVerification": true
+  },
+  "transport": "Fastify.inject against production routes and services with real PostgreSQL; no test-only business HTTP adapter",
+  "results": {
+    "baseline": {
+      "files": 1,
+      "tests": 12,
+      "exitCode": 0
+    },
+    "focused": {
+      "files": 2,
+      "tests": 23,
+      "newTests": 11,
+      "exitCode": 0
+    },
+    "integration": {
+      "files": 11,
+      "tests": 96,
+      "exitCode": 0
+    },
+    "unit": {
+      "files": 18,
+      "tests": 112,
+      "exitCode": 0
+    },
+    "check": {
+      "exitCode": 1,
+      "build": "passed",
+      "typecheck": "passed",
+      "lint": "passed",
+      "formatFailure": "docs/sprint/2026-10-24/evidence/main-commits.json",
+      "unrelatedFileSha256": "0509280c8f1dbdcb004ea24dab35f462c444a435c197d2fc0d7ef3c70ca3434c"
+    }
+  },
+  "attribution": {
+    "author": "range-e <2018906793@qq.com>",
+    "committer": "range-e <2018906793@qq.com>",
+    "coAuthor": "Liangbai2333 <70431533+Liangbai2333@users.noreply.github.com>"
+  }
+}

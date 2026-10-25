@@ -67,6 +67,7 @@ pnpm export:mobile
 - [正式结算与账本冻结验证](docs/settlement-freeze-validation.md)
 - [双令牌认证变更与验证](docs/auth-token-validation.md)
 - [登录、权限与幂等回归](docs/auth-regression-validation.md)
+- [Issue #18 建账、邀请码与加入自动化测试](docs/issue18-ledger-invitation-tests.md)
 - [公共反馈组件与登录复测](docs/common-feedback-validation.md)
 - [成员环境、启动与 CI 支持](docs/environment-validation-2026-10-24.md)
 - [模块骨架验证记录](docs/module-skeleton-validation.md)
