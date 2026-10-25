@@ -251,11 +251,18 @@ describe('createLedger / list / detail / members', () => {
       ['2026-10-25T00:00:00.000000Z', '-'.repeat(36)],
       ['2026-99-99T99:99:99.000000Z', '00000000-0000-4000-8000-000000000001'],
       ['2026-02-30T00:00:00.000000Z', '00000000-0000-4000-8000-000000000001'],
+      ['0000-01-01T00:00:00.000000Z', '00000000-0000-4000-8000-000000000001'],
     ]) {
       const res = await get(owner, `/api/v1/ledgers?cursor=${encode(pair)}`);
       expect(res.statusCode).toBe(400);
       expect(errorCode(res)).toBe('VALIDATION_ERROR');
     }
+    const earliest = await get(
+      owner,
+      `/api/v1/ledgers?cursor=${encode(['0001-01-01T00:00:00.000001Z', '00000000-0000-4000-8000-000000000001'])}`,
+    );
+    expect(earliest.statusCode).toBe(200);
+    expect(earliest.json()).toEqual({ data: [], page: { nextCursor: null } });
     expect((await get(owner, '/api/v1/ledgers?archived=true')).json().data).toEqual([]);
   });
 

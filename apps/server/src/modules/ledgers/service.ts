@@ -24,6 +24,8 @@ const badCursor = () => new AppError('VALIDATION_ERROR', '分页游标无效', 4
 
 /** Reject impossible dates (month 99, Feb 30) that PostgreSQL would fail to cast. */
 function isRealInstant(at: string) {
+  // JavaScript accepts year zero, but PostgreSQL timestamps do not.
+  if (at.startsWith('0000-')) return false;
   const seconds = at.slice(0, 19);
   const date = new Date(`${seconds}Z`);
   return !Number.isNaN(date.getTime()) && date.toISOString().startsWith(seconds);
