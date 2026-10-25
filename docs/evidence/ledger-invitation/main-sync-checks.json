@@ -1,0 +1,45 @@
+{
+  "main": "574d58b",
+  "branch": "feat/13-ledgers-invitation-ui",
+  "integration": {
+    "files": 10,
+    "tests": 85,
+    "temporaryDatabaseRemoved": true
+  },
+  "unit": {
+    "files": 18,
+    "tests": 112
+  },
+  "mobile": {
+    "suites": 12,
+    "tests": 102
+  },
+  "serverBuild": true,
+  "currentWorkspaceApi": {
+    "port": 3313,
+    "database": "tongzhang_issue13_test",
+    "oldIsolatedPr21ProcessReplaced": true,
+    "realHttpSmoke": [
+      {
+        "role": "CREATOR",
+        "list": 200,
+        "detail": 200,
+        "members": 200,
+        "invitation": 200,
+        "memberCount": 2
+      },
+      {
+        "role": "MEMBER",
+        "list": 200,
+        "detail": 200,
+        "members": 200,
+        "invitation": 403,
+        "memberCount": 2
+      }
+    ]
+  },
+  "limitations": [
+    "pnpm check fails only on existing untracked sprint main-commits.json formatting",
+    "No new native installation or native UI validation in this sync"
+  ]
+}

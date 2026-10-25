@@ -1,0 +1,41 @@
+{
+  "backend": "PR #21 7b97e2e",
+  "database": "tongzhang_issue13_test",
+  "ledgerId": "8f8f02f4-cafa-4eb7-b55a-88fc164b0c73",
+  "previewAndCancel": {
+    "status": 200,
+    "ledgerId": "8f8f02f4-cafa-4eb7-b55a-88fc164b0c73",
+    "memberCount": 1,
+    "version": 1
+  },
+  "afterNativeConfirmation": {
+    "status": 200,
+    "memberCount": 2,
+    "version": 2,
+    "members": [
+      {
+        "username": "加入乙1792929730203",
+        "role": "CREATOR"
+      },
+      {
+        "username": "建账甲1792929730203",
+        "role": "MEMBER"
+      }
+    ]
+  },
+  "financialTotals": {
+    "expenseTotalCents": "0",
+    "myPaidCents": "0",
+    "mySharedCents": "0"
+  },
+  "originalLedgerReset": {
+    "ledgerId": "83fb87fb-1904-415d-8699-b027cb360071",
+    "oldCode": "QQLFDD",
+    "newCode": "L933YK",
+    "oldCodeRejectedInNativeUI": true
+  },
+  "nativeMemberPermissions": {
+    "creatorManagementActionsVisible": true,
+    "ordinaryMemberManagementActionsHidden": true
+  }
+}

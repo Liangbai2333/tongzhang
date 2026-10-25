@@ -2,6 +2,7 @@ import type { PropsWithChildren, ReactNode } from 'react';
 import {
   KeyboardAvoidingView,
   Platform,
+  RefreshControl,
   ScrollView,
   StyleSheet,
   Text,
@@ -20,9 +21,13 @@ export function Screen({
   children,
   footer,
   action,
+  variant = 'default',
   back = true,
   backDisabled = false,
   contentStyle,
+  refreshing = false,
+  onRefresh,
+  onBack,
 }: PropsWithChildren<{
   title?: string;
   footer?: ReactNode;
@@ -30,6 +35,10 @@ export function Screen({
   back?: boolean;
   backDisabled?: boolean;
   contentStyle?: StyleProp<ViewStyle>;
+  variant?: 'default' | 'ledger';
+  refreshing?: boolean;
+  onRefresh?: () => void;
+  onBack?: () => void;
 }>) {
   return (
     <SafeAreaView style={styles.root} edges={['top', 'bottom']}>
@@ -44,10 +53,14 @@ export function Screen({
                 accessibilityLabel="返回"
                 hitSlop={4}
                 disabled={backDisabled}
-                style={styles.back}
-                onPress={() => (router.canGoBack() ? router.back() : router.replace('/'))}
+                style={[styles.back, variant === 'ledger' && styles.designBackTarget]}
+                onPress={
+                  onBack ?? (() => (router.canGoBack() ? router.back() : router.replace('/')))
+                }
               >
-                <FigmaAsset asset={figmaAssets['5-30'].imgIconBack} />
+                <View style={variant === 'ledger' ? styles.designBack : undefined}>
+                  <FigmaAsset asset={figmaAssets['5-30'].imgIconBack} />
+                </View>
               </Touch>
             )}
             <Text accessibilityRole="header" style={styles.title}>
@@ -61,10 +74,21 @@ export function Screen({
           keyboardDismissMode="on-drag"
           showsVerticalScrollIndicator={false}
           contentContainerStyle={[styles.content, contentStyle]}
+          refreshControl={
+            onRefresh ? (
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={onRefresh}
+                tintColor={colors.text}
+              />
+            ) : undefined
+          }
         >
           {children}
         </ScrollView>
-        {footer && <View style={styles.footer}>{footer}</View>}
+        {footer && (
+          <View style={[styles.footer, variant === 'ledger' && styles.designFooter]}>{footer}</View>
+        )}
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
@@ -108,6 +132,23 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: colors.surface,
     borderRadius: 22,
+  },
+  designBackTarget: { backgroundColor: 'transparent', minWidth: 36, minHeight: 44 },
+  designBack: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: colors.surface,
+    alignItems: 'center',
+    justifyContent: 'center',
+    boxShadow: '0px 2px 8px rgba(0,0,0,0.06)',
+  },
+  designFooter: {
+    paddingTop: 11,
+    borderTopWidth: 1,
+    borderColor: colors.border,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
   },
   content: { flexGrow: 1, paddingHorizontal: 24, paddingTop: 12, paddingBottom: 24, gap: 20 },
   footer: {

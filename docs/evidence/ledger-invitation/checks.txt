@@ -1,0 +1,106 @@
+Issue #13 本地验证输出节选
+移动端：feat/13-ledgers-invitation-ui，基线 2b83e270c00a95c5d26e332b588fd8c63ca73d9d + 未提交改动
+服务端：PR #21 7b97e2eb4cbe67a860c72c12d78abd51a0bd99eb，专用库 tongzhang_issue13_test
+
+无数据库测试
+$ pnpm build:shared && vitest run
+$ pnpm -r --filter "./packages/*" build
+$ tsc -p tsconfig.json
+$ tsc -p tsconfig.json
+
+ RUN  v5.0.4 /Users/liangbai/Homework/tongzhang
+
+
+ Test Files  17 passed (17)
+      Tests  105 passed (105)
+   Start at  05:02:50
+   Duration  1.39s (tests 54%, import 35%, transform 10%, worker 1%)
+
+
+移动端全量测试
+PASS Android tests/auth-provider.test.tsx
+PASS iOS tests/auth-provider.test.tsx
+PASS Android tests/feedback.test.tsx
+PASS iOS tests/feedback.test.tsx
+PASS Android tests/auth-api.test.tsx
+PASS iOS tests/auth-api.test.tsx
+PASS Android tests/session-token.test.tsx
+PASS iOS tests/session-token.test.tsx
+PASS iOS tests/ledgers-ui.test.tsx
+
+Test Suites: 12 passed, 12 total
+Tests:       88 passed, 88 total
+Snapshots:   0 total
+Time:        24.073 s
+Ran all test suites in 2 projects.
+
+最终界面测试
+PASS Android tests/ledgers-ui.test.tsx (5.928 s)
+PASS iOS tests/ledgers-ui.test.tsx (5.193 s)
+
+Test Suites: 2 passed, 2 total
+Tests:       32 passed, 32 total
+Snapshots:   0 total
+Time:        11.326 s
+Ran all test suites matching /ledgers-ui/i in 2 projects.
+
+依赖 PR #21 的真实数据库测试
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vitest.integration.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v5.0.4 /private/tmp/tongzhang-issue13-api
+
+
+ Test Files  1 passed (1)
+      Tests  12 passed (12)
+   Start at  05:04:12
+   Duration  2.85s (tests 74%, import 17%, transform 9%)
+
+
+Expo Doctor
+$ pnpm dlx expo-doctor@1.21.5 apps/mobile
+.../mvnrzgdp-paw                         | Progress: resolved 0, reused 1, downloaded 0, added 0
+.../mvnrzgdp-paw                         | Progress: resolved 1, reused 1, downloaded 0, added 1, done
+
+dependencies:
++ expo-doctor 1.21.5
+
+Running 21 checks on your project...
+21/21 checks passed. No issues detected!
+Done in 4.8s using pnpm v12.11.2
+
+最终 JS 导出
+assets/figma/d024b.svg (850B)
+assets/figma/dafab.svg (360B)
+assets/figma/f7789.svg (780B)
+assets/figma/fb0f0.svg (350B)
+
+› android bundles (1):
+_expo/static/js/android/entry-4c5bceb4acb71643f04e16cfb57900ea.hbc (4.6MB)
+
+› ios bundles (1):
+_expo/static/js/ios/entry-f19fa2d62be5332a2f8cdebf5c1a4772.hbc (4.3MB)
+
+› Files (1):
+metadata.json (5.9KB)
+
+Exported: dist
+
+pnpm check
+packages/domain typecheck$ tsc -p tsconfig.json --noEmit
+packages/domain typecheck: Done
+packages/contracts typecheck$ tsc -p tsconfig.json --noEmit
+packages/contracts typecheck: Done
+apps/server typecheck$ tsc -p tsconfig.json --noEmit && tsc -p tsconfig.tools.json
+apps/mobile typecheck$ tsc --noEmit
+apps/mobile typecheck: Done
+apps/server typecheck: Done
+$ eslint . --max-warnings=0
+$ prettier --check .
+Checking formatting...
+[warn] docs/sprint/2026-10-24/evidence/main-commits.json
+[warn] Code style issues found in the above file. Run Prettier with --write to fix.
+[ELIFECYCLE] Command failed with exit code 1.
+[ELIFECYCLE] Command failed with exit code 1.
+

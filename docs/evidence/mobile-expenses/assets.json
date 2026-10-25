@@ -1,0 +1,271 @@
+{
+  "fileKey": "tngbOd0rJkD29C7Qe2r2zh",
+  "staticAssets": [
+    {
+      "key": "edit",
+      "file": "apps/mobile/assets/figma/8d347.svg",
+      "source": "https://www.figma.com/api/mcp/asset/206d0f09-96a2-417f-af13-3416972fd0f7/8d347.svg",
+      "figmaNode": "3:134",
+      "nonEmptyBytes": 488,
+      "intrinsicSize": ["16", "16"],
+      "renderedSize": ["16", "16"],
+      "callsites": ["apps/mobile/src/features/expenses/screens/CreateExpenseScreen.tsx"]
+    },
+    {
+      "key": "down",
+      "file": "apps/mobile/assets/figma/1b729.svg",
+      "source": "https://www.figma.com/api/mcp/asset/206d0f09-96a2-417f-af13-3416972fd0f7/1b729.svg",
+      "figmaNode": "3:134",
+      "nonEmptyBytes": 347,
+      "intrinsicSize": ["16", "16"],
+      "renderedSize": ["16", "16"],
+      "callsites": ["apps/mobile/src/features/expenses/components/ExpenseUI.tsx"]
+    },
+    {
+      "key": "summaryCheck",
+      "file": "apps/mobile/assets/figma/efb69.svg",
+      "source": "https://www.figma.com/api/mcp/asset/206d0f09-96a2-417f-af13-3416972fd0f7/efb69.svg",
+      "figmaNode": "3:134",
+      "nonEmptyBytes": 351,
+      "intrinsicSize": ["20", "20"],
+      "renderedSize": ["20", "20"],
+      "callsites": ["apps/mobile/src/features/expenses/screens/CreateExpenseScreen.tsx"]
+    },
+    {
+      "key": "album",
+      "file": "apps/mobile/assets/figma/c553a.svg",
+      "source": "https://www.figma.com/api/mcp/asset/206d0f09-96a2-417f-af13-3416972fd0f7/c553a.svg",
+      "figmaNode": "3:134",
+      "nonEmptyBytes": 1008,
+      "intrinsicSize": ["20", "20"],
+      "renderedSize": ["20", "20"],
+      "callsites": ["apps/mobile/src/features/expenses/screens/CreateExpenseScreen.tsx"]
+    },
+    {
+      "key": "camera",
+      "file": "apps/mobile/assets/figma/da2d5.svg",
+      "source": "https://www.figma.com/api/mcp/asset/206d0f09-96a2-417f-af13-3416972fd0f7/da2d5.svg",
+      "figmaNode": "3:134",
+      "nonEmptyBytes": 942,
+      "intrinsicSize": ["20", "20"],
+      "renderedSize": ["20", "20"],
+      "callsites": ["apps/mobile/src/features/expenses/screens/CreateExpenseScreen.tsx"]
+    },
+    {
+      "key": "remove",
+      "file": "apps/mobile/assets/figma/cd81f.svg",
+      "source": "https://www.figma.com/api/mcp/asset/206d0f09-96a2-417f-af13-3416972fd0f7/cd81f.svg",
+      "figmaNode": "3:134",
+      "nonEmptyBytes": 346,
+      "intrinsicSize": ["16", "16"],
+      "renderedSize": ["16", "16"],
+      "callsites": ["apps/mobile/src/features/expenses/screens/CreateExpenseScreen.tsx"]
+    },
+    {
+      "key": "members",
+      "file": "apps/mobile/assets/figma/dc86b.svg",
+      "source": "https://www.figma.com/api/mcp/asset/c56de646-23ea-4e17-acce-124e3bdd2766/dc86b.svg",
+      "figmaNode": "3:59",
+      "nonEmptyBytes": 1151,
+      "intrinsicSize": ["16.0008", "16.0008"],
+      "renderedSize": ["16.0008", "16.0008"],
+      "callsites": ["apps/mobile/src/features/ledgers/screens/LedgerDetailScreen.tsx"]
+    },
+    {
+      "key": "memberChevron",
+      "file": "apps/mobile/assets/figma/1936a.svg",
+      "source": "https://www.figma.com/api/mcp/asset/c56de646-23ea-4e17-acce-124e3bdd2766/1936a.svg",
+      "figmaNode": "3:59",
+      "nonEmptyBytes": 379,
+      "intrinsicSize": ["16.0008", "16.0008"],
+      "renderedSize": ["16.0008", "16.0008"],
+      "callsites": ["apps/mobile/src/features/ledgers/screens/LedgerDetailScreen.tsx"]
+    },
+    {
+      "key": "balance",
+      "file": "apps/mobile/assets/figma/356ba.svg",
+      "source": "https://www.figma.com/api/mcp/asset/c56de646-23ea-4e17-acce-124e3bdd2766/356ba.svg",
+      "figmaNode": "3:59",
+      "nonEmptyBytes": 844,
+      "intrinsicSize": ["16", "16"],
+      "renderedSize": ["16", "16"],
+      "callsites": ["apps/mobile/src/features/ledgers/screens/LedgerDetailScreen.tsx"]
+    },
+    {
+      "key": "chart",
+      "file": "apps/mobile/assets/figma/e073e.svg",
+      "source": "https://www.figma.com/api/mcp/asset/c56de646-23ea-4e17-acce-124e3bdd2766/e073e.svg",
+      "figmaNode": "3:59",
+      "nonEmptyBytes": 577,
+      "intrinsicSize": ["16", "16"],
+      "renderedSize": ["16", "16"],
+      "callsites": ["apps/mobile/src/features/ledgers/screens/LedgerDetailScreen.tsx"]
+    },
+    {
+      "key": "settle",
+      "file": "apps/mobile/assets/figma/9e35a.svg",
+      "source": "https://www.figma.com/api/mcp/asset/c56de646-23ea-4e17-acce-124e3bdd2766/9e35a.svg",
+      "figmaNode": "3:59",
+      "nonEmptyBytes": 400,
+      "intrinsicSize": ["16", "16"],
+      "renderedSize": ["16", "16"],
+      "callsites": ["apps/mobile/src/features/ledgers/screens/LedgerDetailScreen.tsx"]
+    },
+    {
+      "key": "dining",
+      "file": "apps/mobile/assets/figma/04660.svg",
+      "source": "https://www.figma.com/api/mcp/asset/c56de646-23ea-4e17-acce-124e3bdd2766/04660.svg",
+      "figmaNode": "3:59",
+      "nonEmptyBytes": 581,
+      "intrinsicSize": ["20", "20"],
+      "renderedSize": ["20", "20"],
+      "callsites": ["apps/mobile/src/features/expenses/components/ExpenseList.tsx"]
+    },
+    {
+      "key": "ticket",
+      "file": "apps/mobile/assets/figma/e7687.svg",
+      "source": "https://www.figma.com/api/mcp/asset/c56de646-23ea-4e17-acce-124e3bdd2766/e7687.svg",
+      "figmaNode": "3:59",
+      "nonEmptyBytes": 921,
+      "intrinsicSize": ["20", "20"],
+      "renderedSize": ["20", "20"],
+      "callsites": ["apps/mobile/src/features/expenses/components/ExpenseList.tsx"]
+    },
+    {
+      "key": "transport",
+      "file": "apps/mobile/assets/figma/62c85.svg",
+      "source": "https://www.figma.com/api/mcp/asset/c56de646-23ea-4e17-acce-124e3bdd2766/62c85.svg",
+      "figmaNode": "3:59",
+      "nonEmptyBytes": 616,
+      "intrinsicSize": ["20", "20"],
+      "renderedSize": ["20", "20"],
+      "callsites": ["apps/mobile/src/features/expenses/components/ExpenseList.tsx"]
+    },
+    {
+      "key": "diningDetail",
+      "file": "apps/mobile/assets/figma/a0a68.svg",
+      "source": "https://www.figma.com/api/mcp/asset/27a08a32-add3-428d-a448-801cf57b5787/a0a68.svg",
+      "figmaNode": "5:173",
+      "nonEmptyBytes": 444,
+      "intrinsicSize": ["24", "24"],
+      "renderedSize": ["24", "24"],
+      "callsites": ["apps/mobile/src/features/expenses/components/ExpenseList.tsx"]
+    },
+    {
+      "key": "equalSelected",
+      "file": "apps/mobile/assets/figma/c001e.svg",
+      "source": "https://www.figma.com/api/mcp/asset/2edc52ae-8654-4639-ae07-d96958d13ef8/c001e.svg",
+      "figmaNode": "87:831",
+      "nonEmptyBytes": 364,
+      "intrinsicSize": ["16", "16"],
+      "renderedSize": ["16", "16"],
+      "callsites": ["apps/mobile/src/features/expenses/components/SplitEditorSheet.tsx"]
+    },
+    {
+      "key": "equal",
+      "file": "apps/mobile/assets/figma/fbc37.svg",
+      "source": "https://www.figma.com/api/mcp/asset/feff6e9d-ccb4-474b-8df8-c1e869673711/fbc37.svg",
+      "figmaNode": "87:1088",
+      "nonEmptyBytes": 364,
+      "intrinsicSize": ["16", "16"],
+      "renderedSize": ["16", "16"],
+      "callsites": ["apps/mobile/src/features/expenses/components/SplitEditorSheet.tsx"]
+    },
+    {
+      "key": "shares",
+      "file": "apps/mobile/assets/figma/28675.svg",
+      "source": "https://www.figma.com/api/mcp/asset/2edc52ae-8654-4639-ae07-d96958d13ef8/28675.svg",
+      "figmaNode": "87:831",
+      "nonEmptyBytes": 545,
+      "intrinsicSize": ["16", "16"],
+      "renderedSize": ["16", "16"],
+      "callsites": ["apps/mobile/src/features/expenses/components/SplitEditorSheet.tsx"]
+    },
+    {
+      "key": "sharesSelected",
+      "file": "apps/mobile/assets/figma/e900c.svg",
+      "source": "https://www.figma.com/api/mcp/asset/feff6e9d-ccb4-474b-8df8-c1e869673711/e900c.svg",
+      "figmaNode": "87:1088",
+      "nonEmptyBytes": 545,
+      "intrinsicSize": ["16", "16"],
+      "renderedSize": ["16", "16"],
+      "callsites": ["apps/mobile/src/features/expenses/components/SplitEditorSheet.tsx"]
+    },
+    {
+      "key": "amount",
+      "file": "apps/mobile/assets/figma/2ed58.svg",
+      "source": "https://www.figma.com/api/mcp/asset/2edc52ae-8654-4639-ae07-d96958d13ef8/2ed58.svg",
+      "figmaNode": "87:831",
+      "nonEmptyBytes": 555,
+      "intrinsicSize": ["16", "16"],
+      "renderedSize": ["16", "16"],
+      "callsites": ["apps/mobile/src/features/expenses/components/SplitEditorSheet.tsx"]
+    },
+    {
+      "key": "amountSelected",
+      "file": "apps/mobile/assets/figma/62af9.svg",
+      "source": "https://www.figma.com/api/mcp/asset/2d0bd84f-d6cd-4dd3-9d2c-0eaf736e1d6a/62af9.svg",
+      "figmaNode": "87:1213",
+      "nonEmptyBytes": 555,
+      "intrinsicSize": ["16", "16"],
+      "renderedSize": ["16", "16"],
+      "callsites": ["apps/mobile/src/features/expenses/components/SplitEditorSheet.tsx"]
+    },
+    {
+      "key": "check",
+      "file": "apps/mobile/assets/figma/566c7.svg",
+      "source": "https://www.figma.com/api/mcp/asset/2edc52ae-8654-4639-ae07-d96958d13ef8/566c7.svg",
+      "figmaNode": "87:831",
+      "nonEmptyBytes": 352,
+      "intrinsicSize": ["16", "16"],
+      "renderedSize": ["16", "16"],
+      "callsites": ["apps/mobile/src/features/expenses/components/SplitEditorSheet.tsx"]
+    },
+    {
+      "key": "done",
+      "file": "apps/mobile/assets/figma/62841.svg",
+      "source": "https://www.figma.com/api/mcp/asset/073f8446-4c1e-49c0-8a1f-a1834772aba3/62841.svg",
+      "figmaNode": "157:1044",
+      "nonEmptyBytes": 331,
+      "intrinsicSize": ["24", "24"],
+      "renderedSize": ["24", "24"],
+      "callsites": [
+        "apps/mobile/src/features/expenses/components/ExpenseList.tsx",
+        "apps/mobile/src/features/expenses/components/ChoiceSheet.tsx"
+      ]
+    },
+    {
+      "key": "preview",
+      "file": "apps/mobile/assets/figma/a66cf.svg",
+      "source": "https://www.figma.com/api/mcp/asset/b6ca1808-c981-4faf-808b-74d2fe2be8e0/a66cf.svg",
+      "figmaNode": "5:222",
+      "nonEmptyBytes": 425,
+      "intrinsicSize": ["20", "20"],
+      "renderedSize": ["20", "20"],
+      "callsites": ["apps/mobile/src/features/balances/screens/BalancesScreen.tsx"]
+    },
+    {
+      "key": "arrow",
+      "file": "apps/mobile/assets/figma/46624.svg",
+      "source": "https://www.figma.com/api/mcp/asset/1920d863-70ac-425f-8631-2cd973243031/46624.svg",
+      "figmaNode": "96:341",
+      "nonEmptyBytes": 369,
+      "intrinsicSize": ["16", "16"],
+      "renderedSize": ["16", "16"],
+      "callsites": ["apps/mobile/src/features/settlements/screens/SettlementPreviewScreen.tsx"],
+      "transform": "rotate 180deg and scaleY -1, matching the design arrow pointing from payer to payee"
+    },
+    {
+      "key": "info",
+      "file": "apps/mobile/assets/figma/950b0.svg",
+      "source": "https://www.figma.com/api/mcp/asset/1920d863-70ac-425f-8631-2cd973243031/950b0.svg",
+      "figmaNode": "96:341",
+      "nonEmptyBytes": 720,
+      "intrinsicSize": ["22", "22"],
+      "renderedSize": ["22", "22"],
+      "callsites": ["apps/mobile/src/features/settlements/screens/SettlementPreviewScreen.tsx"]
+    }
+  ],
+  "dynamicMedia": "Receipt thumbnails and previews use selected/uploaded/authorized image data, not the design placeholder. Member avatars are derived from actual usernames.",
+  "reused": "Back a05c2.svg, close fb0f0.svg, more da9a7.svg and add 5cc66.svg retain existing assets and root geometry."
+}

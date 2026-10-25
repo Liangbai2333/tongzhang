@@ -9,44 +9,70 @@ import { InlineError } from './Feedback';
 export function Field({
   label,
   icon,
+  trailingIcon,
   secureTextEntry,
   error,
   passwordHiddenIcon,
+  variant = 'default',
   ...props
 }: TextInputProps & {
   label: string;
   icon?: DesignAsset;
+  trailingIcon?: DesignAsset;
   error?: string;
   passwordHiddenIcon?: DesignAsset;
+  variant?: 'default' | 'inset' | 'compact';
 }) {
   const [focused, setFocused] = useState(false);
   const [visible, setVisible] = useState(false);
+  const input = (
+    <TextInput
+      {...props}
+      accessibilityLabel={label}
+      placeholderTextColor={colors.muted}
+      secureTextEntry={Boolean(secureTextEntry && !visible)}
+      onFocus={(e) => {
+        setFocused(true);
+        props.onFocus?.(e);
+      }}
+      onBlur={(e) => {
+        setFocused(false);
+        props.onBlur?.(e);
+      }}
+      style={[
+        styles.input,
+        props.multiline && { minHeight: 76, textAlignVertical: 'top' },
+        props.style,
+        variant === 'inset' && styles.insetInput,
+        variant === 'compact' && styles.compactInput,
+      ]}
+    />
+  );
   return (
-    <View style={{ gap: 8 }}>
-      <Text style={ui.caption}>{label}</Text>
+    <View style={{ gap: variant === 'compact' ? 4 : 8 }}>
+      <View style={variant === 'inset' ? styles.labelRow : undefined}>
+        {variant === 'inset' && <View style={styles.labelMarker} />}
+        <Text style={variant === 'inset' ? ui.muted : ui.caption}>{label}</Text>
+      </View>
       <View
-        style={[styles.field, focused && styles.focused, error && { borderColor: colors.danger }]}
+        style={[
+          styles.field,
+          variant === 'inset' && styles.inset,
+          variant === 'compact' && styles.compactField,
+          focused && styles.focused,
+          error && { borderColor: colors.danger },
+        ]}
       >
         {icon && <FigmaAsset asset={icon} />}
-        <TextInput
-          {...props}
-          accessibilityLabel={label}
-          placeholderTextColor={colors.muted}
-          secureTextEntry={Boolean(secureTextEntry && !visible)}
-          onFocus={(e) => {
-            setFocused(true);
-            props.onFocus?.(e);
-          }}
-          onBlur={(e) => {
-            setFocused(false);
-            props.onBlur?.(e);
-          }}
-          style={[
-            styles.input,
-            props.multiline && { minHeight: 76, textAlignVertical: 'top' },
-            props.style,
-          ]}
-        />
+        {variant === 'inset' ? (
+          <View style={ui.grow}>
+            <Text style={ui.caption}>{label}</Text>
+            {input}
+          </View>
+        ) : (
+          input
+        )}
+        {trailingIcon && <FigmaAsset asset={trailingIcon} />}
         {secureTextEntry && (
           <Touch
             accessibilityLabel={visible ? '隐藏密码' : '显示密码'}
@@ -71,6 +97,10 @@ export function Field({
   );
 }
 const styles = StyleSheet.create({
+  labelRow: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  labelMarker: { width: 3, height: 14, borderRadius: 2, backgroundColor: colors.primary },
+  inset: { borderWidth: 1.5, borderColor: colors.surface, paddingVertical: 12, minHeight: 72 },
+  insetInput: { flex: undefined, paddingVertical: 0 },
   field: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -82,6 +112,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     minHeight: 56,
   },
+  compactField: { minHeight: 44 },
+  compactInput: { paddingVertical: 8 },
   focused: { borderColor: colors.primary },
   input: {
     flex: 1,

@@ -2,7 +2,7 @@
 
 多人共享记账与结算移动端 App。React Native / Expo + Fastify + PostgreSQL，全栈 TypeScript。
 
-当前包含模块工程骨架：30项接口契约与路由、14张业务/支撑表及迁移、前后端模块边界、分摊与结算算法、移动端API与面板状态模型。默认启动欢迎与登录流程，已接通移动端注册、登录、在线会话恢复和退出；登录后展示真实账号资料。账号注册/登录/刷新/退出与 `getMe` 已接通，采用 15 分钟 JWT Access Token + 最长 30 天 Refresh Token，支持刷新轮换和退出即时撤销；消费新增、列表和详情查询、图片上传与授权读取、正式结算与账本冻结已接通真实数据库；其余未接通业务 Service 仍返回501；应用图标和启动图暂用Expo模板资源。
+当前包含模块工程骨架：30项接口契约与路由、14张业务/支撑表及迁移、前后端模块边界、分摊与结算算法、移动端API与面板状态模型。默认启动欢迎与登录流程，已接通移动端注册、登录、在线会话恢复和退出；登录后进入真实账本列表，可查看账号资料。账号注册/登录/刷新/退出与 `getMe` 已接通，采用 15 分钟 JWT Access Token + 最长 30 天 Refresh Token，支持刷新轮换和退出即时撤销；账本创建/查询/成员、邀请预览/加入/重置、消费新增/查询、图片上传与授权读取、正式结算与账本冻结已接通真实数据库；其余未接通业务 Service 仍返回501；应用图标和启动图暂用Expo模板资源。
 
 ## 快速开始
 
@@ -62,6 +62,9 @@ pnpm export:mobile
 
 - [模块架构、职责与开发入口](docs/modules/README.md)
 - [移动端认证实现与验证](docs/mobile-auth-validation.md)
+- [Figma 账本界面第一轮对齐](docs/figma-ledgers-alignment.md)
+- [Figma 邀请、加入与成员面板对齐](docs/figma-invitations-alignment.md)
+- [移动端消费、收据与余额预览验证](docs/mobile-expenses-validation.md)
 - [关于、协议与隐私面板验证](docs/legal-panels-validation.md)
 - [消费查询、图片与收据绑定阶段验证](docs/expense-images-validation.md)
 - [正式结算与账本冻结验证](docs/settlement-freeze-validation.md)
@@ -79,4 +82,6 @@ pnpm export:mobile
 - [macOS、Linux 与 Windows 成员环境配置](docs/environment-setup.md)
 - [本次工程验收记录](docs/engineering-status.md)
 
-账号页面与真实接口已接通；后续完成创建/加入账本、消费分摊、结算与归档。详见模块架构文档。
+账号、账本、邀请、消费新增/查询、收据、余额和只读结算预览的移动端页面已接通真实接口；完整结算和个人归档流程仍待后续实现。
+
+移动端建账、账本列表/详情、成员面板和邀请码预览/加入已按真实接口契约接线，登录后进入账本列表。对应服务端 [PR #21](https://github.com/Liangbai2333/tongzhang/pull/21) 已合入主线，当前任务分支已同步到 `574d58b`，可直接联调当前工作区 API。原生截图、历史隔离联调及本次主线回归结果见 [建账与邀请界面验证](docs/ledger-invitation-ui-validation.md)。本轮已接通消费与收据的移动端流程、成员余额和只读结算预览，见 [实际验证](docs/mobile-expenses-validation.md)；结算进度读取、登记已还、确认结清、消费改删、自定义封面绑定和个人归档服务端仍未实现。

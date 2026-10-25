@@ -1,0 +1,61 @@
+Figma 账本第一轮：实际命令输出节选
+分支 feat/13-ledgers-invitation-ui，未提交工作区；2026-10-25
+
+全量移动端测试
+PASS Android tests/session-token.test.tsx
+PASS iOS tests/auth-ui.test.tsx (6.097 s)
+PASS iOS tests/auth-provider.test.tsx
+PASS iOS tests/feedback.test.tsx
+PASS iOS tests/auth-api.test.tsx
+PASS iOS tests/session-token.test.tsx
+
+Test Suites: 12 passed, 12 total
+Tests:       94 passed, 94 total
+Snapshots:   0 total
+Time:        27.775 s
+Ran all test suites in 2 projects.
+
+最终账本测试
+PASS iOS tests/ledgers-ui.test.tsx (7.166 s)
+PASS Android tests/ledgers-ui.test.tsx (6.535 s)
+
+Test Suites: 2 passed, 2 total
+Tests:       38 passed, 38 total
+Snapshots:   0 total
+Time:        13.913 s
+Ran all test suites matching /ledgers-ui/i in 2 projects.
+
+最终静态检查
+packages/contracts typecheck: Done
+apps/mobile typecheck$ tsc --noEmit
+apps/server typecheck$ tsc -p tsconfig.json --noEmit && tsc -p tsconfig.tools.json
+apps/mobile typecheck: Done
+apps/server typecheck: Done
+$ eslint . --max-warnings=0
+$ prettier --check .
+Checking formatting...
+[warn] docs/sprint/2026-10-24/evidence/main-commits.json
+[warn] Code style issues found in the above file. Run Prettier with --write to fix.
+[ELIFECYCLE] Command failed with exit code 1.
+[ELIFECYCLE] Command failed with exit code 1.
+
+最终 JS 导出
+assets/figma/fb0f0.svg (350B)
+
+› ios bundles (1):
+_expo/static/js/ios/entry-8ac9f055d9721d112a6855d298e461cb.hbc (4.3MB)
+
+› android bundles (1):
+_expo/static/js/android/entry-2d0544a4a9c26d196c4d02b355d5d145.hbc (4.6MB)
+
+› Files (1):
+metadata.json (8.2KB)
+
+Exported: dist
+
+Expo Doctor
+$ pnpm dlx expo-doctor@1.21.5 apps/mobile
+Running 21 checks on your project...
+21/21 checks passed. No issues detected!
+Done in 9.5s using pnpm v12.11.2
+

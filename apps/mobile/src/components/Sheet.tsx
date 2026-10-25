@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type PropsWithChildren } from 'react';
+import { useEffect, useRef, useState, type PropsWithChildren, type ReactNode } from 'react';
 import {
   Animated,
   Easing,
@@ -24,22 +24,28 @@ export function Sheet({
   onClose,
   children,
   contentKey,
+  variant = 'default',
+  headerAction,
 }: PropsWithChildren<{
   visible: boolean;
   title: string;
   onClose: () => void;
   contentKey?: string;
+  variant?: 'default' | 'members' | 'join';
+  headerAction?: ReactNode;
 }>) {
   const [mounted, setMounted] = useState(visible);
   const progress = useRef(new Animated.Value(0)).current;
   const reduced = useReducedMotion();
   const insets = useSafeAreaInsets();
   // Retain the visible panel while its exit animation completes.
-  const lastVisible = useRef({ title, children, contentKey });
+  const lastVisible = useRef({ title, children, contentKey, variant, headerAction });
   useEffect(() => {
-    if (visible) lastVisible.current = { title, children, contentKey };
-  }, [visible, title, children, contentKey]);
-  const content = visible ? { title, children, contentKey } : lastVisible.current;
+    if (visible) lastVisible.current = { title, children, contentKey, variant, headerAction };
+  }, [visible, title, children, contentKey, variant, headerAction]);
+  const content = visible
+    ? { title, children, contentKey, variant, headerAction }
+    : lastVisible.current;
   useEffect(() => {
     if (visible) setMounted(true);
     const animation = Animated.timing(progress, {
@@ -70,7 +76,10 @@ export function Sheet({
             StyleSheet.absoluteFill,
             {
               backgroundColor: '#262626',
-              opacity: progress.interpolate({ inputRange: [0, 1], outputRange: [0, 0.3] }),
+              opacity: progress.interpolate({
+                inputRange: [0, 1],
+                outputRange: [0, content.variant === 'join' ? 0.22 : 0.3],
+              }),
             },
           ]}
         />
@@ -84,6 +93,8 @@ export function Sheet({
           accessibilityViewIsModal
           style={[
             styles.sheet,
+            content.variant !== 'default' && styles.designSheet,
+            content.variant === 'join' && styles.joinSheet,
             {
               paddingBottom: Math.max(insets.bottom, 16),
               transform: [
@@ -98,11 +109,23 @@ export function Sheet({
             },
           ]}
         >
-          <View style={styles.handle} />
-          <View style={styles.header}>
-            <Text accessibilityRole="header" style={[ui.heading, ui.grow]}>
+          {content.variant !== 'members' && (
+            <View style={[styles.handle, content.variant === 'join' && styles.joinHandle]} />
+          )}
+          <View
+            style={[
+              styles.header,
+              content.variant === 'members' && styles.membersHeader,
+              content.variant === 'join' && styles.joinHeader,
+            ]}
+          >
+            <Text
+              accessibilityRole="header"
+              style={[ui.heading, ui.grow, content.variant === 'join' && styles.joinTitle]}
+            >
               {content.title}
             </Text>
+            {content.headerAction}
             <Touch accessibilityLabel="关闭面板" onPress={onClose} style={styles.close}>
               <FigmaAsset asset={figmaAssets['157-990'].imgIconClose} />
             </Touch>
@@ -111,7 +134,11 @@ export function Sheet({
             key={content.contentKey}
             style={styles.scroll}
             keyboardShouldPersistTaps="handled"
-            contentContainerStyle={styles.content}
+            contentContainerStyle={[
+              styles.content,
+              content.variant === 'members' && styles.membersContent,
+              content.variant === 'join' && styles.joinContent,
+            ]}
             showsVerticalScrollIndicator
           >
             {content.children}
@@ -148,4 +175,12 @@ const styles = StyleSheet.create({
   close: { width: 44, height: 44, alignItems: 'center', justifyContent: 'center' },
   scroll: { flexShrink: 1 },
   content: { padding: 24, paddingTop: 16, gap: 16 },
+  designSheet: { borderTopLeftRadius: 24, borderTopRightRadius: 24, paddingTop: 16 },
+  membersHeader: { paddingTop: 0 },
+  membersContent: { paddingTop: 12, paddingBottom: 0, gap: 12 },
+  joinSheet: { paddingTop: 24 },
+  joinHandle: { alignSelf: 'flex-start', marginLeft: 24, width: 40, backgroundColor: '#E5E5E0' },
+  joinHeader: { paddingTop: 14 },
+  joinTitle: { fontSize: 20, lineHeight: 29 },
+  joinContent: { paddingTop: 14, paddingBottom: 0, gap: 14 },
 });

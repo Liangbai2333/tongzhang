@@ -1,0 +1,83 @@
+pnpm check: only pre-existing sprint JSON format failure
+$ pnpm build:shared && pnpm typecheck && pnpm lint && pnpm check:format
+$ pnpm -r --filter "./packages/*" build
+$ tsc -p tsconfig.json
+$ tsc -p tsconfig.json
+$ pnpm -r typecheck
+packages/domain typecheck$ tsc -p tsconfig.json --noEmit
+packages/domain typecheck: Done
+packages/contracts typecheck$ tsc -p tsconfig.json --noEmit
+packages/contracts typecheck: Done
+apps/mobile typecheck$ tsc --noEmit
+apps/server typecheck$ tsc -p tsconfig.json --noEmit && tsc -p tsconfig.tools.json
+apps/mobile typecheck: Done
+apps/server typecheck: Done
+$ eslint . --max-warnings=0
+$ prettier --check .
+Checking formatting...
+[warn] docs/sprint/2026-10-24/evidence/main-commits.json
+[warn] Code style issues found in the above file. Run Prettier with --write to fix.
+[ELIFECYCLE] Command failed with exit code 1.
+[ELIFECYCLE] Command failed with exit code 1.
+
+
+pnpm test:mobile
+$ pnpm build:shared && pnpm --filter @tongzhang/mobile test
+$ pnpm -r --filter "./packages/*" build
+$ tsc -p tsconfig.json
+$ tsc -p tsconfig.json
+$ jest --runInBand
+PASS iOS tests/expenses-ui.test.tsx (9.146 s)
+PASS Android tests/ledgers-ui.test.tsx (8.264 s)
+PASS iOS tests/images-api.test.tsx
+PASS Android tests/auth-ui.test.tsx (5.992 s)
+PASS Android tests/auth-provider.test.tsx
+PASS Android tests/receipt-files.test.tsx
+PASS Android tests/feedback.test.tsx
+PASS Android tests/auth-api.test.tsx
+PASS Android tests/session-token.test.tsx
+PASS iOS tests/ledgers-ui.test.tsx (7.784 s)
+PASS Android tests/expenses-ui.test.tsx (8.326 s)
+PASS iOS tests/auth-ui.test.tsx (5.988 s)
+PASS iOS tests/auth-provider.test.tsx
+PASS iOS tests/feedback.test.tsx
+PASS iOS tests/session-token.test.tsx
+PASS iOS tests/receipt-files.test.tsx
+PASS Android tests/images-api.test.tsx
+PASS iOS tests/auth-api.test.tsx
+
+Test Suites: 18 passed, 18 total
+Tests:       150 passed, 150 total
+Snapshots:   0 total
+Time:        47.154 s
+Ran all test suites in 2 projects.
+
+
+pnpm test
+$ pnpm build:shared && vitest run
+$ pnpm -r --filter "./packages/*" build
+$ tsc -p tsconfig.json
+$ tsc -p tsconfig.json
+
+ RUN  v5.0.4 /Users/liangbai/Homework/tongzhang
+
+
+ Test Files  18 passed (18)
+      Tests  112 passed (112)
+   Start at  06:38:28
+   Duration  1.92s (tests 58%, import 32%, transform 9%, worker 1%)
+
+
+
+pnpm doctor:mobile
+$ pnpm dlx expo-doctor@1.21.5 apps/mobile
+Running 21 checks on your project...
+21/21 checks passed. No issues detected!
+Done in 4.3s using pnpm v12.11.2
+
+
+pnpm export:mobile: Android + iOS final JS export passed.
+Task-owned files Prettier check: passed, excluding pre-existing sprint/ and two unrelated sprint plan documents.
+git diff --check: passed.
+Native: real HTTP/PostgreSQL and iPhone 18 Pro iOS 27.0 simulator; one expense, two splits, one bound receipt; no settlement batches.
+No new native dependencies/configuration, physical camera test or Android installation claim.

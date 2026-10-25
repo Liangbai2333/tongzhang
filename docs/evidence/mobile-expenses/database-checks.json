@@ -1,0 +1,184 @@
+{
+  "branch": "feat/13-ledgers-invitation-ui",
+  "serverMain": "574d58b",
+  "database": "tongzhang_issue13_test",
+  "ledgerId": "8f8f02f4-cafa-4eb7-b55a-88fc164b0c73",
+  "createdInNativeApp": true,
+  "accountsAgree": true,
+  "views": [
+    {
+      "expenseId": "dba5dcd8-459c-445c-aec4-caf2cb04908a",
+      "imageId": "687dfb92-6139-453a-8a68-b8a18dff57b7",
+      "expenseTotalCents": "12000",
+      "ledgerVersion": 3,
+      "ledgerStatus": "ACTIVE",
+      "splits": [
+        {
+          "memberId": "3befebf7-6084-44b2-b8a0-17abc00eedf5",
+          "amountCents": "6000"
+        },
+        {
+          "memberId": "4dbe3ad9-d57a-44ea-b3c9-1fd3f4a85ea0",
+          "amountCents": "6000"
+        }
+      ],
+      "balances": [
+        {
+          "memberId": "3befebf7-6084-44b2-b8a0-17abc00eedf5",
+          "username": "加入乙1792929730203",
+          "paidCents": "0",
+          "sharedCents": "6000",
+          "netCents": "-6000",
+          "remainingNetCents": "-6000"
+        },
+        {
+          "memberId": "4dbe3ad9-d57a-44ea-b3c9-1fd3f4a85ea0",
+          "username": "建账甲1792929730203",
+          "paidCents": "12000",
+          "sharedCents": "6000",
+          "netCents": "6000",
+          "remainingNetCents": "6000"
+        }
+      ],
+      "preview": {
+        "ledgerId": "8f8f02f4-cafa-4eb7-b55a-88fc164b0c73",
+        "ledgerVersion": 3,
+        "expenseTotalCents": "12000",
+        "transferTotalCents": "6000",
+        "transferCount": 1,
+        "members": [
+          {
+            "memberId": "3befebf7-6084-44b2-b8a0-17abc00eedf5",
+            "username": "加入乙1792929730203",
+            "paidCents": "0",
+            "sharedCents": "6000",
+            "netCents": "-6000",
+            "remainingNetCents": "-6000"
+          },
+          {
+            "memberId": "4dbe3ad9-d57a-44ea-b3c9-1fd3f4a85ea0",
+            "username": "建账甲1792929730203",
+            "paidCents": "12000",
+            "sharedCents": "6000",
+            "netCents": "6000",
+            "remainingNetCents": "6000"
+          }
+        ],
+        "transfers": [
+          {
+            "sequence": 1,
+            "payerMemberId": "3befebf7-6084-44b2-b8a0-17abc00eedf5",
+            "payeeMemberId": "4dbe3ad9-d57a-44ea-b3c9-1fd3f4a85ea0",
+            "amountCents": "6000"
+          }
+        ],
+        "algorithmVersion": "zero-sum-dp-v1"
+      },
+      "image": {
+        "status": 200,
+        "mimeType": "image/jpeg",
+        "byteSize": 138919,
+        "sha256": "97d17d32ca198db4a2eec694f234ea9e867e72b854f10f6d5f66edffd9ea1882",
+        "cacheControl": "no-store"
+      },
+      "emptyServerFilter": 0
+    },
+    {
+      "expenseId": "dba5dcd8-459c-445c-aec4-caf2cb04908a",
+      "imageId": "687dfb92-6139-453a-8a68-b8a18dff57b7",
+      "expenseTotalCents": "12000",
+      "ledgerVersion": 3,
+      "ledgerStatus": "ACTIVE",
+      "splits": [
+        {
+          "memberId": "3befebf7-6084-44b2-b8a0-17abc00eedf5",
+          "amountCents": "6000"
+        },
+        {
+          "memberId": "4dbe3ad9-d57a-44ea-b3c9-1fd3f4a85ea0",
+          "amountCents": "6000"
+        }
+      ],
+      "balances": [
+        {
+          "memberId": "3befebf7-6084-44b2-b8a0-17abc00eedf5",
+          "username": "加入乙1792929730203",
+          "paidCents": "0",
+          "sharedCents": "6000",
+          "netCents": "-6000",
+          "remainingNetCents": "-6000"
+        },
+        {
+          "memberId": "4dbe3ad9-d57a-44ea-b3c9-1fd3f4a85ea0",
+          "username": "建账甲1792929730203",
+          "paidCents": "12000",
+          "sharedCents": "6000",
+          "netCents": "6000",
+          "remainingNetCents": "6000"
+        }
+      ],
+      "preview": {
+        "ledgerId": "8f8f02f4-cafa-4eb7-b55a-88fc164b0c73",
+        "ledgerVersion": 3,
+        "expenseTotalCents": "12000",
+        "transferTotalCents": "6000",
+        "transferCount": 1,
+        "members": [
+          {
+            "memberId": "3befebf7-6084-44b2-b8a0-17abc00eedf5",
+            "username": "加入乙1792929730203",
+            "paidCents": "0",
+            "sharedCents": "6000",
+            "netCents": "-6000",
+            "remainingNetCents": "-6000"
+          },
+          {
+            "memberId": "4dbe3ad9-d57a-44ea-b3c9-1fd3f4a85ea0",
+            "username": "建账甲1792929730203",
+            "paidCents": "12000",
+            "sharedCents": "6000",
+            "netCents": "6000",
+            "remainingNetCents": "6000"
+          }
+        ],
+        "transfers": [
+          {
+            "sequence": 1,
+            "payerMemberId": "3befebf7-6084-44b2-b8a0-17abc00eedf5",
+            "payeeMemberId": "4dbe3ad9-d57a-44ea-b3c9-1fd3f4a85ea0",
+            "amountCents": "6000"
+          }
+        ],
+        "algorithmVersion": "zero-sum-dp-v1"
+      },
+      "image": {
+        "status": 200,
+        "mimeType": "image/jpeg",
+        "byteSize": 138919,
+        "sha256": "97d17d32ca198db4a2eec694f234ea9e867e72b854f10f6d5f66edffd9ea1882",
+        "cacheControl": "no-store"
+      },
+      "emptyServerFilter": 0
+    }
+  ],
+  "counts": {
+    "expenses": 1,
+    "splits": 2,
+    "receipts": 1,
+    "bound_images": 1,
+    "settlement_batches": 0,
+    "version": 3
+  },
+  "nonMemberStatuses": [403, 403, 403],
+  "compressedMatchesNativeSelection": true,
+  "beforeExplicitRetry": {
+    "restoredApiDidNotAutoSubmit": true,
+    "expenseCount": 0
+  },
+  "limitations": [
+    "iOS simulator, not a physical device",
+    "Camera not tested on hardware",
+    "No settlement freeze or repayment write performed"
+  ],
+  "temporaryPickerAndManipulatorFilesAfterSave": 0
+}

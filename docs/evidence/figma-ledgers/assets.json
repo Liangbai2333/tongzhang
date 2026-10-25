@@ -1,0 +1,145 @@
+{
+  "sourceNodes": ["3:2", "293:2718", "5:100", "5:417"],
+  "assetMap": "apps/mobile/src/icons/ledger-assets.ts",
+  "verifiedNonemptyAndRootGeometry": true,
+  "slotComponents": [
+    "MainTabs",
+    "LedgerCover",
+    "LedgerActionsMenu",
+    "CreateLedgerScreen",
+    "EmptyLedger",
+    "LedgerDetailScreen"
+  ],
+  "reusedAssets": {
+    "a05c2.svg": "20px header back icon",
+    "fb0f0.svg": "24px close icon"
+  },
+  "assets": [
+    {
+      "name": "ledger",
+      "file": "apps/mobile/assets/figma/70342.svg",
+      "bytes": 686,
+      "rootWidth": 24,
+      "rootHeight": 24
+    },
+    {
+      "name": "user",
+      "file": "apps/mobile/assets/figma/d20dd.svg",
+      "bytes": 682,
+      "rootWidth": 24,
+      "rootHeight": 24
+    },
+    {
+      "name": "more",
+      "file": "apps/mobile/assets/figma/da9a7.svg",
+      "bytes": 1419,
+      "rootWidth": 20,
+      "rootHeight": 20
+    },
+    {
+      "name": "mountain",
+      "file": "apps/mobile/assets/figma/15f36.svg",
+      "bytes": 341,
+      "rootWidth": 20,
+      "rootHeight": 20
+    },
+    {
+      "name": "dining",
+      "file": "apps/mobile/assets/figma/04660.svg",
+      "bytes": 581,
+      "rootWidth": 20,
+      "rootHeight": 20
+    },
+    {
+      "name": "daily",
+      "file": "apps/mobile/assets/figma/cccb5.svg",
+      "bytes": 579,
+      "rootWidth": 20,
+      "rootHeight": 20
+    },
+    {
+      "name": "chevron",
+      "file": "apps/mobile/assets/figma/f7fe2.svg",
+      "bytes": 335,
+      "rootWidth": 24,
+      "rootHeight": 24
+    },
+    {
+      "name": "homeAdd",
+      "file": "apps/mobile/assets/figma/da5a2.svg",
+      "bytes": 779,
+      "rootWidth": 44,
+      "rootHeight": 44
+    },
+    {
+      "name": "coverMountain",
+      "file": "apps/mobile/assets/figma/93ee9.svg",
+      "bytes": 442,
+      "rootWidth": 56,
+      "rootHeight": 56
+    },
+    {
+      "name": "check",
+      "file": "apps/mobile/assets/figma/4ffbd.svg",
+      "bytes": 357,
+      "rootWidth": 14,
+      "rootHeight": 14
+    },
+    {
+      "name": "add",
+      "file": "apps/mobile/assets/figma/91b14.svg",
+      "bytes": 334,
+      "rootWidth": 16,
+      "rootHeight": 16
+    },
+    {
+      "name": "info",
+      "file": "apps/mobile/assets/figma/66686.svg",
+      "bytes": 705,
+      "rootWidth": 16,
+      "rootHeight": 16
+    },
+    {
+      "name": "dots",
+      "file": "apps/mobile/assets/figma/8fa16.svg",
+      "bytes": 388,
+      "rootWidth": 23,
+      "rootHeight": 5
+    },
+    {
+      "name": "payer",
+      "file": "apps/mobile/assets/figma/9e7b1.svg",
+      "bytes": 1033,
+      "rootWidth": 20,
+      "rootHeight": 20
+    },
+    {
+      "name": "members",
+      "file": "apps/mobile/assets/figma/4f4b2.svg",
+      "bytes": 1120,
+      "rootWidth": 20,
+      "rootHeight": 20
+    },
+    {
+      "name": "inviteBack",
+      "file": "apps/mobile/assets/figma/131fe.svg",
+      "bytes": 369,
+      "rootWidth": 16,
+      "rootHeight": 16
+    },
+    {
+      "name": "entryAdd",
+      "file": "apps/mobile/assets/figma/5cc66.svg",
+      "bytes": 350,
+      "rootWidth": 20,
+      "rootHeight": 20
+    },
+    {
+      "name": "menuChevron",
+      "file": "apps/mobile/assets/figma/52c9b.svg",
+      "bytes": 339,
+      "rootWidth": 20,
+      "rootHeight": 20
+    }
+  ]
+}

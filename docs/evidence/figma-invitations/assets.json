@@ -1,0 +1,117 @@
+{
+  "fileKey": "tngbOd0rJkD29C7Qe2r2zh",
+  "assets": [
+    {
+      "file": "apps/mobile/assets/figma/abe4a.svg",
+      "source": "https://www.figma.com/api/mcp/asset/de8e9a1e-2959-43ea-8b74-7a45d8d69164/abe4a.svg",
+      "nodeId": "87:1597",
+      "designSlot": "二维码下方说明图标",
+      "callsite": "invitationAssets.scanCaption",
+      "intrinsicSize": [14, 14],
+      "renderedSize": [14, 14],
+      "verifiedNonEmpty": true
+    },
+    {
+      "file": "apps/mobile/assets/figma/28367.svg",
+      "source": "https://www.figma.com/api/mcp/asset/de8e9a1e-2959-43ea-8b74-7a45d8d69164/28367.svg",
+      "nodeId": "87:1597",
+      "designSlot": "复制按钮前导图标",
+      "callsite": "invitationAssets.copy",
+      "intrinsicSize": [20, 20],
+      "renderedSize": [20, 20],
+      "verifiedNonEmpty": true
+    },
+    {
+      "file": "apps/mobile/assets/figma/f4867.svg",
+      "source": "https://www.figma.com/api/mcp/asset/de8e9a1e-2959-43ea-8b74-7a45d8d69164/f4867.svg",
+      "nodeId": "87:1597",
+      "designSlot": "分享按钮前导图标",
+      "callsite": "invitationAssets.share",
+      "intrinsicSize": [16, 16],
+      "renderedSize": [16, 16],
+      "verifiedNonEmpty": true
+    },
+    {
+      "file": "apps/mobile/assets/figma/6ca74.svg",
+      "source": "https://www.figma.com/api/mcp/asset/de8e9a1e-2959-43ea-8b74-7a45d8d69164/6ca74.svg",
+      "nodeId": "87:1597",
+      "designSlot": "有效期提示卡 20px 徽章内",
+      "callsite": "invitationAssets.invitationInfo",
+      "intrinsicSize": [16, 16],
+      "renderedSize": [16, 16],
+      "verifiedNonEmpty": true
+    },
+    {
+      "file": "apps/mobile/assets/figma/50701.png",
+      "source": "https://www.figma.com/api/mcp/asset/480318c4-1c7f-473a-a5b1-17f9b3486285/50701.png",
+      "nodeId": "87:1713",
+      "designSlot": "加入页 hero 文案下方第一个装饰头像",
+      "callsite": "invitationAssets.friendOne",
+      "intrinsicSize": [40, 40],
+      "renderedSize": [20, 20],
+      "verifiedNonEmpty": true
+    },
+    {
+      "file": "apps/mobile/assets/figma/9bebe.png",
+      "source": "https://www.figma.com/api/mcp/asset/480318c4-1c7f-473a-a5b1-17f9b3486285/9bebe.png",
+      "nodeId": "87:1713",
+      "designSlot": "加入页 hero 文案下方第二个装饰头像",
+      "callsite": "invitationAssets.friendTwo",
+      "intrinsicSize": [40, 40],
+      "renderedSize": [20, 20],
+      "verifiedNonEmpty": true
+    },
+    {
+      "file": "apps/mobile/assets/figma/2d029.svg",
+      "source": "https://www.figma.com/api/mcp/asset/480318c4-1c7f-473a-a5b1-17f9b3486285/2d029.svg",
+      "nodeId": "87:1713",
+      "designSlot": "hero 右上 right=-25 top=-30",
+      "callsite": "invitationAssets.circleLarge",
+      "intrinsicSize": [160, 160],
+      "renderedSize": [160, 160],
+      "verifiedNonEmpty": true
+    },
+    {
+      "file": "apps/mobile/assets/figma/cf616.svg",
+      "source": "https://www.figma.com/api/mcp/asset/480318c4-1c7f-473a-a5b1-17f9b3486285/cf616.svg",
+      "nodeId": "87:1713",
+      "designSlot": "hero 右侧 right=5 top=60",
+      "callsite": "invitationAssets.circleSmall",
+      "intrinsicSize": [80, 80],
+      "renderedSize": [80, 80],
+      "verifiedNonEmpty": true
+    },
+    {
+      "file": "apps/mobile/assets/figma/4b368.svg",
+      "source": "https://www.figma.com/api/mcp/asset/480318c4-1c7f-473a-a5b1-17f9b3486285/4b368.svg",
+      "nodeId": "87:1713",
+      "designSlot": "hero 72px 黄色账本徽章中央",
+      "callsite": "invitationAssets.ledger",
+      "intrinsicSize": [32, 32],
+      "renderedSize": [32, 32],
+      "verifiedNonEmpty": true
+    },
+    {
+      "file": "apps/mobile/assets/figma/ff61c.svg",
+      "source": "https://www.figma.com/api/mcp/asset/480318c4-1c7f-473a-a5b1-17f9b3486285/ff61c.svg",
+      "nodeId": "87:1713",
+      "designSlot": "扫码按钮前导图标（明确禁用）",
+      "callsite": "invitationAssets.scan",
+      "intrinsicSize": [20, 20],
+      "renderedSize": [20, 20],
+      "verifiedNonEmpty": true
+    },
+    {
+      "file": "apps/mobile/assets/figma/42245.svg",
+      "source": "https://www.figma.com/api/mcp/asset/480318c4-1c7f-473a-a5b1-17f9b3486285/42245.svg",
+      "nodeId": "87:1713",
+      "designSlot": "如何获取邀请码提示卡左侧",
+      "callsite": "invitationAssets.joinInfo",
+      "intrinsicSize": [18, 18],
+      "renderedSize": [18, 18],
+      "verifiedNonEmpty": true
+    }
+  ],
+  "dynamicQR": "QRCode 使用实时 API qrPayload，未下载或使用设计样例二维码。",
+  "reusedAssets": "返回 a05c2.svg 20×20、关闭 fb0f0.svg 24×24、成员入口 da9a7.svg 20×20，沿用既有本地资产。"
+}

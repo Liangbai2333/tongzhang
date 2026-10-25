@@ -1,0 +1,46 @@
+{
+  "backend": "PR #21 7b97e2e",
+  "database": "tongzhang_issue13_test",
+  "ledgerId": "83fb87fb-1904-415d-8699-b027cb360071",
+  "statuses": {
+    "aList": 200,
+    "bList": 200,
+    "aDetail": 200,
+    "bDetail": 200,
+    "aMembers": 200,
+    "bMembers": 200,
+    "nonCreatorInvitation": 403,
+    "forbiddenLedger": 403,
+    "duplicateJoin": 200
+  },
+  "membersMatch": true,
+  "detailsMatchMemberLists": true,
+  "bothListsContainLedger": true,
+  "duplicateJoinAlreadyMember": true,
+  "counts": {
+    "ledgers": 1,
+    "members": 2,
+    "version": 2,
+    "invitations": 1
+  },
+  "members": [
+    {
+      "id": "44777e63-c230-47af-a9c5-9c1c3d3722bb",
+      "userId": "85a00c63-fca9-45d6-a148-67927dff4e76",
+      "username": "建账甲1792929730203",
+      "role": "CREATOR",
+      "joinedAt": "2026-10-25T12:02:57.154Z",
+      "netCents": "0",
+      "remainingNetCents": "0"
+    },
+    {
+      "id": "43dec472-8753-43c0-b3b4-d89131c7b5e8",
+      "userId": "4b450453-2b32-42b4-bef2-4bf8085f2abd",
+      "username": "加入乙1792929730203",
+      "role": "MEMBER",
+      "joinedAt": "2026-10-25T12:06:03.421Z",
+      "netCents": "0",
+      "remainingNetCents": "0"
+    }
+  ]
+}

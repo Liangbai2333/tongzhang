@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { Text, View } from 'react-native';
+import { router } from 'expo-router';
 import { Screen, ui } from '@/components/Screen';
+import { MainTabs } from '@/components/MainTabs';
 import { Button } from '@/components/Button';
 import { Sheet } from '@/components/Sheet';
 import { FigmaAsset, figmaAssets } from '@/icons/FigmaAsset';
 import { useAuth } from '@/providers/AuthProvider';
 import { colors } from '@/theme/tokens';
-import { EmptyState } from '@/components/Feedback';
 import { DocumentSheet } from '../components/DocumentSheet';
 import type { DocumentKind } from '../documents';
 
@@ -17,7 +18,7 @@ export default function AccountScreen() {
   const busy = operation !== null;
   if (!user) return null;
   return (
-    <Screen title="我的" back={false}>
+    <Screen title="我的" back={false} footer={<MainTabs active="account" />}>
       <View style={[ui.card, ui.row]}>
         <View
           style={{
@@ -50,7 +51,12 @@ export default function AccountScreen() {
           }}
         />
       </View>
-      <EmptyState title="共同账本" description="账本功能尚未接通，接通后即可创建或加入共同账本。" />
+      <Button
+        title="我的账本"
+        variant="secondary"
+        disabled={busy}
+        onPress={() => router.replace('/ledgers')}
+      />
       <View style={ui.card}>
         <Text style={ui.heading}>了解同账</Text>
         <Button
