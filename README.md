@@ -65,6 +65,7 @@ pnpm export:mobile
 - [Figma 账本界面第一轮对齐](docs/figma-ledgers-alignment.md)
 - [Figma 邀请、加入与成员面板对齐](docs/figma-invitations-alignment.md)
 - [移动端消费、收据与余额预览验证](docs/mobile-expenses-validation.md)
+- [Issue #17 建账、多人加入与异常反馈验收](docs/issue17-app-acceptance.md)
 - [关于、协议与隐私面板验证](docs/legal-panels-validation.md)
 - [消费查询、图片与收据绑定阶段验证](docs/expense-images-validation.md)
 - [正式结算与账本冻结验证](docs/settlement-freeze-validation.md)

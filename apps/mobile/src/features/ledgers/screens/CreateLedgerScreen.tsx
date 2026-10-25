@@ -79,7 +79,10 @@ export default function CreateLedgerScreen() {
           maxLength={40}
           editable={!locked}
           error={fieldError}
-          onChangeText={setName}
+          onChangeText={(value) => {
+            setName(value);
+            setFieldError(undefined);
+          }}
         />
         <View style={styles.coverSection}>
           <View style={styles.label}>

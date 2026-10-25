@@ -1,0 +1,178 @@
+{
+  "verifiedAt": "2026-10-25T13:55:08.319Z",
+  "baseCommit": "574d58b",
+  "database": "tongzhang_issue13_test",
+  "ledgerId": "3d3684af-7910-4409-a3c7-ec829e3ab7ea",
+  "observations": [
+    {
+      "account": "验收甲17",
+      "list": [
+        {
+          "id": "3d3684af-7910-4409-a3c7-ec829e3ab7ea",
+          "name": "Issue17 · App双账号验收",
+          "coverKey": "mountain",
+          "coverImageId": null,
+          "status": "ACTIVE",
+          "version": 2,
+          "memberCount": 2,
+          "expenseTotalCents": "0",
+          "myRemainingNetCents": "0",
+          "archivedAt": null,
+          "createdAt": "2026-10-25T13:47:35.666Z"
+        }
+      ],
+      "detail": {
+        "id": "3d3684af-7910-4409-a3c7-ec829e3ab7ea",
+        "name": "Issue17 · App双账号验收",
+        "coverKey": "mountain",
+        "coverImageId": null,
+        "status": "ACTIVE",
+        "version": 2,
+        "memberCount": 2,
+        "expenseTotalCents": "0",
+        "myRemainingNetCents": "0",
+        "archivedAt": null,
+        "createdAt": "2026-10-25T13:47:35.666Z",
+        "creatorUserId": "03f9e63d-7c60-4746-80fe-045759c18c0a",
+        "myMemberId": "e56dcdcf-fdcc-4121-ac63-2d5948ff1d99",
+        "myPaidCents": "0",
+        "mySharedCents": "0",
+        "myNetCents": "0",
+        "members": [
+          {
+            "id": "e56dcdcf-fdcc-4121-ac63-2d5948ff1d99",
+            "userId": "03f9e63d-7c60-4746-80fe-045759c18c0a",
+            "username": "验收甲17",
+            "role": "CREATOR",
+            "joinedAt": "2026-10-25T13:47:35.666Z",
+            "netCents": "0",
+            "remainingNetCents": "0"
+          },
+          {
+            "id": "8f1a5cba-503c-48d7-b4d1-a67d3d316148",
+            "userId": "6af62094-f2cd-41d6-8d93-cef5e160f747",
+            "username": "验收乙17",
+            "role": "MEMBER",
+            "joinedAt": "2026-10-25T13:53:31.769Z",
+            "netCents": "0",
+            "remainingNetCents": "0"
+          }
+        ]
+      },
+      "members": [
+        {
+          "id": "e56dcdcf-fdcc-4121-ac63-2d5948ff1d99",
+          "userId": "03f9e63d-7c60-4746-80fe-045759c18c0a",
+          "username": "验收甲17",
+          "role": "CREATOR",
+          "joinedAt": "2026-10-25T13:47:35.666Z",
+          "netCents": "0",
+          "remainingNetCents": "0"
+        },
+        {
+          "id": "8f1a5cba-503c-48d7-b4d1-a67d3d316148",
+          "userId": "6af62094-f2cd-41d6-8d93-cef5e160f747",
+          "username": "验收乙17",
+          "role": "MEMBER",
+          "joinedAt": "2026-10-25T13:53:31.769Z",
+          "netCents": "0",
+          "remainingNetCents": "0"
+        }
+      ]
+    },
+    {
+      "account": "验收乙17",
+      "list": [
+        {
+          "id": "3d3684af-7910-4409-a3c7-ec829e3ab7ea",
+          "name": "Issue17 · App双账号验收",
+          "coverKey": "mountain",
+          "coverImageId": null,
+          "status": "ACTIVE",
+          "version": 2,
+          "memberCount": 2,
+          "expenseTotalCents": "0",
+          "myRemainingNetCents": "0",
+          "archivedAt": null,
+          "createdAt": "2026-10-25T13:47:35.666Z"
+        }
+      ],
+      "detail": {
+        "id": "3d3684af-7910-4409-a3c7-ec829e3ab7ea",
+        "name": "Issue17 · App双账号验收",
+        "coverKey": "mountain",
+        "coverImageId": null,
+        "status": "ACTIVE",
+        "version": 2,
+        "memberCount": 2,
+        "expenseTotalCents": "0",
+        "myRemainingNetCents": "0",
+        "archivedAt": null,
+        "createdAt": "2026-10-25T13:47:35.666Z",
+        "creatorUserId": "03f9e63d-7c60-4746-80fe-045759c18c0a",
+        "myMemberId": "8f1a5cba-503c-48d7-b4d1-a67d3d316148",
+        "myPaidCents": "0",
+        "mySharedCents": "0",
+        "myNetCents": "0",
+        "members": [
+          {
+            "id": "e56dcdcf-fdcc-4121-ac63-2d5948ff1d99",
+            "userId": "03f9e63d-7c60-4746-80fe-045759c18c0a",
+            "username": "验收甲17",
+            "role": "CREATOR",
+            "joinedAt": "2026-10-25T13:47:35.666Z",
+            "netCents": "0",
+            "remainingNetCents": "0"
+          },
+          {
+            "id": "8f1a5cba-503c-48d7-b4d1-a67d3d316148",
+            "userId": "6af62094-f2cd-41d6-8d93-cef5e160f747",
+            "username": "验收乙17",
+            "role": "MEMBER",
+            "joinedAt": "2026-10-25T13:53:31.769Z",
+            "netCents": "0",
+            "remainingNetCents": "0"
+          }
+        ]
+      },
+      "members": [
+        {
+          "id": "e56dcdcf-fdcc-4121-ac63-2d5948ff1d99",
+          "userId": "03f9e63d-7c60-4746-80fe-045759c18c0a",
+          "username": "验收甲17",
+          "role": "CREATOR",
+          "joinedAt": "2026-10-25T13:47:35.666Z",
+          "netCents": "0",
+          "remainingNetCents": "0"
+        },
+        {
+          "id": "8f1a5cba-503c-48d7-b4d1-a67d3d316148",
+          "userId": "6af62094-f2cd-41d6-8d93-cef5e160f747",
+          "username": "验收乙17",
+          "role": "MEMBER",
+          "joinedAt": "2026-10-25T13:53:31.769Z",
+          "netCents": "0",
+          "remainingNetCents": "0"
+        }
+      ]
+    }
+  ],
+  "duplicateJoin": {
+    "status": 200,
+    "data": {
+      "ledgerId": "3d3684af-7910-4409-a3c7-ec829e3ab7ea",
+      "memberId": "8f1a5cba-503c-48d7-b4d1-a67d3d316148",
+      "alreadyMember": true
+    },
+    "versionAfter": 2,
+    "memberCountAfter": 2
+  },
+  "databaseCounts": {
+    "id": "3d3684af-7910-4409-a3c7-ec829e3ab7ea",
+    "version": 2,
+    "status": "ACTIVE",
+    "members": 2,
+    "expenses": 0,
+    "active_invitations": 1
+  }
+}

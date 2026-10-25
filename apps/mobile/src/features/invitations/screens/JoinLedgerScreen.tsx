@@ -49,6 +49,11 @@ export default function JoinLedgerScreen() {
       setChecking(false);
     }
   }
+  function dismissPreview() {
+    if (write.busy || write.uncertain) return;
+    write.reset();
+    setPreview(null);
+  }
   async function join() {
     if (!preview || busy) return;
     if (preview.alreadyMember) {
@@ -122,9 +127,7 @@ export default function JoinLedgerScreen() {
           visible={preview !== null}
           title="确认加入这个账本？"
           variant="join"
-          onClose={() => {
-            if (!write.busy && !write.uncertain) setPreview(null);
-          }}
+          onClose={dismissPreview}
         >
           {preview && (
             <>
@@ -168,7 +171,7 @@ export default function JoinLedgerScreen() {
                 disabled={write.busy}
                 onPress={() => {
                   if (write.uncertain) router.replace('/ledgers');
-                  else setPreview(null);
+                  else dismissPreview();
                 }}
               />
             </>

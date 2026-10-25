@@ -173,6 +173,8 @@ describe('ledger pages with isolated API callbacks (no database/native claim)', 
     expect(screen.getByText('请输入 1–40 个字符的账本名称')).toBeOnTheScreen();
     expect(create).not.toHaveBeenCalled();
     await fireEvent.changeText(screen.getByLabelText('账本名称'), ' 鼓山一日 ');
+    expect(screen.queryByText('请输入 1–40 个字符的账本名称')).toBeNull();
+    expect(create).not.toHaveBeenCalled();
     await userEvent.press(screen.getByRole('radio', { name: '好友聚餐' }));
     await userEvent.press(screen.getByRole('button', { name: '创建并邀请成员' }));
     expect(create).toHaveBeenCalledWith(
@@ -364,6 +366,34 @@ describe('ledger pages with isolated API callbacks (no database/native claim)', 
       pathname: '/ledgers/[ledgerId]',
       params: { ledgerId },
     });
+  });
+  it('clears an abandoned definitive join error before a fresh preview and keeps the new preview read-only', async () => {
+    join.mockRejectedValueOnce(
+      new ApiError('INVITE_EXPIRED', '邀请码已过期，请联系创建者重新生成', 409),
+    );
+    await show(<JoinLedgerScreen />);
+    await previewCode();
+    await userEvent.press(screen.getByRole('button', { name: '加入鼓山一日' }));
+    await screen.findByText('邀请码已过期，请联系创建者重新生成');
+    await userEvent.press(screen.getByRole('button', { name: '暂不加入' }));
+    await userEvent.press(screen.getByRole('button', { name: '查看账本' }));
+    await screen.findByRole('header', { name: '确认加入这个账本？' });
+    expect(screen.queryByText('邀请码已过期，请联系创建者重新生成')).toBeNull();
+    expect(join).toHaveBeenCalledTimes(1);
+    await userEvent.press(screen.getByRole('button', { name: '加入鼓山一日' }));
+    expect(join.mock.calls[0]?.[1]).not.toEqual(join.mock.calls[1]?.[1]);
+  });
+  it('keeps unknown join results in the original panel and reuses the key on explicit retry', async () => {
+    join.mockRejectedValueOnce(new ApiError('REQUEST_TIMEOUT', '加入结果尚未确认'));
+    await show(<JoinLedgerScreen />);
+    await previewCode();
+    await userEvent.press(screen.getByRole('button', { name: '加入鼓山一日' }));
+    await screen.findByText('加入结果尚未确认');
+    await fireEvent.press(screen.getByRole('button', { name: '关闭面板' }));
+    expect(screen.getByRole('header', { name: '确认加入这个账本？' })).toBeOnTheScreen();
+    expect(join).toHaveBeenCalledTimes(1);
+    await userEvent.press(screen.getByRole('button', { name: '重试原提交' }));
+    expect(join.mock.calls[0]).toEqual(join.mock.calls[1]);
   });
   it('blocks duplicate join presses and dismissal while writing', async () => {
     let finish!: (result: EndpointOutput<'joinLedger'>) => void;

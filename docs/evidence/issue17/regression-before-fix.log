@@ -1,0 +1,49 @@
+$ jest --runInBand --runTestsByPath tests/ledgers-ui.test.tsx -t 'clears an abandoned'
+FAIL Android tests/ledgers-ui.test.tsx
+  ● ledger pages with isolated API callbacks (no database/native claim) › clears an abandoned definitive join error before a fresh preview and keeps the new preview read-only
+
+    expect(received).toBeNull()
+
+    Received: <Text accessibilityLiveRegion="polite" accessibilityRole="alert" style={{"color": "#B83D40", "fontSize": 13, "lineHeight": 20}}>邀请码已过期，请联系创建者重新生成</Text>
+
+      375 |     await userEvent.press(screen.getByRole('button', { name: '查看账本' }));
+      376 |     await screen.findByRole('header', { name: '确认加入这个账本？' });
+    > 377 |     expect(screen.queryByText('邀请码已过期，请联系创建者重新生成')).toBeNull();
+          |                                                     ^
+      378 |     expect(join).toHaveBeenCalledTimes(1);
+      379 |     await userEvent.press(screen.getByRole('button', { name: '加入鼓山一日' }));
+      380 |     expect(join.mock.calls[0]?.[1]).not.toEqual(join.mock.calls[1]?.[1]);
+
+      at Object.toBeNull (tests/ledgers-ui.test.tsx:377:53)
+      at asyncGeneratorStep (../../node_modules/.pnpm/@babel+runtime@7.29.10/node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (../../node_modules/.pnpm/@babel+runtime@7.29.10/node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+FAIL iOS tests/ledgers-ui.test.tsx
+  ● ledger pages with isolated API callbacks (no database/native claim) › clears an abandoned definitive join error before a fresh preview and keeps the new preview read-only
+
+    expect(received).toBeNull()
+
+    Received: <Text accessibilityLiveRegion="polite" accessibilityRole="alert" style={{"color": "#B83D40", "fontSize": 13, "lineHeight": 20}}>邀请码已过期，请联系创建者重新生成</Text>
+
+      375 |     await userEvent.press(screen.getByRole('button', { name: '查看账本' }));
+      376 |     await screen.findByRole('header', { name: '确认加入这个账本？' });
+    > 377 |     expect(screen.queryByText('邀请码已过期，请联系创建者重新生成')).toBeNull();
+          |                                                     ^
+      378 |     expect(join).toHaveBeenCalledTimes(1);
+      379 |     await userEvent.press(screen.getByRole('button', { name: '加入鼓山一日' }));
+      380 |     expect(join.mock.calls[0]?.[1]).not.toEqual(join.mock.calls[1]?.[1]);
+
+      at Object.toBeNull (tests/ledgers-ui.test.tsx:377:53)
+      at asyncGeneratorStep (../../node_modules/.pnpm/@babel+runtime@7.29.10/node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (../../node_modules/.pnpm/@babel+runtime@7.29.10/node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+Test Suites: 2 failed, 2 total
+Tests:       2 failed, 46 skipped, 48 total
+Snapshots:   0 total
+Time:        2.498 s, estimated 16 s
+Ran all test suites within paths "tests/ledgers-ui.test.tsx" in 2 projects.
+[ELIFECYCLE] Test failed. See above for more details.
+Error: ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL
+
+  × "pnpm recursive run" failed in /Users/liangbai/Homework/tongzhang/apps/
+  │ mobile
