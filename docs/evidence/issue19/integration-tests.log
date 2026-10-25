@@ -1,0 +1,6 @@
+Command: TEST_DATABASE_URL=<private connection to tongzhang_issue19_ci_test> pnpm test:integration
+PostgreSQL: real local PostgreSQL 17.11; dedicated _test database, separate from native App fixture database.
+Test Files  11 passed (11)
+      Tests  96 passed (96)
+   Start at  07:27:25
+   Duration  3.87s (tests 56%, import 33%, transform 11%)

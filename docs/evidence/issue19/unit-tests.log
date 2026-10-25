@@ -1,0 +1,13 @@
+$ pnpm build:shared && vitest run
+$ pnpm -r --filter "./packages/*" build
+$ tsc -p tsconfig.json
+$ tsc -p tsconfig.json
+
+ RUN  v5.0.4 /Users/liangbai/.codex/worktrees/19-20-ledger-validation/tongzhang
+
+
+ Test Files  18 passed (18)
+      Tests  112 passed (112)
+   Start at  07:26:07
+   Duration  1.23s (tests 47%, transform 26%, import 26%, worker 1%)
+
