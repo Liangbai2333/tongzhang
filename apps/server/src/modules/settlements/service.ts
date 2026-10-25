@@ -6,6 +6,7 @@ import { computeBalances, readLedgerSnapshot, toBalanceDto } from '../balances/i
 
 import { requireActive } from '../ledgers/index.js';
 import { SETTLEMENT_ALGORITHM, solveSettlement } from './solver.js';
+import { createStartSettlement } from './start.js';
 
 export interface SettlementsService {
   previewSettlement: Handler<'previewSettlement'>;
@@ -19,10 +20,6 @@ export function createSettlementsService(db: Orm): SettlementsService {
   return {
     /**
      * Read-only preview. It never writes batches/transfers, never bumps the version and never freezes.
-     * T19 (startSettlement) must, in ONE transaction: lock the ledger row (SELECT ... FOR UPDATE),
-     * compare expectedVersion with ledgers.version (409 on mismatch), recompute balances with this same
-     * calculator + solver, insert the batch/transfers, then set status SETTLING (freeze) and bump version.
-     * The preview result is advisory and must never be trusted by that write path.
      */
     previewSettlement: async (input, context) => {
       if (!context.principal) throw new AppError('UNAUTHENTICATED', '请先登录', 401);
@@ -55,7 +52,7 @@ export function createSettlementsService(db: Orm): SettlementsService {
         },
       } as Awaited<ReturnType<Handler<'previewSettlement'>>>;
     },
-    startSettlement: notReady('startSettlement'),
+    startSettlement: createStartSettlement(db),
     getSettlement: notReady('getSettlement'),
     markTransferPaid: notReady('markTransferPaid'),
     settleLedger: notReady('settleLedger'),
