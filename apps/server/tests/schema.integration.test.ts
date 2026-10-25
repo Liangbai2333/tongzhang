@@ -63,8 +63,8 @@ it('checks real sessions and parses transformed queries exactly once', async () 
       url: '/api/v1/ledgers?archived=false&limit=20',
       headers: { authorization: `Bearer ${issued.accessToken}` },
     });
-    expect(response.statusCode).toBe(501);
-    expect(response.json().error.code).toBe('FEATURE_NOT_READY');
+    expect(response.statusCode).toBe(200);
+    expect(response.json()).toEqual({ data: [], page: { nextCursor: null } });
     await db.pool.query('update auth_sessions set revoked_at=now() where user_id=$1', [userId]);
     expect(
       (
