@@ -91,10 +91,10 @@ export function createAuthController(api: Dependencies) {
     login: (input: EndpointInput<'login'>) => signIn('login', input),
     register: (input: EndpointInput<'register'>) => signIn('register', input),
     restore(): Promise<void> {
-      suspended = false;
       if (restorePending) return restorePending;
       if (state.operation) return Promise.resolve();
       const id = ++intent;
+      suspended = false;
       update({ status: 'restoring', operation: 'restore', error: null });
       restorePending = (async () => {
         try {

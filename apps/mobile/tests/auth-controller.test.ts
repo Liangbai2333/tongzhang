@@ -118,6 +118,22 @@ describe('mobile authentication and route admission state', () => {
     await pending;
     expect(auth.getSnapshot()).toMatchObject({ status: 'error', user: null });
   });
+  it('does not revive a suspended response when restoration is requested again', async () => {
+    const { api, auth } = fixture();
+    await auth.restore();
+    const request = deferred<{ data: typeof user }>();
+    api.getMe.mockReturnValueOnce(request.promise);
+    const pending = auth.restore();
+    auth.suspend();
+    const concurrent = auth.restore();
+    expect(concurrent).toBe(pending);
+    request.resolve({ data: user });
+    await concurrent;
+    expect(auth.getSnapshot()).toMatchObject({ status: 'error', user: null });
+    await auth.restore();
+    expect(auth.getSnapshot()).toMatchObject({ status: 'authenticated', user });
+    expect(api.getMe).toHaveBeenCalledTimes(3);
+  });
   it('retries local credential cleanup without misrepresenting remote revocation', async () => {
     const { api, auth } = fixture();
     auth.invalidate();
