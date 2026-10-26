@@ -344,6 +344,26 @@ describe('expense flow with isolated API callbacks, not native/database proof', 
     expect(upload).toHaveBeenCalledTimes(2);
     expect(create).toHaveBeenCalledTimes(1);
   });
+  it('keeps expense failures visible when replacing an already uploaded receipt fails', async () => {
+    create
+      .mockRejectedValueOnce(new ApiError('FORBIDDEN', '暂时无法保存消费', 403))
+      .mockRejectedValueOnce(new ApiError('NETWORK_ERROR', '保存结果尚未确认'));
+    await form();
+    await userEvent.press(screen.getByRole('button', { name: '从相册选择' }));
+    await screen.findByRole('button', { name: '移除收据' });
+    await userEvent.press(screen.getByRole('button', { name: '保存消费' }));
+    await screen.findByText('暂时无法保存消费');
+    select.mockRejectedValueOnce(new ApiError('CAMERA_PERMISSION_DENIED', '无法拍摄收据'));
+    await userEvent.press(screen.getByRole('button', { name: '拍摄收据' }));
+    await screen.findByText('无法拍摄收据');
+    await userEvent.press(screen.getByRole('button', { name: '保存消费' }));
+    await screen.findByText('保存结果尚未确认');
+    expect(screen.getByText('无法拍摄收据')).toBeOnTheScreen();
+    expect(screen.getByLabelText('消费金额')).toBeDisabled();
+    expect(upload).toHaveBeenCalledTimes(1);
+    expect(create).toHaveBeenCalledTimes(2);
+    expect(create.mock.calls[0]).toEqual(create.mock.calls[1]);
+  });
   it('preserves receipt on cancelled selection and removes only its temporary file on explicit removal', async () => {
     await form();
     await userEvent.press(screen.getByRole('button', { name: '从相册选择' }));
