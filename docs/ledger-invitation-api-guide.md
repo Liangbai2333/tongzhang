@@ -1,5 +1,7 @@
 # 建账与邀请接口索引、双账号操作说明
 
+后续消费/图片、正式冻结/记录、登记已还/结清及个人归档的 2026-10-26 同版本操作与可用边界，见 [#34 接口操作说明](expense-settlement-api-guide.md)；本页保留 #20 当日的建账与邀请记录。
+
 2026-10-25，负责人袁湘湘（@circlexxl）。对应 [Issue #20](https://github.com/Liangbai2333/tongzhang/issues/20) 的账本/邀请文档交付；本轮不重复开发 #8 协议弹窗，不代表 T18 整项完成或重复扣减 T08 点数。
 
 本次按已合入 [PR #21](https://github.com/Liangbai2333/tongzhang/pull/21)、[PR #25](https://github.com/Liangbai2333/tongzhang/pull/25) 后的 `main` `3cb6e0bc7e5167d991b8454b1fce084739077b41` 核对。API、客户端、截图均对应这份实现；[本轮原生与环境实操记录](issue19-native-environment-validation.md)提供复现环境、命令、结果和边界。
