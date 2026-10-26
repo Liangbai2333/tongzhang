@@ -1,6 +1,6 @@
 # 消费、图片、正式结算与个人归档操作说明
 
-2026-10-26，负责人袁湘湘（@circlexxl），对应 [Issue #34](https://github.com/Liangbai2333/tongzhang/issues/34)，承接 [#20 建账/邀请索引](ledger-invitation-api-guide.md)。本日记录使用基线 `5abf9b0` 加源码提交 `e653669b9613fb6403b2aba1d2a166dc92cae515`，与 [#31 原生验收](issue31-native-acceptance.md)的客户端、API、数据库及当日截图一致。后续提交只整理交付文档与证据，不切换服务端版本。
+2026-10-26，负责人袁湘湘（@circlexxl），对应 [Issue #34](https://github.com/Liangbai2333/tongzhang/issues/34)，承接 [#20 建账/邀请索引](ledger-invitation-api-guide.md)。首次原生实操使用基线 `5abf9b0` 加源码提交 `e653669b9613fb6403b2aba1d2a166dc92cae515`，与 [#31 原生验收](issue31-native-acceptance.md)的客户端、API、数据库及当日截图一致。后续审查仅补充两种错误同时显示的修复与组件回归，见 [PR #40 审查补充](issue31-native-acceptance.md#pr-40-合并前审查补充)；接口与服务端版本未变，原生截图仍归属首次验收版本。
 
 ## 当前可用范围
 
