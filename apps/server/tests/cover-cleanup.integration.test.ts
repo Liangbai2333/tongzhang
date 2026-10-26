@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto';
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { eq, inArray, sql } from 'drizzle-orm';
 import {
   expenseImages,
@@ -319,6 +319,46 @@ describe('temporary image cleanup', () => {
       }
     },
   );
+
+  it('keeps lock probes isolated when another fixture joins the same blocking chain', async () => {
+    const owner = await fixture.register();
+    const id = await upload(owner);
+    const blocker = await fixture.db.pool.connect();
+    const ownWaiter = await fixture.db.pool.connect();
+    const foreignWaiter = await fixture.db.pool.connect();
+    const pending: Promise<unknown>[] = [];
+    try {
+      await blocker.query('BEGIN');
+      const blockerPid = (await blocker.query<{ pid: number }>('SELECT pg_backend_pid() AS pid'))
+        .rows[0]!.pid;
+      await blocker.query('SELECT id FROM image_assets WHERE id = $1 FOR UPDATE', [id]);
+      const ownPid = (await ownWaiter.query<{ pid: number }>('SELECT pg_backend_pid() AS pid'))
+        .rows[0]!.pid;
+      const foreignPid = (
+        await foreignWaiter.query<{ pid: number }>('SELECT pg_backend_pid() AS pid')
+      ).rows[0]!.pid;
+      await foreignWaiter.query("SET application_name = 'tongzhang-test-other-fixture'");
+      pending.push(ownWaiter.query('SELECT id FROM image_assets WHERE id = $1 FOR UPDATE', [id]));
+      pending.push(
+        foreignWaiter.query('SELECT id FROM image_assets WHERE id = $1 FOR UPDATE', [id]),
+      );
+      await vi.waitFor(async () => {
+        const { rows } = await fixture.db.pool.query<{ count: number }>(
+          "SELECT count(*)::integer AS count FROM pg_stat_activity WHERE pid = ANY($1::integer[]) AND wait_event_type = 'Lock'",
+          [[ownPid, foreignPid]],
+        );
+        expect(rows[0]!.count).toBe(2);
+      });
+      // Both sessions really wait, but only our fixture's waiter belongs to this assertion.
+      await waitForBlockedQueries(fixture.db.pool, blockerPid, 1);
+    } finally {
+      await blocker.query('ROLLBACK');
+      await Promise.allSettled(pending);
+      blocker.release();
+      ownWaiter.release();
+      foreignWaiter.release(true);
+    }
+  });
 
   it('rejects an explicit bind after cleanup wins without partial ledger data', async () => {
     const owner = await fixture.register();

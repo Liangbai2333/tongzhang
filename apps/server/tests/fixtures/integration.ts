@@ -27,8 +27,10 @@ export type TestAccount = EndpointOutput<'register'>['data'];
 /** Real HTTP accounts and explicitly owned ledger rows; no global table truncation. */
 export async function integrationFixture() {
   const target = testDatabaseUrl();
-  const db = createDatabase(target);
-  const app = await buildApp(testEnv, createDatabase(target));
+  // Tag both pools so lock probes can distinguish this fixture from parallel suites.
+  const config = { connectionString: target, application_name: `tongzhang-test-${randomUUID()}` };
+  const db = createDatabase(config);
+  const app = await buildApp(testEnv, createDatabase(config));
   const userIds: string[] = [];
   const ledgerIds: string[] = [];
   return {
