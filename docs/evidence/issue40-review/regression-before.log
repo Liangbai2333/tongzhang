@@ -1,0 +1,773 @@
+$ jest --runInBand --testPathPatterns=expenses-ui '--testNamePattern=keeps expense failures visible'
+FAIL Android tests/expenses-ui.test.tsx
+  ● expense flow with isolated API callbacks, not native/database proof › keeps expense failures visible when replacing an already uploaded receipt fails
+
+    Unable to find an element with text: 保存结果尚未确认
+
+    [36m<RNCSafeAreaView>[39m
+      [36m<View>[39m
+        [36m<View>[39m
+          [36m<View[39m
+            [33maccessibilityLabel[39m=[32m"返回"[39m
+            [33maccessibilityRole[39m=[32m"button"[39m
+            [33maccessibilityState[39m=[32m{
+              {
+                "disabled": true,
+              }
+            }[39m
+            [33maccessible[39m=[32m{true}[39m
+          [36m>[39m
+            [36m<View>[39m
+              [36m<View />[39m
+            [36m</View>[39m
+          [36m</View>[39m
+          [36m<Text[39m
+            [33maccessibilityRole[39m=[32m"header"[39m
+          [36m>[39m
+            [0m记一笔[0m
+          [36m</Text>[39m
+        [36m</View>[39m
+        [36m<RCTScrollView>[39m
+          [36m<View>[39m
+            [36m<View>[39m
+              [36m<Text>[39m
+                [0m消费金额[0m
+              [36m</Text>[39m
+              [36m<View>[39m
+                [36m<Text>[39m
+                  [0m¥[0m
+                [36m</Text>[39m
+                [36m<TextInput[39m
+                  [33maccessibilityLabel[39m=[32m"消费金额"[39m
+                  [33meditable[39m=[32m{false}[39m
+                  [33mplaceholder[39m=[32m"0.00"[39m
+                  [33mvalue[39m=[32m"120.00"[39m
+                [36m/>[39m
+              [36m</View>[39m
+              [36m<Text>[39m
+                [0m金额须大于 0，最多两位小数[0m
+              [36m</Text>[39m
+            [36m</View>[39m
+            [36m<View>[39m
+              [36m<View>[39m
+                [36m<Text>[39m
+                  [0m消费名称[0m
+                [36m</Text>[39m
+              [36m</View>[39m
+              [36m<View>[39m
+                [36m<TextInput[39m
+                  [33maccessibilityLabel[39m=[32m"消费名称"[39m
+                  [33meditable[39m=[32m{false}[39m
+                  [33mplaceholder[39m=[32m"这笔钱花在了哪里？"[39m
+                  [33mvalue[39m=[32m" 食堂午餐 "[39m
+                [36m/>[39m
+              [36m</View>[39m
+            [36m</View>[39m
+            [36m<View>[39m
+              [36m<View[39m
+                [33maccessibilityLabel[39m=[32m"消费类别"[39m
+                [33maccessibilityRole[39m=[32m"button"[39m
+                [33maccessibilityState[39m=[32m{
+                  {
+                    "disabled": true,
+                  }
+                }[39m
+                [33maccessible[39m=[32m{true}[39m
+              [36m>[39m
+                [36m<View>[39m
+                  [36m<View>[39m
+                    [36m<Text>[39m
+                      [0m消费类别[0m
+                    [36m</Text>[39m
+                    [36m<View>[39m
+                      [36m<Text>[39m
+                        [0m餐饮[0m
+                      [36m</Text>[39m
+                    [36m</View>[39m
+                  [36m</View>[39m
+                [36m</View>[39m
+              [36m</View>[39m
+            [36m</View>[39m
+            [36m<View>[39m
+              [36m<View[39m
+                [33maccessibilityLabel[39m=[32m"付款人"[39m
+                [33maccessibilityRole[39m=[32m"button"[39m
+                [33maccessibilityState[39m=[32m{
+                  {
+                    "disabled": true,
+                  }
+                }[39m
+                [33maccessible[39m=[32m{true}[39m
+              [36m>[39m
+                [36m<View>[39m
+                  [36m<View>[39m
+                    [36m<Text>[39m
+                      [0m付款人[0m
+                    [36m</Text>[39m
+                    [36m<View>[39m
+                      [36m<View[39m
+                        [33maccessible[39m=[32m{false}[39m
+                      [36m>[39m
+                        [36m<Text>[39m
+                          [0m安[0m
+                        [36m</Text>[39m
+                      [36m</View>[39m
+                      [36m<Text>[39m
+                        [0m小安[0m
+                      [36m</Text>[39m
+                    [36m</View>[39m
+                  [36m</View>[39m
+                [36m</View>[39m
+              [36m</View>[39m
+              [36m<View />[39m
+              [36m<View[39m
+                [33maccessibilityLabel[39m=[32m"日期"[39m
+                [33maccessibilityRole[39m=[32m"button"[39m
+                [33maccessibilityState[39m=[32m{
+                  {
+                    "disabled": true,
+                  }
+                }[39m
+                [33maccessible[39m=[32m{true}[39m
+              [36m>[39m
+                [36m<View>[39m
+                  [36m<View>[39m
+                    [36m<Text>[39m
+                      [0m日期[0m
+                    [36m</Text>[39m
+                    [36m<View>[39m
+                      [36m<Text>[39m
+                        [0m2026-10-26[0m
+                      [36m</Text>[39m
+                    [36m</View>[39m
+                  [36m</View>[39m
+                [36m</View>[39m
+              [36m</View>[39m
+            [36m</View>[39m
+            [36m<View>[39m
+              [36m<View[39m
+                [33maccessibilityLabel[39m=[32m"参与分摊"[39m
+                [33maccessibilityRole[39m=[32m"button"[39m
+                [33maccessibilityState[39m=[32m{
+                  {
+                    "disabled": true,
+                  }
+                }[39m
+                [33maccessible[39m=[32m{true}[39m
+              [36m>[39m
+                [36m<View>[39m
+                  [36m<View>[39m
+                    [36m<Text>[39m
+                      [0m参与分摊[0m
+                    [36m</Text>[39m
+                    [36m<View>[39m
+                      [36m<Text>[39m
+                        [0m2[0m
+                        [0m 位成员[0m
+                      [36m</Text>[39m
+                    [36m</View>[39m
+                  [36m</View>[39m
+                [36m</View>[39m
+              [36m</View>[39m
+              [36m<View />[39m
+              [36m<View[39m
+                [33maccessibilityLabel[39m=[32m"分摊方式"[39m
+                [33maccessibilityRole[39m=[32m"button"[39m
+                [33maccessibilityState[39m=[32m{
+                  {
+                    "disabled": true,
+                  }
+                }[39m
+                [33maccessible[39m=[32m{true}[39m
+              [36m>[39m
+                [36m<View>[39m
+                  [36m<View>[39m
+                    [36m<Text>[39m
+                      [0m分摊方式[0m
+                    [36m</Text>[39m
+                    [36m<View>[39m
+                      [36m<Text>[39m
+                        [0m人均[0m
+                      [36m</Text>[39m
+                    [36m</View>[39m
+                  [36m</View>[39m
+                [36m</View>[39m
+              [36m</View>[39m
+              [36m<View />[39m
+              [36m<View>[39m
+                [36m<Text>[39m
+                  [0m2 人参与 · 合计 ¥120.00[0m
+                [36m</Text>[39m
+              [36m</View>[39m
+            [36m</View>[39m
+            [36m<View>[39m
+              [36m<Text>[39m
+                [0m补充信息[0m
+              [36m</Text>[39m
+              [36m<View>[39m
+                [36m<View>[39m
+                  [36m<Text>[39m
+                    [0m备注（选填）[0m
+                  [36m</Text>[39m
+                [36m</View>[39m
+                [36m<View>[39m
+                  [36m<TextInput[39m
+                    [33maccessibilityLabel[39m=[32m"备注（选填）"[39m
+                    [33meditable[39m=[32m{false}[39m
+                    [33mvalue[39m=[32m""[39m
+                  [36m/>[39m
+                [36m</View>[39m
+              [36m</View>[39m
+              [36m<Text>[39m
+                [0m收据图片（选填）[0m
+              [36m</Text>[39m
+              [36m<View>[39m
+                [36m<View[39m
+                  [33maccessibilityLabel[39m=[32m"从相册选择"[39m
+                  [33maccessibilityRole[39m=[32m"button"[39m
+                  [33maccessibilityState[39m=[32m{
+                    {
+                      "busy": false,
+                      "disabled": true,
+                    }
+                  }[39m
+                  [33maccessible[39m=[32m{true}[39m
+                [36m>[39m
+                  [36m<View>[39m
+                    [36m<View>[39m
+                      [36m<Text>[39m
+                        [0m从相册选择[0m
+                      [36m</Text>[39m
+                    [36m</View>[39m
+                  [36m</View>[39m
+                [36m</View>[39m
+                [36m<View[39m
+                  [33maccessibilityLabel[39m=[32m"拍摄收据"[39m
+                  [33maccessibilityRole[39m=[32m"button"[39m
+                  [33maccessibilityState[39m=[32m{
+                    {
+                      "busy": false,
+                      "disabled": true,
+                    }
+                  }[39m
+                  [33maccessible[39m=[32m{true}[39m
+                [36m>[39m
+                  [36m<View>[39m
+                    [36m<View>[39m
+                      [36m<Text>[39m
+                        [0m拍摄收据[0m
+                      [36m</Text>[39m
+                    [36m</View>[39m
+                  [36m</View>[39m
+                [36m</View>[39m
+              [36m</View>[39m
+              [36m<View>[39m
+                [36m<Text>[39m
+                  [0m收据已上传，保存消费时绑定[0m
+                  [0m [0m
+                  [0m· [0m
+                  [0m1[0m
+                  [0m KiB[0m
+                [36m</Text>[39m
+                [36m<View>[39m
+                  [36m<View[39m
+                    [33maccessibilityLabel[39m=[32m"收据预览"[39m
+                    [33maccessibilityRole[39m=[32m"button"[39m
+                    [33maccessibilityState[39m=[32m{
+                      {
+                        "disabled": false,
+                      }
+                    }[39m
+                    [33maccessible[39m=[32m{true}[39m
+                  [36m>[39m
+                    [36m<View>[39m
+                      [36m<View>[39m
+                        [36m<ViewManagerAdapter_ExpoImage[39m
+                          [33mplaceholder[39m=[32m{[]}[39m
+                        [36m/>[39m
+                        [36m<View>[39m
+                          [36m<Text>[39m
+                            [0m收据预览[0m
+                          [36m</Text>[39m
+                          [36m<Text>[39m
+                            [0m可预览、移除后重新选择[0m
+                          [36m</Text>[39m
+                        [36m</View>[39m
+                      [36m</View>[39m
+                    [36m</View>[39m
+                  [36m</View>[39m
+                  [36m<View[39m
+                    [33maccessibilityLabel[39m=[32m"移除收据"[39m
+                    [33maccessibilityRole[39m=[32m"button"[39m
+                    [33maccessibilityState[39m=[32m{
+                      {
+                        "disabled": true,
+                      }
+                    }[39m
+                    [33maccessible[39m=[32m{true}[39m
+                  [36m>[39m
+                    [36m<View />[39m
+                  [36m</View>[39m
+                [36m</View>[39m
+              [36m</View>[39m
+              [36m<Text>[39m
+                [0m最多 1 张 JPEG/PNG；选择后压缩到 1 MiB 内。保存失败保留当前表单，不自动重试。[0m
+              [36m</Text>[39m
+            [36m</View>[39m
+          [36m</View>[39m
+        [36m</RCTScrollView>[39m
+        [36m<View>[39m
+          [36m<Text[39m
+            [33maccessibilityRole[39m=[32m"alert"[39m
+          [36m>[39m
+            [0m无法拍摄收据[0m
+          [36m</Text>[39m
+          [36m<Text>[39m
+            [0m结果尚未确认，输入已保留；重试将核对原提交。[0m
+          [36m</Text>[39m
+          [36m<View[39m
+            [33maccessibilityLabel[39m=[32m"重试原消费提交"[39m
+            [33maccessibilityRole[39m=[32m"button"[39m
+            [33maccessibilityState[39m=[32m{
+              {
+                "busy": false,
+                "disabled": false,
+              }
+            }[39m
+            [33maccessible[39m=[32m{true}[39m
+          [36m>[39m
+            [36m<View>[39m
+              [36m<View>[39m
+                [36m<Text>[39m
+                  [0m重试原消费提交[0m
+                [36m</Text>[39m
+              [36m</View>[39m
+            [36m</View>[39m
+          [36m</View>[39m
+          [36m<View[39m
+            [33maccessibilityLabel[39m=[32m"返回账本在线核对"[39m
+            [33maccessibilityRole[39m=[32m"button"[39m
+            [33maccessibilityState[39m=[32m{
+              {
+                "busy": false,
+                "disabled": false,
+              }
+            }[39m
+            [33maccessible[39m=[32m{true}[39m
+          [36m>[39m
+            [36m<View>[39m
+              [36m<View>[39m
+                [36m<Text>[39m
+                  [0m返回账本在线核对[0m
+                [36m</Text>[39m
+              [36m</View>[39m
+            [36m</View>[39m
+          [36m</View>[39m
+        [36m</View>[39m
+      [36m</View>[39m
+    [36m</RNCSafeAreaView>[39m
+
+      358 |     await screen.findByText('无法拍摄收据');
+      359 |     await userEvent.press(screen.getByRole('button', { name: '保存消费' }));
+    > 360 |     await screen.findByText('保存结果尚未确认');
+          |                  ^
+      361 |     expect(screen.getByText('无法拍摄收据')).toBeOnTheScreen();
+      362 |     expect(screen.getByLabelText('消费金额')).toBeDisabled();
+      363 |     expect(upload).toHaveBeenCalledTimes(1);
+
+      at Object.findByText (tests/expenses-ui.test.tsx:360:18)
+      at asyncGeneratorStep (../../node_modules/.pnpm/@babel+runtime@7.29.10/node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (../../node_modules/.pnpm/@babel+runtime@7.29.10/node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+FAIL iOS tests/expenses-ui.test.tsx
+  ● expense flow with isolated API callbacks, not native/database proof › keeps expense failures visible when replacing an already uploaded receipt fails
+
+    Unable to find an element with text: 保存结果尚未确认
+
+    [36m<RNCSafeAreaView>[39m
+      [36m<View>[39m
+        [36m<View>[39m
+          [36m<View[39m
+            [33maccessibilityLabel[39m=[32m"返回"[39m
+            [33maccessibilityRole[39m=[32m"button"[39m
+            [33maccessibilityState[39m=[32m{
+              {
+                "disabled": true,
+              }
+            }[39m
+            [33maccessible[39m=[32m{true}[39m
+          [36m>[39m
+            [36m<View>[39m
+              [36m<View />[39m
+            [36m</View>[39m
+          [36m</View>[39m
+          [36m<Text[39m
+            [33maccessibilityRole[39m=[32m"header"[39m
+          [36m>[39m
+            [0m记一笔[0m
+          [36m</Text>[39m
+        [36m</View>[39m
+        [36m<RCTScrollView>[39m
+          [36m<View>[39m
+            [36m<View>[39m
+              [36m<Text>[39m
+                [0m消费金额[0m
+              [36m</Text>[39m
+              [36m<View>[39m
+                [36m<Text>[39m
+                  [0m¥[0m
+                [36m</Text>[39m
+                [36m<TextInput[39m
+                  [33maccessibilityLabel[39m=[32m"消费金额"[39m
+                  [33meditable[39m=[32m{false}[39m
+                  [33mplaceholder[39m=[32m"0.00"[39m
+                  [33mvalue[39m=[32m"120.00"[39m
+                [36m/>[39m
+              [36m</View>[39m
+              [36m<Text>[39m
+                [0m金额须大于 0，最多两位小数[0m
+              [36m</Text>[39m
+            [36m</View>[39m
+            [36m<View>[39m
+              [36m<View>[39m
+                [36m<Text>[39m
+                  [0m消费名称[0m
+                [36m</Text>[39m
+              [36m</View>[39m
+              [36m<View>[39m
+                [36m<TextInput[39m
+                  [33maccessibilityLabel[39m=[32m"消费名称"[39m
+                  [33meditable[39m=[32m{false}[39m
+                  [33mplaceholder[39m=[32m"这笔钱花在了哪里？"[39m
+                  [33mvalue[39m=[32m" 食堂午餐 "[39m
+                [36m/>[39m
+              [36m</View>[39m
+            [36m</View>[39m
+            [36m<View>[39m
+              [36m<View[39m
+                [33maccessibilityLabel[39m=[32m"消费类别"[39m
+                [33maccessibilityRole[39m=[32m"button"[39m
+                [33maccessibilityState[39m=[32m{
+                  {
+                    "disabled": true,
+                  }
+                }[39m
+                [33maccessible[39m=[32m{true}[39m
+              [36m>[39m
+                [36m<View>[39m
+                  [36m<View>[39m
+                    [36m<Text>[39m
+                      [0m消费类别[0m
+                    [36m</Text>[39m
+                    [36m<View>[39m
+                      [36m<Text>[39m
+                        [0m餐饮[0m
+                      [36m</Text>[39m
+                    [36m</View>[39m
+                  [36m</View>[39m
+                [36m</View>[39m
+              [36m</View>[39m
+            [36m</View>[39m
+            [36m<View>[39m
+              [36m<View[39m
+                [33maccessibilityLabel[39m=[32m"付款人"[39m
+                [33maccessibilityRole[39m=[32m"button"[39m
+                [33maccessibilityState[39m=[32m{
+                  {
+                    "disabled": true,
+                  }
+                }[39m
+                [33maccessible[39m=[32m{true}[39m
+              [36m>[39m
+                [36m<View>[39m
+                  [36m<View>[39m
+                    [36m<Text>[39m
+                      [0m付款人[0m
+                    [36m</Text>[39m
+                    [36m<View>[39m
+                      [36m<View[39m
+                        [33maccessible[39m=[32m{false}[39m
+                      [36m>[39m
+                        [36m<Text>[39m
+                          [0m安[0m
+                        [36m</Text>[39m
+                      [36m</View>[39m
+                      [36m<Text>[39m
+                        [0m小安[0m
+                      [36m</Text>[39m
+                    [36m</View>[39m
+                  [36m</View>[39m
+                [36m</View>[39m
+              [36m</View>[39m
+              [36m<View />[39m
+              [36m<View[39m
+                [33maccessibilityLabel[39m=[32m"日期"[39m
+                [33maccessibilityRole[39m=[32m"button"[39m
+                [33maccessibilityState[39m=[32m{
+                  {
+                    "disabled": true,
+                  }
+                }[39m
+                [33maccessible[39m=[32m{true}[39m
+              [36m>[39m
+                [36m<View>[39m
+                  [36m<View>[39m
+                    [36m<Text>[39m
+                      [0m日期[0m
+                    [36m</Text>[39m
+                    [36m<View>[39m
+                      [36m<Text>[39m
+                        [0m2026-10-26[0m
+                      [36m</Text>[39m
+                    [36m</View>[39m
+                  [36m</View>[39m
+                [36m</View>[39m
+              [36m</View>[39m
+            [36m</View>[39m
+            [36m<View>[39m
+              [36m<View[39m
+                [33maccessibilityLabel[39m=[32m"参与分摊"[39m
+                [33maccessibilityRole[39m=[32m"button"[39m
+                [33maccessibilityState[39m=[32m{
+                  {
+                    "disabled": true,
+                  }
+                }[39m
+                [33maccessible[39m=[32m{true}[39m
+              [36m>[39m
+                [36m<View>[39m
+                  [36m<View>[39m
+                    [36m<Text>[39m
+                      [0m参与分摊[0m
+                    [36m</Text>[39m
+                    [36m<View>[39m
+                      [36m<Text>[39m
+                        [0m2[0m
+                        [0m 位成员[0m
+                      [36m</Text>[39m
+                    [36m</View>[39m
+                  [36m</View>[39m
+                [36m</View>[39m
+              [36m</View>[39m
+              [36m<View />[39m
+              [36m<View[39m
+                [33maccessibilityLabel[39m=[32m"分摊方式"[39m
+                [33maccessibilityRole[39m=[32m"button"[39m
+                [33maccessibilityState[39m=[32m{
+                  {
+                    "disabled": true,
+                  }
+                }[39m
+                [33maccessible[39m=[32m{true}[39m
+              [36m>[39m
+                [36m<View>[39m
+                  [36m<View>[39m
+                    [36m<Text>[39m
+                      [0m分摊方式[0m
+                    [36m</Text>[39m
+                    [36m<View>[39m
+                      [36m<Text>[39m
+                        [0m人均[0m
+                      [36m</Text>[39m
+                    [36m</View>[39m
+                  [36m</View>[39m
+                [36m</View>[39m
+              [36m</View>[39m
+              [36m<View />[39m
+              [36m<View>[39m
+                [36m<Text>[39m
+                  [0m2 人参与 · 合计 ¥120.00[0m
+                [36m</Text>[39m
+              [36m</View>[39m
+            [36m</View>[39m
+            [36m<View>[39m
+              [36m<Text>[39m
+                [0m补充信息[0m
+              [36m</Text>[39m
+              [36m<View>[39m
+                [36m<View>[39m
+                  [36m<Text>[39m
+                    [0m备注（选填）[0m
+                  [36m</Text>[39m
+                [36m</View>[39m
+                [36m<View>[39m
+                  [36m<TextInput[39m
+                    [33maccessibilityLabel[39m=[32m"备注（选填）"[39m
+                    [33meditable[39m=[32m{false}[39m
+                    [33mvalue[39m=[32m""[39m
+                  [36m/>[39m
+                [36m</View>[39m
+              [36m</View>[39m
+              [36m<Text>[39m
+                [0m收据图片（选填）[0m
+              [36m</Text>[39m
+              [36m<View>[39m
+                [36m<View[39m
+                  [33maccessibilityLabel[39m=[32m"从相册选择"[39m
+                  [33maccessibilityRole[39m=[32m"button"[39m
+                  [33maccessibilityState[39m=[32m{
+                    {
+                      "busy": false,
+                      "disabled": true,
+                    }
+                  }[39m
+                  [33maccessible[39m=[32m{true}[39m
+                [36m>[39m
+                  [36m<View>[39m
+                    [36m<View>[39m
+                      [36m<Text>[39m
+                        [0m从相册选择[0m
+                      [36m</Text>[39m
+                    [36m</View>[39m
+                  [36m</View>[39m
+                [36m</View>[39m
+                [36m<View[39m
+                  [33maccessibilityLabel[39m=[32m"拍摄收据"[39m
+                  [33maccessibilityRole[39m=[32m"button"[39m
+                  [33maccessibilityState[39m=[32m{
+                    {
+                      "busy": false,
+                      "disabled": true,
+                    }
+                  }[39m
+                  [33maccessible[39m=[32m{true}[39m
+                [36m>[39m
+                  [36m<View>[39m
+                    [36m<View>[39m
+                      [36m<Text>[39m
+                        [0m拍摄收据[0m
+                      [36m</Text>[39m
+                    [36m</View>[39m
+                  [36m</View>[39m
+                [36m</View>[39m
+              [36m</View>[39m
+              [36m<View>[39m
+                [36m<Text>[39m
+                  [0m收据已上传，保存消费时绑定[0m
+                  [0m [0m
+                  [0m· [0m
+                  [0m1[0m
+                  [0m KiB[0m
+                [36m</Text>[39m
+                [36m<View>[39m
+                  [36m<View[39m
+                    [33maccessibilityLabel[39m=[32m"收据预览"[39m
+                    [33maccessibilityRole[39m=[32m"button"[39m
+                    [33maccessibilityState[39m=[32m{
+                      {
+                        "disabled": false,
+                      }
+                    }[39m
+                    [33maccessible[39m=[32m{true}[39m
+                  [36m>[39m
+                    [36m<View>[39m
+                      [36m<View>[39m
+                        [36m<ViewManagerAdapter_ExpoImage[39m
+                          [33mplaceholder[39m=[32m{[]}[39m
+                        [36m/>[39m
+                        [36m<View>[39m
+                          [36m<Text>[39m
+                            [0m收据预览[0m
+                          [36m</Text>[39m
+                          [36m<Text>[39m
+                            [0m可预览、移除后重新选择[0m
+                          [36m</Text>[39m
+                        [36m</View>[39m
+                      [36m</View>[39m
+                    [36m</View>[39m
+                  [36m</View>[39m
+                  [36m<View[39m
+                    [33maccessibilityLabel[39m=[32m"移除收据"[39m
+                    [33maccessibilityRole[39m=[32m"button"[39m
+                    [33maccessibilityState[39m=[32m{
+                      {
+                        "disabled": true,
+                      }
+                    }[39m
+                    [33maccessible[39m=[32m{true}[39m
+                  [36m>[39m
+                    [36m<View />[39m
+                  [36m</View>[39m
+                [36m</View>[39m
+              [36m</View>[39m
+              [36m<Text>[39m
+                [0m最多 1 张 JPEG/PNG；选择后压缩到 1 MiB 内。保存失败保留当前表单，不自动重试。[0m
+              [36m</Text>[39m
+            [36m</View>[39m
+          [36m</View>[39m
+        [36m</RCTScrollView>[39m
+        [36m<View>[39m
+          [36m<Text[39m
+            [33maccessibilityRole[39m=[32m"alert"[39m
+          [36m>[39m
+            [0m无法拍摄收据[0m
+          [36m</Text>[39m
+          [36m<Text>[39m
+            [0m结果尚未确认，输入已保留；重试将核对原提交。[0m
+          [36m</Text>[39m
+          [36m<View[39m
+            [33maccessibilityLabel[39m=[32m"重试原消费提交"[39m
+            [33maccessibilityRole[39m=[32m"button"[39m
+            [33maccessibilityState[39m=[32m{
+              {
+                "busy": false,
+                "disabled": false,
+              }
+            }[39m
+            [33maccessible[39m=[32m{true}[39m
+          [36m>[39m
+            [36m<View>[39m
+              [36m<View>[39m
+                [36m<Text>[39m
+                  [0m重试原消费提交[0m
+                [36m</Text>[39m
+              [36m</View>[39m
+            [36m</View>[39m
+          [36m</View>[39m
+          [36m<View[39m
+            [33maccessibilityLabel[39m=[32m"返回账本在线核对"[39m
+            [33maccessibilityRole[39m=[32m"button"[39m
+            [33maccessibilityState[39m=[32m{
+              {
+                "busy": false,
+                "disabled": false,
+              }
+            }[39m
+            [33maccessible[39m=[32m{true}[39m
+          [36m>[39m
+            [36m<View>[39m
+              [36m<View>[39m
+                [36m<Text>[39m
+                  [0m返回账本在线核对[0m
+                [36m</Text>[39m
+              [36m</View>[39m
+            [36m</View>[39m
+          [36m</View>[39m
+        [36m</View>[39m
+      [36m</View>[39m
+    [36m</RNCSafeAreaView>[39m
+
+      358 |     await screen.findByText('无法拍摄收据');
+      359 |     await userEvent.press(screen.getByRole('button', { name: '保存消费' }));
+    > 360 |     await screen.findByText('保存结果尚未确认');
+          |                  ^
+      361 |     expect(screen.getByText('无法拍摄收据')).toBeOnTheScreen();
+      362 |     expect(screen.getByLabelText('消费金额')).toBeDisabled();
+      363 |     expect(upload).toHaveBeenCalledTimes(1);
+
+      at Object.findByText (tests/expenses-ui.test.tsx:360:18)
+      at asyncGeneratorStep (../../node_modules/.pnpm/@babel+runtime@7.29.10/node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (../../node_modules/.pnpm/@babel+runtime@7.29.10/node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+
+Test Suites: 2 failed, 18 skipped, 2 of 20 total
+Tests:       2 failed, 178 skipped, 180 total
+Snapshots:   0 total
+Time:        5.65 s, estimated 32 s
+Ran all test suites with tests matching "keeps expense failures visible" in 2 projects.
+[ELIFECYCLE] Test failed. See above for more details.
+Error: ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL
+
+  × "pnpm recursive run" failed in /Users/liangbai/.codex/worktrees/issue31-
+  │ 34-native-acceptance/tongzhang/apps/mobile
+

@@ -4,7 +4,7 @@
 
 ## 版本与环境
 
-- 从远程 `main` `5abf9b095ea27311bd3d9e5c6e5ec01a631175a0` 新建 worktree，分支 `fix/31-34-native-acceptance`。实际验收源码为该基线加 `e653669b9613fb6403b2aba1d2a166dc92cae515`；后续提交只整理文档和证据，不改变运行代码。
+- 从远程 `main` `5abf9b095ea27311bd3d9e5c6e5ec01a631175a0` 新建 worktree，分支 `fix/31-34-native-acceptance`。首次原生验收源码为该基线加 `e653669b9613fb6403b2aba1d2a166dc92cae515`；首次交付的其余提交只整理文档和证据。之后的审查修复与验证单列在本文末尾，不改写首次原生截图的版本归属。
 - 唯一源码修改是 `CreateExpenseScreen.tsx` 的收据错误位置。其 SHA-256 为 `9bdafcbce9b5b9ae029cb40b7c82b355dc94673d5030d79c95555ca3b6c09b63`。`02` 是修复前缺陷证据；`03` 起为修复后运行，`01` 是修复前的人均面板基线。
 - Node.js 24.22.0、工作区 pnpm 12.6.0、Expo SDK 57 / App 0.1.0。复用已安装的 iPhone 18 Pro / iOS 27.0 开发客户端，Metro 8091；没有原生依赖或配置变更。
 - API 3331 运行本 worktree 编译的 Fastify / service / repository；3332 为记录请求及故障控制的本地代理。PostgreSQL 17 专用库 `tongzhang_issue31_34`，从空库应用仓库迁移，不写开发业务库。
@@ -59,3 +59,11 @@ F01：原收据错误位于滚动区末端。提交后用户仍停留在原滚�
 ## 交付边界
 
 本日消费/收据/预览/冻结验收和 F01 修复已完成；不据此宣布 T16/T27/T28 整项闭环完成，不改冲刺点数。登记已还、结清、归档写入以 API 验证，App 的对应写入口仍未接；已有归档读取入口确实可用，见 [#34 操作说明](expense-settlement-api-guide.md)。没有 Android 原生安装、物理设备、相机拍摄/拒权或生产部署验收；JS 导出不是这些验收的替代。
+
+## PR #40 合并前审查补充
+
+2026-10-26 审查时发现 F02：已上传收据且消费保存明确失败后，用户再次拍摄失败，原收据和图片 ID 仍保留；随后保存若遇到网络错误，原先 `error ?? receipt.error ?? write.error` 的优先级会用旧拍摄错误遮住最新保存错误。修复为在同一固定操作区分别渲染消费错误和收据错误，继续保留当前输入、上传引用和原幂等键，不修改上传、权限或写入规则。修复源码为 `cd68852ca6924f83b6bc1914b159ed3658e5df4d`。
+
+新增回归先在原 PR 上验证，iOS/Android 均因找不到“保存结果尚未确认”而失败；修复后两平台均通过，且断言原收据只上传一次、两次消费请求内容及幂等键相同、未知结果时输入禁用。完整移动端回归为 20 套件 / 180 项通过，`pnpm check` 通过。日志：[修复前](evidence/issue40-review/regression-before.log)、[修复后](evidence/issue40-review/regression-after.log)、[完整移动端回归](evidence/issue40-review/mobile-tests.log)、[检查](evidence/issue40-review/check.log)。这些新增用例使用 API/选图替身，不作为新增原生或真实数据库验收。
+
+审查同时核对了原 31 份证据文件的字节数与 SHA-256、原生验收源码提交中的文件哈希、文档相对链接、接口路径/角色/状态以及 App 未接通边界。未改写原证据清单或复用其截图宣称 F02 的原生复测。首次交付的远程 CI [check/container](https://github.com/Liangbai2333/tongzhang/actions/runs/40328372417)均通过，包含数据库集成测试；审查修复后的最终 CI 以 PR 当前 head 的检查为准，合并前须再次通过。

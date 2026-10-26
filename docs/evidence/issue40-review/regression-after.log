@@ -1,0 +1,9 @@
+$ jest --runInBand '--testNamePattern=keeps expense failures visible'
+PASS iOS tests/expenses-ui.test.tsx
+PASS Android tests/expenses-ui.test.tsx
+
+Test Suites: 18 skipped, 2 passed, 2 of 20 total
+Tests:       178 skipped, 2 passed, 180 total
+Snapshots:   0 total
+Time:        3.075 s, estimated 25 s
+Ran all test suites with tests matching "keeps expense failures visible" in 2 projects.
