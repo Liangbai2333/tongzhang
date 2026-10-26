@@ -59,4 +59,32 @@ try {
 } finally { await pool.end(); }
 console.log('Container checks passed: real PostgreSQL, repeatable migration, dual-token auth and immediate revocation, HTTP, native dependencies, non-root, production files.');
 NODE
+# Exercise the shipped cleanup command in a separate tools container against real bytea rows.
+"${compose[@]}" exec -T server node --input-type=module <<'NODE'
+import sharp from 'sharp';
+import { createHash } from 'node:crypto';
+import pg from 'pg';
+const pool = new pg.Pool();
+try {
+  const image = await sharp({create:{width:1,height:1,channels:3,background:'#fff'}}).png().toBuffer();
+  const owner = (await pool.query('select id from users limit 1')).rows[0].id;
+  for (const interval of ['25 hours', '1 hour']) {
+    await pool.query(`insert into image_assets
+      (uploaded_by_user_id, kind, mime_type, byte_size, width, height, sha256, content, created_at)
+      values ($1, 'COVER', 'image/png', $2, 1, 1, $3, $4, now() - $5::interval)`,
+      [owner, image.length, createHash('sha256').update(image).digest('hex'), image, interval]);
+  }
+} finally { await pool.end(); }
+NODE
+"${compose[@]}" run --rm -T cleanup-images
+"${compose[@]}" exec -T server node --input-type=module <<'NODE'
+import assert from 'node:assert/strict';
+import pg from 'pg';
+const pool = new pg.Pool();
+try {
+  const { rows } = await pool.query('select created_at > now() - interval \'24 hours\' as recent from image_assets');
+  assert.deepEqual(rows, [{ recent: true }]);
+} finally { await pool.end(); }
+console.log('Shipped cleanup command passed: expired temporary image deleted, recent image preserved.');
+NODE
 "${compose[@]}" run --rm --no-deps caddy caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile

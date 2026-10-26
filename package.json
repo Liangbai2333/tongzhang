@@ -25,6 +25,7 @@
     "down:db": "docker compose --env-file apps/server/.env -f infra/compose.dev.yml down",
     "generate:db": "pnpm --filter @tongzhang/server generate:db",
     "migrate:db": "pnpm --filter @tongzhang/server migrate:db",
+    "cleanup:images": "pnpm build:server && pnpm --filter @tongzhang/server cleanup:images",
     "check": "pnpm build:shared && pnpm typecheck && pnpm lint && pnpm check:format",
     "typecheck": "pnpm -r typecheck",
     "lint": "eslint . --max-warnings=0",

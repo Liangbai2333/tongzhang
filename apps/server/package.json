@@ -9,6 +9,7 @@
     "start": "node dist/server.js",
     "generate:db": "drizzle-kit generate",
     "migrate:db": "node scripts/migrate.ts",
+    "cleanup:images": "node dist/modules/images/cleanup-command.js",
     "check:db": "node scripts/check-database.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.tools.json"
   },

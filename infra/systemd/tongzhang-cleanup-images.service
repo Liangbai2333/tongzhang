@@ -1,0 +1,10 @@
+[Unit]
+Description=TongZhang temporary image cleanup
+Requires=docker.service
+After=docker.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/tongzhang
+ExecStart=/usr/bin/docker compose --env-file infra/.env -f infra/compose.prod.yml run --rm -T cleanup-images
+TimeoutStartSec=15min
