@@ -1,0 +1,62 @@
+{
+  "platform": "darwin",
+  "architecture": "arm64",
+  "checks": [
+    {
+      "name": "Node",
+      "status": "warn",
+      "detail": "v24.22.0; repository 24.21.0"
+    },
+    {
+      "name": "pnpm",
+      "status": "pass",
+      "detail": "12.6.0; repository 12.6.0"
+    },
+    {
+      "name": "Docker",
+      "status": "pass",
+      "detail": "29.8.2"
+    },
+    {
+      "name": "Compose",
+      "status": "pass",
+      "detail": "5.5.1"
+    },
+    {
+      "name": "JDK",
+      "status": "pass",
+      "detail": "Java 17.0.20.1; requires 17"
+    },
+    {
+      "name": "Android SDK",
+      "status": "pass",
+      "detail": "Check ANDROID_HOME and platform-tools; native installation must be verified separately."
+    },
+    {
+      "name": "Server configuration",
+      "status": "pass",
+      "detail": "PostgreSQL 127.0.0.1:35432/tongzhang_issue33; private credentials validated without printing them."
+    },
+    {
+      "name": "PostgreSQL",
+      "status": "pass",
+      "detail": "SELECT 1 succeeded."
+    },
+    {
+      "name": "Mobile API configuration",
+      "status": "pass",
+      "detail": "http://127.0.0.1:3333"
+    },
+    {
+      "name": "API readiness",
+      "status": "pass",
+      "detail": "API reports a real PostgreSQL connection."
+    },
+    {
+      "name": "Android API routing",
+      "status": "warn",
+      "detail": "For an emulator/device using localhost, explicitly configure adb reverse tcp:3300 tcp:3300; no port forwarding was changed."
+    }
+  ],
+  "ok": true
+}

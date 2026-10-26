@@ -1,0 +1,2511 @@
+[
+  {
+    "at": "2026-10-26T14:12:14.059Z",
+    "method": "POST",
+    "path": "/api/v1/auth/register",
+    "status": 201,
+    "requestId": "e61c466f-dc9a-4c61-a21e-9ea1cb807f6e"
+  },
+  {
+    "at": "2026-10-26T14:12:14.092Z",
+    "method": "POST",
+    "path": "/api/v1/auth/register",
+    "status": 201,
+    "requestId": "ba2933d3-9fb4-4ddf-b375-16705da478d2"
+  },
+  {
+    "at": "2026-10-26T14:12:14.123Z",
+    "method": "POST",
+    "path": "/api/v1/auth/register",
+    "status": 201,
+    "requestId": "9d40c0dd-b84b-41fa-bef5-f092827ac836"
+  },
+  {
+    "at": "2026-10-26T14:12:14.439Z",
+    "method": "GET",
+    "path": "/health/ready",
+    "status": 200,
+    "requestId": "18bec314-33e0-46a7-aa84-4ea422658877",
+    "response": {
+      "data": {
+        "status": "ok",
+        "database": "connected"
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:14:42.469Z",
+    "method": "POST",
+    "path": "/api/v1/auth/login",
+    "status": 200,
+    "requestId": "e085f3ca-c599-4b0c-b1a2-9c86e46719fe"
+  },
+  {
+    "at": "2026-10-26T14:14:44.715Z",
+    "method": "GET",
+    "path": "/api/v1/me",
+    "status": 200,
+    "requestId": "ccdd90c3-580f-4f3b-a51a-95e435854114",
+    "response": {
+      "data": {
+        "id": "fe8a3e51-95f8-4e60-a648-2753e0b87a49",
+        "username": "Android33 A",
+        "email": "issue33-a@example.test",
+        "notificationEnabled": true
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:14:49.284Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers?limit=20&archived=false",
+    "status": 200,
+    "requestId": "7df36c83-859b-4c45-a18c-215e15cec193",
+    "response": {
+      "data": [],
+      "page": {
+        "nextCursor": null
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:15:46.634Z",
+    "method": "POST",
+    "path": "/api/v1/ledgers",
+    "status": 201,
+    "requestId": "c41d7629-dcc0-4400-a7ef-c570ea35ae7e",
+    "response": {
+      "data": {
+        "ledger": {
+          "id": "6a88fb46-b11c-4dd5-a854-1369fca804a4",
+          "name": "Issue33-Android",
+          "coverKey": "mountain",
+          "coverImageId": null,
+          "status": "ACTIVE",
+          "version": 1,
+          "memberCount": 1,
+          "expenseTotalCents": "0",
+          "myRemainingNetCents": "0",
+          "archivedAt": null,
+          "createdAt": "2026-10-26T14:15:46.615Z"
+        },
+        "invitation": {
+          "id": "f86a42c5-913c-4d1c-a200-e0cad86f0312",
+          "code": "VTCB53",
+          "expiresAt": "2026-11-02T14:15:46.623Z",
+          "expired": false,
+          "qrPayload": "tongzhang:invite:v1:VTCB53"
+        }
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:15:46.949Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/6a88fb46-b11c-4dd5-a854-1369fca804a4/invitation",
+    "status": 200,
+    "requestId": "1d910b29-9a81-4268-916c-11ffa52434af",
+    "response": {
+      "data": {
+        "id": "f86a42c5-913c-4d1c-a200-e0cad86f0312",
+        "code": "VTCB53",
+        "expiresAt": "2026-11-02T14:15:46.623Z",
+        "expired": false,
+        "qrPayload": "tongzhang:invite:v1:VTCB53"
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:15:46.964Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/6a88fb46-b11c-4dd5-a854-1369fca804a4",
+    "status": 200,
+    "requestId": "15cfac98-be38-4b9a-b5e0-6769789a4cf3",
+    "response": {
+      "data": {
+        "id": "6a88fb46-b11c-4dd5-a854-1369fca804a4",
+        "name": "Issue33-Android",
+        "coverKey": "mountain",
+        "coverImageId": null,
+        "status": "ACTIVE",
+        "version": 1,
+        "memberCount": 1,
+        "expenseTotalCents": "0",
+        "myRemainingNetCents": "0",
+        "archivedAt": null,
+        "createdAt": "2026-10-26T14:15:46.615Z",
+        "creatorUserId": "fe8a3e51-95f8-4e60-a648-2753e0b87a49",
+        "myMemberId": "8a374320-0260-4aa1-9d78-87e457ae7c9b",
+        "myPaidCents": "0",
+        "mySharedCents": "0",
+        "myNetCents": "0",
+        "members": [
+          {
+            "id": "8a374320-0260-4aa1-9d78-87e457ae7c9b",
+            "userId": "fe8a3e51-95f8-4e60-a648-2753e0b87a49",
+            "username": "Android33 A",
+            "role": "CREATOR",
+            "joinedAt": "2026-10-26T14:15:46.615Z",
+            "netCents": "0",
+            "remainingNetCents": "0"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:15:56.138Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/6a88fb46-b11c-4dd5-a854-1369fca804a4",
+    "status": 200,
+    "requestId": "cb44dd83-ae3d-4be0-86a9-57c143aa36c7",
+    "response": {
+      "data": {
+        "id": "6a88fb46-b11c-4dd5-a854-1369fca804a4",
+        "name": "Issue33-Android",
+        "coverKey": "mountain",
+        "coverImageId": null,
+        "status": "ACTIVE",
+        "version": 1,
+        "memberCount": 1,
+        "expenseTotalCents": "0",
+        "myRemainingNetCents": "0",
+        "archivedAt": null,
+        "createdAt": "2026-10-26T14:15:46.615Z",
+        "creatorUserId": "fe8a3e51-95f8-4e60-a648-2753e0b87a49",
+        "myMemberId": "8a374320-0260-4aa1-9d78-87e457ae7c9b",
+        "myPaidCents": "0",
+        "mySharedCents": "0",
+        "myNetCents": "0",
+        "members": [
+          {
+            "id": "8a374320-0260-4aa1-9d78-87e457ae7c9b",
+            "userId": "fe8a3e51-95f8-4e60-a648-2753e0b87a49",
+            "username": "Android33 A",
+            "role": "CREATOR",
+            "joinedAt": "2026-10-26T14:15:46.615Z",
+            "netCents": "0",
+            "remainingNetCents": "0"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:16:04.106Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers?limit=20&archived=false",
+    "status": 200,
+    "requestId": "9ea9e210-c442-4d51-9003-5e5c5f50aa16",
+    "response": {
+      "data": [
+        {
+          "id": "6a88fb46-b11c-4dd5-a854-1369fca804a4",
+          "name": "Issue33-Android",
+          "coverKey": "mountain",
+          "coverImageId": null,
+          "status": "ACTIVE",
+          "version": 1,
+          "memberCount": 1,
+          "expenseTotalCents": "0",
+          "myRemainingNetCents": "0",
+          "archivedAt": null,
+          "createdAt": "2026-10-26T14:15:46.615Z"
+        }
+      ],
+      "page": {
+        "nextCursor": null
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:16:21.263Z",
+    "method": "POST",
+    "path": "/api/v1/auth/logout",
+    "status": 200,
+    "requestId": "eddc130b-cdb9-48f9-bb0a-1f77e4c23a79"
+  },
+  {
+    "at": "2026-10-26T14:17:14.078Z",
+    "method": "POST",
+    "path": "/api/v1/auth/login",
+    "status": 200,
+    "requestId": "ca5fd3de-f28c-4132-ae4b-b5aca752ca22"
+  },
+  {
+    "at": "2026-10-26T14:17:14.198Z",
+    "method": "GET",
+    "path": "/api/v1/me",
+    "status": 200,
+    "requestId": "704f9c11-1467-4fb2-8313-4aa582a587cf",
+    "response": {
+      "data": {
+        "id": "c5d42eb8-37ca-4fa0-9aa5-5e3bef1ed108",
+        "username": "Android33 B",
+        "email": "issue33-b@example.test",
+        "notificationEnabled": true
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:17:14.433Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers?limit=20&archived=false",
+    "status": 200,
+    "requestId": "1d4dbfde-f44d-4038-ad19-aedba01141de",
+    "response": {
+      "data": [],
+      "page": {
+        "nextCursor": null
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:17:35.072Z",
+    "method": "POST",
+    "path": "/api/v1/invitations/preview",
+    "status": 200,
+    "requestId": "192191d3-4776-4ab3-a3a7-e74be0e552f6",
+    "response": {
+      "data": {
+        "ledgerId": "6a88fb46-b11c-4dd5-a854-1369fca804a4",
+        "name": "Issue33-Android",
+        "creatorName": "Android33 A",
+        "memberCount": 1,
+        "alreadyMember": false,
+        "canJoin": true
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:17:46.474Z",
+    "method": "POST",
+    "path": "/api/v1/invitations/join",
+    "status": 200,
+    "requestId": "2f1c6eb5-13e3-4672-9508-47d9e0adac85",
+    "response": {
+      "data": {
+        "ledgerId": "6a88fb46-b11c-4dd5-a854-1369fca804a4",
+        "memberId": "2127ea20-46bc-408c-ba48-f7ad9d30ad14",
+        "alreadyMember": false
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:17:46.971Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/6a88fb46-b11c-4dd5-a854-1369fca804a4",
+    "status": 200,
+    "requestId": "a7f5ac55-80a6-4a35-accb-b7ed12368e5a",
+    "response": {
+      "data": {
+        "id": "6a88fb46-b11c-4dd5-a854-1369fca804a4",
+        "name": "Issue33-Android",
+        "coverKey": "mountain",
+        "coverImageId": null,
+        "status": "ACTIVE",
+        "version": 2,
+        "memberCount": 2,
+        "expenseTotalCents": "0",
+        "myRemainingNetCents": "0",
+        "archivedAt": null,
+        "createdAt": "2026-10-26T14:15:46.615Z",
+        "creatorUserId": "fe8a3e51-95f8-4e60-a648-2753e0b87a49",
+        "myMemberId": "2127ea20-46bc-408c-ba48-f7ad9d30ad14",
+        "myPaidCents": "0",
+        "mySharedCents": "0",
+        "myNetCents": "0",
+        "members": [
+          {
+            "id": "8a374320-0260-4aa1-9d78-87e457ae7c9b",
+            "userId": "fe8a3e51-95f8-4e60-a648-2753e0b87a49",
+            "username": "Android33 A",
+            "role": "CREATOR",
+            "joinedAt": "2026-10-26T14:15:46.615Z",
+            "netCents": "0",
+            "remainingNetCents": "0"
+          },
+          {
+            "id": "2127ea20-46bc-408c-ba48-f7ad9d30ad14",
+            "userId": "c5d42eb8-37ca-4fa0-9aa5-5e3bef1ed108",
+            "username": "Android33 B",
+            "role": "MEMBER",
+            "joinedAt": "2026-10-26T14:17:46.463Z",
+            "netCents": "0",
+            "remainingNetCents": "0"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:18:35.119Z",
+    "method": "POST",
+    "path": "/api/v1/auth/refresh",
+    "status": 200,
+    "requestId": "ce5a09d7-17c1-4453-9222-7c3442c0a2fa"
+  },
+  {
+    "at": "2026-10-26T14:18:35.149Z",
+    "method": "GET",
+    "path": "/api/v1/me",
+    "status": 200,
+    "requestId": "8e2f829b-7d40-43d9-b980-b43a53ca9bbc",
+    "response": {
+      "data": {
+        "id": "c5d42eb8-37ca-4fa0-9aa5-5e3bef1ed108",
+        "username": "Android33 B",
+        "email": "issue33-b@example.test",
+        "notificationEnabled": true
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:18:35.507Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers?limit=20&archived=false",
+    "status": 200,
+    "requestId": "2feb7617-f80d-4f3a-b6fc-a8e1353790bc",
+    "response": {
+      "data": [
+        {
+          "id": "6a88fb46-b11c-4dd5-a854-1369fca804a4",
+          "name": "Issue33-Android",
+          "coverKey": "mountain",
+          "coverImageId": null,
+          "status": "ACTIVE",
+          "version": 2,
+          "memberCount": 2,
+          "expenseTotalCents": "0",
+          "myRemainingNetCents": "0",
+          "archivedAt": null,
+          "createdAt": "2026-10-26T14:15:46.615Z"
+        }
+      ],
+      "page": {
+        "nextCursor": null
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:18:44.666Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/6a88fb46-b11c-4dd5-a854-1369fca804a4",
+    "status": 200,
+    "requestId": "5cec8464-3dd2-4dab-9281-3afee0dca485",
+    "response": {
+      "data": {
+        "id": "6a88fb46-b11c-4dd5-a854-1369fca804a4",
+        "name": "Issue33-Android",
+        "coverKey": "mountain",
+        "coverImageId": null,
+        "status": "ACTIVE",
+        "version": 2,
+        "memberCount": 2,
+        "expenseTotalCents": "0",
+        "myRemainingNetCents": "0",
+        "archivedAt": null,
+        "createdAt": "2026-10-26T14:15:46.615Z",
+        "creatorUserId": "fe8a3e51-95f8-4e60-a648-2753e0b87a49",
+        "myMemberId": "2127ea20-46bc-408c-ba48-f7ad9d30ad14",
+        "myPaidCents": "0",
+        "mySharedCents": "0",
+        "myNetCents": "0",
+        "members": [
+          {
+            "id": "8a374320-0260-4aa1-9d78-87e457ae7c9b",
+            "userId": "fe8a3e51-95f8-4e60-a648-2753e0b87a49",
+            "username": "Android33 A",
+            "role": "CREATOR",
+            "joinedAt": "2026-10-26T14:15:46.615Z",
+            "netCents": "0",
+            "remainingNetCents": "0"
+          },
+          {
+            "id": "2127ea20-46bc-408c-ba48-f7ad9d30ad14",
+            "userId": "c5d42eb8-37ca-4fa0-9aa5-5e3bef1ed108",
+            "username": "Android33 B",
+            "role": "MEMBER",
+            "joinedAt": "2026-10-26T14:17:46.463Z",
+            "netCents": "0",
+            "remainingNetCents": "0"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:19:42.009Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/6a88fb46-b11c-4dd5-a854-1369fca804a4",
+    "status": 200,
+    "requestId": "c0ec43bb-5630-455c-b013-d59367ee0066",
+    "response": {
+      "data": {
+        "id": "6a88fb46-b11c-4dd5-a854-1369fca804a4",
+        "name": "Issue33-Android",
+        "coverKey": "mountain",
+        "coverImageId": null,
+        "status": "ACTIVE",
+        "version": 2,
+        "memberCount": 2,
+        "expenseTotalCents": "0",
+        "myRemainingNetCents": "0",
+        "archivedAt": null,
+        "createdAt": "2026-10-26T14:15:46.615Z",
+        "creatorUserId": "fe8a3e51-95f8-4e60-a648-2753e0b87a49",
+        "myMemberId": "2127ea20-46bc-408c-ba48-f7ad9d30ad14",
+        "myPaidCents": "0",
+        "mySharedCents": "0",
+        "myNetCents": "0",
+        "members": [
+          {
+            "id": "8a374320-0260-4aa1-9d78-87e457ae7c9b",
+            "userId": "fe8a3e51-95f8-4e60-a648-2753e0b87a49",
+            "username": "Android33 A",
+            "role": "CREATOR",
+            "joinedAt": "2026-10-26T14:15:46.615Z",
+            "netCents": "0",
+            "remainingNetCents": "0"
+          },
+          {
+            "id": "2127ea20-46bc-408c-ba48-f7ad9d30ad14",
+            "userId": "c5d42eb8-37ca-4fa0-9aa5-5e3bef1ed108",
+            "username": "Android33 B",
+            "role": "MEMBER",
+            "joinedAt": "2026-10-26T14:17:46.463Z",
+            "netCents": "0",
+            "remainingNetCents": "0"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:20:26.984Z",
+    "method": "GET",
+    "path": "/api/v1/me",
+    "status": 200,
+    "requestId": "ceba9fb9-e7ba-4ebb-bb78-c2769e6fde64",
+    "response": {
+      "data": {
+        "id": "c5d42eb8-37ca-4fa0-9aa5-5e3bef1ed108",
+        "username": "Android33 B",
+        "email": "issue33-b@example.test",
+        "notificationEnabled": true
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:20:27.422Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers?limit=20&archived=false",
+    "status": 200,
+    "requestId": "321c52bc-932a-4aeb-bbe0-075934b836fd",
+    "response": {
+      "data": [
+        {
+          "id": "6a88fb46-b11c-4dd5-a854-1369fca804a4",
+          "name": "Issue33-Android",
+          "coverKey": "mountain",
+          "coverImageId": null,
+          "status": "ACTIVE",
+          "version": 2,
+          "memberCount": 2,
+          "expenseTotalCents": "0",
+          "myRemainingNetCents": "0",
+          "archivedAt": null,
+          "createdAt": "2026-10-26T14:15:46.615Z"
+        }
+      ],
+      "page": {
+        "nextCursor": null
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:22:50.003Z",
+    "method": "GET",
+    "path": "/api/v1/me",
+    "status": 200,
+    "requestId": "16769c63-b03c-45ee-b6a7-01111db9f670",
+    "response": {
+      "data": {
+        "id": "c5d42eb8-37ca-4fa0-9aa5-5e3bef1ed108",
+        "username": "Android33 B",
+        "email": "issue33-b@example.test",
+        "notificationEnabled": true
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:22:50.323Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers?limit=20&archived=false",
+    "status": 200,
+    "requestId": "69ae840c-4c59-4521-b344-36c333b7cfaf",
+    "response": {
+      "data": [
+        {
+          "id": "6a88fb46-b11c-4dd5-a854-1369fca804a4",
+          "name": "Issue33-Android",
+          "coverKey": "mountain",
+          "coverImageId": null,
+          "status": "ACTIVE",
+          "version": 2,
+          "memberCount": 2,
+          "expenseTotalCents": "0",
+          "myRemainingNetCents": "0",
+          "archivedAt": null,
+          "createdAt": "2026-10-26T14:15:46.615Z"
+        }
+      ],
+      "page": {
+        "nextCursor": null
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:22:50.376Z",
+    "method": "GET",
+    "path": "/api/v1/me",
+    "status": 200,
+    "requestId": "1c82538e-d5d9-4b33-9331-81f01feb3715",
+    "response": {
+      "data": {
+        "id": "c5d42eb8-37ca-4fa0-9aa5-5e3bef1ed108",
+        "username": "Android33 B",
+        "email": "issue33-b@example.test",
+        "notificationEnabled": true
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:22:50.616Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers?limit=20&archived=false",
+    "status": 200,
+    "requestId": "f41eeeda-0f7c-4e4d-92a7-2df63ca62107",
+    "response": {
+      "data": [
+        {
+          "id": "6a88fb46-b11c-4dd5-a854-1369fca804a4",
+          "name": "Issue33-Android",
+          "coverKey": "mountain",
+          "coverImageId": null,
+          "status": "ACTIVE",
+          "version": 2,
+          "memberCount": 2,
+          "expenseTotalCents": "0",
+          "myRemainingNetCents": "0",
+          "archivedAt": null,
+          "createdAt": "2026-10-26T14:15:46.615Z"
+        }
+      ],
+      "page": {
+        "nextCursor": null
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:22:53.138Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/6a88fb46-b11c-4dd5-a854-1369fca804a4",
+    "status": 200,
+    "requestId": "c25be00a-56bf-4273-803c-a186ed6b83db",
+    "response": {
+      "data": {
+        "id": "6a88fb46-b11c-4dd5-a854-1369fca804a4",
+        "name": "Issue33-Android",
+        "coverKey": "mountain",
+        "coverImageId": null,
+        "status": "ACTIVE",
+        "version": 2,
+        "memberCount": 2,
+        "expenseTotalCents": "0",
+        "myRemainingNetCents": "0",
+        "archivedAt": null,
+        "createdAt": "2026-10-26T14:15:46.615Z",
+        "creatorUserId": "fe8a3e51-95f8-4e60-a648-2753e0b87a49",
+        "myMemberId": "2127ea20-46bc-408c-ba48-f7ad9d30ad14",
+        "myPaidCents": "0",
+        "mySharedCents": "0",
+        "myNetCents": "0",
+        "members": [
+          {
+            "id": "8a374320-0260-4aa1-9d78-87e457ae7c9b",
+            "userId": "fe8a3e51-95f8-4e60-a648-2753e0b87a49",
+            "username": "Android33 A",
+            "role": "CREATOR",
+            "joinedAt": "2026-10-26T14:15:46.615Z",
+            "netCents": "0",
+            "remainingNetCents": "0"
+          },
+          {
+            "id": "2127ea20-46bc-408c-ba48-f7ad9d30ad14",
+            "userId": "c5d42eb8-37ca-4fa0-9aa5-5e3bef1ed108",
+            "username": "Android33 B",
+            "role": "MEMBER",
+            "joinedAt": "2026-10-26T14:17:46.463Z",
+            "netCents": "0",
+            "remainingNetCents": "0"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:22:56.019Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/6a88fb46-b11c-4dd5-a854-1369fca804a4",
+    "status": 200,
+    "requestId": "b962666a-4056-41b5-82bb-b5cb9816fba3",
+    "response": {
+      "data": {
+        "id": "6a88fb46-b11c-4dd5-a854-1369fca804a4",
+        "name": "Issue33-Android",
+        "coverKey": "mountain",
+        "coverImageId": null,
+        "status": "ACTIVE",
+        "version": 2,
+        "memberCount": 2,
+        "expenseTotalCents": "0",
+        "myRemainingNetCents": "0",
+        "archivedAt": null,
+        "createdAt": "2026-10-26T14:15:46.615Z",
+        "creatorUserId": "fe8a3e51-95f8-4e60-a648-2753e0b87a49",
+        "myMemberId": "2127ea20-46bc-408c-ba48-f7ad9d30ad14",
+        "myPaidCents": "0",
+        "mySharedCents": "0",
+        "myNetCents": "0",
+        "members": [
+          {
+            "id": "8a374320-0260-4aa1-9d78-87e457ae7c9b",
+            "userId": "fe8a3e51-95f8-4e60-a648-2753e0b87a49",
+            "username": "Android33 A",
+            "role": "CREATOR",
+            "joinedAt": "2026-10-26T14:15:46.615Z",
+            "netCents": "0",
+            "remainingNetCents": "0"
+          },
+          {
+            "id": "2127ea20-46bc-408c-ba48-f7ad9d30ad14",
+            "userId": "c5d42eb8-37ca-4fa0-9aa5-5e3bef1ed108",
+            "username": "Android33 B",
+            "role": "MEMBER",
+            "joinedAt": "2026-10-26T14:17:46.463Z",
+            "netCents": "0",
+            "remainingNetCents": "0"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:24:17.339Z",
+    "method": "GET",
+    "path": "/api/v1/me",
+    "status": 200,
+    "requestId": "3d179093-224a-4ccb-ab08-1b718f8e4bf9",
+    "response": {
+      "data": {
+        "id": "c5d42eb8-37ca-4fa0-9aa5-5e3bef1ed108",
+        "username": "Android33 B",
+        "email": "issue33-b@example.test",
+        "notificationEnabled": true
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:24:17.643Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers?limit=20&archived=false",
+    "status": 200,
+    "requestId": "5162665e-80e1-4f2c-9bd4-582d932ab43d",
+    "response": {
+      "data": [
+        {
+          "id": "6a88fb46-b11c-4dd5-a854-1369fca804a4",
+          "name": "Issue33-Android",
+          "coverKey": "mountain",
+          "coverImageId": null,
+          "status": "ACTIVE",
+          "version": 2,
+          "memberCount": 2,
+          "expenseTotalCents": "0",
+          "myRemainingNetCents": "0",
+          "archivedAt": null,
+          "createdAt": "2026-10-26T14:15:46.615Z"
+        }
+      ],
+      "page": {
+        "nextCursor": null
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:24:27.034Z",
+    "method": "GET",
+    "path": "/api/v1/me",
+    "status": 200,
+    "requestId": "ba0d9642-103e-4220-a72c-ff76b6f851a2",
+    "response": {
+      "data": {
+        "id": "c5d42eb8-37ca-4fa0-9aa5-5e3bef1ed108",
+        "username": "Android33 B",
+        "email": "issue33-b@example.test",
+        "notificationEnabled": true
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:24:27.484Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers?limit=20&archived=false",
+    "status": 200,
+    "requestId": "b5f89e7c-1efc-4fd6-8633-ab0bdd219cd2",
+    "response": {
+      "data": [
+        {
+          "id": "6a88fb46-b11c-4dd5-a854-1369fca804a4",
+          "name": "Issue33-Android",
+          "coverKey": "mountain",
+          "coverImageId": null,
+          "status": "ACTIVE",
+          "version": 2,
+          "memberCount": 2,
+          "expenseTotalCents": "0",
+          "myRemainingNetCents": "0",
+          "archivedAt": null,
+          "createdAt": "2026-10-26T14:15:46.615Z"
+        }
+      ],
+      "page": {
+        "nextCursor": null
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:25:00.944Z",
+    "method": "POST",
+    "path": "/api/v1/auth/refresh",
+    "status": 200,
+    "requestId": "1b1cabb4-8dab-49d8-ba74-f8fa352be241"
+  },
+  {
+    "at": "2026-10-26T14:25:01.084Z",
+    "method": "GET",
+    "path": "/api/v1/me",
+    "status": 200,
+    "requestId": "280f54b7-452d-40b1-abd9-ce8dc57df504",
+    "response": {
+      "data": {
+        "id": "c5d42eb8-37ca-4fa0-9aa5-5e3bef1ed108",
+        "username": "Android33 B",
+        "email": "issue33-b@example.test",
+        "notificationEnabled": true
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:25:01.571Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers?limit=20&archived=false",
+    "status": 200,
+    "requestId": "a30154f4-7402-40b2-a3cb-a504dccab35d",
+    "response": {
+      "data": [
+        {
+          "id": "6a88fb46-b11c-4dd5-a854-1369fca804a4",
+          "name": "Issue33-Android",
+          "coverKey": "mountain",
+          "coverImageId": null,
+          "status": "ACTIVE",
+          "version": 2,
+          "memberCount": 2,
+          "expenseTotalCents": "0",
+          "myRemainingNetCents": "0",
+          "archivedAt": null,
+          "createdAt": "2026-10-26T14:15:46.615Z"
+        }
+      ],
+      "page": {
+        "nextCursor": null
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:25:04.382Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/6a88fb46-b11c-4dd5-a854-1369fca804a4",
+    "status": 200,
+    "requestId": "afef388c-d5f4-47e7-af18-daa3db48b7db",
+    "response": {
+      "data": {
+        "id": "6a88fb46-b11c-4dd5-a854-1369fca804a4",
+        "name": "Issue33-Android",
+        "coverKey": "mountain",
+        "coverImageId": null,
+        "status": "ACTIVE",
+        "version": 2,
+        "memberCount": 2,
+        "expenseTotalCents": "0",
+        "myRemainingNetCents": "0",
+        "archivedAt": null,
+        "createdAt": "2026-10-26T14:15:46.615Z",
+        "creatorUserId": "fe8a3e51-95f8-4e60-a648-2753e0b87a49",
+        "myMemberId": "2127ea20-46bc-408c-ba48-f7ad9d30ad14",
+        "myPaidCents": "0",
+        "mySharedCents": "0",
+        "myNetCents": "0",
+        "members": [
+          {
+            "id": "8a374320-0260-4aa1-9d78-87e457ae7c9b",
+            "userId": "fe8a3e51-95f8-4e60-a648-2753e0b87a49",
+            "username": "Android33 A",
+            "role": "CREATOR",
+            "joinedAt": "2026-10-26T14:15:46.615Z",
+            "netCents": "0",
+            "remainingNetCents": "0"
+          },
+          {
+            "id": "2127ea20-46bc-408c-ba48-f7ad9d30ad14",
+            "userId": "c5d42eb8-37ca-4fa0-9aa5-5e3bef1ed108",
+            "username": "Android33 B",
+            "role": "MEMBER",
+            "joinedAt": "2026-10-26T14:17:46.463Z",
+            "netCents": "0",
+            "remainingNetCents": "0"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:25:07.165Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/6a88fb46-b11c-4dd5-a854-1369fca804a4",
+    "status": 200,
+    "requestId": "12eb022d-81d6-4096-a0d1-e758ba4fa7b9",
+    "response": {
+      "data": {
+        "id": "6a88fb46-b11c-4dd5-a854-1369fca804a4",
+        "name": "Issue33-Android",
+        "coverKey": "mountain",
+        "coverImageId": null,
+        "status": "ACTIVE",
+        "version": 2,
+        "memberCount": 2,
+        "expenseTotalCents": "0",
+        "myRemainingNetCents": "0",
+        "archivedAt": null,
+        "createdAt": "2026-10-26T14:15:46.615Z",
+        "creatorUserId": "fe8a3e51-95f8-4e60-a648-2753e0b87a49",
+        "myMemberId": "2127ea20-46bc-408c-ba48-f7ad9d30ad14",
+        "myPaidCents": "0",
+        "mySharedCents": "0",
+        "myNetCents": "0",
+        "members": [
+          {
+            "id": "8a374320-0260-4aa1-9d78-87e457ae7c9b",
+            "userId": "fe8a3e51-95f8-4e60-a648-2753e0b87a49",
+            "username": "Android33 A",
+            "role": "CREATOR",
+            "joinedAt": "2026-10-26T14:15:46.615Z",
+            "netCents": "0",
+            "remainingNetCents": "0"
+          },
+          {
+            "id": "2127ea20-46bc-408c-ba48-f7ad9d30ad14",
+            "userId": "c5d42eb8-37ca-4fa0-9aa5-5e3bef1ed108",
+            "username": "Android33 B",
+            "role": "MEMBER",
+            "joinedAt": "2026-10-26T14:17:46.463Z",
+            "netCents": "0",
+            "remainingNetCents": "0"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:25:31.035Z",
+    "method": "GET",
+    "path": "/api/v1/me",
+    "status": 200,
+    "requestId": "4d4db61d-278d-494f-bc29-199bb063615f",
+    "response": {
+      "data": {
+        "id": "c5d42eb8-37ca-4fa0-9aa5-5e3bef1ed108",
+        "username": "Android33 B",
+        "email": "issue33-b@example.test",
+        "notificationEnabled": true
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:26:12.872Z",
+    "method": "GET",
+    "path": "/api/v1/me",
+    "status": 200,
+    "requestId": "1c409d41-e4dd-40d8-81e4-c75eb3e77741",
+    "response": {
+      "data": {
+        "id": "c5d42eb8-37ca-4fa0-9aa5-5e3bef1ed108",
+        "username": "Android33 B",
+        "email": "issue33-b@example.test",
+        "notificationEnabled": true
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:26:21.847Z",
+    "method": "POST",
+    "path": "/api/v1/auth/login",
+    "status": 200,
+    "requestId": "24699010-7230-44b3-9ecb-9d6e61047074"
+  },
+  {
+    "at": "2026-10-26T14:26:21.864Z",
+    "method": "POST",
+    "path": "/api/v1/ledgers",
+    "status": 201,
+    "requestId": "279ce950-6d7c-4286-bcd8-572988b3245b",
+    "response": {
+      "data": {
+        "ledger": {
+          "id": "fdb0f560-737d-4002-83c6-d965a01070b5",
+          "name": "Issue33-Join-Retest",
+          "coverKey": "city",
+          "coverImageId": null,
+          "status": "ACTIVE",
+          "version": 1,
+          "memberCount": 1,
+          "expenseTotalCents": "0",
+          "myRemainingNetCents": "0",
+          "archivedAt": null,
+          "createdAt": "2026-10-26T14:26:21.851Z"
+        },
+        "invitation": {
+          "id": "163f05df-1498-4d08-a7be-c57886960088",
+          "code": "KWA382",
+          "expiresAt": "2026-11-02T14:26:21.857Z",
+          "expired": false,
+          "qrPayload": "tongzhang:invite:v1:KWA382"
+        }
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:27:00.073Z",
+    "method": "GET",
+    "path": "/api/v1/me",
+    "status": 200,
+    "requestId": "dec31196-933d-4c48-bd70-be1c93da0843",
+    "response": {
+      "data": {
+        "id": "c5d42eb8-37ca-4fa0-9aa5-5e3bef1ed108",
+        "username": "Android33 B",
+        "email": "issue33-b@example.test",
+        "notificationEnabled": true
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:27:05.193Z",
+    "method": "POST",
+    "path": "/api/v1/images",
+    "status": 201,
+    "requestId": "c1f1362a-601b-4954-b05d-80b3f6872e1f",
+    "response": {
+      "data": {
+        "imageId": "eef4d1d1-7160-4559-9f87-f52c3b87e3e5",
+        "mimeType": "image/jpeg",
+        "byteSize": 32156,
+        "width": 800,
+        "height": 1000
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:27:05.353Z",
+    "method": "POST",
+    "path": "/api/v1/ledgers/6a88fb46-b11c-4dd5-a854-1369fca804a4/expenses",
+    "status": 201,
+    "requestId": "793e6580-c314-48fa-a2dd-fc7e18bba826",
+    "response": {
+      "data": {
+        "id": "d83aec3a-c01d-47fe-bdad-17b0cbbd7a0e",
+        "title": "Android33-Receipt",
+        "amountCents": "12000",
+        "category": "DINING",
+        "occurredOn": "2026-10-26",
+        "payerMemberId": "2127ea20-46bc-408c-ba48-f7ad9d30ad14",
+        "payerName": "Android33 B",
+        "version": 1,
+        "ledgerId": "6a88fb46-b11c-4dd5-a854-1369fca804a4",
+        "recorderMemberId": "2127ea20-46bc-408c-ba48-f7ad9d30ad14",
+        "recorderName": "Android33 B",
+        "splitMode": "EQUAL",
+        "splits": [
+          {
+            "memberId": "2127ea20-46bc-408c-ba48-f7ad9d30ad14",
+            "username": "Android33 B",
+            "shares": null,
+            "amountCents": "6000"
+          },
+          {
+            "memberId": "8a374320-0260-4aa1-9d78-87e457ae7c9b",
+            "username": "Android33 A",
+            "shares": null,
+            "amountCents": "6000"
+          }
+        ],
+        "note": null,
+        "receiptImageId": "eef4d1d1-7160-4559-9f87-f52c3b87e3e5",
+        "createdAt": "2026-10-26T14:27:05.338Z",
+        "updatedAt": "2026-10-26T14:27:05.338Z",
+        "canEdit": true
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:27:05.821Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/6a88fb46-b11c-4dd5-a854-1369fca804a4/expenses/d83aec3a-c01d-47fe-bdad-17b0cbbd7a0e",
+    "status": 200,
+    "requestId": "dacfcf85-e567-4736-aff8-92035cc31d42",
+    "response": {
+      "data": {
+        "id": "d83aec3a-c01d-47fe-bdad-17b0cbbd7a0e",
+        "title": "Android33-Receipt",
+        "amountCents": "12000",
+        "category": "DINING",
+        "occurredOn": "2026-10-26",
+        "payerMemberId": "2127ea20-46bc-408c-ba48-f7ad9d30ad14",
+        "payerName": "Android33 B",
+        "version": 1,
+        "ledgerId": "6a88fb46-b11c-4dd5-a854-1369fca804a4",
+        "recorderMemberId": "2127ea20-46bc-408c-ba48-f7ad9d30ad14",
+        "recorderName": "Android33 B",
+        "splitMode": "EQUAL",
+        "splits": [
+          {
+            "memberId": "2127ea20-46bc-408c-ba48-f7ad9d30ad14",
+            "username": "Android33 B",
+            "shares": null,
+            "amountCents": "6000"
+          },
+          {
+            "memberId": "8a374320-0260-4aa1-9d78-87e457ae7c9b",
+            "username": "Android33 A",
+            "shares": null,
+            "amountCents": "6000"
+          }
+        ],
+        "note": null,
+        "receiptImageId": "eef4d1d1-7160-4559-9f87-f52c3b87e3e5",
+        "createdAt": "2026-10-26T14:27:05.338Z",
+        "updatedAt": "2026-10-26T14:27:05.338Z",
+        "canEdit": true
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:27:15.606Z",
+    "method": "GET",
+    "path": "/api/v1/images/eef4d1d1-7160-4559-9f87-f52c3b87e3e5",
+    "status": 200,
+    "requestId": "c293e958-f650-467f-b406-5aafb9bf5800"
+  },
+  {
+    "at": "2026-10-26T14:27:29.386Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/6a88fb46-b11c-4dd5-a854-1369fca804a4",
+    "status": 200,
+    "requestId": "5800ce0a-df88-4926-9856-0c283c9c9b3b",
+    "response": {
+      "data": {
+        "id": "6a88fb46-b11c-4dd5-a854-1369fca804a4",
+        "name": "Issue33-Android",
+        "coverKey": "mountain",
+        "coverImageId": null,
+        "status": "ACTIVE",
+        "version": 3,
+        "memberCount": 2,
+        "expenseTotalCents": "12000",
+        "myRemainingNetCents": "6000",
+        "archivedAt": null,
+        "createdAt": "2026-10-26T14:15:46.615Z",
+        "creatorUserId": "fe8a3e51-95f8-4e60-a648-2753e0b87a49",
+        "myMemberId": "2127ea20-46bc-408c-ba48-f7ad9d30ad14",
+        "myPaidCents": "12000",
+        "mySharedCents": "6000",
+        "myNetCents": "6000",
+        "members": [
+          {
+            "id": "8a374320-0260-4aa1-9d78-87e457ae7c9b",
+            "userId": "fe8a3e51-95f8-4e60-a648-2753e0b87a49",
+            "username": "Android33 A",
+            "role": "CREATOR",
+            "joinedAt": "2026-10-26T14:15:46.615Z",
+            "netCents": "-6000",
+            "remainingNetCents": "-6000"
+          },
+          {
+            "id": "2127ea20-46bc-408c-ba48-f7ad9d30ad14",
+            "userId": "c5d42eb8-37ca-4fa0-9aa5-5e3bef1ed108",
+            "username": "Android33 B",
+            "role": "MEMBER",
+            "joinedAt": "2026-10-26T14:17:46.463Z",
+            "netCents": "6000",
+            "remainingNetCents": "6000"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:27:29.938Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/6a88fb46-b11c-4dd5-a854-1369fca804a4/expenses?limit=20",
+    "status": 200,
+    "requestId": "4f3959e2-f9e7-4c88-ad42-9b6ce80deb91",
+    "response": {
+      "data": [
+        {
+          "id": "d83aec3a-c01d-47fe-bdad-17b0cbbd7a0e",
+          "title": "Android33-Receipt",
+          "amountCents": "12000",
+          "category": "DINING",
+          "occurredOn": "2026-10-26",
+          "payerMemberId": "2127ea20-46bc-408c-ba48-f7ad9d30ad14",
+          "payerName": "Android33 B",
+          "version": 1
+        }
+      ],
+      "page": {
+        "nextCursor": null
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:27:32.128Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers?limit=20&archived=false",
+    "status": 200,
+    "requestId": "190b3039-cca7-477c-9adf-5c71fb8c6fe4",
+    "response": {
+      "data": [
+        {
+          "id": "6a88fb46-b11c-4dd5-a854-1369fca804a4",
+          "name": "Issue33-Android",
+          "coverKey": "mountain",
+          "coverImageId": null,
+          "status": "ACTIVE",
+          "version": 3,
+          "memberCount": 2,
+          "expenseTotalCents": "12000",
+          "myRemainingNetCents": "6000",
+          "archivedAt": null,
+          "createdAt": "2026-10-26T14:15:46.615Z"
+        }
+      ],
+      "page": {
+        "nextCursor": null
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:27:42.320Z",
+    "method": "POST",
+    "path": "/api/v1/invitations/preview",
+    "status": 200,
+    "requestId": "14128cb0-92d8-4eed-b30a-2fbce42e20df",
+    "response": {
+      "data": {
+        "ledgerId": "fdb0f560-737d-4002-83c6-d965a01070b5",
+        "name": "Issue33-Join-Retest",
+        "creatorName": "Android33 A",
+        "memberCount": 1,
+        "alreadyMember": false,
+        "canJoin": true
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:27:44.910Z",
+    "method": "POST",
+    "path": "/api/v1/invitations/join",
+    "status": 200,
+    "requestId": "6ca6fb6b-0b36-4d82-8abd-2eb8753a35c5",
+    "response": {
+      "data": {
+        "ledgerId": "fdb0f560-737d-4002-83c6-d965a01070b5",
+        "memberId": "f0cc9395-fe49-4b4f-b342-8fd53d0adfbd",
+        "alreadyMember": false
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:27:45.483Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/fdb0f560-737d-4002-83c6-d965a01070b5",
+    "status": 200,
+    "requestId": "92ef0a46-7c15-4ecd-9f7f-2761b8067046",
+    "response": {
+      "data": {
+        "id": "fdb0f560-737d-4002-83c6-d965a01070b5",
+        "name": "Issue33-Join-Retest",
+        "coverKey": "city",
+        "coverImageId": null,
+        "status": "ACTIVE",
+        "version": 2,
+        "memberCount": 2,
+        "expenseTotalCents": "0",
+        "myRemainingNetCents": "0",
+        "archivedAt": null,
+        "createdAt": "2026-10-26T14:26:21.851Z",
+        "creatorUserId": "fe8a3e51-95f8-4e60-a648-2753e0b87a49",
+        "myMemberId": "f0cc9395-fe49-4b4f-b342-8fd53d0adfbd",
+        "myPaidCents": "0",
+        "mySharedCents": "0",
+        "myNetCents": "0",
+        "members": [
+          {
+            "id": "da749436-dc25-4dc9-98dd-c1096ed17ced",
+            "userId": "fe8a3e51-95f8-4e60-a648-2753e0b87a49",
+            "username": "Android33 A",
+            "role": "CREATOR",
+            "joinedAt": "2026-10-26T14:26:21.851Z",
+            "netCents": "0",
+            "remainingNetCents": "0"
+          },
+          {
+            "id": "f0cc9395-fe49-4b4f-b342-8fd53d0adfbd",
+            "userId": "c5d42eb8-37ca-4fa0-9aa5-5e3bef1ed108",
+            "username": "Android33 B",
+            "role": "MEMBER",
+            "joinedAt": "2026-10-26T14:27:44.900Z",
+            "netCents": "0",
+            "remainingNetCents": "0"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:27:57.031Z",
+    "method": "POST",
+    "path": "/api/v1/auth/login",
+    "status": 200,
+    "requestId": "773226f6-5329-43e5-b726-789685539d57"
+  },
+  {
+    "at": "2026-10-26T14:27:57.053Z",
+    "method": "POST",
+    "path": "/api/v1/auth/login",
+    "status": 200,
+    "requestId": "409033d7-b769-4786-a61c-21ce4dfdd5be"
+  },
+  {
+    "at": "2026-10-26T14:27:57.073Z",
+    "method": "POST",
+    "path": "/api/v1/auth/login",
+    "status": 200,
+    "requestId": "4b550fd8-c11e-4fc0-a4ae-8d2d1a3ce012"
+  },
+  {
+    "at": "2026-10-26T14:27:57.077Z",
+    "method": "GET",
+    "path": "/api/v1/images/eef4d1d1-7160-4559-9f87-f52c3b87e3e5",
+    "status": 200,
+    "requestId": "27d55407-7a9d-41ee-8c1a-6f637cb415ba"
+  },
+  {
+    "at": "2026-10-26T14:27:57.081Z",
+    "method": "GET",
+    "path": "/api/v1/images/eef4d1d1-7160-4559-9f87-f52c3b87e3e5",
+    "status": 200,
+    "requestId": "f846f996-82e7-4dee-a1c3-1ba2e1625f92"
+  },
+  {
+    "at": "2026-10-26T14:27:57.083Z",
+    "method": "GET",
+    "path": "/api/v1/images/eef4d1d1-7160-4559-9f87-f52c3b87e3e5",
+    "status": 403,
+    "requestId": "65331184-f19c-4eb6-bee1-d201c4db2352",
+    "response": {
+      "error": {
+        "code": "FORBIDDEN",
+        "message": "你没有权限访问此账本"
+      },
+      "requestId": "65331184-f19c-4eb6-bee1-d201c4db2352"
+    }
+  },
+  {
+    "at": "2026-10-26T14:27:57.084Z",
+    "method": "GET",
+    "path": "/api/v1/images/eef4d1d1-7160-4559-9f87-f52c3b87e3e5",
+    "status": 401,
+    "requestId": "6b231940-9505-460d-9ad5-37db1115ede5",
+    "response": {
+      "error": {
+        "code": "UNAUTHENTICATED",
+        "message": "请先登录"
+      },
+      "requestId": "6b231940-9505-460d-9ad5-37db1115ede5"
+    }
+  },
+  {
+    "at": "2026-10-26T14:27:57.091Z",
+    "method": "POST",
+    "path": "/api/v1/images",
+    "status": 201,
+    "requestId": "11fa3648-184d-4add-baad-891efb163065",
+    "response": {
+      "data": {
+        "imageId": "703af6d7-8984-47d7-8fc7-76a6b41ca7be",
+        "mimeType": "image/jpeg",
+        "byteSize": 37081,
+        "width": 800,
+        "height": 1000
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:27:57.093Z",
+    "method": "GET",
+    "path": "/api/v1/images/703af6d7-8984-47d7-8fc7-76a6b41ca7be",
+    "status": 403,
+    "requestId": "b90b420e-8674-41d8-9d57-736868c0fdad",
+    "response": {
+      "error": {
+        "code": "FORBIDDEN",
+        "message": "你没有权限读取此图片"
+      },
+      "requestId": "b90b420e-8674-41d8-9d57-736868c0fdad"
+    }
+  },
+  {
+    "at": "2026-10-26T14:27:57.095Z",
+    "method": "GET",
+    "path": "/api/v1/images/703af6d7-8984-47d7-8fc7-76a6b41ca7be",
+    "status": 200,
+    "requestId": "6ba78771-55e2-4821-a999-e7256092b599"
+  },
+  {
+    "at": "2026-10-26T14:27:57.097Z",
+    "method": "GET",
+    "path": "/api/v1/images/703af6d7-8984-47d7-8fc7-76a6b41ca7be",
+    "status": 403,
+    "requestId": "89dcb542-cc4b-4c2b-8558-1c3e7cc4cb7a",
+    "response": {
+      "error": {
+        "code": "FORBIDDEN",
+        "message": "你没有权限读取此图片"
+      },
+      "requestId": "89dcb542-cc4b-4c2b-8558-1c3e7cc4cb7a"
+    }
+  },
+  {
+    "at": "2026-10-26T14:27:57.106Z",
+    "method": "POST",
+    "path": "/api/v1/ledgers",
+    "status": 201,
+    "requestId": "bcad64bd-8503-4793-8902-bb174ea77d9c",
+    "response": {
+      "data": {
+        "ledger": {
+          "id": "8bf6b3e5-44f4-43c7-b650-4ca9b6f08f32",
+          "name": "Issue33-HTTP-Cover",
+          "coverKey": null,
+          "coverImageId": "703af6d7-8984-47d7-8fc7-76a6b41ca7be",
+          "status": "ACTIVE",
+          "version": 1,
+          "memberCount": 1,
+          "expenseTotalCents": "0",
+          "myRemainingNetCents": "0",
+          "archivedAt": null,
+          "createdAt": "2026-10-26T14:27:57.099Z"
+        },
+        "invitation": {
+          "id": "ee8ae364-b87f-42bf-9863-958051f47584",
+          "code": "LYLTBA",
+          "expiresAt": "2026-11-02T14:27:57.103Z",
+          "expired": false,
+          "qrPayload": "tongzhang:invite:v1:LYLTBA"
+        }
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:27:57.109Z",
+    "method": "GET",
+    "path": "/api/v1/images/703af6d7-8984-47d7-8fc7-76a6b41ca7be",
+    "status": 403,
+    "requestId": "f9f9e3d6-8cd5-48a5-b10f-d1d4ee1c3d35",
+    "response": {
+      "error": {
+        "code": "FORBIDDEN",
+        "message": "你没有权限访问此账本"
+      },
+      "requestId": "f9f9e3d6-8cd5-48a5-b10f-d1d4ee1c3d35"
+    }
+  },
+  {
+    "at": "2026-10-26T14:27:57.112Z",
+    "method": "GET",
+    "path": "/api/v1/images/703af6d7-8984-47d7-8fc7-76a6b41ca7be",
+    "status": 200,
+    "requestId": "4300d35f-2601-424a-9ebe-157cf7f91f37"
+  },
+  {
+    "at": "2026-10-26T14:28:03.849Z",
+    "method": "POST",
+    "path": "/api/v1/ledgers",
+    "status": 201,
+    "requestId": "46416c02-6d7b-4ce0-9d7b-59facf1b4013",
+    "response": {
+      "data": {
+        "ledger": {
+          "id": "605510ec-ed22-4d88-b621-7b9150149fa3",
+          "name": "Issue33-Join-Retest2",
+          "coverKey": "city",
+          "coverImageId": null,
+          "status": "ACTIVE",
+          "version": 1,
+          "memberCount": 1,
+          "expenseTotalCents": "0",
+          "myRemainingNetCents": "0",
+          "archivedAt": null,
+          "createdAt": "2026-10-26T14:28:03.840Z"
+        },
+        "invitation": {
+          "id": "832f5435-00aa-48a7-b15e-0deeb798f279",
+          "code": "VQT9CG",
+          "expiresAt": "2026-11-02T14:28:03.844Z",
+          "expired": false,
+          "qrPayload": "tongzhang:invite:v1:VQT9CG"
+        }
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:28:08.537Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers?limit=20&archived=false",
+    "status": 200,
+    "requestId": "dba6d25e-89a8-4df2-add8-b6192a33abd0",
+    "response": {
+      "data": [
+        {
+          "id": "8bf6b3e5-44f4-43c7-b650-4ca9b6f08f32",
+          "name": "Issue33-HTTP-Cover",
+          "coverKey": null,
+          "coverImageId": "703af6d7-8984-47d7-8fc7-76a6b41ca7be",
+          "status": "ACTIVE",
+          "version": 1,
+          "memberCount": 1,
+          "expenseTotalCents": "0",
+          "myRemainingNetCents": "0",
+          "archivedAt": null,
+          "createdAt": "2026-10-26T14:27:57.099Z"
+        },
+        {
+          "id": "fdb0f560-737d-4002-83c6-d965a01070b5",
+          "name": "Issue33-Join-Retest",
+          "coverKey": "city",
+          "coverImageId": null,
+          "status": "ACTIVE",
+          "version": 2,
+          "memberCount": 2,
+          "expenseTotalCents": "0",
+          "myRemainingNetCents": "0",
+          "archivedAt": null,
+          "createdAt": "2026-10-26T14:26:21.851Z"
+        },
+        {
+          "id": "6a88fb46-b11c-4dd5-a854-1369fca804a4",
+          "name": "Issue33-Android",
+          "coverKey": "mountain",
+          "coverImageId": null,
+          "status": "ACTIVE",
+          "version": 3,
+          "memberCount": 2,
+          "expenseTotalCents": "12000",
+          "myRemainingNetCents": "6000",
+          "archivedAt": null,
+          "createdAt": "2026-10-26T14:15:46.615Z"
+        }
+      ],
+      "page": {
+        "nextCursor": null
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:28:28.586Z",
+    "method": "POST",
+    "path": "/api/v1/invitations/preview",
+    "status": 200,
+    "requestId": "ddd5f75e-dce5-402e-bac9-b68e32f3773d",
+    "response": {
+      "data": {
+        "ledgerId": "605510ec-ed22-4d88-b621-7b9150149fa3",
+        "name": "Issue33-Join-Retest2",
+        "creatorName": "Android33 A",
+        "memberCount": 1,
+        "alreadyMember": false,
+        "canJoin": true
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:28:31.172Z",
+    "method": "POST",
+    "path": "/api/v1/invitations/join",
+    "status": 200,
+    "requestId": "8274abf2-9765-4c19-af02-0b137448abbf",
+    "response": {
+      "data": {
+        "ledgerId": "605510ec-ed22-4d88-b621-7b9150149fa3",
+        "memberId": "9713d2f3-088d-4ca5-ac98-2dfa3f5a0c6e",
+        "alreadyMember": false
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:28:31.954Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/605510ec-ed22-4d88-b621-7b9150149fa3",
+    "status": 200,
+    "requestId": "f6967456-9e5a-4405-943d-5e366ae2795d",
+    "response": {
+      "data": {
+        "id": "605510ec-ed22-4d88-b621-7b9150149fa3",
+        "name": "Issue33-Join-Retest2",
+        "coverKey": "city",
+        "coverImageId": null,
+        "status": "ACTIVE",
+        "version": 2,
+        "memberCount": 2,
+        "expenseTotalCents": "0",
+        "myRemainingNetCents": "0",
+        "archivedAt": null,
+        "createdAt": "2026-10-26T14:28:03.840Z",
+        "creatorUserId": "fe8a3e51-95f8-4e60-a648-2753e0b87a49",
+        "myMemberId": "9713d2f3-088d-4ca5-ac98-2dfa3f5a0c6e",
+        "myPaidCents": "0",
+        "mySharedCents": "0",
+        "myNetCents": "0",
+        "members": [
+          {
+            "id": "7375ee9d-0762-431a-bd57-40538f5534e6",
+            "userId": "fe8a3e51-95f8-4e60-a648-2753e0b87a49",
+            "username": "Android33 A",
+            "role": "CREATOR",
+            "joinedAt": "2026-10-26T14:28:03.840Z",
+            "netCents": "0",
+            "remainingNetCents": "0"
+          },
+          {
+            "id": "9713d2f3-088d-4ca5-ac98-2dfa3f5a0c6e",
+            "userId": "c5d42eb8-37ca-4fa0-9aa5-5e3bef1ed108",
+            "username": "Android33 B",
+            "role": "MEMBER",
+            "joinedAt": "2026-10-26T14:28:31.163Z",
+            "netCents": "0",
+            "remainingNetCents": "0"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:29:01.798Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers?limit=20&archived=false",
+    "status": 200,
+    "requestId": "09ef3362-632d-4277-b238-5affb7a36be0",
+    "response": {
+      "data": [
+        {
+          "id": "605510ec-ed22-4d88-b621-7b9150149fa3",
+          "name": "Issue33-Join-Retest2",
+          "coverKey": "city",
+          "coverImageId": null,
+          "status": "ACTIVE",
+          "version": 2,
+          "memberCount": 2,
+          "expenseTotalCents": "0",
+          "myRemainingNetCents": "0",
+          "archivedAt": null,
+          "createdAt": "2026-10-26T14:28:03.840Z"
+        },
+        {
+          "id": "8bf6b3e5-44f4-43c7-b650-4ca9b6f08f32",
+          "name": "Issue33-HTTP-Cover",
+          "coverKey": null,
+          "coverImageId": "703af6d7-8984-47d7-8fc7-76a6b41ca7be",
+          "status": "ACTIVE",
+          "version": 1,
+          "memberCount": 1,
+          "expenseTotalCents": "0",
+          "myRemainingNetCents": "0",
+          "archivedAt": null,
+          "createdAt": "2026-10-26T14:27:57.099Z"
+        },
+        {
+          "id": "fdb0f560-737d-4002-83c6-d965a01070b5",
+          "name": "Issue33-Join-Retest",
+          "coverKey": "city",
+          "coverImageId": null,
+          "status": "ACTIVE",
+          "version": 2,
+          "memberCount": 2,
+          "expenseTotalCents": "0",
+          "myRemainingNetCents": "0",
+          "archivedAt": null,
+          "createdAt": "2026-10-26T14:26:21.851Z"
+        },
+        {
+          "id": "6a88fb46-b11c-4dd5-a854-1369fca804a4",
+          "name": "Issue33-Android",
+          "coverKey": "mountain",
+          "coverImageId": null,
+          "status": "ACTIVE",
+          "version": 3,
+          "memberCount": 2,
+          "expenseTotalCents": "12000",
+          "myRemainingNetCents": "6000",
+          "archivedAt": null,
+          "createdAt": "2026-10-26T14:15:46.615Z"
+        }
+      ],
+      "page": {
+        "nextCursor": null
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:29:09.785Z",
+    "method": "POST",
+    "path": "/api/v1/auth/logout",
+    "status": 200,
+    "requestId": "d054892b-4303-4a3a-b9ca-277016a0eea6"
+  },
+  {
+    "at": "2026-10-26T14:29:23.757Z",
+    "method": "POST",
+    "path": "/api/v1/auth/login",
+    "status": 200,
+    "requestId": "484b3afd-1c47-4297-8a18-1103ac4f24c4"
+  },
+  {
+    "at": "2026-10-26T14:29:23.868Z",
+    "method": "GET",
+    "path": "/api/v1/me",
+    "status": 200,
+    "requestId": "c80bee88-2231-4808-b2b4-50f3a852c401",
+    "response": {
+      "data": {
+        "id": "fe8a3e51-95f8-4e60-a648-2753e0b87a49",
+        "username": "Android33 A",
+        "email": "issue33-a@example.test",
+        "notificationEnabled": true
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:29:24.105Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers?limit=20&archived=false",
+    "status": 200,
+    "requestId": "6ec56094-b325-401f-ad91-8c9d854e04e2",
+    "response": {
+      "data": [
+        {
+          "id": "605510ec-ed22-4d88-b621-7b9150149fa3",
+          "name": "Issue33-Join-Retest2",
+          "coverKey": "city",
+          "coverImageId": null,
+          "status": "ACTIVE",
+          "version": 2,
+          "memberCount": 2,
+          "expenseTotalCents": "0",
+          "myRemainingNetCents": "0",
+          "archivedAt": null,
+          "createdAt": "2026-10-26T14:28:03.840Z"
+        },
+        {
+          "id": "fdb0f560-737d-4002-83c6-d965a01070b5",
+          "name": "Issue33-Join-Retest",
+          "coverKey": "city",
+          "coverImageId": null,
+          "status": "ACTIVE",
+          "version": 2,
+          "memberCount": 2,
+          "expenseTotalCents": "0",
+          "myRemainingNetCents": "0",
+          "archivedAt": null,
+          "createdAt": "2026-10-26T14:26:21.851Z"
+        },
+        {
+          "id": "6a88fb46-b11c-4dd5-a854-1369fca804a4",
+          "name": "Issue33-Android",
+          "coverKey": "mountain",
+          "coverImageId": null,
+          "status": "ACTIVE",
+          "version": 3,
+          "memberCount": 2,
+          "expenseTotalCents": "12000",
+          "myRemainingNetCents": "-6000",
+          "archivedAt": null,
+          "createdAt": "2026-10-26T14:15:46.615Z"
+        }
+      ],
+      "page": {
+        "nextCursor": null
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:29:38.764Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/6a88fb46-b11c-4dd5-a854-1369fca804a4",
+    "status": 200,
+    "requestId": "ce4485e5-bef1-4740-be78-9b78ccd20b01",
+    "response": {
+      "data": {
+        "id": "6a88fb46-b11c-4dd5-a854-1369fca804a4",
+        "name": "Issue33-Android",
+        "coverKey": "mountain",
+        "coverImageId": null,
+        "status": "ACTIVE",
+        "version": 3,
+        "memberCount": 2,
+        "expenseTotalCents": "12000",
+        "myRemainingNetCents": "-6000",
+        "archivedAt": null,
+        "createdAt": "2026-10-26T14:15:46.615Z",
+        "creatorUserId": "fe8a3e51-95f8-4e60-a648-2753e0b87a49",
+        "myMemberId": "8a374320-0260-4aa1-9d78-87e457ae7c9b",
+        "myPaidCents": "0",
+        "mySharedCents": "6000",
+        "myNetCents": "-6000",
+        "members": [
+          {
+            "id": "8a374320-0260-4aa1-9d78-87e457ae7c9b",
+            "userId": "fe8a3e51-95f8-4e60-a648-2753e0b87a49",
+            "username": "Android33 A",
+            "role": "CREATOR",
+            "joinedAt": "2026-10-26T14:15:46.615Z",
+            "netCents": "-6000",
+            "remainingNetCents": "-6000"
+          },
+          {
+            "id": "2127ea20-46bc-408c-ba48-f7ad9d30ad14",
+            "userId": "c5d42eb8-37ca-4fa0-9aa5-5e3bef1ed108",
+            "username": "Android33 B",
+            "role": "MEMBER",
+            "joinedAt": "2026-10-26T14:17:46.463Z",
+            "netCents": "6000",
+            "remainingNetCents": "6000"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:29:39.338Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/6a88fb46-b11c-4dd5-a854-1369fca804a4/expenses?limit=20",
+    "status": 200,
+    "requestId": "3b6d10e6-175f-4403-bb0f-3c09978f36dd",
+    "response": {
+      "data": [
+        {
+          "id": "d83aec3a-c01d-47fe-bdad-17b0cbbd7a0e",
+          "title": "Android33-Receipt",
+          "amountCents": "12000",
+          "category": "DINING",
+          "occurredOn": "2026-10-26",
+          "payerMemberId": "2127ea20-46bc-408c-ba48-f7ad9d30ad14",
+          "payerName": "Android33 B",
+          "version": 1
+        }
+      ],
+      "page": {
+        "nextCursor": null
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:30:07.831Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/6a88fb46-b11c-4dd5-a854-1369fca804a4/expenses/d83aec3a-c01d-47fe-bdad-17b0cbbd7a0e",
+    "status": 200,
+    "requestId": "5d0aefd1-af97-490e-8d39-68f7ecd2e5a2",
+    "response": {
+      "data": {
+        "id": "d83aec3a-c01d-47fe-bdad-17b0cbbd7a0e",
+        "title": "Android33-Receipt",
+        "amountCents": "12000",
+        "category": "DINING",
+        "occurredOn": "2026-10-26",
+        "payerMemberId": "2127ea20-46bc-408c-ba48-f7ad9d30ad14",
+        "payerName": "Android33 B",
+        "version": 1,
+        "ledgerId": "6a88fb46-b11c-4dd5-a854-1369fca804a4",
+        "recorderMemberId": "2127ea20-46bc-408c-ba48-f7ad9d30ad14",
+        "recorderName": "Android33 B",
+        "splitMode": "EQUAL",
+        "splits": [
+          {
+            "memberId": "2127ea20-46bc-408c-ba48-f7ad9d30ad14",
+            "username": "Android33 B",
+            "shares": null,
+            "amountCents": "6000"
+          },
+          {
+            "memberId": "8a374320-0260-4aa1-9d78-87e457ae7c9b",
+            "username": "Android33 A",
+            "shares": null,
+            "amountCents": "6000"
+          }
+        ],
+        "note": null,
+        "receiptImageId": "eef4d1d1-7160-4559-9f87-f52c3b87e3e5",
+        "createdAt": "2026-10-26T14:27:05.338Z",
+        "updatedAt": "2026-10-26T14:27:05.338Z",
+        "canEdit": true
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:30:10.435Z",
+    "method": "GET",
+    "path": "/api/v1/images/eef4d1d1-7160-4559-9f87-f52c3b87e3e5",
+    "status": 200,
+    "requestId": "881063bf-4954-487d-88d8-b313e2bf55b0"
+  },
+  {
+    "at": "2026-10-26T14:30:33.730Z",
+    "method": "GET",
+    "path": "/api/v1/me",
+    "status": 200,
+    "requestId": "41f74817-fe77-4df1-a01c-cbe12e84971b",
+    "response": {
+      "data": {
+        "id": "fe8a3e51-95f8-4e60-a648-2753e0b87a49",
+        "username": "Android33 A",
+        "email": "issue33-a@example.test",
+        "notificationEnabled": true
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:30:34.016Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers?limit=20&archived=false",
+    "status": 200,
+    "requestId": "ea81352f-26d2-44f0-ab48-63c2845a7b9a",
+    "response": {
+      "data": [
+        {
+          "id": "605510ec-ed22-4d88-b621-7b9150149fa3",
+          "name": "Issue33-Join-Retest2",
+          "coverKey": "city",
+          "coverImageId": null,
+          "status": "ACTIVE",
+          "version": 2,
+          "memberCount": 2,
+          "expenseTotalCents": "0",
+          "myRemainingNetCents": "0",
+          "archivedAt": null,
+          "createdAt": "2026-10-26T14:28:03.840Z"
+        },
+        {
+          "id": "fdb0f560-737d-4002-83c6-d965a01070b5",
+          "name": "Issue33-Join-Retest",
+          "coverKey": "city",
+          "coverImageId": null,
+          "status": "ACTIVE",
+          "version": 2,
+          "memberCount": 2,
+          "expenseTotalCents": "0",
+          "myRemainingNetCents": "0",
+          "archivedAt": null,
+          "createdAt": "2026-10-26T14:26:21.851Z"
+        },
+        {
+          "id": "6a88fb46-b11c-4dd5-a854-1369fca804a4",
+          "name": "Issue33-Android",
+          "coverKey": "mountain",
+          "coverImageId": null,
+          "status": "ACTIVE",
+          "version": 3,
+          "memberCount": 2,
+          "expenseTotalCents": "12000",
+          "myRemainingNetCents": "-6000",
+          "archivedAt": null,
+          "createdAt": "2026-10-26T14:15:46.615Z"
+        }
+      ],
+      "page": {
+        "nextCursor": null
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:30:36.128Z",
+    "method": "GET",
+    "path": "/api/v1/me",
+    "status": 200,
+    "requestId": "eb934fec-06e8-4107-8953-d975a3f110c3",
+    "response": {
+      "data": {
+        "id": "fe8a3e51-95f8-4e60-a648-2753e0b87a49",
+        "username": "Android33 A",
+        "email": "issue33-a@example.test",
+        "notificationEnabled": true
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:31:33.703Z",
+    "method": "GET",
+    "path": "/health/ready",
+    "status": 200,
+    "requestId": "a8aaeb22-594e-4985-acc0-2699150ebd97",
+    "response": {
+      "data": {
+        "status": "ok",
+        "database": "connected"
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:31:42.320Z",
+    "method": "POST",
+    "path": "/api/v1/auth/refresh",
+    "status": 200,
+    "requestId": "4e046f39-9eac-4bb9-a29a-cff16a23c579"
+  },
+  {
+    "at": "2026-10-26T14:31:42.396Z",
+    "method": "GET",
+    "path": "/api/v1/me",
+    "status": 200,
+    "requestId": "f1f473e9-02b5-4ed1-8afb-a716043c2b78",
+    "response": {
+      "data": {
+        "id": "fe8a3e51-95f8-4e60-a648-2753e0b87a49",
+        "username": "Android33 A",
+        "email": "issue33-a@example.test",
+        "notificationEnabled": true
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:31:42.804Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers?limit=20&archived=false",
+    "status": 200,
+    "requestId": "a064b88f-961a-40d0-979c-f3f4da6cac13",
+    "response": {
+      "data": [
+        {
+          "id": "605510ec-ed22-4d88-b621-7b9150149fa3",
+          "name": "Issue33-Join-Retest2",
+          "coverKey": "city",
+          "coverImageId": null,
+          "status": "ACTIVE",
+          "version": 2,
+          "memberCount": 2,
+          "expenseTotalCents": "0",
+          "myRemainingNetCents": "0",
+          "archivedAt": null,
+          "createdAt": "2026-10-26T14:28:03.840Z"
+        },
+        {
+          "id": "fdb0f560-737d-4002-83c6-d965a01070b5",
+          "name": "Issue33-Join-Retest",
+          "coverKey": "city",
+          "coverImageId": null,
+          "status": "ACTIVE",
+          "version": 2,
+          "memberCount": 2,
+          "expenseTotalCents": "0",
+          "myRemainingNetCents": "0",
+          "archivedAt": null,
+          "createdAt": "2026-10-26T14:26:21.851Z"
+        },
+        {
+          "id": "6a88fb46-b11c-4dd5-a854-1369fca804a4",
+          "name": "Issue33-Android",
+          "coverKey": "mountain",
+          "coverImageId": null,
+          "status": "ACTIVE",
+          "version": 3,
+          "memberCount": 2,
+          "expenseTotalCents": "12000",
+          "myRemainingNetCents": "-6000",
+          "archivedAt": null,
+          "createdAt": "2026-10-26T14:15:46.615Z"
+        }
+      ],
+      "page": {
+        "nextCursor": null
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:32:27.424Z",
+    "method": "POST",
+    "path": "/api/v1/auth/refresh",
+    "status": 200,
+    "requestId": "eae5f246-79a6-49ce-b7b9-e49ed60e6429"
+  },
+  {
+    "at": "2026-10-26T14:32:27.497Z",
+    "method": "GET",
+    "path": "/api/v1/me",
+    "status": 200,
+    "requestId": "21377711-1ed6-4b5c-8f57-d346176a2e14",
+    "response": {
+      "data": {
+        "id": "fe8a3e51-95f8-4e60-a648-2753e0b87a49",
+        "username": "Android33 A",
+        "email": "issue33-a@example.test",
+        "notificationEnabled": true
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:32:27.838Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers?limit=20&archived=false",
+    "status": 200,
+    "requestId": "5b296805-7860-4c5a-a0c9-4383519c9a7e",
+    "response": {
+      "data": [
+        {
+          "id": "605510ec-ed22-4d88-b621-7b9150149fa3",
+          "name": "Issue33-Join-Retest2",
+          "coverKey": "city",
+          "coverImageId": null,
+          "status": "ACTIVE",
+          "version": 2,
+          "memberCount": 2,
+          "expenseTotalCents": "0",
+          "myRemainingNetCents": "0",
+          "archivedAt": null,
+          "createdAt": "2026-10-26T14:28:03.840Z"
+        },
+        {
+          "id": "fdb0f560-737d-4002-83c6-d965a01070b5",
+          "name": "Issue33-Join-Retest",
+          "coverKey": "city",
+          "coverImageId": null,
+          "status": "ACTIVE",
+          "version": 2,
+          "memberCount": 2,
+          "expenseTotalCents": "0",
+          "myRemainingNetCents": "0",
+          "archivedAt": null,
+          "createdAt": "2026-10-26T14:26:21.851Z"
+        },
+        {
+          "id": "6a88fb46-b11c-4dd5-a854-1369fca804a4",
+          "name": "Issue33-Android",
+          "coverKey": "mountain",
+          "coverImageId": null,
+          "status": "ACTIVE",
+          "version": 3,
+          "memberCount": 2,
+          "expenseTotalCents": "12000",
+          "myRemainingNetCents": "-6000",
+          "archivedAt": null,
+          "createdAt": "2026-10-26T14:15:46.615Z"
+        }
+      ],
+      "page": {
+        "nextCursor": null
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:32:30.698Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/6a88fb46-b11c-4dd5-a854-1369fca804a4",
+    "status": 200,
+    "requestId": "670a1672-086b-467b-937f-03cc0b468ef6",
+    "response": {
+      "data": {
+        "id": "6a88fb46-b11c-4dd5-a854-1369fca804a4",
+        "name": "Issue33-Android",
+        "coverKey": "mountain",
+        "coverImageId": null,
+        "status": "ACTIVE",
+        "version": 3,
+        "memberCount": 2,
+        "expenseTotalCents": "12000",
+        "myRemainingNetCents": "-6000",
+        "archivedAt": null,
+        "createdAt": "2026-10-26T14:15:46.615Z",
+        "creatorUserId": "fe8a3e51-95f8-4e60-a648-2753e0b87a49",
+        "myMemberId": "8a374320-0260-4aa1-9d78-87e457ae7c9b",
+        "myPaidCents": "0",
+        "mySharedCents": "6000",
+        "myNetCents": "-6000",
+        "members": [
+          {
+            "id": "8a374320-0260-4aa1-9d78-87e457ae7c9b",
+            "userId": "fe8a3e51-95f8-4e60-a648-2753e0b87a49",
+            "username": "Android33 A",
+            "role": "CREATOR",
+            "joinedAt": "2026-10-26T14:15:46.615Z",
+            "netCents": "-6000",
+            "remainingNetCents": "-6000"
+          },
+          {
+            "id": "2127ea20-46bc-408c-ba48-f7ad9d30ad14",
+            "userId": "c5d42eb8-37ca-4fa0-9aa5-5e3bef1ed108",
+            "username": "Android33 B",
+            "role": "MEMBER",
+            "joinedAt": "2026-10-26T14:17:46.463Z",
+            "netCents": "6000",
+            "remainingNetCents": "6000"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:32:31.401Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/6a88fb46-b11c-4dd5-a854-1369fca804a4/expenses?limit=20",
+    "status": 200,
+    "requestId": "017406c7-91d3-4657-ac9d-15f1dedd0bb8",
+    "response": {
+      "data": [
+        {
+          "id": "d83aec3a-c01d-47fe-bdad-17b0cbbd7a0e",
+          "title": "Android33-Receipt",
+          "amountCents": "12000",
+          "category": "DINING",
+          "occurredOn": "2026-10-26",
+          "payerMemberId": "2127ea20-46bc-408c-ba48-f7ad9d30ad14",
+          "payerName": "Android33 B",
+          "version": 1
+        }
+      ],
+      "page": {
+        "nextCursor": null
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:32:33.829Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/6a88fb46-b11c-4dd5-a854-1369fca804a4/expenses/d83aec3a-c01d-47fe-bdad-17b0cbbd7a0e",
+    "status": 200,
+    "requestId": "de7c9793-94fd-4fb1-b25b-459562e64992",
+    "response": {
+      "data": {
+        "id": "d83aec3a-c01d-47fe-bdad-17b0cbbd7a0e",
+        "title": "Android33-Receipt",
+        "amountCents": "12000",
+        "category": "DINING",
+        "occurredOn": "2026-10-26",
+        "payerMemberId": "2127ea20-46bc-408c-ba48-f7ad9d30ad14",
+        "payerName": "Android33 B",
+        "version": 1,
+        "ledgerId": "6a88fb46-b11c-4dd5-a854-1369fca804a4",
+        "recorderMemberId": "2127ea20-46bc-408c-ba48-f7ad9d30ad14",
+        "recorderName": "Android33 B",
+        "splitMode": "EQUAL",
+        "splits": [
+          {
+            "memberId": "2127ea20-46bc-408c-ba48-f7ad9d30ad14",
+            "username": "Android33 B",
+            "shares": null,
+            "amountCents": "6000"
+          },
+          {
+            "memberId": "8a374320-0260-4aa1-9d78-87e457ae7c9b",
+            "username": "Android33 A",
+            "shares": null,
+            "amountCents": "6000"
+          }
+        ],
+        "note": null,
+        "receiptImageId": "eef4d1d1-7160-4559-9f87-f52c3b87e3e5",
+        "createdAt": "2026-10-26T14:27:05.338Z",
+        "updatedAt": "2026-10-26T14:27:05.338Z",
+        "canEdit": true
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:32:36.942Z",
+    "method": "GET",
+    "path": "/api/v1/images/eef4d1d1-7160-4559-9f87-f52c3b87e3e5",
+    "status": 200,
+    "requestId": "a41ad27b-36fd-4c0e-af72-27c4c13d9acf"
+  },
+  {
+    "at": "2026-10-26T14:33:30.543Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/6a88fb46-b11c-4dd5-a854-1369fca804a4",
+    "status": 200,
+    "requestId": "998a4820-2a23-496a-bbad-3f5c04dde55c",
+    "response": {
+      "data": {
+        "id": "6a88fb46-b11c-4dd5-a854-1369fca804a4",
+        "name": "Issue33-Android",
+        "coverKey": "mountain",
+        "coverImageId": null,
+        "status": "ACTIVE",
+        "version": 3,
+        "memberCount": 2,
+        "expenseTotalCents": "12000",
+        "myRemainingNetCents": "-6000",
+        "archivedAt": null,
+        "createdAt": "2026-10-26T14:15:46.615Z",
+        "creatorUserId": "fe8a3e51-95f8-4e60-a648-2753e0b87a49",
+        "myMemberId": "8a374320-0260-4aa1-9d78-87e457ae7c9b",
+        "myPaidCents": "0",
+        "mySharedCents": "6000",
+        "myNetCents": "-6000",
+        "members": [
+          {
+            "id": "8a374320-0260-4aa1-9d78-87e457ae7c9b",
+            "userId": "fe8a3e51-95f8-4e60-a648-2753e0b87a49",
+            "username": "Android33 A",
+            "role": "CREATOR",
+            "joinedAt": "2026-10-26T14:15:46.615Z",
+            "netCents": "-6000",
+            "remainingNetCents": "-6000"
+          },
+          {
+            "id": "2127ea20-46bc-408c-ba48-f7ad9d30ad14",
+            "userId": "c5d42eb8-37ca-4fa0-9aa5-5e3bef1ed108",
+            "username": "Android33 B",
+            "role": "MEMBER",
+            "joinedAt": "2026-10-26T14:17:46.463Z",
+            "netCents": "6000",
+            "remainingNetCents": "6000"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:33:30.560Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/6a88fb46-b11c-4dd5-a854-1369fca804a4/expenses?limit=20",
+    "status": 200,
+    "requestId": "0df04ac6-0064-4b4f-b6eb-887e9f3e5119",
+    "response": {
+      "data": [
+        {
+          "id": "d83aec3a-c01d-47fe-bdad-17b0cbbd7a0e",
+          "title": "Android33-Receipt",
+          "amountCents": "12000",
+          "category": "DINING",
+          "occurredOn": "2026-10-26",
+          "payerMemberId": "2127ea20-46bc-408c-ba48-f7ad9d30ad14",
+          "payerName": "Android33 B",
+          "version": 1
+        }
+      ],
+      "page": {
+        "nextCursor": null
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:33:30.860Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/6a88fb46-b11c-4dd5-a854-1369fca804a4/expenses?limit=20",
+    "status": 200,
+    "requestId": "473f7871-0696-4732-9127-0246e70c843c",
+    "response": {
+      "data": [
+        {
+          "id": "d83aec3a-c01d-47fe-bdad-17b0cbbd7a0e",
+          "title": "Android33-Receipt",
+          "amountCents": "12000",
+          "category": "DINING",
+          "occurredOn": "2026-10-26",
+          "payerMemberId": "2127ea20-46bc-408c-ba48-f7ad9d30ad14",
+          "payerName": "Android33 B",
+          "version": 1
+        }
+      ],
+      "page": {
+        "nextCursor": null
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:33:39.933Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/6a88fb46-b11c-4dd5-a854-1369fca804a4",
+    "status": 200,
+    "requestId": "92c9c447-63f3-444a-9e49-921a5ffec7fa",
+    "response": {
+      "data": {
+        "id": "6a88fb46-b11c-4dd5-a854-1369fca804a4",
+        "name": "Issue33-Android",
+        "coverKey": "mountain",
+        "coverImageId": null,
+        "status": "ACTIVE",
+        "version": 3,
+        "memberCount": 2,
+        "expenseTotalCents": "12000",
+        "myRemainingNetCents": "-6000",
+        "archivedAt": null,
+        "createdAt": "2026-10-26T14:15:46.615Z",
+        "creatorUserId": "fe8a3e51-95f8-4e60-a648-2753e0b87a49",
+        "myMemberId": "8a374320-0260-4aa1-9d78-87e457ae7c9b",
+        "myPaidCents": "0",
+        "mySharedCents": "6000",
+        "myNetCents": "-6000",
+        "members": [
+          {
+            "id": "8a374320-0260-4aa1-9d78-87e457ae7c9b",
+            "userId": "fe8a3e51-95f8-4e60-a648-2753e0b87a49",
+            "username": "Android33 A",
+            "role": "CREATOR",
+            "joinedAt": "2026-10-26T14:15:46.615Z",
+            "netCents": "-6000",
+            "remainingNetCents": "-6000"
+          },
+          {
+            "id": "2127ea20-46bc-408c-ba48-f7ad9d30ad14",
+            "userId": "c5d42eb8-37ca-4fa0-9aa5-5e3bef1ed108",
+            "username": "Android33 B",
+            "role": "MEMBER",
+            "joinedAt": "2026-10-26T14:17:46.463Z",
+            "netCents": "6000",
+            "remainingNetCents": "6000"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:35:40.218Z",
+    "method": "GET",
+    "path": "/api/v1/me",
+    "status": 200,
+    "requestId": "437d592e-91ad-452c-a3ed-09e804ddd7a2",
+    "response": {
+      "data": {
+        "id": "fe8a3e51-95f8-4e60-a648-2753e0b87a49",
+        "username": "Android33 A",
+        "email": "issue33-a@example.test",
+        "notificationEnabled": true
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:35:48.312Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/6a88fb46-b11c-4dd5-a854-1369fca804a4",
+    "status": 200,
+    "requestId": "b1e196f3-aad7-48c8-a430-ff9225d5cdc6",
+    "response": {
+      "data": {
+        "id": "6a88fb46-b11c-4dd5-a854-1369fca804a4",
+        "name": "Issue33-Android",
+        "coverKey": "mountain",
+        "coverImageId": null,
+        "status": "ACTIVE",
+        "version": 3,
+        "memberCount": 2,
+        "expenseTotalCents": "12000",
+        "myRemainingNetCents": "-6000",
+        "archivedAt": null,
+        "createdAt": "2026-10-26T14:15:46.615Z",
+        "creatorUserId": "fe8a3e51-95f8-4e60-a648-2753e0b87a49",
+        "myMemberId": "8a374320-0260-4aa1-9d78-87e457ae7c9b",
+        "myPaidCents": "0",
+        "mySharedCents": "6000",
+        "myNetCents": "-6000",
+        "members": [
+          {
+            "id": "8a374320-0260-4aa1-9d78-87e457ae7c9b",
+            "userId": "fe8a3e51-95f8-4e60-a648-2753e0b87a49",
+            "username": "Android33 A",
+            "role": "CREATOR",
+            "joinedAt": "2026-10-26T14:15:46.615Z",
+            "netCents": "-6000",
+            "remainingNetCents": "-6000"
+          },
+          {
+            "id": "2127ea20-46bc-408c-ba48-f7ad9d30ad14",
+            "userId": "c5d42eb8-37ca-4fa0-9aa5-5e3bef1ed108",
+            "username": "Android33 B",
+            "role": "MEMBER",
+            "joinedAt": "2026-10-26T14:17:46.463Z",
+            "netCents": "6000",
+            "remainingNetCents": "6000"
+          }
+        ]
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:35:48.313Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/6a88fb46-b11c-4dd5-a854-1369fca804a4/expenses?limit=20",
+    "status": 200,
+    "requestId": "27065655-1a8b-4e7a-af79-999a8414f067",
+    "response": {
+      "data": [
+        {
+          "id": "d83aec3a-c01d-47fe-bdad-17b0cbbd7a0e",
+          "title": "Android33-Receipt",
+          "amountCents": "12000",
+          "category": "DINING",
+          "occurredOn": "2026-10-26",
+          "payerMemberId": "2127ea20-46bc-408c-ba48-f7ad9d30ad14",
+          "payerName": "Android33 B",
+          "version": 1
+        }
+      ],
+      "page": {
+        "nextCursor": null
+      }
+    }
+  },
+  {
+    "at": "2026-10-26T14:35:48.831Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/6a88fb46-b11c-4dd5-a854-1369fca804a4/expenses?limit=20",
+    "status": 200,
+    "requestId": "d3498d66-e801-49ee-b481-3246d6dcde8c",
+    "response": {
+      "data": [
+        {
+          "id": "d83aec3a-c01d-47fe-bdad-17b0cbbd7a0e",
+          "title": "Android33-Receipt",
+          "amountCents": "12000",
+          "category": "DINING",
+          "occurredOn": "2026-10-26",
+          "payerMemberId": "2127ea20-46bc-408c-ba48-f7ad9d30ad14",
+          "payerName": "Android33 B",
+          "version": 1
+        }
+      ],
+      "page": {
+        "nextCursor": null
+      }
+    }
+  }
+]

@@ -1,0 +1,4 @@
+$ node scripts/setup-env.mjs
+Created apps/server/.env
+Initialized local AUTH_JWT_SECRET
+Created apps/mobile/.env

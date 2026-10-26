@@ -1,0 +1,450 @@
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: Unhandled SoftException
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: java.lang.IllegalStateException: addViewAt: cannot insert view [2200] into parent [2248]: View already has a parent: [2204]  Parent: ReactViewGroup View: ReactViewGroup
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: 	at com.facebook.react.fabric.mounting.SurfaceMountingManager.addViewAt(SurfaceMountingManager.kt:355)
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: 	at com.facebook.react.fabric.mounting.mountitems.IntBufferBatchMountItem.execute(IntBufferBatchMountItem.kt:122)
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: 	at com.facebook.react.fabric.mounting.MountItemDispatcher.executeOrEnqueue(MountItemDispatcher.kt:379)
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: 	at com.facebook.react.fabric.mounting.MountItemDispatcher.dispatchMountItems$lambda$7$lambda$6(MountItemDispatcher.kt:269)
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: 	at com.facebook.react.fabric.mounting.MountItemDispatcher.$r8$lambda$4xp_oXLXKRRjXh_WfqmwhGWbzaM(MountItemDispatcher.kt:0)
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: 	at com.facebook.react.fabric.mounting.MountItemDispatcher$$ExternalSyntheticLambda4.invoke(D8$$SyntheticClass:0)
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: 	at com.facebook.react.internal.tracing.PerformanceTracer.trace(PerformanceTracer.kt:46)
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: 	at com.facebook.react.internal.tracing.PerformanceTracer.trace(PerformanceTracer.kt:35)
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: 	at com.facebook.react.fabric.mounting.MountItemDispatcher.dispatchMountItems(MountItemDispatcher.kt:250)
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: 	at com.facebook.react.fabric.mounting.MountItemDispatcher.tryDispatchMountItems(MountItemDispatcher.kt:94)
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: 	at com.facebook.react.fabric.FabricUIManager$DispatchUIFrameCallback.doFrameGuarded(FabricUIManager.java:1624)
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: 	at com.facebook.react.uimanager.GuardedFrameCallback.doFrame(GuardedFrameCallback.kt:42)
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: 	at com.facebook.react.modules.core.ReactChoreographer.frameCallback$lambda$1(ReactChoreographer.kt:58)
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: 	at com.facebook.react.modules.core.ReactChoreographer.$r8$lambda$nSkFhrr5T7rop_XKwzlLov4NLLw(ReactChoreographer.kt:0)
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: 	at com.facebook.react.modules.core.ReactChoreographer$$ExternalSyntheticLambda0.doFrame(D8$$SyntheticClass:0)
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: 	at android.view.Choreographer$CallbackRecord.run(Choreographer.java:1655)
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: 	at android.view.Choreographer$CallbackRecord.run(Choreographer.java:1666)
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: 	at android.view.Choreographer.doCallbacks(Choreographer.java:1252)
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: 	at android.view.Choreographer.doFrame(Choreographer.java:1205)
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: 	at android.view.Choreographer$FrameDisplayEventReceiver.run(Choreographer.java:1640)
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: 	at android.os.Handler.handleCallback(Handler.java:1095)
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: 	at android.os.Handler.dispatchMessageImpl(Handler.java:135)
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: 	at android.os.Handler.dispatchMessage(Handler.java:125)
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: 	at android.os.Looper.loopOnce(Looper.java:296)
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: 	at android.os.Looper.loop(Looper.java:397)
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: 	at android.app.ActivityThread.main(ActivityThread.java:9523)
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: 	at java.lang.reflect.Method.invoke(Native Method)
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:575)
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:939)
+10-26 07:17:47.434  3830  3830 E unknown:MountItemDispatcher: dispatchMountItems: caught exception, displaying mount state
+10-26 07:17:47.434  3830  3830 E unknown:MountItemDispatcher: java.lang.IllegalStateException: addViewAt: failed to insert view [2200] into parent [2248] at index 4
+10-26 07:17:47.434  3830  3830 E unknown:MountItemDispatcher: 	at com.facebook.react.fabric.mounting.SurfaceMountingManager.addViewAt(SurfaceMountingManager.kt:384)
+10-26 07:17:47.434  3830  3830 E unknown:MountItemDispatcher: 	at com.facebook.react.fabric.mounting.mountitems.IntBufferBatchMountItem.execute(IntBufferBatchMountItem.kt:122)
+10-26 07:17:47.434  3830  3830 E unknown:MountItemDispatcher: 	at com.facebook.react.fabric.mounting.MountItemDispatcher.executeOrEnqueue(MountItemDispatcher.kt:379)
+10-26 07:17:47.434  3830  3830 E unknown:MountItemDispatcher: 	at com.facebook.react.fabric.mounting.MountItemDispatcher.dispatchMountItems$lambda$7$lambda$6(MountItemDispatcher.kt:269)
+10-26 07:17:47.434  3830  3830 E unknown:MountItemDispatcher: 	at com.facebook.react.fabric.mounting.MountItemDispatcher.$r8$lambda$4xp_oXLXKRRjXh_WfqmwhGWbzaM(MountItemDispatcher.kt:0)
+10-26 07:17:47.434  3830  3830 E unknown:MountItemDispatcher: 	at com.facebook.react.fabric.mounting.MountItemDispatcher$$ExternalSyntheticLambda4.invoke(D8$$SyntheticClass:0)
+10-26 07:17:47.434  3830  3830 E unknown:MountItemDispatcher: 	at com.facebook.react.internal.tracing.PerformanceTracer.trace(PerformanceTracer.kt:46)
+10-26 07:17:47.434  3830  3830 E unknown:MountItemDispatcher: 	at com.facebook.react.internal.tracing.PerformanceTracer.trace(PerformanceTracer.kt:35)
+10-26 07:17:47.434  3830  3830 E unknown:MountItemDispatcher: 	at com.facebook.react.fabric.mounting.MountItemDispatcher.dispatchMountItems(MountItemDispatcher.kt:250)
+10-26 07:17:47.434  3830  3830 E unknown:MountItemDispatcher: 	at com.facebook.react.fabric.mounting.MountItemDispatcher.tryDispatchMountItems(MountItemDispatcher.kt:94)
+10-26 07:17:47.434  3830  3830 E unknown:MountItemDispatcher: 	at com.facebook.react.fabric.FabricUIManager$DispatchUIFrameCallback.doFrameGuarded(FabricUIManager.java:1624)
+10-26 07:17:47.434  3830  3830 E unknown:MountItemDispatcher: 	at com.facebook.react.uimanager.GuardedFrameCallback.doFrame(GuardedFrameCallback.kt:42)
+10-26 07:17:47.434  3830  3830 E unknown:MountItemDispatcher: 	at com.facebook.react.modules.core.ReactChoreographer.frameCallback$lambda$1(ReactChoreographer.kt:58)
+10-26 07:17:47.434  3830  3830 E unknown:MountItemDispatcher: 	at com.facebook.react.modules.core.ReactChoreographer.$r8$lambda$nSkFhrr5T7rop_XKwzlLov4NLLw(ReactChoreographer.kt:0)
+10-26 07:17:47.434  3830  3830 E unknown:MountItemDispatcher: 	at com.facebook.react.modules.core.ReactChoreographer$$ExternalSyntheticLambda0.doFrame(D8$$SyntheticClass:0)
+10-26 07:17:47.434  3830  3830 E unknown:MountItemDispatcher: 	at android.view.Choreographer$CallbackRecord.run(Choreographer.java:1655)
+10-26 07:17:47.434  3830  3830 E unknown:MountItemDispatcher: 	at android.view.Choreographer$CallbackRecord.run(Choreographer.java:1666)
+10-26 07:17:47.434  3830  3830 E unknown:MountItemDispatcher: 	at android.view.Choreographer.doCallbacks(Choreographer.java:1252)
+10-26 07:17:47.434  3830  3830 E unknown:MountItemDispatcher: 	at android.view.Choreographer.doFrame(Choreographer.java:1205)
+10-26 07:17:47.434  3830  3830 E unknown:MountItemDispatcher: 	at android.view.Choreographer$FrameDisplayEventReceiver.run(Choreographer.java:1640)
+10-26 07:17:47.434  3830  3830 E unknown:MountItemDispatcher: 	at android.os.Handler.handleCallback(Handler.java:1095)
+10-26 07:17:47.434  3830  3830 E unknown:MountItemDispatcher: 	at android.os.Handler.dispatchMessageImpl(Handler.java:135)
+10-26 07:17:47.434  3830  3830 E unknown:MountItemDispatcher: 	at android.os.Handler.dispatchMessage(Handler.java:125)
+10-26 07:17:47.434  3830  3830 E unknown:MountItemDispatcher: 	at android.os.Looper.loopOnce(Looper.java:296)
+10-26 07:17:47.434  3830  3830 E unknown:MountItemDispatcher: 	at android.os.Looper.loop(Looper.java:397)
+10-26 07:17:47.434  3830  3830 E unknown:MountItemDispatcher: 	at android.app.ActivityThread.main(ActivityThread.java:9523)
+10-26 07:17:47.434  3830  3830 E unknown:MountItemDispatcher: 	at java.lang.reflect.Method.invoke(Native Method)
+10-26 07:17:47.434  3830  3830 E unknown:MountItemDispatcher: 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:575)
+10-26 07:17:47.434  3830  3830 E unknown:MountItemDispatcher: 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:939)
+10-26 07:17:47.434  3830  3830 E unknown:MountItemDispatcher: Caused by: java.lang.IllegalStateException: The specified child already has a parent. You must call removeView() on the child's parent first.
+10-26 07:17:47.434  3830  3830 E unknown:MountItemDispatcher: 	at android.view.ViewGroup.addViewInner(ViewGroup.java:5424)
+10-26 07:17:47.434  3830  3830 E unknown:MountItemDispatcher: 	at android.view.ViewGroup.addView(ViewGroup.java:5253)
+10-26 07:17:47.434  3830  3830 E unknown:MountItemDispatcher: 	at android.view.ViewGroup.addView(ViewGroup.java:5193)
+10-26 07:17:47.434  3830  3830 E unknown:MountItemDispatcher: 	at com.facebook.react.views.view.ReactClippingViewManager.addView(ReactClippingViewManager.kt:36)
+10-26 07:17:47.434  3830  3830 E unknown:MountItemDispatcher: 	at com.facebook.react.views.view.ReactClippingViewManager.addView(ReactClippingViewManager.kt:20)
+10-26 07:17:47.434  3830  3830 E unknown:MountItemDispatcher: 	at com.facebook.react.fabric.mounting.SurfaceMountingManager.addViewAt(SurfaceMountingManager.kt:381)
+10-26 07:17:47.434  3830  3830 E unknown:MountItemDispatcher: 	... 28 more
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: Views created for surface 1:
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTText id=2304 parentTag=2364 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RootView id=1 parentTag=1 isRoot=true />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <ViewManagerAdapter_ExpoImage id=2306 parentTag=2308 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <DebuggingOverlay id=4 parentTag=6 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2308 parentTag=2310 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=6 parentTag=1 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2310 parentTag=2312 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2312 parentTag=2364 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RNCSafeAreaProvider id=10 parentTag=1 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTText id=2318 parentTag=2360 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTText id=2324 parentTag=2360 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTText id=2332 parentTag=2360 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2334 parentTag=2360 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTText id=2338 parentTag=2360 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2346 parentTag=2348 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2348 parentTag=2360 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTText id=2352 parentTag=2356 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RNCSafeAreaProvider id=50 parentTag=10 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2356 parentTag=2358 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2358 parentTag=2360 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2360 parentTag=2362 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTScrollView id=2362 parentTag=2364 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2364 parentTag=2376 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <ViewManagerAdapter_ExpoImage id=2110 parentTag=2112 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2112 parentTag=2116 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RNSScreenStack id=66 parentTag=50 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2114 parentTag=2116 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <DebuggingOverlay id=2370 parentTag=2372 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2116 parentTag=2118 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2372 parentTag=2376 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2118 parentTag=2266 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2376 parentTag=2378 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTText id=2122 parentTag=2266 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTModalHostView id=2378 parentTag=2248 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <AndroidProgressBar id=2380 parentTag=2346 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <ViewManagerAdapter_ExpoImage id=2126 parentTag=2128 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2128 parentTag=2134 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <ViewManagerAdapter_ExpoImage id=2130 parentTag=2132 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTText id=2386 parentTag=2346 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2132 parentTag=2134 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2134 parentTag=2166 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <ViewManagerAdapter_ExpoImage id=2390 parentTag=null isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2392 parentTag=null isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTText id=2138 parentTag=2166 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2394 parentTag=null isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2396 parentTag=null isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTText id=2142 parentTag=2166 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2398 parentTag=null isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <ViewManagerAdapter_ExpoImage id=2144 parentTag=2146 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2146 parentTag=2166 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTText id=2402 parentTag=null isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTText id=1892 parentTag=1996 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <ViewManagerAdapter_ExpoImage id=2148 parentTag=2150 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <ViewManagerAdapter_ExpoImage id=1894 parentTag=1896 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2150 parentTag=2166 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <AndroidProgressBar id=2406 parentTag=null isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=1896 parentTag=1898 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=1898 parentTag=1900 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTText id=2154 parentTag=2166 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=1900 parentTag=1996 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTText id=2412 parentTag=null isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <ViewManagerAdapter_ExpoImage id=2160 parentTag=2162 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTText id=2416 parentTag=null isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2162 parentTag=2166 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2164 parentTag=2166 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2420 parentTag=null isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTText id=1910 parentTag=1956 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2166 parentTag=2248 isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTScrollView id=2422 parentTag=null isRoot=false />
+10-26 07:17:47.434  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2168 parentTag=2248 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <AndroidSwipeRefreshLayout id=2424 parentTag=null isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTText id=1914 parentTag=1956 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2426 parentTag=null isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTText id=2172 parentTag=2248 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RNCSafeAreaView id=2428 parentTag=null isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RNSScreenContentWrapper id=2430 parentTag=null isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTText id=1920 parentTag=1956 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTText id=2176 parentTag=2200 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RNSScreenStackHeaderConfig id=2432 parentTag=null isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=1922 parentTag=1956 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2178 parentTag=2200 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RNSScreen id=2434 parentTag=null isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTText id=2180 parentTag=2200 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2182 parentTag=2200 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTText id=1928 parentTag=1956 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTText id=2184 parentTag=2200 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=1930 parentTag=1956 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2186 parentTag=2200 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTText id=2188 parentTag=2200 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTText id=1934 parentTag=1936 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2190 parentTag=2200 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=1936 parentTag=1938 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTText id=2192 parentTag=2200 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=1938 parentTag=1956 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2194 parentTag=2200 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTText id=2196 parentTag=2200 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2198 parentTag=2200 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2200 parentTag=2204 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <AndroidTextInput id=2202 parentTag=2204 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2204 parentTag=2248 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2208 parentTag=2248 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=1956 parentTag=1958 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTText id=2212 parentTag=2248 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTScrollView id=1958 parentTag=1960 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2214 parentTag=2248 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <AndroidSwipeRefreshLayout id=1960 parentTag=1996 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <ViewManagerAdapter_ExpoImage id=1962 parentTag=1964 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <ViewManagerAdapter_ExpoImage id=2218 parentTag=2220 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=1964 parentTag=1972 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2220 parentTag=2228 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTText id=1968 parentTag=1972 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTText id=2224 parentTag=2228 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=1972 parentTag=1974 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2228 parentTag=2230 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=1974 parentTag=1996 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2230 parentTag=2248 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <ViewManagerAdapter_ExpoImage id=1976 parentTag=1978 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <ViewManagerAdapter_ExpoImage id=2232 parentTag=2234 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=1978 parentTag=1986 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2234 parentTag=2248 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTText id=1982 parentTag=1986 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTText id=2238 parentTag=2248 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=1986 parentTag=1988 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTText id=2242 parentTag=2248 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=1988 parentTag=1996 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2246 parentTag=2248 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=1992 parentTag=1996 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2248 parentTag=2250 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=1994 parentTag=1996 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTScrollView id=2250 parentTag=2266 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RNCSafeAreaView id=1996 parentTag=1998 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RNSScreenContentWrapper id=1998 parentTag=2002 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RNSScreenStackHeaderConfig id=2000 parentTag=2002 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RNSScreen id=2002 parentTag=-1 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2258 parentTag=2260 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RNSScreenStack id=2004 parentTag=2008 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2260 parentTag=2266 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2262 parentTag=2266 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RNSScreenContentWrapper id=2008 parentTag=2012 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2264 parentTag=2266 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RNSScreenStackHeaderConfig id=2010 parentTag=2012 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RNCSafeAreaView id=2266 parentTag=2268 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RNSScreen id=2012 parentTag=-1 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RNSScreenContentWrapper id=2268 parentTag=2272 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RNSScreenStackHeaderConfig id=2270 parentTag=2272 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTText id=2016 parentTag=1956 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RNSScreen id=2272 parentTag=-1 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTText id=2020 parentTag=1956 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2022 parentTag=1956 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTText id=2028 parentTag=2036 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <ViewManagerAdapter_ExpoImage id=2030 parentTag=2032 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2032 parentTag=2036 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2036 parentTag=2038 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTText id=2292 parentTag=2258 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2038 parentTag=1956 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2296 parentTag=2376 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2298 parentTag=2376 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:SurfaceMountingManager: <RCTView id=2300 parentTag=2364 isRoot=false />
+10-26 07:17:47.435  3830  3830 E unknown:FabricUIManager: Exception thrown when executing UIFrameGuarded
+10-26 07:17:47.435  3830  3830 E unknown:FabricUIManager: java.lang.IllegalStateException: addViewAt: failed to insert view [2200] into parent [2248] at index 4
+10-26 07:17:47.435  3830  3830 E unknown:FabricUIManager: 	at com.facebook.react.fabric.mounting.SurfaceMountingManager.addViewAt(SurfaceMountingManager.kt:384)
+10-26 07:17:47.435  3830  3830 E unknown:FabricUIManager: 	at com.facebook.react.fabric.mounting.mountitems.IntBufferBatchMountItem.execute(IntBufferBatchMountItem.kt:122)
+10-26 07:17:47.435  3830  3830 E unknown:FabricUIManager: 	at com.facebook.react.fabric.mounting.MountItemDispatcher.executeOrEnqueue(MountItemDispatcher.kt:379)
+10-26 07:17:47.435  3830  3830 E unknown:FabricUIManager: 	at com.facebook.react.fabric.mounting.MountItemDispatcher.dispatchMountItems$lambda$7$lambda$6(MountItemDispatcher.kt:269)
+10-26 07:17:47.435  3830  3830 E unknown:FabricUIManager: 	at com.facebook.react.fabric.mounting.MountItemDispatcher.$r8$lambda$4xp_oXLXKRRjXh_WfqmwhGWbzaM(MountItemDispatcher.kt:0)
+10-26 07:17:47.435  3830  3830 E unknown:FabricUIManager: 	at com.facebook.react.fabric.mounting.MountItemDispatcher$$ExternalSyntheticLambda4.invoke(D8$$SyntheticClass:0)
+10-26 07:17:47.435  3830  3830 E unknown:FabricUIManager: 	at com.facebook.react.internal.tracing.PerformanceTracer.trace(PerformanceTracer.kt:46)
+10-26 07:17:47.435  3830  3830 E unknown:FabricUIManager: 	at com.facebook.react.internal.tracing.PerformanceTracer.trace(PerformanceTracer.kt:35)
+10-26 07:17:47.435  3830  3830 E unknown:FabricUIManager: 	at com.facebook.react.fabric.mounting.MountItemDispatcher.dispatchMountItems(MountItemDispatcher.kt:250)
+10-26 07:17:47.435  3830  3830 E unknown:FabricUIManager: 	at com.facebook.react.fabric.mounting.MountItemDispatcher.tryDispatchMountItems(MountItemDispatcher.kt:94)
+10-26 07:17:47.435  3830  3830 E unknown:FabricUIManager: 	at com.facebook.react.fabric.FabricUIManager$DispatchUIFrameCallback.doFrameGuarded(FabricUIManager.java:1624)
+10-26 07:17:47.435  3830  3830 E unknown:FabricUIManager: 	at com.facebook.react.uimanager.GuardedFrameCallback.doFrame(GuardedFrameCallback.kt:42)
+10-26 07:17:47.435  3830  3830 E unknown:FabricUIManager: 	at com.facebook.react.modules.core.ReactChoreographer.frameCallback$lambda$1(ReactChoreographer.kt:58)
+10-26 07:17:47.435  3830  3830 E unknown:FabricUIManager: 	at com.facebook.react.modules.core.ReactChoreographer.$r8$lambda$nSkFhrr5T7rop_XKwzlLov4NLLw(ReactChoreographer.kt:0)
+10-26 07:17:47.435  3830  3830 E unknown:FabricUIManager: 	at com.facebook.react.modules.core.ReactChoreographer$$ExternalSyntheticLambda0.doFrame(D8$$SyntheticClass:0)
+10-26 07:17:47.435  3830  3830 E unknown:FabricUIManager: 	at android.view.Choreographer$CallbackRecord.run(Choreographer.java:1655)
+10-26 07:17:47.435  3830  3830 E unknown:FabricUIManager: 	at android.view.Choreographer$CallbackRecord.run(Choreographer.java:1666)
+10-26 07:17:47.435  3830  3830 E unknown:FabricUIManager: 	at android.view.Choreographer.doCallbacks(Choreographer.java:1252)
+10-26 07:17:47.435  3830  3830 E unknown:FabricUIManager: 	at android.view.Choreographer.doFrame(Choreographer.java:1205)
+10-26 07:17:47.435  3830  3830 E unknown:FabricUIManager: 	at android.view.Choreographer$FrameDisplayEventReceiver.run(Choreographer.java:1640)
+10-26 07:17:47.435  3830  3830 E unknown:FabricUIManager: 	at android.os.Handler.handleCallback(Handler.java:1095)
+10-26 07:17:47.435  3830  3830 E unknown:FabricUIManager: 	at android.os.Handler.dispatchMessageImpl(Handler.java:135)
+10-26 07:17:47.435  3830  3830 E unknown:FabricUIManager: 	at android.os.Handler.dispatchMessage(Handler.java:125)
+10-26 07:17:47.435  3830  3830 E unknown:FabricUIManager: 	at android.os.Looper.loopOnce(Looper.java:296)
+10-26 07:17:47.435  3830  3830 E unknown:FabricUIManager: 	at android.os.Looper.loop(Looper.java:397)
+10-26 07:17:47.435  3830  3830 E unknown:FabricUIManager: 	at android.app.ActivityThread.main(ActivityThread.java:9523)
+10-26 07:17:47.435  3830  3830 E unknown:FabricUIManager: 	at java.lang.reflect.Method.invoke(Native Method)
+10-26 07:17:47.435  3830  3830 E unknown:FabricUIManager: 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:575)
+10-26 07:17:47.435  3830  3830 E unknown:FabricUIManager: 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:939)
+10-26 07:17:47.435  3830  3830 E unknown:FabricUIManager: Caused by: java.lang.IllegalStateException: The specified child already has a parent. You must call removeView() on the child's parent first.
+10-26 07:17:47.435  3830  3830 E unknown:FabricUIManager: 	at android.view.ViewGroup.addViewInner(ViewGroup.java:5424)
+10-26 07:17:47.435  3830  3830 E unknown:FabricUIManager: 	at android.view.ViewGroup.addView(ViewGroup.java:5253)
+10-26 07:17:47.435  3830  3830 E unknown:FabricUIManager: 	at android.view.ViewGroup.addView(ViewGroup.java:5193)
+10-26 07:17:47.435  3830  3830 E unknown:FabricUIManager: 	at com.facebook.react.views.view.ReactClippingViewManager.addView(ReactClippingViewManager.kt:36)
+10-26 07:17:47.435  3830  3830 E unknown:FabricUIManager: 	at com.facebook.react.views.view.ReactClippingViewManager.addView(ReactClippingViewManager.kt:20)
+10-26 07:17:47.435  3830  3830 E unknown:FabricUIManager: 	at com.facebook.react.fabric.mounting.SurfaceMountingManager.addViewAt(SurfaceMountingManager.kt:381)
+10-26 07:17:47.435  3830  3830 E unknown:FabricUIManager: 	... 28 more
+10-26 07:17:47.435  3830  3830 W unknown:BridgelessReact: ReactHost{0}.handleHostException(message = "addViewAt: failed to insert view [2200] into parent [2248] at index 4")
+10-26 07:17:47.447  3830  3830 E DevLauncher: addViewAt: failed to insert view [2200] into parent [2248] at index 4
+10-26 07:17:47.447  3830  3830 E DevLauncher:
+10-26 07:17:47.447  3830  3830 E DevLauncher: The specified child already has a parent. You must call removeView() on the child's parent first.
+10-26 07:17:47.447  3830  3830 E DevLauncher: java.lang.IllegalStateException: addViewAt: failed to insert view [2200] into parent [2248] at index 4
+10-26 07:17:47.447  3830  3830 E DevLauncher: 	at com.facebook.react.fabric.mounting.SurfaceMountingManager.addViewAt(SurfaceMountingManager.kt:384)
+10-26 07:17:47.447  3830  3830 E DevLauncher: 	at com.facebook.react.fabric.mounting.mountitems.IntBufferBatchMountItem.execute(IntBufferBatchMountItem.kt:122)
+10-26 07:17:47.447  3830  3830 E DevLauncher: 	at com.facebook.react.fabric.mounting.MountItemDispatcher.executeOrEnqueue(MountItemDispatcher.kt:379)
+10-26 07:17:47.447  3830  3830 E DevLauncher: 	at com.facebook.react.fabric.mounting.MountItemDispatcher.dispatchMountItems$lambda$7$lambda$6(MountItemDispatcher.kt:269)
+10-26 07:17:47.447  3830  3830 E DevLauncher: 	at com.facebook.react.fabric.mounting.MountItemDispatcher.$r8$lambda$4xp_oXLXKRRjXh_WfqmwhGWbzaM(MountItemDispatcher.kt:0)
+10-26 07:17:47.447  3830  3830 E DevLauncher: 	at com.facebook.react.fabric.mounting.MountItemDispatcher$$ExternalSyntheticLambda4.invoke(D8$$SyntheticClass:0)
+10-26 07:17:47.447  3830  3830 E DevLauncher: 	at com.facebook.react.internal.tracing.PerformanceTracer.trace(PerformanceTracer.kt:46)
+10-26 07:17:47.447  3830  3830 E DevLauncher: 	at com.facebook.react.internal.tracing.PerformanceTracer.trace(PerformanceTracer.kt:35)
+10-26 07:17:47.447  3830  3830 E DevLauncher: 	at com.facebook.react.fabric.mounting.MountItemDispatcher.dispatchMountItems(MountItemDispatcher.kt:250)
+10-26 07:17:47.447  3830  3830 E DevLauncher: 	at com.facebook.react.fabric.mounting.MountItemDispatcher.tryDispatchMountItems(MountItemDispatcher.kt:94)
+10-26 07:17:47.447  3830  3830 E DevLauncher: 	at com.facebook.react.fabric.FabricUIManager$DispatchUIFrameCallback.doFrameGuarded(FabricUIManager.java:1624)
+10-26 07:17:47.447  3830  3830 E DevLauncher: 	at com.facebook.react.uimanager.GuardedFrameCallback.doFrame(GuardedFrameCallback.kt:42)
+10-26 07:17:47.447  3830  3830 E DevLauncher: 	at com.facebook.react.modules.core.ReactChoreographer.frameCallback$lambda$1(ReactChoreographer.kt:58)
+10-26 07:17:47.447  3830  3830 E DevLauncher: 	at com.facebook.react.modules.core.ReactChoreographer.$r8$lambda$nSkFhrr5T7rop_XKwzlLov4NLLw(ReactChoreographer.kt:0)
+10-26 07:17:47.447  3830  3830 E DevLauncher: 	at com.facebook.react.modules.core.ReactChoreographer$$ExternalSyntheticLambda0.doFrame(D8$$SyntheticClass:0)
+10-26 07:17:47.447  3830  3830 E DevLauncher: 	at android.view.Choreographer$CallbackRecord.run(Choreographer.java:1655)
+10-26 07:17:47.447  3830  3830 E DevLauncher: 	at android.view.Choreographer$CallbackRecord.run(Choreographer.java:1666)
+10-26 07:17:47.447  3830  3830 E DevLauncher: 	at android.view.Choreographer.doCallbacks(Choreographer.java:1252)
+10-26 07:17:47.447  3830  3830 E DevLauncher: 	at android.view.Choreographer.doFrame(Choreographer.java:1205)
+10-26 07:17:47.447  3830  3830 E DevLauncher: 	at android.view.Choreographer$FrameDisplayEventReceiver.run(Choreographer.java:1640)
+10-26 07:17:47.447  3830  3830 E DevLauncher: 	at android.os.Handler.handleCallback(Handler.java:1095)
+10-26 07:17:47.447  3830  3830 E DevLauncher: 	at android.os.Handler.dispatchMessageImpl(Handler.java:135)
+10-26 07:17:47.447  3830  3830 E DevLauncher: 	at android.os.Handler.dispatchMessage(Handler.java:125)
+10-26 07:17:47.447  3830  3830 E DevLauncher: 	at android.os.Looper.loopOnce(Looper.java:296)
+10-26 07:17:47.447  3830  3830 E DevLauncher: 	at android.os.Looper.loop(Looper.java:397)
+10-26 07:17:47.447  3830  3830 E DevLauncher: 	at android.app.ActivityThread.main(ActivityThread.java:9523)
+10-26 07:17:47.447  3830  3830 E DevLauncher: 	at java.lang.reflect.Method.invoke(Native Method)
+10-26 07:17:47.447  3830  3830 E DevLauncher: 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:575)
+10-26 07:17:47.447  3830  3830 E DevLauncher: 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:939)
+10-26 07:17:47.447  3830  3830 E DevLauncher: Caused by: java.lang.IllegalStateException: The specified child already has a parent. You must call removeView() on the child's parent first.
+10-26 07:17:47.447  3830  3830 E DevLauncher: 	at android.view.ViewGroup.addViewInner(ViewGroup.java:5424)
+10-26 07:17:47.447  3830  3830 E DevLauncher: 	at android.view.ViewGroup.addView(ViewGroup.java:5253)
+10-26 07:17:47.447  3830  3830 E DevLauncher: 	at android.view.ViewGroup.addView(ViewGroup.java:5193)
+10-26 07:17:47.447  3830  3830 E DevLauncher: 	at com.facebook.react.views.view.ReactClippingViewManager.addView(ReactClippingViewManager.kt:36)
+10-26 07:17:47.447  3830  3830 E DevLauncher: 	at com.facebook.react.views.view.ReactClippingViewManager.addView(ReactClippingViewManager.kt:20)
+10-26 07:17:47.447  3830  3830 E DevLauncher: 	at com.facebook.react.fabric.mounting.SurfaceMountingManager.addViewAt(SurfaceMountingManager.kt:381)
+10-26 07:17:47.447  3830  3830 E DevLauncher: 	... 28 more
+10-26 07:17:47.468  3830  4613 W unknown:BridgelessReact: ReactHost{0}.getOrCreateDestroyTask()
+10-26 07:17:47.468  3830  4613 W unknown:BridgelessReact: ReactHost{0}.getOrCreateDestroyTask(): Resetting createReactInstance task ref
+10-26 07:17:47.487  3830  3830 W unknown:FabricUIManager: Not flushing pending UI operations: exception was previously thrown
+10-26 07:17:47.488  3830  3830 W unknown:BridgelessReact: ReactHost{0}.onUserLeaveHint(activity)
+10-26 07:17:47.490  3830  3830 W unknown:BridgelessReact: ReactHost{0}.onHostPause(activity)
+10-26 07:17:47.491  3830  3830 W unknown:BridgelessReact: ReactHost{0}.ReactContext.onHostPause()
+10-26 07:17:47.491  3830  3830 E unknown:ReactNative: Tried to remove non-existent frame callback
+10-26 07:17:47.491  3830  3830 W unknown:BridgelessReact: ReactHost{0}.raiseSoftException(callWithExistingReactInstance(callFunctionOnModule("RCTDeviceEventEmitter", "emit"))): Execute: reactInstance is null. Dropping work.
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: Unhandled SoftException
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: com.facebook.react.bridge.ReactNoCrashSoftException: raiseSoftException(callWithExistingReactInstance(callFunctionOnModule("RCTDeviceEventEmitter", "emit"))): Execute: reactInstance is null. Dropping work.
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at com.facebook.react.runtime.ReactHostImpl.raiseSoftException(ReactHostImpl.kt:919)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at com.facebook.react.runtime.ReactHostImpl.raiseSoftException$default(ReactHostImpl.kt:910)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at com.facebook.react.runtime.ReactHostImpl.callWithExistingReactInstance$lambda$32(ReactHostImpl.kt:935)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at com.facebook.react.runtime.ReactHostImpl.$r8$lambda$OnkS1FVBHx0tAZXPMEZwFodv3co(ReactHostImpl.kt:0)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at com.facebook.react.runtime.ReactHostImpl$$ExternalSyntheticLambda31.then(D8$$SyntheticClass:0)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at com.facebook.react.runtime.internal.bolts.Task$Companion.completeImmediately$lambda$3(Task.kt:360)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at com.facebook.react.runtime.internal.bolts.Task$Companion.$r8$lambda$b7MTC0ufkn_2TjF4BGcNqGR9qK0(Task.kt:0)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at com.facebook.react.runtime.internal.bolts.Task$Companion$$ExternalSyntheticLambda3.run(D8$$SyntheticClass:0)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at com.facebook.react.runtime.internal.bolts.Executors$ImmediateExecutor.execute(Executors.kt:41)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at com.facebook.react.runtime.internal.bolts.Task$Companion.completeImmediately(Task.kt:358)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at com.facebook.react.runtime.internal.bolts.Task$Companion.access$completeImmediately(Task.kt:254)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at com.facebook.react.runtime.internal.bolts.Task.continueWith(Task.kt:133)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at com.facebook.react.runtime.internal.bolts.Task.continueWith$default(Task.kt:117)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at com.facebook.react.runtime.internal.bolts.Task.onSuccess$lambda$12(Task.kt:176)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at com.facebook.react.runtime.internal.bolts.Task.$r8$lambda$l0wwo5AvbHxlwfI1R7CH_codxoo(Task.kt:0)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at com.facebook.react.runtime.internal.bolts.Task$$ExternalSyntheticLambda2.then(D8$$SyntheticClass:0)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at com.facebook.react.runtime.internal.bolts.Task$Companion.completeAfterTask$lambda$5(Task.kt:394)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at com.facebook.react.runtime.internal.bolts.Task$Companion.$r8$lambda$IPpysnehFwANEiW061YzapkMdoE(Task.kt:0)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at com.facebook.react.runtime.internal.bolts.Task$Companion$$ExternalSyntheticLambda4.run(D8$$SyntheticClass:0)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at com.facebook.react.runtime.internal.bolts.Executors$ImmediateExecutor.execute(Executors.kt:41)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at com.facebook.react.runtime.internal.bolts.Task$Companion.completeAfterTask(Task.kt:392)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at com.facebook.react.runtime.internal.bolts.Task$Companion.access$completeAfterTask(Task.kt:254)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at com.facebook.react.runtime.internal.bolts.Task.continueWithTask(Task.kt:158)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at com.facebook.react.runtime.internal.bolts.Task.onSuccess(Task.kt:171)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at com.facebook.react.runtime.ReactHostImpl.callWithExistingReactInstance(ReactHostImpl.kt:931)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at com.facebook.react.runtime.ReactHostImpl.callWithExistingReactInstance$default(ReactHostImpl.kt:924)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at com.facebook.react.runtime.ReactHostImpl.callFunctionOnModule$ReactAndroid_debug(ReactHostImpl.kt:812)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at com.facebook.react.runtime.BridgelessReactContext.emitDeviceEvent(BridgelessReactContext.kt:157)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at com.facebook.react.modules.appstate.AppStateModule.sendEvent(AppStateModule.kt:71)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at com.facebook.react.modules.appstate.AppStateModule.sendAppStateChangeEvent(AppStateModule.kt:75)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at com.facebook.react.modules.appstate.AppStateModule.onHostPause(AppStateModule.kt:48)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at com.facebook.react.bridge.ReactContext.onHostPause(ReactContext.java:318)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at com.facebook.react.runtime.ReactLifecycleStateManager.moveToOnHostPause(ReactLifecycleStateManager.kt:56)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at com.facebook.react.runtime.ReactHostImpl.onHostPause(ReactHostImpl.kt:291)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at com.facebook.react.ReactDelegate.onHostPause(ReactDelegate.kt:156)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at com.facebook.react.ReactActivityDelegate.onPause(ReactActivityDelegate.java:194)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at expo.modules.ReactActivityDelegateWrapper$onPause$1.invokeSuspend(ReactActivityDelegateWrapper.kt:201)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at expo.modules.ReactActivityDelegateWrapper$onPause$1.invoke(ReactActivityDelegateWrapper.kt:8)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at expo.modules.ReactActivityDelegateWrapper$onPause$1.invoke(ReactActivityDelegateWrapper.kt:4)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at expo.modules.ReactActivityDelegateWrapper$launchLifecycleScopeWithLock$1.invokeSuspend(ReactActivityDelegateWrapper.kt:452)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at kotlinx.coroutines.internal.DispatchedContinuationKt.resumeCancellableWith(DispatchedContinuation.kt:375)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at kotlinx.coroutines.intrinsics.CancellableKt.startCoroutineCancellable(Cancellable.kt:26)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at kotlinx.coroutines.CoroutineStart.invoke(CoroutineStart.kt:358)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at kotlinx.coroutines.AbstractCoroutine.start(AbstractCoroutine.kt:134)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at kotlinx.coroutines.BuildersKt__Builders_commonKt.launch(Builders.common.kt:53)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at kotlinx.coroutines.BuildersKt.launch(dex-id-7f5f8c3043a8c0d4e2ab105f1195648347ce9ed2:1)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at kotlinx.coroutines.BuildersKt__Builders_commonKt.launch$default(Builders.common.kt:44)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at kotlinx.coroutines.BuildersKt.launch$default(dex-id-7f5f8c3043a8c0d4e2ab105f1195648347ce9ed2:1)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at expo.modules.ReactActivityDelegateWrapper.launchLifecycleScopeWithLock(ReactActivityDelegateWrapper.kt:450)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at expo.modules.ReactActivityDelegateWrapper.launchLifecycleScopeWithLock$default(ReactActivityDelegateWrapper.kt:446)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at expo.modules.ReactActivityDelegateWrapper.onPause(ReactActivityDelegateWrapper.kt:185)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at com.facebook.react.ReactActivity.onPause(ReactActivity.java:70)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at android.app.Activity.performPause(Activity.java:9572)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at android.app.Instrumentation.callActivityOnPause(Instrumentation.java:1793)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at android.app.ActivityThread.performPauseActivityIfNeeded(ActivityThread.java:6262)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at android.app.ActivityThread.performPauseActivity(ActivityThread.java:6223)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at android.app.ActivityThread.handlePauseActivity(ActivityThread.java:6175)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at android.app.servertransaction.PauseActivityItem.execute(PauseActivityItem.java:60)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at android.app.servertransaction.ActivityTransactionItem.execute(ActivityTransactionItem.java:63)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at android.app.servertransaction.TransactionExecutor.executeLifecycleItem(TransactionExecutor.java:169)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at android.app.servertransaction.TransactionExecutor.executeTransactionItems(TransactionExecutor.java:101)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at android.app.servertransaction.TransactionExecutor.execute(TransactionExecutor.java:80)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at android.app.ActivityThread$H.handleMessage(ActivityThread.java:3032)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at android.os.Handler.dispatchMessageImpl(Handler.java:142)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at android.os.Handler.dispatchMessage(Handler.java:125)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at android.os.Looper.loopOnce(Looper.java:296)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at android.os.Looper.loop(Looper.java:397)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at android.app.ActivityThread.main(ActivityThread.java:9523)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at java.lang.reflect.Method.invoke(Native Method)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:575)
+10-26 07:17:47.494  3830  3830 E unknown:ReactHost: 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:939)
+10-26 07:17:47.498  3830  3830 W unknown:BridgelessReact: ReactHost{0}.getOrCreateDestroyTask(): Starting React Native destruction
+10-26 07:17:47.499  3830  3830 W unknown:BridgelessReact: ReactHost{0}.getOrCreateDestroyTask(): DevSupportManager cleanup
+10-26 07:17:47.500  3830  3830 W unknown:BridgelessReact: ReactHost{0}.getOrCreateDestroyTask(): Move ReactHost to onHostDestroy()
+10-26 07:17:47.500  3830  3830 W unknown:BridgelessReact: ReactHost{0}.ReactContext.onHostDestroy()
+10-26 07:17:47.502  3830  3830 E unknown:ReactNative: Tried to remove non-existent frame callback
+10-26 07:17:47.502  3830  3830 D WindowOnBackDispatcher: setTopOnBackInvokedCallback (unwrapped): null
+10-26 07:17:47.516  3830  4613 W unknown:BridgelessReact: ReactHost{0}.getOrCreateDestroyTask(): Stopping all React Native surfaces
+10-26 07:17:47.516  3830  4613 E unknown:SurfaceMountingManager: Stopping surface [1]
+10-26 07:17:47.518  3830  3830 W WindowOnBackDispatcher: OnBackInvokedCallback is not enabled for the application.
+10-26 07:17:47.518  3830  3830 W WindowOnBackDispatcher: Set 'android:enableOnBackInvokedCallback="true"' in the application manifest.
+10-26 07:17:47.535  3830  3830 E unknown:SurfaceMountingManager: Surface [1] was stopped on SurfaceMountingManager.
+10-26 07:17:47.565  3830  3830 D VRI[DevLauncherErrorActivity]: WindowInsets changed: 1080x2400 statusBars:[0,63,0,0] navigationBars:[0,0,0,63] mandatorySystemGestures:[0,63,0,84]
+10-26 07:17:47.567  3830  3830 D WindowOnBackDispatcher: setTopOnBackInvokedCallback (unwrapped): android.view.ViewRootImpl$$ExternalSyntheticLambda14@4d47f08
+10-26 07:17:47.575  3830  3830 I Surface : Creating surface for consumer unnamed-3830-12 with slotExpansion=1 for 64 slots
+10-26 07:17:47.575  3830  3830 I Surface : Creating surface for consumer VRI[DevLauncherErrorActivity]#12(BLAST Consumer)12 with slotExpansion=1 for 64 slots
+10-26 07:17:47.579  3830  4660 W unknown:ReactNative: StatusBarModule: Ignored status bar change, current activity is null.
+10-26 07:17:47.579  3830  4660 W unknown:ReactNative: StatusBarModule: Ignored status bar change, current activity is null.
+10-26 07:17:47.614  3830  3830 W unknown:BridgelessReact: ReactHost{0}.getOrCreateDestroyTask(): Destroying MemoryPressureRouter
+10-26 07:17:47.615  3830  3830 W unknown:BridgelessReact: ReactHost{0}.getOrCreateDestroyTask(): Resetting ReactContext ref
+10-26 07:17:47.615  3830  3830 W unknown:BridgelessReact: ReactHost{0}.getOrCreateDestroyTask(): Destroying ReactContext
+10-26 07:17:47.619  3830  4613 W unknown:BridgelessReact: ReactHost{0}.getOrCreateDestroyTask(): Resetting ReactInstance ptr
+10-26 07:17:47.630  3830  4613 W unknown:BridgelessReact: ReactHost{0}.getOrCreateDestroyTask(): Destroying ReactInstance
+10-26 07:17:47.652  3830  4613 I ExpoModulesCore: ✅ ModuleRegistry was destroyed
+10-26 07:17:47.652  3830  4613 I ExpoModulesCore: ✅ AppContext was destroyed
+10-26 07:17:47.652  3830  4613 I ExpoModulesCore: ✅ KotlinInteropModuleRegistry was destroyed
+10-26 07:17:47.738  3830  4613 W unknown:ReactNative: Tried to enqueue runnable on already finished thread: 'v_native... dropping Runnable.
+10-26 07:17:47.743  3830  4613 E unknown:ReactNative: Tried to remove non-existent frame callback
+10-26 07:17:47.744  3830  4613 W ReactNativeJNI: Scheduler::~Scheduler() was called (address: 0xb400007c3ba13890).
+10-26 07:17:47.746  3830  4613 W unknown:ReactNative: Tried to enqueue runnable on already finished thread: 'v_native... dropping Runnable.
+10-26 07:17:47.746  3830  4613 W unknown:ReactNative: Tried to enqueue runnable on already finished thread: 'v_native... dropping Runnable.
+10-26 07:17:47.746  3830  4613 W unknown:ReactNative: Tried to enqueue runnable on already finished thread: 'v_native... dropping Runnable.
+10-26 07:17:47.746  3830  4613 W unknown:ReactNative: Tried to enqueue runnable on already finished thread: 'v_native... dropping Runnable.
+10-26 07:17:47.746  3830  4613 W unknown:ReactNative: Tried to enqueue runnable on already finished thread: 'v_native... dropping Runnable.
+10-26 07:17:47.746  3830  4613 W unknown:ReactNative: Tried to enqueue runnable on already finished thread: 'v_native... dropping Runnable.
+10-26 07:17:47.746  3830  4613 W unknown:ReactNative: Tried to enqueue runnable on already finished thread: 'v_native... dropping Runnable.
+10-26 07:17:47.746  3830  4613 W unknown:ReactNative: Tried to enqueue runnable on already finished thread: 'v_native... dropping Runnable.
+10-26 07:17:47.746  3830  4613 W unknown:ReactNative: Tried to enqueue runnable on already finished thread: 'v_native... dropping Runnable.
+10-26 07:17:47.746  3830  4613 W unknown:ReactNative: Tried to enqueue runnable on already finished thread: 'v_native... dropping Runnable.
+10-26 07:17:47.746  3830  4613 W unknown:ReactNative: Tried to enqueue runnable on already finished thread: 'v_native... dropping Runnable.
+10-26 07:17:47.746  3830  4613 W unknown:ReactNative: Tried to enqueue runnable on already finished thread: 'v_native... dropping Runnable.
+10-26 07:17:47.746  3830  4613 W unknown:ReactNative: Tried to enqueue runnable on already finished thread: 'v_native... dropping Runnable.
+10-26 07:17:47.747  3830  4613 W ReactNativeJNI: UIManagerBinding::~UIManagerBinding() was called (address: 0xb400007baba3d4a8).
+10-26 07:17:47.747  3830  4613 W ReactNativeJNI: UIManager::~UIManager() was called (address: 0xb400007c3ba2bc10).
+10-26 07:17:47.750  3830  4613 W unknown:ReactNative: Tried to enqueue runnable on already finished thread: 'v_native... dropping Runnable.
+10-26 07:17:47.750  3830  4613 W unknown:ReactNative: Tried to enqueue runnable on already finished thread: 'v_native... dropping Runnable.
+10-26 07:17:47.750  3830  4613 W unknown:ReactNative: Tried to enqueue runnable on already finished thread: 'v_native... dropping Runnable.
+10-26 07:17:47.750  3830  4613 W unknown:ReactNative: Tried to enqueue runnable on already finished thread: 'v_native... dropping Runnable.
+10-26 07:17:47.750  3830  4613 W unknown:ReactNative: Tried to enqueue runnable on already finished thread: 'v_native... dropping Runnable.
+10-26 07:17:47.750  3830  4613 W unknown:ReactNative: Tried to enqueue runnable on already finished thread: 'v_native... dropping Runnable.
+10-26 07:17:47.750  3830  4613 W unknown:ReactNative: Tried to enqueue runnable on already finished thread: 'v_native... dropping Runnable.
+10-26 07:17:47.750  3830  4613 W unknown:ReactNative: Tried to enqueue runnable on already finished thread: 'v_native... dropping Runnable.
+10-26 07:17:47.750  3830  4613 W unknown:ReactNative: Tried to enqueue runnable on already finished thread: 'v_native... dropping Runnable.
+10-26 07:17:47.750  3830  4613 W unknown:ReactNative: Tried to enqueue runnable on already finished thread: 'v_native... dropping Runnable.
+10-26 07:17:47.750  3830  4613 W unknown:ReactNative: Tried to enqueue runnable on already finished thread: 'v_native... dropping Runnable.
+10-26 07:17:47.798  3830  3830 D InsetsController: hide(ime())
+10-26 07:17:47.798  3830  3830 I ImeTracker: com.tongzhang.app:bdba6fbb: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+10-26 07:17:47.835  3830  3838 I m.tongzhang.app: Background young concurrent mark compact GC freed 8082KB AllocSpace bytes, 68(4108KB) LOS objects, 36% free, 18MB/29MB, paused 43.994ms,982us total 403.339ms
+10-26 07:17:47.982  3830  4613 W unknown:BridgelessReact: ReactHost{0}.getOrCreateDestroyTask(): Resetting start/destroy task ref

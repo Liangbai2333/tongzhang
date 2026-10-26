@@ -1,0 +1,8 @@
+
+ RUN  v5.0.4 /Users/liangbai/.codex/worktrees/issue33-android-native/tongzhang
+
+
+ Test Files  14 passed (14)
+      Tests  128 passed (128)
+   Start at  07:12:21
+   Duration  6.52s (tests 64%, import 25%, transform 11%)

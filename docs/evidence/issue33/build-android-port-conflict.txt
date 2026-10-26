@@ -1,0 +1,25 @@
+$ pnpm build:shared && pnpm --filter @tongzhang/mobile build:android --port 8093
+$ pnpm -r --filter "./packages/*" build
+$ tsc -p tsconfig.json
+$ tsc -p tsconfig.json
+$ expo prebuild --platform android && expo run:android --no-bundler --port 8093
+env: load .env
+env: export APP_VARIANT EXPO_PUBLIC_API_BASE_URL
+- Clearing android
+✔ Cleared android code
+- Creating native directory (./android)
+✔ Created native directory
+- Updating package.json
+✔ Updated package.json | no changes
+- Running prebuild
+✔ Finished prebuild
+env: load .env
+env: export APP_VARIANT EXPO_PUBLIC_API_BASE_URL
+CommandError: --port and --no-bundler are mutually exclusive arguments
+[ELIFECYCLE] Command failed with exit code 1.
+Error: ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL
+
+  × "pnpm recursive run" failed in /Users/liangbai/.codex/worktrees/issue33-
+  │ android-native/tongzhang/apps/mobile
+
+[ELIFECYCLE] Command failed with exit code 1.

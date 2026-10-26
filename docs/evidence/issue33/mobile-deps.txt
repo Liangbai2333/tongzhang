@@ -1,0 +1,4 @@
+$ pnpm --filter @tongzhang/mobile exec expo install --check
+env: load .env
+env: export APP_VARIANT EXPO_PUBLIC_API_BASE_URL
+Dependencies are up to date

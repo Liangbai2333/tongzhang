@@ -1,0 +1,155 @@
+{
+  "at": "2026-10-26T14:27:57.112Z",
+  "ledgerId": "6a88fb46-b11c-4dd5-a854-1369fca804a4",
+  "imageId": "eef4d1d1-7160-4559-9f87-f52c3b87e3e5",
+  "checks": [
+    {
+      "label": "Bound receipt / a",
+      "status": 200,
+      "expected": 200,
+      "bytes": 32156,
+      "cacheControl": "no-store",
+      "contentType": "image/jpeg",
+      "sha256": "ab07f67784f0e5a8f5367fd35e52bf7250bbe64665e0909394aff9b641623bfc"
+    },
+    {
+      "label": "Bound receipt / b",
+      "status": 200,
+      "expected": 200,
+      "bytes": 32156,
+      "cacheControl": "no-store",
+      "contentType": "image/jpeg",
+      "sha256": "ab07f67784f0e5a8f5367fd35e52bf7250bbe64665e0909394aff9b641623bfc"
+    },
+    {
+      "label": "Bound receipt / c",
+      "status": 403,
+      "expected": 403,
+      "bytes": 124,
+      "cacheControl": "no-store",
+      "contentType": "application/json; charset=utf-8",
+      "body": {
+        "error": {
+          "code": "FORBIDDEN",
+          "message": "你没有权限访问此账本"
+        },
+        "requestId": "65331184-f19c-4eb6-bee1-d201c4db2352"
+      }
+    },
+    {
+      "label": "Bound receipt / anonymous",
+      "status": 401,
+      "expected": 401,
+      "bytes": 112,
+      "cacheControl": "no-store",
+      "contentType": "application/json; charset=utf-8",
+      "body": {
+        "error": {
+          "code": "UNAUTHENTICATED",
+          "message": "请先登录"
+        },
+        "requestId": "6b231940-9505-460d-9ad5-37db1115ede5"
+      }
+    },
+    {
+      "label": "Additional HTTP-only unbound cover upload",
+      "status": 201,
+      "image": {
+        "imageId": "703af6d7-8984-47d7-8fc7-76a6b41ca7be",
+        "mimeType": "image/jpeg",
+        "byteSize": 37081,
+        "width": 800,
+        "height": 1000
+      }
+    },
+    {
+      "label": "Unbound cover / a",
+      "status": 403,
+      "expected": 403,
+      "bytes": 124,
+      "cacheControl": "no-store",
+      "contentType": "application/json; charset=utf-8",
+      "body": {
+        "error": {
+          "code": "FORBIDDEN",
+          "message": "你没有权限读取此图片"
+        },
+        "requestId": "b90b420e-8674-41d8-9d57-736868c0fdad"
+      }
+    },
+    {
+      "label": "Unbound cover / b",
+      "status": 200,
+      "expected": 200,
+      "bytes": 37081,
+      "cacheControl": "no-store",
+      "contentType": "image/jpeg",
+      "sha256": "229ae6eaf5ebe70f5ceaff92d73226e18fdfbcbd9d3cfc0e15bf1ab41eb8ebcf"
+    },
+    {
+      "label": "Unbound cover / c",
+      "status": 403,
+      "expected": 403,
+      "bytes": 124,
+      "cacheControl": "no-store",
+      "contentType": "application/json; charset=utf-8",
+      "body": {
+        "error": {
+          "code": "FORBIDDEN",
+          "message": "你没有权限读取此图片"
+        },
+        "requestId": "89dcb542-cc4b-4c2b-8558-1c3e7cc4cb7a"
+      }
+    },
+    {
+      "label": "Additional HTTP-only custom cover binding",
+      "status": 201,
+      "data": {
+        "ledger": {
+          "id": "8bf6b3e5-44f4-43c7-b650-4ca9b6f08f32",
+          "name": "Issue33-HTTP-Cover",
+          "coverKey": null,
+          "coverImageId": "703af6d7-8984-47d7-8fc7-76a6b41ca7be",
+          "status": "ACTIVE",
+          "version": 1,
+          "memberCount": 1,
+          "expenseTotalCents": "0",
+          "myRemainingNetCents": "0",
+          "archivedAt": null,
+          "createdAt": "2026-10-26T14:27:57.099Z"
+        },
+        "invitation": {
+          "id": "ee8ae364-b87f-42bf-9863-958051f47584",
+          "code": "LYLTBA",
+          "expiresAt": "2026-11-02T14:27:57.103Z",
+          "expired": false,
+          "qrPayload": "tongzhang:invite:v1:LYLTBA"
+        }
+      }
+    },
+    {
+      "label": "Bound cover / nonmember a",
+      "status": 403,
+      "expected": 403,
+      "bytes": 124,
+      "cacheControl": "no-store",
+      "contentType": "application/json; charset=utf-8",
+      "body": {
+        "error": {
+          "code": "FORBIDDEN",
+          "message": "你没有权限访问此账本"
+        },
+        "requestId": "f9f9e3d6-8cd5-48a5-b10f-d1d4ee1c3d35"
+      }
+    },
+    {
+      "label": "Bound cover / creator b",
+      "status": 200,
+      "expected": 200,
+      "bytes": 37081,
+      "cacheControl": "no-store",
+      "contentType": "image/jpeg",
+      "sha256": "229ae6eaf5ebe70f5ceaff92d73226e18fdfbcbd9d3cfc0e15bf1ab41eb8ebcf"
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "apk": "apps/mobile/android/app/build/outputs/apk/debug/app-debug.apk",
+  "bytes": 99547302,
+  "sha256": "79708493305d8245e6e1950d30289fd75a8a42840fcae78298f386492435f005",
+  "gradle": "9.3.1",
+  "javaHome": "/Users/liangbai/.local/share/mise/installs/java/corretto-17.0.20.12.1",
+  "androidHome": "/Users/liangbai/Library/Android/sdk",
+  "package": "com.tongzhang.app",
+  "packageManagerEvidence": [
+    "    versionCode=1 minSdk=24 targetSdk=36",
+    "    versionName=0.1.0",
+    "    lastUpdateTime=2026-10-26 07:13:29",
+    "      android.permission.CAMERA",
+    "      firstInstallTime=2026-10-26 07:13:29",
+    "        android.permission.CAMERA: granted=false, flags=[ USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]"
+  ],
+  "result": "BUILD SUCCESSFUL; installed by expo run:android; launched against Metro 8093",
+  "nativeConfigChanged": false,
+  "initialApkSha256": "79708493305d8245e6e1950d30289fd75a8a42840fcae78298f386492435f005",
+  "finalSourceCommit": "23525f8c21371f8834eaa09365ca43aca7476758",
+  "finalPackageManagerEvidence": [
+    "    versionCode=1 minSdk=24 targetSdk=36",
+    "    versionName=0.1.0",
+    "    lastUpdateTime=2026-10-26 07:31:36",
+    "      android.permission.CAMERA",
+    "      firstInstallTime=2026-10-26 07:13:29",
+    "        android.permission.CAMERA: granted=false, flags=[ USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]"
+  ],
+  "sourceSha256": {
+    "apps/mobile/app/_layout.tsx": "69f53898046b6122057620ab5ba2e1fb8a7bfbf12952e28ff1752cf4505b965d",
+    "apps/mobile/src/features/auth/controller.ts": "195195a9dd20b5e0b2a0d8d5e7f8aba18bbe1f42c0e5986a673cccf8586b3c17",
+    "apps/mobile/src/providers/AuthProvider.tsx": "10ab26e773fa372d3e6825a2c883ad68dcc80708ce36a080040e97e841358f16",
+    "apps/mobile/src/features/invitations/components/InviteCodeField.tsx": "582a85a60589ee4f9274d2ffb8a6399e6166416543c9739e056be015209aaf51"
+  }
+}

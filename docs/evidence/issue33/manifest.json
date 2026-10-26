@@ -1,0 +1,287 @@
+{
+  "baseCommit": "acbb88b507c56bc641fbc75d1f816d5cb9848eed",
+  "testedSourceCommit": "23525f8c21371f8834eaa09365ca43aca7476758",
+  "capturedAt": "2026-10-26T14:36:49.639Z",
+  "screenshots": "Original Android emulator screencap pixels; baseline 01-07, intermediate old-controller failure 09, final source 10 onward, final APK reinstall 20 onward; no physical device.",
+  "entries": [
+    {
+      "file": "01-installed-sdk57.png",
+      "bytes": 125241,
+      "sha256": "b3449d5d4bba3e0623598eec4aae5f0852b32155502f324cb89f41024fd82a1f",
+      "width": 1080,
+      "height": 2400
+    },
+    {
+      "file": "02-a-login-empty.png",
+      "bytes": 104006,
+      "sha256": "b7da9ac12b84e83ce8cddedb3d59902dcc67bcd453c9d0ed30751f0710856e1a",
+      "width": 1080,
+      "height": 2400
+    },
+    {
+      "file": "03-created-invitation.png",
+      "bytes": 172624,
+      "sha256": "0a8f715ddf3f388a2bde26d8eafa59bf5950ffd9ada6f4c81fb98f9ef694eac7",
+      "width": 1080,
+      "height": 2400
+    },
+    {
+      "file": "04-b-join-preview.png",
+      "bytes": 203107,
+      "sha256": "feb5d0cfe56aa2026267f8e6fec10afba40fe115cfbdd83687f89c8a3b9a28b3",
+      "width": 1080,
+      "height": 2400
+    },
+    {
+      "file": "05-before-fix-native-mount-crash.png",
+      "bytes": 331551,
+      "sha256": "9d586d3124ad8d4ac63727ca46d88eadc9736f8ed2ecc30debacb563cabc41a4",
+      "width": 1080,
+      "height": 2400
+    },
+    {
+      "file": "06-b-ledger-after-reload.png",
+      "bytes": 183726,
+      "sha256": "bc0d0eb300332257f21aca210ed88c393e95dcd8606c5b2ba41444b341db7c22",
+      "width": 1080,
+      "height": 2400
+    },
+    {
+      "file": "07-camera-system-permission.png",
+      "bytes": 145564,
+      "sha256": "b3a77c7d0604dc2c0c4c7d492d0299bb676ca10c0a2c901468e3d90e06b8bfb6",
+      "width": 1080,
+      "height": 2400
+    },
+    {
+      "file": "09-before-fix-form-lost.png",
+      "bytes": 106937,
+      "sha256": "1da475de03c97b7160ac2aebe268298ece18645405f33e50b258d4c404059784",
+      "width": 1080,
+      "height": 2400
+    },
+    {
+      "file": "10-system-photo-picker.png",
+      "bytes": 119710,
+      "sha256": "423db6b32db1e62ba47568dd9e56c17934b364a175f18088d33fb8c73b493ee1",
+      "width": 1080,
+      "height": 2400
+    },
+    {
+      "file": "11-picker-cancel-preserved.png",
+      "bytes": 170333,
+      "sha256": "ec018eaafd43ffe9b87ec249578f6736a43f9f5b4b455591c0b6a8bdb021116e",
+      "width": 1080,
+      "height": 2400
+    },
+    {
+      "file": "12-selected-receipt.png",
+      "bytes": 183805,
+      "sha256": "84b4259ba4d446d68b7fe24fafc36bca445d03d13cc41b28c09ae50b21be6826",
+      "width": 1080,
+      "height": 2400
+    },
+    {
+      "file": "13-denied-keeps-selection.png",
+      "bytes": 248604,
+      "sha256": "12a034587f2939991285a16dfad6aa3b4bab095c9cf4302022d61cb3c0799339",
+      "width": 1080,
+      "height": 2400
+    },
+    {
+      "file": "14-cancel-keeps-selection.png",
+      "bytes": 195524,
+      "sha256": "7b9575a5b384810ab6917c4cfa0bf9b061e06e101a1a00b3a7065e04fcc418f3",
+      "width": 1080,
+      "height": 2400
+    },
+    {
+      "file": "15-b-expense-detail.png",
+      "bytes": 150565,
+      "sha256": "6dc55e66f8d7a0f69aea29bdecc10031aa43895ccf9810fbefcc5113ddb6496e",
+      "width": 1080,
+      "height": 2400
+    },
+    {
+      "file": "16-b-authorized-receipt.png",
+      "bytes": 209891,
+      "sha256": "f3fe1ea8dc257fb1747e2eb55f48735ee40adab58a3fcd43e89051b3f0bd75d8",
+      "width": 1080,
+      "height": 2400
+    },
+    {
+      "file": "17-join-retest-detail.png",
+      "bytes": 184568,
+      "sha256": "dfa93fc5a467ae8645b1e8ef3ebeb158e48e513de95105acea6a4a86842e5d8f",
+      "width": 1080,
+      "height": 2400
+    },
+    {
+      "file": "18-join-retest2-members.png",
+      "bytes": 195234,
+      "sha256": "d74bfc1ecb346038ba00e71fff6d037b91a4270d197a1b18ec72f97afd321e5a",
+      "width": 1080,
+      "height": 2400
+    },
+    {
+      "file": "19-a-authorized-receipt.png",
+      "bytes": 210610,
+      "sha256": "9ba04ffcde51fd0791e5ec72aa48ca565cd85e34c3a3990fae23aa96d8fd0c27",
+      "width": 1080,
+      "height": 2400
+    },
+    {
+      "file": "20-final-installed-a-receipt.png",
+      "bytes": 210498,
+      "sha256": "0654cfb3d4d9704780c96fb8145504d283cc3cb8d5a4d63ed0b63e64c7dd7678",
+      "width": 1080,
+      "height": 2400
+    },
+    {
+      "file": "21-a-members.png",
+      "bytes": 180498,
+      "sha256": "ce053cf87eb3d530db004c292e61370b17f71af2ac14bea4ce14bca83716bd65",
+      "width": 1080,
+      "height": 2400
+    },
+    {
+      "file": "22-final-camera-prompt.png",
+      "bytes": 142583,
+      "sha256": "42ff9f810aeb6afef20228f156b3d20aa3314c1960c0b0d47eab5f6d4088c948",
+      "width": 1080,
+      "height": 2400
+    },
+    {
+      "file": "23-final-denied-preserved.png",
+      "bytes": 179727,
+      "sha256": "b49b2b2aede2730e4b84f98ef3231573894b11843b5f2dd75b2932e6a62952ad",
+      "width": 1080,
+      "height": 2400
+    },
+    {
+      "file": "auth-regression-before.txt",
+      "bytes": 6147,
+      "sha256": "9cdceff6ae42f2598993af22065a005707421985a5f2edad5767bc889eac7ea6"
+    },
+    {
+      "file": "auth-tests-after.txt",
+      "bytes": 412,
+      "sha256": "66d606eb1b1ab9f6f3b4c2876ca11eeec714a96a0162696d92c8ce581e4df586"
+    },
+    {
+      "file": "build-android-final.txt",
+      "bytes": 40340,
+      "sha256": "c446eaab36404018159c54256b9ed322bbd2ceadce04429becef3e97632b8323"
+    },
+    {
+      "file": "build-android-first-offline.txt",
+      "bytes": 996,
+      "sha256": "0a9d561f6c42a26f8b17b5a2644dc875b803c1f86b05bdabb1aeea463b2a8791"
+    },
+    {
+      "file": "build-android-port-conflict.txt",
+      "bytes": 918,
+      "sha256": "b84bd5fd30aa05c5c40751aeccbc6a5fc400c8058dc1912af0498bf9f5731ee2"
+    },
+    {
+      "file": "build-android.txt",
+      "bytes": 41771,
+      "sha256": "6b725c24ec8fcbf74c7c4c2453de00cae33ef56ca753c78f2ea02ae3f68576f8"
+    },
+    {
+      "file": "build-server.txt",
+      "bytes": 170,
+      "sha256": "11c3ace6b03232969966c2cfb0e2eb4eefd2184a7b6dec309e5b0a2527b268ec"
+    },
+    {
+      "file": "check-after.txt",
+      "bytes": 652,
+      "sha256": "d901bfef3076b522eafa681e542f9e7030eb01c4d58115242b3db894999ae619"
+    },
+    {
+      "file": "controller-regression-before.txt",
+      "bytes": 1615,
+      "sha256": "9c64590654858166786de097916c42f4ecf2f3b58f1d44dc93f2422db356e272"
+    },
+    {
+      "file": "database.json",
+      "bytes": 4674,
+      "sha256": "e92834e9854e3e09df0352be506e31c2149efe5d6d6ad13f93da15ad3556a36a"
+    },
+    {
+      "file": "doctor-after.txt",
+      "bytes": 153,
+      "sha256": "8e550b137b08d75faaaa47524501e6add93f3f52c31704f8bf299af59932f185"
+    },
+    {
+      "file": "environment-check.json",
+      "bytes": 1501,
+      "sha256": "80b00556c13d6451db270865fdcab3c7161eb75f5d0bf3537126551978349cab"
+    },
+    {
+      "file": "environment.json",
+      "bytes": 2195,
+      "sha256": "309be5c9b8df5faa63d4fa25c8e60835a4b20b165d5fa420c15ea096ca5c7148"
+    },
+    {
+      "file": "export-after.txt",
+      "bytes": 5976,
+      "sha256": "7611d835732c7286e1104db3b33c1507fbbd3e19ba8c996672605f53bdfc7625"
+    },
+    {
+      "file": "http-image-permissions.json",
+      "bytes": 4360,
+      "sha256": "2f6b934747ce749dbe2d7c6b281d1159b5ef19bf7aa69f6081e75ee6158f026c"
+    },
+    {
+      "file": "install.txt",
+      "bytes": 924,
+      "sha256": "3d95a7e65d2d7bb786f336fba9ce8408f6d7d804d80a432cff51868fc3de37fc"
+    },
+    {
+      "file": "integration-tests.txt",
+      "bytes": 220,
+      "sha256": "9bcb59b742ff4430a8b431166b75b414b2a1aafc6f78eac8c86cf21e63755929"
+    },
+    {
+      "file": "migrate.txt",
+      "bytes": 96,
+      "sha256": "d97d24ccea4abb757877c27e68631d66dfda8377b69c972ec09feee850da0bdb"
+    },
+    {
+      "file": "mobile-deps.txt",
+      "bytes": 152,
+      "sha256": "1836eb9286a27cad62b09666250c5485a0203195c55ddecc74348a5d39c37ef2"
+    },
+    {
+      "file": "mobile-tests-after.txt",
+      "bytes": 1209,
+      "sha256": "024257422d858877a145b75aab723eef424568b3989f7325565e51981f03042a"
+    },
+    {
+      "file": "native-install.json",
+      "bytes": 1903,
+      "sha256": "1dde3ac19078641d5333cdc725e6aa2c40500da1fada1a0274f4744085811030"
+    },
+    {
+      "file": "native-mount-crash-detail.txt",
+      "bytes": 59010,
+      "sha256": "ee1de4df264d42fc72f5ae4615cc837d0157e6de0c4eba3c4a3d635cb7c74851"
+    },
+    {
+      "file": "requests.json",
+      "bytes": 74210,
+      "sha256": "ff57523ad14ef87d3e353ac88d2495c0b39319ea0f7909da2ecd8285202b2b7c"
+    },
+    {
+      "file": "setup.txt",
+      "bytes": 113,
+      "sha256": "f1b6bd6d9218f88e440fcc58e9889665d4b9caabceb1bfcb521e0e82708463d7"
+    },
+    {
+      "file": "unit-tests-after.txt",
+      "bytes": 351,
+      "sha256": "cb283ad4fa3ceb446fb301a0b5bc479569eced6dacb1345a271c46e6556b1b7b"
+    }
+  ]
+}

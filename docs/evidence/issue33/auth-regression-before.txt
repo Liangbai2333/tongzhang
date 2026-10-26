@@ -1,0 +1,143 @@
+$ jest --runInBand auth-navigation auth-provider
+FAIL iOS tests/auth-provider.test.tsx
+  ● AuthProvider lifecycle and memory isolation › preserves identity across a native picker but still verifies online before resuming
+
+    Unable to find an element with text: restoring:在线用户
+
+    [36m<>[39m
+      [36m<Text>[39m
+        [0merror[0m
+        [0m:[0m
+        [0m无用户[0m
+      [36m</Text>[39m
+      [36m<Text />[39m
+      [36m<View[39m
+        [33maccessibilityLabel[39m=[32m"核验"[39m
+        [33maccessibilityRole[39m=[32m"button"[39m
+        [33maccessible[39m=[32m{true}[39m
+      [36m>[39m
+        [36m<Text>[39m
+          [0m核验[0m
+        [36m</Text>[39m
+      [36m</View>[39m
+      [36m<View[39m
+        [33maccessibilityLabel[39m=[32m"退出"[39m
+        [33maccessibilityRole[39m=[32m"button"[39m
+        [33maccessible[39m=[32m{true}[39m
+      [36m>[39m
+        [36m<Text>[39m
+          [0m退出[0m
+        [36m</Text>[39m
+      [36m</View>[39m
+    [36m</>[39m
+
+      141 |         change('background');
+      142 |       });
+    > 143 |       expect(screen.getByText('restoring:在线用户')).toBeOnTheScreen();
+          |                     ^
+      144 |       expect(mockRestore).toHaveBeenCalledTimes(1);
+      145 |       let finish!: (value: { data: typeof user }) => void;
+      146 |       mockRestore.mockReturnValueOnce(
+
+      at Object.getByText (tests/auth-provider.test.tsx:143:21)
+      at asyncGeneratorStep (../../node_modules/.pnpm/@babel+runtime@7.29.10/node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (../../node_modules/.pnpm/@babel+runtime@7.29.10/node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+FAIL Android tests/auth-navigation.test.tsx
+  ● background session admission preserves native media forms › keeps form memory while blocked, resumes after verification, and unmounts on revocation
+
+    expect(jest.fn()).not.toHaveBeenCalled()
+
+    Expected number of calls: 0
+    Received number of calls: 1
+
+    1: called with 0 arguments
+
+      46 |     expect(screen.getByText('在线核验门禁')).toBeOnTheScreen();
+      47 |     expect(screen.queryByLabelText('未保存消费')).toBeNull();
+    > 48 |     expect(mockUnmount).not.toHaveBeenCalled();
+         |                             ^
+      49 |     mockAuth.status = 'authenticated';
+      50 |     await screen.rerender(<AuthNavigation />);
+      51 |     expect(screen.getByDisplayValue('Receipt 120')).toBeOnTheScreen();
+
+      at Object.toHaveBeenCalled (tests/auth-navigation.test.tsx:48:29)
+      at asyncGeneratorStep (../../node_modules/.pnpm/@babel+runtime@7.29.10/node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (../../node_modules/.pnpm/@babel+runtime@7.29.10/node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+FAIL Android tests/auth-provider.test.tsx
+  ● AuthProvider lifecycle and memory isolation › preserves identity across a native picker but still verifies online before resuming
+
+    Unable to find an element with text: restoring:在线用户
+
+    [36m<>[39m
+      [36m<Text>[39m
+        [0merror[0m
+        [0m:[0m
+        [0m无用户[0m
+      [36m</Text>[39m
+      [36m<Text />[39m
+      [36m<View[39m
+        [33maccessibilityLabel[39m=[32m"核验"[39m
+        [33maccessibilityRole[39m=[32m"button"[39m
+        [33maccessible[39m=[32m{true}[39m
+      [36m>[39m
+        [36m<Text>[39m
+          [0m核验[0m
+        [36m</Text>[39m
+      [36m</View>[39m
+      [36m<View[39m
+        [33maccessibilityLabel[39m=[32m"退出"[39m
+        [33maccessibilityRole[39m=[32m"button"[39m
+        [33maccessible[39m=[32m{true}[39m
+      [36m>[39m
+        [36m<Text>[39m
+          [0m退出[0m
+        [36m</Text>[39m
+      [36m</View>[39m
+    [36m</>[39m
+
+      141 |         change('background');
+      142 |       });
+    > 143 |       expect(screen.getByText('restoring:在线用户')).toBeOnTheScreen();
+          |                     ^
+      144 |       expect(mockRestore).toHaveBeenCalledTimes(1);
+      145 |       let finish!: (value: { data: typeof user }) => void;
+      146 |       mockRestore.mockReturnValueOnce(
+
+      at Object.getByText (tests/auth-provider.test.tsx:143:21)
+      at asyncGeneratorStep (../../node_modules/.pnpm/@babel+runtime@7.29.10/node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (../../node_modules/.pnpm/@babel+runtime@7.29.10/node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+FAIL iOS tests/auth-navigation.test.tsx
+  ● background session admission preserves native media forms › keeps form memory while blocked, resumes after verification, and unmounts on revocation
+
+    expect(jest.fn()).not.toHaveBeenCalled()
+
+    Expected number of calls: 0
+    Received number of calls: 1
+
+    1: called with 0 arguments
+
+      46 |     expect(screen.getByText('在线核验门禁')).toBeOnTheScreen();
+      47 |     expect(screen.queryByLabelText('未保存消费')).toBeNull();
+    > 48 |     expect(mockUnmount).not.toHaveBeenCalled();
+         |                             ^
+      49 |     mockAuth.status = 'authenticated';
+      50 |     await screen.rerender(<AuthNavigation />);
+      51 |     expect(screen.getByDisplayValue('Receipt 120')).toBeOnTheScreen();
+
+      at Object.toHaveBeenCalled (tests/auth-navigation.test.tsx:48:29)
+      at asyncGeneratorStep (../../node_modules/.pnpm/@babel+runtime@7.29.10/node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (../../node_modules/.pnpm/@babel+runtime@7.29.10/node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+Test Suites: 4 failed, 4 total
+Tests:       4 failed, 8 passed, 12 total
+Snapshots:   0 total
+Time:        1.72 s
+Ran all test suites matching /auth-navigation|auth-provider/i in 2 projects.
+[ELIFECYCLE] Test failed. See above for more details.
+Error: ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL
+
+  × "pnpm recursive run" failed in /Users/liangbai/.codex/worktrees/issue33-
+  │ android-native/tongzhang/apps/mobile
