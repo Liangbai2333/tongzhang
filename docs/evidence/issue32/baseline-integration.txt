@@ -1,0 +1,12 @@
+$ pnpm build:shared && vitest run --config vitest.integration.config.ts
+$ pnpm -r --filter "./packages/*" build
+$ tsc -p tsconfig.json
+$ tsc -p tsconfig.json
+
+ RUN  v5.0.4 /Users/liangbai/.codex/worktrees/issue-32-regression/tongzhang
+
+
+ Test Files  14 passed (14)
+      Tests  124 passed (124)
+   Start at  05:33:37
+   Duration  4.58s (tests 51%, import 41%, transform 8%)

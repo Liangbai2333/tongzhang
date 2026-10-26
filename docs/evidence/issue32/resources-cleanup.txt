@@ -1,0 +1,7 @@
+Cleanup UTC: 2026-10-26T12:37:56.598Z
+Dedicated container: tongzhang-issue32-postgres
+Dedicated volumes: 2b6fddc509280c3697a61b0cf19819526a2e61d24a8db17c0769fae47bd79ea8
+tongzhang-issue32-postgres
+Verified: dedicated container absent; all its volumes absent.
+Removed temporary credentials and local test launcher.
+Retained the task worktree and tracked verification evidence.

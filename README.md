@@ -75,6 +75,7 @@ pnpm export:mobile
 - [双令牌认证变更与验证](docs/auth-token-validation.md)
 - [登录、权限与幂等回归](docs/auth-regression-validation.md)
 - [Issue #18 建账、邀请码与加入自动化测试](docs/issue18-ledger-invitation-tests.md)
+- [Issue #32 主线覆盖核对与清理竞争回归](docs/issue32-regression-validation.md)
 - [Issue #19 建账、加入原生联调与 CI](docs/issue19-native-environment-validation.md)
 - [建账与邀请接口索引、双账号操作说明（#20）](docs/ledger-invitation-api-guide.md)
 - [公共反馈组件与登录复测](docs/common-feedback-validation.md)

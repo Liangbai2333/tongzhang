@@ -369,6 +369,136 @@ describe('temporary image cleanup', () => {
     await assertNoLedger(owner.user.id);
   });
 
+  it.each([
+    { kind: 'COVER', outcome: 'commit' },
+    { kind: 'RECEIPT', outcome: 'commit' },
+    { kind: 'COVER', outcome: 'rollback' },
+    { kind: 'RECEIPT', outcome: 'rollback' },
+  ] as const)(
+    'waits for an in-flight cleaner before $kind binding: $outcome',
+    async ({ kind, outcome }) => {
+      const owner = await fixture.register();
+      const imageId = await upload(owner, kind);
+      const ledgerId = kind === 'RECEIPT' ? await fixture.ledger(owner) : undefined;
+      const [ledger] = ledgerId
+        ? await fixture.db.orm.select().from(ledgers).where(eq(ledgers.id, ledgerId))
+        : [];
+      const [member] = ledgerId
+        ? await fixture.db.orm
+            .select()
+            .from(ledgerMembers)
+            .where(eq(ledgerMembers.ledgerId, ledgerId))
+        : [];
+      await age([imageId]);
+      const before = await asset(imageId);
+      const key = randomUUID();
+      const guard = `test_cleanup_${randomUUID().replaceAll('-', '')}`;
+      const lockKey = -BigInt(`0x${randomUUID().replaceAll('-', '').slice(0, 12)}`);
+      const gate = await fixture.db.pool.connect();
+      let cleaning: Promise<PromiseSettledResult<number>[]> | undefined;
+      let binding: Promise<Awaited<ReturnType<typeof create>>> | undefined;
+      try {
+        // A row-scoped database gate pauses the real cleaner after candidate locks, before DELETE.
+        // No production service or SQL result is replaced; rollback is a real database exception.
+        await fixture.db.pool
+          .query(`CREATE FUNCTION ${guard}() RETURNS trigger LANGUAGE plpgsql AS $$
+        BEGIN
+          PERFORM pg_advisory_xact_lock(${lockKey});
+          ${outcome === 'rollback' ? "RAISE EXCEPTION 'issue32 injected cleanup rollback';" : ''}
+          RETURN OLD;
+        END $$`);
+        await fixture.db.pool.query(`CREATE TRIGGER ${guard} BEFORE DELETE ON image_assets
+        FOR EACH ROW WHEN (OLD.id = '${imageId}'::uuid) EXECUTE FUNCTION ${guard}()`);
+        await gate.query('SELECT pg_advisory_lock($1::bigint)', [lockKey.toString()]);
+        const pid = (await gate.query<{ pid: number }>('SELECT pg_backend_pid() AS pid')).rows[0]!
+          .pid;
+        cleaning = Promise.allSettled([cleanupTemporaryImages(fixture.db.orm)]);
+        await waitForBlockedQueries(fixture.db.pool, pid, 1);
+        binding = (
+          kind === 'COVER'
+            ? create(owner, imageId, key)
+            : post(
+                owner,
+                `/api/v1/ledgers/${ledgerId}/expenses`,
+                {
+                  title: '清理竞争收据',
+                  amountCents: '100',
+                  category: 'OTHER',
+                  occurredOn: '2026-10-26',
+                  payerMemberId: member!.id,
+                  splitMode: 'EQUAL',
+                  splits: [{ memberId: member!.id }],
+                  receiptImageId: imageId,
+                },
+                key,
+              )
+        ).then((response) => response);
+        // Both the cleaner and the HTTP binder must actually wait in the same lock chain.
+        await waitForBlockedQueries(fixture.db.pool, pid, 2);
+        expect(await asset(imageId)).toEqual(before);
+        await gate.query('SELECT pg_advisory_unlock($1::bigint)', [lockKey.toString()]);
+        const [cleanup] = await cleaning;
+        const response = await binding;
+        if (outcome === 'commit') {
+          expect(cleanup).toEqual({ status: 'fulfilled', value: 1 });
+          expect(response.statusCode).toBe(403);
+          expect(response.json().error.code).toBe('FORBIDDEN');
+          expect(await asset(imageId)).toBeUndefined();
+          if (!ledgerId) await assertNoLedger(owner.user.id);
+          else {
+            expect(
+              await fixture.db.orm.select().from(ledgers).where(eq(ledgers.id, ledgerId)),
+            ).toEqual([ledger]);
+            for (const table of [expenses, expenseSplits, expenseImages, operationLogs])
+              expect(
+                await fixture.db.orm.select().from(table).where(eq(table.ledgerId, ledgerId)),
+              ).toHaveLength(0);
+            expect(
+              await fixture.db.orm
+                .select()
+                .from(idempotencyKeys)
+                .where(eq(idempotencyKeys.userId, owner.user.id)),
+            ).toHaveLength(0);
+          }
+        } else {
+          expect(cleanup).toMatchObject({
+            status: 'rejected',
+            reason: {
+              cause: { message: 'issue32 injected cleanup rollback' },
+            },
+          });
+          expect(response.statusCode).toBe(201);
+          const boundLedgerId = ledgerId ?? response.json().data.ledger.id;
+          expect(await asset(imageId)).toEqual({ ...before, ledgerId: boundLedgerId });
+          expect((await get(owner, `/api/v1/images/${imageId}`)).rawPayload).toEqual(
+            await imageBytes(),
+          );
+          if (ledgerId) {
+            expect(response.json().data).toMatchObject({
+              amountCents: '100',
+              receiptImageId: imageId,
+            });
+            expect(
+              await fixture.db.orm
+                .select()
+                .from(expenseImages)
+                .where(eq(expenseImages.imageId, imageId)),
+            ).toHaveLength(1);
+          } else {
+            expect(response.json().data.ledger.coverImageId).toBe(imageId);
+          }
+          expect(await cleanupTemporaryImages(fixture.db.orm)).toBe(0);
+        }
+      } finally {
+        await gate.query('SELECT pg_advisory_unlock_all()');
+        gate.release();
+        await Promise.allSettled([cleaning, binding]);
+        await fixture.db.pool.query(`DROP TRIGGER IF EXISTS ${guard} ON image_assets`);
+        await fixture.db.pool.query(`DROP FUNCTION IF EXISTS ${guard}()`);
+      }
+    },
+  );
+
   it('limits each batch and supports repeated or concurrent cleaners without duplicate deletion', async () => {
     const owner = await fixture.register();
     const source = (await asset(await upload(owner)))!;

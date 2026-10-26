@@ -1,0 +1,12 @@
+Initial read-only audit: exit code 1. The handwritten table list used user_settings,
+which does not exist. No data was modified. Replaced with pg_tables enumeration;
+see cleanup-audit.sql and baseline-cleanup.txt for the corrected successful audit.
+
+    current_database    | current_user |                                            version                                             |       checked_at_utc
+------------------------+--------------+------------------------------------------------------------------------------------------------+----------------------------
+ tongzhang_issue32_test | issue32      | PostgreSQL 17.11 on aarch64-unknown-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit | 2026-10-26 12:34:00.422526
+(1 row)
+
+ERROR:  relation "user_settings" does not exist
+LINE 1: ...s UNION ALL SELECT 'user_settings', count(*) FROM user_setti...
+                                                             ^

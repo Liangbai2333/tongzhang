@@ -1,0 +1,26 @@
+$ pnpm build:shared && vitest run --config vitest.integration.config.ts apps/server/tests/cover-cleanup.integration.test.ts --reporter=verbose
+$ pnpm -r --filter "./packages/*" build
+$ tsc -p tsconfig.json
+$ tsc -p tsconfig.json
+
+ RUN  v5.0.4 /Users/liangbai/.codex/worktrees/issue-32-regression/tongzhang
+
+ ✓ apps/server/tests/cover-cleanup.integration.test.ts > Issue #29 cover transaction and real two-account acceptance > uploads, creates, joins and reads a cover, then saves/replays/queries 12000 cents with 6000 each 235ms
+ ✓ apps/server/tests/cover-cleanup.integration.test.ts > Issue #29 cover transaction and real two-account acceptance > rejects foreign, missing, wrong-kind and already-bound images without partial creation 98ms
+ ✓ apps/server/tests/cover-cleanup.integration.test.ts > Issue #29 cover transaction and real two-account acceptance > rolls back cover, ledger, member, invitation, audit and idempotency when the final audit fails 61ms
+ ✓ apps/server/tests/cover-cleanup.integration.test.ts > Issue #29 cover transaction and real two-account acceptance > serializes different keys competing for one cover and leaves only the winner 54ms
+ ✓ apps/server/tests/cover-cleanup.integration.test.ts > temporary image cleanup > deletes old unbound COVER/RECEIPT only, preserving recent, bound and referenced images 87ms
+ ✓ apps/server/tests/cover-cleanup.integration.test.ts > temporary image cleanup > skips a locked COVER while a real business bind is queued 58ms
+ ✓ apps/server/tests/cover-cleanup.integration.test.ts > temporary image cleanup > skips a locked RECEIPT while a real business bind is queued 62ms
+ ✓ apps/server/tests/cover-cleanup.integration.test.ts > temporary image cleanup > keeps lock probes isolated when another fixture joins the same blocking chain 51ms
+ ✓ apps/server/tests/cover-cleanup.integration.test.ts > temporary image cleanup > rejects an explicit bind after cleanup wins without partial ledger data 44ms
+ ✓ apps/server/tests/cover-cleanup.integration.test.ts > temporary image cleanup > waits for an in-flight cleaner before COVER binding: commit 66ms
+ ✓ apps/server/tests/cover-cleanup.integration.test.ts > temporary image cleanup > waits for an in-flight cleaner before RECEIPT binding: commit 73ms
+ ✓ apps/server/tests/cover-cleanup.integration.test.ts > temporary image cleanup > waits for an in-flight cleaner before COVER binding: rollback 83ms
+ ✓ apps/server/tests/cover-cleanup.integration.test.ts > temporary image cleanup > waits for an in-flight cleaner before RECEIPT binding: rollback 76ms
+ ✓ apps/server/tests/cover-cleanup.integration.test.ts > temporary image cleanup > limits each batch and supports repeated or concurrent cleaners without duplicate deletion 48ms
+
+ Test Files  1 passed (1)
+      Tests  14 passed (14)
+   Start at  05:35:19
+   Duration  1.61s (tests 79%, import 16%, transform 5%)
