@@ -1,7 +1,6 @@
 import { and, desc, eq, isNotNull, isNull, sql } from 'drizzle-orm';
 import { uuidSchema } from '@tongzhang/contracts';
 import type { Handler } from '../../http/context.js';
-import { notReady } from '../../http/not-ready.js';
 import { withTransaction, type Orm } from '../../db/transaction.js';
 import { executeIdempotent } from '../../db/idempotency.js';
 import { appendAudit } from '../../db/audit.js';
@@ -208,11 +207,61 @@ export function createLedgersService(db: Orm): LedgersService {
     }, READ_ONLY);
   };
 
-  // Personal archive is the next task (A27): membership is checked, then it stays explicit 501.
   const archiveLedger: Handler<'archiveLedger'> = async (input, context) => {
     if (!context.principal) throw new AppError('UNAUTHENTICATED', '请先登录', 401);
-    await requireLedgerMember(db, input.params.ledgerId, context.principal.userId);
-    return notReady('archiveLedger')(input, context);
+    if (!context.idempotencyKey)
+      throw new AppError('VALIDATION_ERROR', '缺少有效的 Idempotency-Key', 400);
+    const userId = context.principal.userId;
+    const ledgerId = input.params.ledgerId.toLowerCase();
+    const result = await withTransaction(db, (tx) =>
+      executeIdempotent(
+        tx,
+        {
+          userId,
+          operation: `POST /api/v1/ledgers/${ledgerId}/archive`,
+          key: context.idempotencyKey!,
+          request: { ledgerId },
+          responseStatus: 200,
+          authorize: async () => {
+            await requireLedgerMember(tx, ledgerId, userId);
+          },
+        },
+        async () => {
+          // Same ledger lock as other writers. Archive never changes version or financial status.
+          const [ledger] = await tx
+            .select({ id: ledgers.id, status: ledgers.status })
+            .from(ledgers)
+            .where(eq(ledgers.id, ledgerId))
+            .for('update');
+          if (!ledger) throw new AppError('FORBIDDEN', '你没有权限访问此账本', 403);
+          const access = await requireLedgerMember(tx, ledgerId, userId);
+          if (ledger.status !== 'SETTLED')
+            throw new AppError('LEDGER_STATE_INVALID', '只有已结清的账本可以归档', 409);
+          const [member] = await tx
+            .select({ archivedAt: ledgerMembers.archivedAt })
+            .from(ledgerMembers)
+            .where(eq(ledgerMembers.id, access.memberId));
+          // Repeating the archive keeps the original timestamp and writes nothing again.
+          if (member?.archivedAt)
+            return { data: { ledgerId: ledger.id, archivedAt: member.archivedAt.toISOString() } };
+          const archivedAt = new Date();
+          await tx
+            .update(ledgerMembers)
+            .set({ archivedAt })
+            .where(eq(ledgerMembers.id, access.memberId));
+          await appendAudit(tx, {
+            actorUserId: userId,
+            ledgerId: ledger.id,
+            action: 'LEDGER_ARCHIVED',
+            targetType: 'LEDGER_MEMBER',
+            targetId: access.memberId,
+            requestId: context.requestId,
+          });
+          return { data: { ledgerId: ledger.id, archivedAt: archivedAt.toISOString() } };
+        },
+      ),
+    );
+    return result.body as Awaited<ReturnType<Handler<'archiveLedger'>>>;
   };
 
   return { createLedger, listLedgers, getLedger, listMembers, archiveLedger };

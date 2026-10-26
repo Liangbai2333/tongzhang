@@ -383,7 +383,7 @@ export const endpoints = {
       query: z.object({}),
       body: z.undefined(),
     }),
-    response: envelope(st.settlementSchema),
+    response: envelope(st.settlementDetailsSchema),
   },
   markTransferPaid: {
     id: 'A25',

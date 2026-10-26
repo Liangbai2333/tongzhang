@@ -499,14 +499,14 @@ describe('invitations: preview, join and reset', () => {
     expect(row!.version).toBe(3);
   });
 
-  it('keeps personal archive as an explicit, member-checked 501 for the next task', async () => {
+  it('rejects archiving an active ledger and hides it from non-members', async () => {
     const owner = await fixture.register();
     const outsider = await fixture.register();
     const { ledger } = await created(owner);
     const url = `/api/v1/ledgers/${ledger.id}/archive`;
     const own = await post(owner, url);
-    expect(own.statusCode).toBe(501);
-    expect(errorCode(own)).toBe('FEATURE_NOT_READY');
+    expect(own.statusCode).toBe(409);
+    expect(errorCode(own)).toBe('LEDGER_STATE_INVALID');
     expect((await post(outsider, url)).statusCode).toBe(403);
   });
 });
