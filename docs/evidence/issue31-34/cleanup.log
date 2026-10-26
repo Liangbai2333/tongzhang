@@ -1,0 +1,8 @@
+$ pnpm build:server && pnpm --filter @tongzhang/server cleanup:images
+$ pnpm build:shared && pnpm --filter @tongzhang/server build
+$ pnpm -r --filter "./packages/*" build
+$ tsc -p tsconfig.json
+$ tsc -p tsconfig.json
+$ tsc -p tsconfig.json
+$ node dist/modules/images/cleanup-command.js
+临时图片清理完成，删除 1 张。正在绑定的图片留待下次检查。
