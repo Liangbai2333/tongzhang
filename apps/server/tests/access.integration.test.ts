@@ -31,7 +31,7 @@ describe('real HTTP ledger access foundations', () => {
       }
     }
   });
-  it('resolves creator/member roles from the real database while unfinished endpoints remain explicit', async () => {
+  it('resolves creator/member roles and rejects archiving an active ledger', async () => {
     const owner = await fixture.register();
     const member = await fixture.register();
     const ledgerId = await fixture.ledger(owner, [member]);
@@ -47,7 +47,7 @@ describe('real HTTP ledger access foundations', () => {
       url: `/api/v1/ledgers/${ledgerId}/archive`,
       headers: { authorization: `Bearer ${member.accessToken}`, 'idempotency-key': randomUUID() },
     });
-    expect(response.statusCode).toBe(501);
-    expect(response.json().error.code).toBe('FEATURE_NOT_READY');
+    expect(response.statusCode).toBe(409);
+    expect(response.json().error.code).toBe('LEDGER_STATE_INVALID');
   });
 });

@@ -8,7 +8,7 @@
 
 当前公共成员检查 `requireLedgerMember(dbOrTx, ledgerId, userId)` 已实现，并从本模块 `index.ts` 导出；其他模块通过该出口复用。详情、成员和归档入口会先检查真实成员身份，非成员/不存在的账本统一拒绝 403。权限/幂等基础验证见 [自动化回归记录](../auth-regression-validation.md)。
 
-**已实现（A05–A08）：** `createLedger`、`listLedgers`、`getLedger`、`listMembers`。**未实现（A27）：** `archiveLedger` 先检查成员身份，再返回 501 `FEATURE_NOT_READY`，由后续个人归档任务实现。
+**已实现（A05–A08、A27）：** `createLedger`、`listLedgers`、`getLedger`、`listMembers`、`archiveLedger`。
 
 ### 联调契约与错误说明
 
@@ -25,13 +25,31 @@
 | 401  | `UNAUTHENTICATED`      | 未登录或会话失效                                                | 清除会话并回到登录         |
 | 403  | `FORBIDDEN`            | 非成员，或账本不存在（二者响应相同，不泄露账本是否存在）        | 提示无权访问，返回列表     |
 | 409  | `IDEMPOTENCY_CONFLICT` | 同一幂等键复用于不同内容                                        | 提示核对原提交，不换键重发 |
-| 501  | `FEATURE_NOT_READY`    | `coverImageId` 自定义封面、`archiveLedger`                      | 隐藏入口或提示暂未开放     |
+| 409  | `LEDGER_STATE_INVALID` | 对 ACTIVE 或 SETTLING 账本归档                                  | 提示只有已结清账本可以归档 |
+| 501  | `FEATURE_NOT_READY`    | `coverImageId` 自定义封面                                       | 隐藏入口或提示暂未开放     |
 
 创建事务一次写入账本、创建者成员、邀请、审计和幂等结果；任一步失败整体回滚。同一键重放返回首次的响应，不新增账本。
 
-### 个人归档接口边界（后续任务）
+### 个人归档与历史查询（A27）
 
-`POST /ledgers/:ledgerId/archive`（A27，需 `Idempotency-Key`）只修改当前成员的 `ledger_members.archived_at`，仅允许 `SETTLED` 账本，不改变账本版本与财务状态，也不影响其他成员；成功后该账本从 `listLedgers` 默认列表移到 `archived=true`。本任务不实现，调用时在成员检查通过后返回 501。
+`POST /api/v1/ledgers/:ledgerId/archive` 需要 `Idempotency-Key`，成功 200 `{ data: { ledgerId, archivedAt } }`。
+
+事务顺序：幂等键锁 → 校验成员 → 重放检查 → `SELECT ... FOR UPDATE` 锁账本 → 再次校验成员和 `SETTLED` → 只更新当前成员的 `ledger_members.archived_at` → 写审计和幂等结果。不修改账本状态、版本、`settled_at`、消费或结算记录。任一步失败整体回滚，不留下归档时间和成功幂等结果。
+
+| 情况               | 结果                                                                |
+| ------------------ | ------------------------------------------------------------------- |
+| ACTIVE / SETTLING  | 409 `LEDGER_STATE_INVALID`                                          |
+| 未登录             | 401 `UNAUTHENTICATED`                                               |
+| 非成员或账本不存在 | 403 `FORBIDDEN`，两种响应相同                                       |
+| 同一幂等键重放     | 200，返回第一次的 `archivedAt`，不再次写入                          |
+| 换新键再次归档     | 200，沿用已有 `archivedAt`，不追加审计                              |
+| 归档后的列表       | 默认列表不再包含；`GET /ledgers?archived=true` 只返回本人已归档账本 |
+| 历史详情           | 归档成员仍可 `getLedger` / `listMembers`，响应带本人 `archivedAt`   |
+| 其他成员           | 其 `archived_at`、当前列表和财务数字都不变                          |
+
+### 封面绑定边界
+
+封面绑定由图片模块提供能力，账本 service 持有最终事务。当前图片模块已接通的是收据 `receiptBinder`：调用方必须传入自己的 `tx`，由它锁定图片并写入绑定。自定义封面尚未提供对应绑定能力。`createLedger` 在封面绑定接通前拒绝 `coverImageId`（501 `FEATURE_NOT_READY`），不在本事务里自行写 `image_assets`。上传接口里的账本编号只做权限预检，不算完成绑定。个人归档不触碰封面。
 
 | 项目     | 归属                                                                                       |
 | -------- | ------------------------------------------------------------------------------------------ |
