@@ -202,7 +202,9 @@ function ExpenseForm({ ledger, userId }: { ledger: Ledger; userId: string }) {
         footer={
           <>
             <InlineError
-              message={error ?? (write.error ? requestErrorMessage(write.error) : null)}
+              message={
+                error ?? receipt.error ?? (write.error ? requestErrorMessage(write.error) : null)
+              }
             />
             {write.uncertain && (
               <Text style={ui.caption}>结果尚未确认，输入已保留；重试将核对原提交。</Text>
@@ -365,7 +367,6 @@ function ExpenseForm({ ledger, userId }: { ledger: Ledger; userId: string }) {
               </View>
             </View>
           )}
-          <InlineError message={receipt.error} />
           <Text style={ui.caption}>
             最多 1 张 JPEG/PNG；选择后压缩到 1 MiB 内。保存失败保留当前表单，不自动重试。
           </Text>
