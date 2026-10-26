@@ -6,6 +6,7 @@ import {
   transferMoneySchema,
   versionSchema,
   ledgerStatusSchema,
+  moneySchema,
 } from './scalars.js';
 import { memberBalanceSchema } from './balances.js';
 export const planTransferSchema = z.object({
@@ -48,6 +49,10 @@ export const settlementSchema = z.object({
   ledgerStatus: ledgerStatusSchema,
   transfers: z.array(transferSchema),
   progress: progressSchema,
+});
+/** A24 exposes the frozen net snapshot; A23 keeps its existing idempotent response shape. */
+export const settlementDetailsSchema = settlementSchema.extend({
+  netSnapshot: z.array(z.object({ memberId: uuidSchema, netCents: moneySchema })).max(12),
 });
 export const startSettlementBodySchema = z.strictObject({ expectedVersion: versionSchema });
 export const markPaidBodySchema = z.strictObject({ note: z.string().max(200).optional() });

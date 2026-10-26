@@ -14,6 +14,8 @@ import {
   ledgerMembers,
   ledgers,
   operationLogs,
+  settlementBatches,
+  settlementTransfers,
   users,
 } from '../../src/db/schema/index.js';
 import { testEnv } from './env.js';
@@ -97,6 +99,12 @@ export async function integrationFixture() {
             for (const row of owned) if (!ledgerIds.includes(row.id)) ledgerIds.push(row.id);
             if (ledgerIds.length) {
               await tx.delete(operationLogs).where(inArray(operationLogs.ledgerId, ledgerIds));
+              await tx
+                .delete(settlementTransfers)
+                .where(inArray(settlementTransfers.ledgerId, ledgerIds));
+              await tx
+                .delete(settlementBatches)
+                .where(inArray(settlementBatches.ledgerId, ledgerIds));
               await tx.delete(expenseImages).where(inArray(expenseImages.ledgerId, ledgerIds));
               await tx.delete(expenseSplits).where(inArray(expenseSplits.ledgerId, ledgerIds));
               await tx.delete(expenses).where(inArray(expenses.ledgerId, ledgerIds));
