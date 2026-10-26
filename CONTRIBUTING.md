@@ -20,7 +20,7 @@ git switch -c feat/12-create-expense
 
 - 分支使用 `<类型>/<Issue编号>-<简短描述>`；无 Issue 时可省略编号。例如 `feat/12-create-expense`、`fix/login-error`、`test/auth`、`docs/setup`；工程与 CI 任务使用 `chore/`、`ci/`。
 - 每人使用自己的 Git 姓名、邮箱和 GitHub 账号提交，只提交本次任务相关文件。
-- 提交格式：`类型: 修改内容`。常用类型为 `feat`、`fix`、`test`、`docs`、`chore`、`ci`。
+- 提交信息使用英文，格式为 `type: description`。常用类型为 `feat`、`fix`、`test`、`docs`、`chore`、`ci`。
 - 不随意强制推送或改写已共享的提交；需要整理历史时由系统架构负责人协调。
 
 ## PR 与合并
@@ -29,7 +29,9 @@ git switch -c feat/12-create-expense
 - PR 不使用固定模板，简要写清关联任务、修改内容和实际验证结果；界面改动附截图。
 - 按 [AGENTS.md](AGENTS.md) 执行适用检查：代码修改运行 `pnpm check`，业务或基础设施逻辑修改运行对应测试；移动端和依赖改动补充规定检查。
 - 系统架构负责人审核，成员在原分支继续修改；检查通过、意见处理完后，由系统架构负责人合并。
-- 统一使用 **Rebase and merge** 保持线性历史；合并后删除任务分支，成员同步最新 `main`。
+- 优先使用 **fast-forward**（`git merge --ff-only`）合并；无法快进时使用普通 **merge**，创建合并提交并保留原提交及其作者、提交者和时间。
+- 只有用户明确要求时才使用 **rebase**（含 GitHub **Rebase and merge**），不为保持线性历史默认重写提交。GitHub 合并按钮不提供 fast-forward 时，审核通过后使用 Git 执行快进。
+- 合并后删除任务分支，成员同步最新 `main`。
 
 ## 关联与完成
 
