@@ -1,4 +1,5 @@
 import { eq } from 'drizzle-orm';
+import type { Transaction } from '../../db/transaction.js';
 import type { ReceiptBinder } from '../expenses/index.js';
 import { expenseImages, imageAssets } from '../../db/schema/index.js';
 import { AppError } from '../../http/errors.js';
@@ -31,3 +32,28 @@ export const receiptBinder: ReceiptBinder = {
     });
   },
 };
+
+/** New ledger row already exists in this tx; never commit its temporary preset cover. */
+export async function bindCover(
+  tx: Transaction,
+  input: { imageId: string; ledgerId: string; userId: string },
+) {
+  const [image] = await tx
+    .select({
+      id: imageAssets.id,
+      kind: imageAssets.kind,
+      uploadedByUserId: imageAssets.uploadedByUserId,
+      ledgerId: imageAssets.ledgerId,
+    })
+    .from(imageAssets)
+    .where(eq(imageAssets.id, input.imageId))
+    .for('update');
+  if (!image || image.uploadedByUserId !== input.userId.toLowerCase())
+    throw new AppError('FORBIDDEN', '你没有权限使用此图片', 403);
+  if (image.kind !== 'COVER' || image.ledgerId !== null)
+    throw new AppError('IMAGE_INVALID', '请使用尚未绑定的封面图片', 400);
+  await tx
+    .update(imageAssets)
+    .set({ ledgerId: input.ledgerId })
+    .where(eq(imageAssets.id, image.id));
+}

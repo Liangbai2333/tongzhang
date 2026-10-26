@@ -39,6 +39,13 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+  cleanup-images:
+    <<: *server
+    profiles: [tools]
+    command: ['node', 'dist/modules/images/cleanup-command.js']
+    depends_on:
+      postgres:
+        condition: service_healthy
   server:
     <<: *server
     restart: unless-stopped

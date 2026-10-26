@@ -8,6 +8,7 @@ import { appendAudit } from '../../db/audit.js';
 import { ledgerMembers, ledgers } from '../../db/schema/index.js';
 import { AppError } from '../../http/errors.js';
 import { issueInvitation, toInvitationDto } from '../invitations/index.js';
+import { bindCover } from '../images/index.js';
 import { requireLedgerMember } from './access.js';
 import { loadFigures, loadMembers, toSummary } from './views.js';
 
@@ -61,9 +62,6 @@ export function createLedgersService(db: Orm): LedgersService {
       throw new AppError('VALIDATION_ERROR', '缺少有效的 Idempotency-Key', 400);
     const userId = context.principal.userId;
     const body = input.body;
-    // Custom cover images belong to the image module; reject instead of silently dropping them.
-    if (body.coverImageId)
-      throw new AppError('FEATURE_NOT_READY', '自定义封面图片暂未开放，请选择预设封面', 501);
 
     const result = await withTransaction(db, (tx) =>
       executeIdempotent(
@@ -78,10 +76,23 @@ export function createLedgersService(db: Orm): LedgersService {
           authorize: async () => undefined,
         },
         async () => {
-          const [ledger] = await tx
+          let [ledger] = await tx
             .insert(ledgers)
-            .values({ createdByUserId: userId, name: body.name, coverKey: body.coverKey })
+            // The bidirectional FKs require a ledger before the image can reference it.
+            .values({
+              createdByUserId: userId,
+              name: body.name,
+              coverKey: body.coverKey ?? 'plain',
+            })
             .returning();
+          if (body.coverImageId) {
+            await bindCover(tx, { imageId: body.coverImageId, ledgerId: ledger!.id, userId });
+            [ledger] = await tx
+              .update(ledgers)
+              .set({ coverKey: null, coverImageId: body.coverImageId })
+              .where(eq(ledgers.id, ledger!.id))
+              .returning();
+          }
           const [member] = await tx
             .insert(ledgerMembers)
             .values({ ledgerId: ledger!.id, userId })

@@ -162,7 +162,7 @@ describe('createLedger / list / detail / members', () => {
     ).toHaveLength(1);
   });
 
-  it('rejects anonymous, keyless and unsupported-cover creation without leaving rows', async () => {
+  it('rejects anonymous, keyless and invalid-cover creation without leaving rows', async () => {
     const owner = await fixture.register();
     const anonymous = await fixture.app.inject({
       method: 'POST',
@@ -190,8 +190,8 @@ describe('createLedger / list / detail / members', () => {
     });
     expect(both.statusCode).toBe(400);
     const custom = await createLedger(owner, { name: '自定义封面', coverImageId: randomUUID() });
-    expect(custom.statusCode).toBe(501);
-    expect(errorCode(custom)).toBe('FEATURE_NOT_READY');
+    expect(custom.statusCode).toBe(403);
+    expect(errorCode(custom)).toBe('FORBIDDEN');
 
     expect(
       await fixture.db.orm.select().from(ledgers).where(eq(ledgers.createdByUserId, owner.user.id)),

@@ -14,7 +14,7 @@
 
 | 接口           | 成功                                                                                              | 说明                                                                                                                     |
 | -------------- | ------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| `createLedger` | 201 `{ data: { ledger, invitation } }`                                                            | 必带 `Idempotency-Key`；`coverKey` 与 `coverImageId` 二选一，目前仅支持 `coverKey`                                       |
+| `createLedger` | 201 `{ data: { ledger, invitation } }`                                                            | 必带 `Idempotency-Key`；`coverKey` 与 `coverImageId` 二选一，均已支持；自定义封面必须为本人上传、未绑定的 COVER          |
 | `listLedgers`  | 200 `{ data, page: { nextCursor } }`                                                              | `archived=false`（默认）为未个人归档（不限财务状态），`true` 为个人已归档；按加入时间倒序，`cursor` 只用服务端返回的原值 |
 | `getLedger`    | 200 `{ data }`，含 `members`、`myPaidCents`、`mySharedCents`、`myNetCents`、`myRemainingNetCents` | 与成员接口、列表摘要来自同一份真实数据                                                                                   |
 | `listMembers`  | 200 `{ data: Member[] }`                                                                          | `netCents`、`remainingNetCents` 复用余额模块公式                                                                         |
@@ -25,9 +25,9 @@
 | 401  | `UNAUTHENTICATED`      | 未登录或会话失效                                                | 清除会话并回到登录         |
 | 403  | `FORBIDDEN`            | 非成员，或账本不存在（二者响应相同，不泄露账本是否存在）        | 提示无权访问，返回列表     |
 | 409  | `IDEMPOTENCY_CONFLICT` | 同一幂等键复用于不同内容                                        | 提示核对原提交，不换键重发 |
-| 501  | `FEATURE_NOT_READY`    | `coverImageId` 自定义封面、`archiveLedger`                      | 隐藏入口或提示暂未开放     |
+| 501  | `FEATURE_NOT_READY`    | `archiveLedger`                                                 | 隐藏入口或提示暂未开放     |
 
-创建事务一次写入账本、创建者成员、邀请、审计和幂等结果；任一步失败整体回滚。同一键重放返回首次的响应，不新增账本。
+创建事务一次写入账本、可选封面绑定、创建者成员、邀请、审计和幂等结果；任一步失败整体回滚。同一键重放返回首次的响应，不新增账本。
 
 ### 个人归档接口边界（后续任务）
 
@@ -52,7 +52,7 @@
 
 ## 3 调用过程
 
-创建者输入名称/封面 → 锁定可选临时封面 → 创建账本和首名成员 → 生成邀请 → 同事务提交。列表以本人成员关系和archived_at过滤。
+创建者输入名称/封面 → 事务内创建账本 → 锁定并绑定可选临时封面 → 创建首名成员和邀请 → 同事务提交。列表以本人成员关系和archived_at过滤。
 
 ## 4 数据规则与事务
 
@@ -73,3 +73,5 @@
 ## 7 当前操作索引与实测
 
 完整路径、请求/响应字段、错误及双账号 App 步骤见[建账与邀请操作索引](../ledger-invitation-api-guide.md)；当前主线原生实操和 CI 证据见 [Issue #19 验证](../issue19-native-environment-validation.md)。列表 archived 条件是个人归档筛选，不是 ACTIVE 状态筛选。
+
+自定义封面绑定先在事务内插入带临时预设封面的新账本，再锁定 `image_assets` 行，核对上传者、COVER 类型及未绑定状态，写图片 `ledger_id`，最后将账本切换到 `cover_key = NULL`、`cover_image_id = 图片 ID`。这是为满足双向外键安排的事务内顺序，临时预设值不会提交或返回给客户端。不存在/其他用户图片返回 403 `FORBIDDEN`，错误类型/已绑定返回 400 `IMAGE_INVALID`；失败连同成员、邀请、审计及幂等结果整体回滚。同键重放原结果，不重新绑定。实测见 [Issue #29 验证](../cover-cleanup-validation.md)。

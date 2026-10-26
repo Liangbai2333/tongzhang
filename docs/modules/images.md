@@ -44,4 +44,10 @@ image_assets使用bytea；不加对象存储或OCR。清理仅针对超过24小�
 
 ## 7 当前移动端范围
 
-消费表单已支持相册选择、相机权限检查、转 JPEG 与压缩到 1 MiB、上传与移除；选图取消保留原收据，离页清理本次临时文件。SDK 57 的默认 fetch 使用标准 multipart 编码，上传文件项改用 `expo-file-system` 的 `File`。已绑定收据通过鉴权 API 读入内存，展示禁用图片缓存；自定义封面业务绑定与服务端临时图片定时清理仍未接通。实际原生链路与边界见 [消费与收据接入验证](../mobile-expenses-validation.md)。
+消费表单已支持相册选择、相机权限检查、转 JPEG 与压缩到 1 MiB、上传与移除；选图取消保留原收据，离页清理本次临时文件。SDK 57 的默认 fetch 使用标准 multipart 编码，上传文件项改用 `expo-file-system` 的 `File`。已绑定收据通过鉴权 API 读入内存，展示禁用图片缓存；自定义封面已接入建账事务，临时图片清理提供独立命令和生产 systemd 调度配置，见 [封面与清理验证](../cover-cleanup-validation.md)。实际原生链路与边界见 [消费与收据接入验证](../mobile-expenses-validation.md)。
+
+## 8 服务端临时图片清理
+
+开发环境执行 `pnpm cleanup:images`；生产通过镜像中的 `cleanup-images` Compose 工具服务运行，不在 API 启动时清理或迁移。每批最多 100 张，逐批提交；仅删除 `created_at < now() - interval '24 hours'`、`ledger_id IS NULL` 且没有 `ledgers.cover_image_id` / `expense_images.image_id` 引用的图片。清理按创建时间和 ID 排序，对候选 `FOR UPDATE SKIP LOCKED`，删除前再次检查条件；只锁图片，不获取账本锁。正在绑定或其他清理任务已锁定的图片留到下一轮，避免账本锁/图片锁倒序。
+
+封面和收据绑定持有同一图片行锁直到业务事务提交。绑定先拿锁则清理跳过；清理先删除则绑定得到 403 并回滚整个业务事务。未过期、已绑定（即使暂时没有业务引用）、任何业务仍在引用的图片都保留，包括软删除消费的收据。清理事务失败不自动重试，之前已成功提交的批次不回滚。每小时调度、手动执行与排错见 [开发与部署](../development.md#临时图片清理与调度)。

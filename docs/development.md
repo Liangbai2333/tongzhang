@@ -9,6 +9,7 @@
 | 开发运行   | 检查数据库与端口、首次编译、启动 watcher / API / Metro | `pnpm dev`、`dev:ios`、`dev:android`               |
 | 原生构建   | Prebuild 应用 config plugin，然后编译安装开发客户端    | `pnpm build:ios`、`build:android`                  |
 | 基础设施   | 数据库、卷、容器网络、HTTPS                            | `infra/compose.*.yml`                              |
+| 图片清理   | 独立清理过期未绑定、无引用资产                         | `pnpm cleanup:images`、生产 `cleanup-images` 服务  |
 | 数据库迁移 | 独立执行已提交 SQL；失败即中止                         | `pnpm migrate:db`、生产 `migrate` 服务             |
 | CI         | 检查、测试、构建及容器验证，不访问生产                 | `.github/workflows/ci.yml`                         |
 | 镜像发布   | 手动触发检查，发布验证过的镜像到 GHCR                  | `.github/workflows/publish.yml`                    |
@@ -64,6 +65,7 @@ Compose 的 `--env-file` 给 `${变量}` 提供值，只有 `environment` 显式
 | 原生构建   | `build:ios`、`build:android`                                | 先编译共享包，再 Prebuild、编译安装开发客户端，不启动 Metro               |
 | 导出       | `export:mobile`                                             | 先编译共享包，再导出 Android / iOS JavaScript 包                          |
 | 数据库启停 | `up:db`、`down:db`                                          | 启动 / 停止开发数据库，保留数据卷                                         |
+| 图片清理   | `cleanup:images`                                            | 编译服务端并清理超过 24 小时、未绑定且无引用的临时图片                    |
 | 数据库迁移 | `generate:db`、`migrate:db`                                 | 生成待审查的迁移文件 / 应用已提交的迁移                                   |
 | 静态检查   | `check`、`typecheck`、`lint`、`check:format`                | 完整静态检查 / 类型检查 / ESLint / 格式检查                               |
 | 环境检查   | `check:env`                                                 | 只读检查工具链、数据库及 API；支持 --tools-only、--ios、--android、--json |
@@ -191,6 +193,30 @@ bash infra/deploy.sh /secure/tongzhang.env
 生产 API 仅信任 `PROXY_SUBNET` 中的代理转发头，Caddy 与 API 使用专用网络，数据库位于另一个内部网络。网段冲突时调整 `.env`；不要把 `TRUST_PROXY` 改为无条件信任。数据库暂时不可用时 readiness 返回 503。
 
 生产 Node 版本与 `.node-version` 对齐。PostgreSQL/Caddy 当前固定主版本标签，拉取可能更新其补丁版本；正式运维如要求完全复现，应将这两个基础设施镜像也固定到审核过的 digest，并主动安排更新。
+
+### 临时图片清理与调度
+
+开发机手动执行 `pnpm cleanup:images`，读取 `apps/server/.env` 的 PG* 参数。独立清理命令按 100 张分批删除超过 24 小时、未绑定且无业务引用的图片，跳过正在绑定的行，打印删除数量；失败非零退出，不自动重试写操作。API 启动不会执行清理。
+
+生产使用发布镜像与 Compose 注入配置，不需要 Node/pnpm，也不读取本地 `.env`：
+
+```bash
+docker compose --env-file infra/.env -f infra/compose.prod.yml run --rm -T cleanup-images
+```
+
+生产目录按 `/opt/tongzhang` 安排，发布时一并复制 `infra/systemd/tongzhang-cleanup-images.service` 和 `.timer`。Linux 主机首次安装调度（仅在目标部署主机执行）：
+
+```bash
+sudo install -m 644 infra/systemd/tongzhang-cleanup-images.service /etc/systemd/system/
+sudo install -m 644 infra/systemd/tongzhang-cleanup-images.timer /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable --now tongzhang-cleanup-images.timer
+systemctl list-timers tongzhang-cleanup-images.timer
+```
+
+若部署路径或 Docker 可执行文件路径不同，先修改 service 的 `WorkingDirectory` / `ExecStart`。调度每小时运行一次，最多随机延迟 5 分钟，关机错过的运行在开机后补一次；单次最多 15 分钟。systemd 不会重叠运行同一个 service，多实例并发也由数据库行锁保护。镜像由正常发布流程拉取，调度只使用 `SERVER_IMAGE` 指定的已发布镜像；先完成数据库迁移，再启用 timer。
+
+通过 `sudo systemctl start tongzhang-cleanup-images.service` 手动触发，并用 `journalctl -u tongzhang-cleanup-images.service` 检查删除计数和失败记录；失败时排查配置/数据库后显式重跑，或等待下一次正常调度。部署目录和 `.env` 仅由服务器管理员维护。当前项目尚无生产部署，本次提交提供可执行配置和容器实测，不代表已在真实服务器启用调度。
 
 ### 备份与恢复
 
