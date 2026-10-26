@@ -1,0 +1,12 @@
+$ pnpm build:shared && vitest run
+$ pnpm -r --filter "./packages/*" build
+$ tsc -p tsconfig.json
+$ tsc -p tsconfig.json
+
+ RUN  v5.0.4 /Users/liangbai/.codex/worktrees/issue33-android-native/tongzhang
+
+
+ Test Files  18 passed (18)
+      Tests  117 passed (117)
+   Start at  07:41:27
+   Duration  2.03s (tests 65%, import 28%, transform 6%, worker 1%)

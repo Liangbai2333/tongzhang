@@ -1,0 +1,43 @@
+
+ RUN  v5.0.4 /Users/liangbai/.codex/worktrees/issue33-android-native/tongzhang
+
+ ❯ apps/mobile/tests/auth-controller.test.ts (17 tests | 1 failed) 7ms
+   ❯ mobile authentication and route admission state (17)
+     × does not revive a suspended response when restoration is requested again 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  apps/mobile/tests/auth-controller.test.ts > mobile authentication and route admission state > does not revive a suspended response when restoration is requested again
+AssertionError: expected { user: { …(4) }, …(4) } to match object { status: 'error', user: null }
+(3 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "status": "error",
+-   "user": null,
++   "status": "authenticated",
++   "user": {
++     "email": "real@example.test",
++     "id": "00000000-0000-4000-8000-000000000001",
++     "notificationEnabled": false,
++     "username": "真实用户",
++   },
+  }
+
+ ❯ apps/mobile/tests/auth-controller.test.ts:132:32
+    130|     request.resolve({ data: user });
+    131|     await concurrent;
+    132|     expect(auth.getSnapshot()).toMatchObject({ status: 'error', user: …
+       |                                ^
+    133|     await auth.restore();
+    134|     expect(auth.getSnapshot()).toMatchObject({ status: 'authenticated'…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 16 passed (17)
+   Start at  07:41:19
+   Duration  90ms (transform 51%, tests 24%, import 19%, worker 6%)

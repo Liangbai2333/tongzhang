@@ -1,8 +1,8 @@
 {
   "baseCommit": "acbb88b507c56bc641fbc75d1f816d5cb9848eed",
   "testedSourceCommit": "23525f8c21371f8834eaa09365ca43aca7476758",
-  "capturedAt": "2026-10-26T14:36:49.639Z",
-  "screenshots": "Original Android emulator screencap pixels; baseline 01-07, intermediate old-controller failure 09, final source 10 onward, final APK reinstall 20 onward; no physical device.",
+  "capturedAt": "2026-10-26T14:44:10.964Z",
+  "screenshots": "Original Android emulator screencap pixels; baseline 01-07, intermediate old-controller failure 09, first fix 10-23, final APK reinstall 20-23, final audit source 24; no physical device.",
   "entries": [
     {
       "file": "01-installed-sdk57.png",
@@ -159,6 +159,13 @@
       "height": 2400
     },
     {
+      "file": "24-audit-picker-cancel.png",
+      "bytes": 164765,
+      "sha256": "d289e263277315f1f157eadaef5845157e05089b7d484ec79310aaaf1ceb3d58",
+      "width": 1080,
+      "height": 2400
+    },
+    {
       "file": "auth-regression-before.txt",
       "bytes": 6147,
       "sha256": "9cdceff6ae42f2598993af22065a005707421985a5f2edad5767bc889eac7ea6"
@@ -199,6 +206,11 @@
       "sha256": "d901bfef3076b522eafa681e542f9e7030eb01c4d58115242b3db894999ae619"
     },
     {
+      "file": "check-audit.txt",
+      "bytes": 652,
+      "sha256": "b369bb08ae045e36016bba329162f9ef60f9870403f049ea6b36d39ae2049d1f"
+    },
+    {
       "file": "controller-regression-before.txt",
       "bytes": 1615,
       "sha256": "9c64590654858166786de097916c42f4ecf2f3b58f1d44dc93f2422db356e272"
@@ -210,6 +222,11 @@
     },
     {
       "file": "doctor-after.txt",
+      "bytes": 153,
+      "sha256": "8e550b137b08d75faaaa47524501e6add93f3f52c31704f8bf299af59932f185"
+    },
+    {
+      "file": "doctor-audit.txt",
       "bytes": 153,
       "sha256": "8e550b137b08d75faaaa47524501e6add93f3f52c31704f8bf299af59932f185"
     },
@@ -227,6 +244,11 @@
       "file": "export-after.txt",
       "bytes": 5976,
       "sha256": "7611d835732c7286e1104db3b33c1507fbbd3e19ba8c996672605f53bdfc7625"
+    },
+    {
+      "file": "export-audit.txt",
+      "bytes": 5640,
+      "sha256": "b13e38de175881351cc54cb429777fcc814d9ab77f08d1210cf06f2e2ea11d1c"
     },
     {
       "file": "http-image-permissions.json",
@@ -259,6 +281,21 @@
       "sha256": "024257422d858877a145b75aab723eef424568b3989f7325565e51981f03042a"
     },
     {
+      "file": "mobile-tests-audit.txt",
+      "bytes": 1210,
+      "sha256": "288ea198b1bdada751d85c87a7316066bc359b0844f82e2b184c5017bdf30f7e"
+    },
+    {
+      "file": "native-audit-requests.json",
+      "bytes": 3344,
+      "sha256": "03e8b2fc550b837f7d4874a69afb6b3e1b6f4f332382b88942516c9924ae5db2"
+    },
+    {
+      "file": "native-audit.json",
+      "bytes": 1270,
+      "sha256": "b2fdb27d7e0589bb9994c1dec5d9864a6c8c371b8c6de164a8cc9b3d40eec085"
+    },
+    {
       "file": "native-install.json",
       "bytes": 1903,
       "sha256": "1dde3ac19078641d5333cdc725e6aa2c40500da1fada1a0274f4744085811030"
@@ -267,6 +304,16 @@
       "file": "native-mount-crash-detail.txt",
       "bytes": 59010,
       "sha256": "ee1de4df264d42fc72f5ae4615cc837d0157e6de0c4eba3c4a3d635cb7c74851"
+    },
+    {
+      "file": "pending-restore-after.txt",
+      "bytes": 226,
+      "sha256": "e8c60ed69670ce70ffd76289d2bb062717203d2c59f132be3856d34d226a799b"
+    },
+    {
+      "file": "pending-restore-before.txt",
+      "bytes": 1577,
+      "sha256": "43617352f34482d93c1ff4e37c8757b60f91218a3a3b36860f76d2bde38ae9e3"
     },
     {
       "file": "requests.json",
@@ -282,6 +329,12 @@
       "file": "unit-tests-after.txt",
       "bytes": 351,
       "sha256": "cb283ad4fa3ceb446fb301a0b5bc479569eced6dacb1345a271c46e6556b1b7b"
+    },
+    {
+      "file": "unit-tests-audit.txt",
+      "bytes": 350,
+      "sha256": "4ba525d34152dca1b7bda4c7a975c7d098c02dc1ab1beb9ec86b6952262c9ca2"
     }
-  ]
+  ],
+  "auditSourceCommit": "ef87306348f213bf0af4b34c4465f15dac819288"
 }

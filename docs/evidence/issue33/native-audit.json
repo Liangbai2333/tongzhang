@@ -1,0 +1,27 @@
+{
+  "at": "2026-10-26T14:43:39.533Z",
+  "sourceCommit": "ef87306348f213bf0af4b34c4465f15dac819288",
+  "sourceSha256": {
+    "apps/mobile/app/_layout.tsx": "69f53898046b6122057620ab5ba2e1fb8a7bfbf12952e28ff1752cf4505b965d",
+    "apps/mobile/src/features/auth/controller.ts": "5d50a02fa055b178055fc3e1011c0c829836fbe05be2c913dea33e75e6d4c320",
+    "apps/mobile/src/providers/AuthProvider.tsx": "10ab26e773fa372d3e6825a2c883ad68dcc80708ce36a080040e97e841358f16",
+    "apps/mobile/src/features/invitations/components/InviteCodeField.tsx": "582a85a60589ee4f9274d2ffb8a6399e6166416543c9739e056be015209aaf51"
+  },
+  "nativeBuildSourceCommit": "23525f8c21371f8834eaa09365ca43aca7476758",
+  "apkSha256": "79708493305d8245e6e1950d30289fd75a8a42840fcae78298f386492435f005",
+  "nativeBinaryChanged": false,
+  "metro": "http://127.0.0.1:8093",
+  "api": "http://127.0.0.1:3333",
+  "steps": [
+    "force-stop and open development client against Metro 8093",
+    "real online session/ledger read",
+    "enter 2.34 and Android33-Audit",
+    "open native photo picker then cancel; getMe succeeds; original fields remain",
+    "explicitly discard without save",
+    "read existing expense receipt through authorized API"
+  ],
+  "databaseCounts": {
+    "expenses": 1,
+    "images": 2
+  }
+}

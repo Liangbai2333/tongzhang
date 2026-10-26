@@ -1,0 +1,114 @@
+[
+  {
+    "requestId": "670c24c1-811d-4b80-9bf3-aa757ca1175a",
+    "at": "2026-10-26T14:41:20.063Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/6a88fb46-b11c-4dd5-a854-1369fca804a4",
+    "status": 200
+  },
+  {
+    "requestId": "8f7d3800-d862-4a94-995d-a3618565762c",
+    "at": "2026-10-26T14:41:20.064Z",
+    "method": "GET",
+    "path": "/api/v1/me",
+    "status": 200
+  },
+  {
+    "requestId": "d1c2034b-0fd6-419f-8693-59f0e4601d3b",
+    "at": "2026-10-26T14:41:20.072Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/6a88fb46-b11c-4dd5-a854-1369fca804a4/expenses?limit=20",
+    "status": 200
+  },
+  {
+    "requestId": "606ff3ff-315c-4eab-a488-0d4e22ce711d",
+    "at": "2026-10-26T14:41:21.878Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/6a88fb46-b11c-4dd5-a854-1369fca804a4/expenses?limit=20",
+    "status": 200
+  },
+  {
+    "requestId": "3a8103a6-d050-4d6e-a399-b4f9c65b7b8f",
+    "at": "2026-10-26T14:41:49.509Z",
+    "method": "POST",
+    "path": "/api/v1/auth/refresh",
+    "status": 200
+  },
+  {
+    "requestId": "fcb04965-2949-4986-8074-baf845fa216d",
+    "at": "2026-10-26T14:41:49.728Z",
+    "method": "GET",
+    "path": "/api/v1/me",
+    "status": 200
+  },
+  {
+    "requestId": "fdba53a4-deeb-4e72-8dde-68a20eb33b1a",
+    "at": "2026-10-26T14:41:50.229Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers?limit=20&archived=false",
+    "status": 200
+  },
+  {
+    "requestId": "b2983587-6894-48c9-8183-b5acd523b33c",
+    "at": "2026-10-26T14:41:53.148Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/6a88fb46-b11c-4dd5-a854-1369fca804a4",
+    "status": 200
+  },
+  {
+    "requestId": "5baffa83-b575-47d1-bd9a-2bb77d67cdfe",
+    "at": "2026-10-26T14:41:53.572Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/6a88fb46-b11c-4dd5-a854-1369fca804a4/expenses?limit=20",
+    "status": 200
+  },
+  {
+    "requestId": "05883fe0-c1b7-44f1-99fd-1af2dc19120d",
+    "at": "2026-10-26T14:41:56.061Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/6a88fb46-b11c-4dd5-a854-1369fca804a4",
+    "status": 200
+  },
+  {
+    "requestId": "8b7ee7dc-399a-450b-b605-bcf66fd8bbdf",
+    "at": "2026-10-26T14:42:20.230Z",
+    "method": "GET",
+    "path": "/api/v1/me",
+    "status": 200
+  },
+  {
+    "requestId": "7ba02697-e83c-4eb1-ad1f-70ab67fbb463",
+    "at": "2026-10-26T14:42:27.711Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/6a88fb46-b11c-4dd5-a854-1369fca804a4",
+    "status": 200
+  },
+  {
+    "requestId": "6620e392-ab58-494e-a4fb-780399fc2795",
+    "at": "2026-10-26T14:42:27.824Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/6a88fb46-b11c-4dd5-a854-1369fca804a4/expenses?limit=20",
+    "status": 200
+  },
+  {
+    "requestId": "b0807c4e-7ce4-4ecf-afdb-baac13192dc7",
+    "at": "2026-10-26T14:42:28.071Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/6a88fb46-b11c-4dd5-a854-1369fca804a4/expenses?limit=20",
+    "status": 200
+  },
+  {
+    "requestId": "f32466d8-165c-42ae-aeb6-5d45406ae35d",
+    "at": "2026-10-26T14:42:30.557Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/6a88fb46-b11c-4dd5-a854-1369fca804a4/expenses/d83aec3a-c01d-47fe-bdad-17b0cbbd7a0e",
+    "status": 200
+  },
+  {
+    "requestId": "b348c293-5bd0-406a-9be1-cbd8a213607a",
+    "at": "2026-10-26T14:42:33.563Z",
+    "method": "GET",
+    "path": "/api/v1/images/eef4d1d1-7160-4559-9f87-f52c3b87e3e5",
+    "status": 200
+  }
+]

@@ -4,7 +4,7 @@
 
 ## 版本与运行环境
 
-先执行 `git fetch origin main`、`git merge --ff-only origin/main`，确认主线为 `acbb88b507c56bc641fbc75d1f816d5cb9848eed`，再从 `origin/main` 创建独立 worktree 和 `test/33-android-native` 分支。原工作区的未跟踪冲刺文档未修改。修复源码提交为 `23525f8c21371f8834eaa09365ca43aca7476758`，之后交付仅整理文档及证据。
+先执行 `git fetch origin main`、`git merge --ff-only origin/main`，确认主线为 `acbb88b507c56bc641fbc75d1f816d5cb9848eed`，再从 `origin/main` 创建独立 worktree 和 `test/33-android-native` 分支。原工作区的未跟踪冲刺文档未修改。首轮修复源码提交为 `23525f8c21371f8834eaa09365ca43aca7476758`；收尾核验响应保护为 `ef87306348f213bf0af4b34c4465f15dac819288`，其复测与版本归属见文末。
 
 | 项目        | 本轮实际值                                                                                                                                                               |
 | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -85,19 +85,27 @@ adb exec-out screencap -p > native-screenshot.png
 
 自定义封面上传的移动端入口目前明确「暂未开放」，该扩展用例只算 HTTP 验收；原生选图上传采用已经接通的消费收据入口。Android 系统 Photo Picker 只授权用户选择的媒体，本次包未申请全相册读取或录音权限，不能把没有全库权限弹窗记作拒权缺陷。依据为已读取的 [SDK 57 ImagePicker](https://docs.expo.dev/versions/v57.0.0/sdk/imagepicker/)及实际安装包权限。未验收相机成功拍摄、物理真机或生产环境。
 
-原生运行使用本 worktree `buildApp` 加临时 `onSend` 日志 hook，只记录时间、方法、路径、状态、requestId 和非认证 JSON 响应，未记录密码、令牌、Authorization 或幂等键，不修改响应、不延迟业务、不注入会话。[请求时序](evidence/issue33/requests.json)含账号准备、原生操作、扩展 HTTP 检查及最终重装复测，阶段以路径和时间区分。截图 01–07 为初始主线运行，09 为热更新旧控制器仍失败的中间状态，10 起为最终修复源码运行，20 起在最终 APK 重装后补验。截图均由本次 `adb exec-out screencap -p` 保存原始 1080×2400 像素，[文件清单与哈希](evidence/issue33/manifest.json)用于核对；非 Web、设计稿、组件截图或物理真机截图。UTC 时间以请求 JSON 为准，本机显示 America/Los_Angeles。提交的文本日志仅去除行尾空白和末尾多余空行，原始 `.log` 保留本机。
+原生运行使用本 worktree `buildApp` 加临时 `onSend` 日志 hook，只记录时间、方法、路径、状态、requestId 和非认证 JSON 响应，未记录密码、令牌、Authorization 或幂等键，不修改响应、不延迟业务、不注入会话。[请求时序](evidence/issue33/requests.json)含账号准备、原生操作、扩展 HTTP 检查及最终重装复测，阶段以路径和时间区分。截图 01–07 为初始主线运行，09 为热更新旧控制器仍失败的中间状态，10–23 为首轮修复源码运行，20–23 在最终 APK 重装后补验，24 为收尾核验保护源码复测。截图均由本次 `adb exec-out screencap -p` 保存原始 1080×2400 像素，[文件清单与哈希](evidence/issue33/manifest.json)用于核对；非 Web、设计稿、组件截图或物理真机截图。UTC 时间以请求 JSON 为准，本机显示 America/Los_Angeles。提交的文本日志仅去除行尾空白和末尾多余空行，原始 `.log` 保留本机。
 
 ## 检查与交付
 
-| 实际命令                                            | 结果及日志                                                                                                                              |
-| --------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| `pnpm check`                                        | 修复后构建、类型、Lint、格式通过；首次检查修正了新增测试的 require 导入及本地 runner 空 catch。[日志](evidence/issue33/check-after.txt) |
-| `pnpm test`                                         | 18 文件 / 116 项通过，无数据库。[日志](evidence/issue33/unit-tests-after.txt)                                                           |
-| `pnpm test:mobile`                                  | iOS/Android 22 套件 / 184 项通过。[日志](evidence/issue33/mobile-tests-after.txt)                                                       |
-| 显式 `TEST_DATABASE_URL` 后 `pnpm test:integration` | 专用 PostgreSQL 测试库，14 文件 / 128 项通过；服务端源码未修改。[日志](evidence/issue33/integration-tests.txt)                          |
-| `pnpm check:mobile-deps`                            | 依赖匹配 SDK 57，无锁文件改动。[日志](evidence/issue33/mobile-deps.txt)                                                                 |
-| `NODE_USE_ENV_PROXY=1 pnpm doctor:mobile`           | 修复后 21/21。[日志](evidence/issue33/doctor-after.txt)                                                                                 |
-| `pnpm export:mobile`                                | 修复后 Android/iOS JS 导出通过，无 Web 构建；不算 APK 安装。[日志](evidence/issue33/export-after.txt)                                   |
-| `pnpm build:android`                                | 两次实际构建并安装，最终重装后原生读取通过，详见前文                                                                                    |
+| 实际命令                                            | 结果及日志                                                                                                                                  |
+| --------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm check`                                        | 修复后构建、类型、Lint、格式通过；首次检查修正了新增测试的 require 导入及本地 runner 空 catch。[最终日志](evidence/issue33/check-audit.txt) |
+| `pnpm test`                                         | 18 文件 / 117 项通过，无数据库。[最终日志](evidence/issue33/unit-tests-audit.txt)                                                           |
+| `pnpm test:mobile`                                  | iOS/Android 22 套件 / 184 项通过。[最终日志](evidence/issue33/mobile-tests-audit.txt)                                                       |
+| 显式 `TEST_DATABASE_URL` 后 `pnpm test:integration` | 专用 PostgreSQL 测试库，14 文件 / 128 项通过；服务端源码未修改。[日志](evidence/issue33/integration-tests.txt)                              |
+| `pnpm check:mobile-deps`                            | 依赖匹配 SDK 57，无锁文件改动。[日志](evidence/issue33/mobile-deps.txt)                                                                     |
+| `NODE_USE_ENV_PROXY=1 pnpm doctor:mobile`           | 修复后 21/21。[最终日志](evidence/issue33/doctor-audit.txt)                                                                                 |
+| `pnpm export:mobile`                                | 修复后 Android/iOS JS 导出通过，无 Web 构建；不算 APK 安装。[最终日志](evidence/issue33/export-audit.txt)                                   |
+| `pnpm build:android`                                | 两次实际构建并安装，最终重装后原生读取通过，详见前文                                                                                        |
 
 PR 的 CI 必须以当前 head 的 `check` 和 `container` 检查为准，不能套用历史 PR 的绿灯。提交及 PR 关联本日 #33，不修改 T17 整项点数；由系统架构负责人审查后合并，本轮不执行合并。
+
+## 收尾会话核验审查与最终复测
+
+审查发现首轮改动把 `suspended = false` 移到了恢复请求合并之前：若 getMe 未完成时断网，又触发一次 restore，旧响应可能重新被接受。新增延迟响应回归在首轮修复上先失败，再将复位恢复到“确认没有待合并请求、确实开始新核验”的位置后通过。见[修复前](evidence/issue33/pending-restore-before.txt)、[修复后](evidence/issue33/pending-restore-after.txt)。既有请求继续合并，但断网废弃的响应不能解除门禁，随后必须显式发起新的在线核验。
+
+源码 `ef87306348f213bf0af4b34c4465f15dac819288` 重新通过 check、117 项无数据库测试、184 项移动端测试、Doctor 21/21 与双端 JS 导出。没有原生依赖或配置变化；沿用前述本轮已重建安装的同一个 APK，force-stop 后从 8093 加载新 JavaScript，在原生 App 再次验证冷启动、getMe、账本、系统相册取消、原消费收据授权读取。¥2.34 / `Android33-Audit` 在取消后保留，见[原生截图](evidence/issue33/24-audit-picker-cancel.png)，随后明确放弃表单，SQL 仍为主账本 1 笔消费、全库 2 张图片。
+
+该次直接运行标准 API，不再使用首轮诊断 hook；从标准服务日志提取仅含方法、路径、状态和 requestId 的[原生请求记录](evidence/issue33/native-audit-requests.json)，[源码哈希、APK 对应关系及 SQL 计数](evidence/issue33/native-audit.json)另存，没有改写首轮截图的源码归属。首轮 PR head `b9c01db` 的 [CI](https://github.com/Liangbai2333/tongzhang/actions/runs/40341454323)已通过，但最终 head 的 CI 必须单独核对，并记录在 PR 描述中。
