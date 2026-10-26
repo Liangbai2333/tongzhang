@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 import { render, screen, userEvent, act } from '@testing-library/react-native';
-import { Text, Pressable } from 'react-native';
+import { AppState, Text, Pressable } from 'react-native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider, useAuth } from '../src/providers/AuthProvider';
 import { ApiError } from '../src/lib/api-error';
@@ -125,6 +125,41 @@ describe('AuthProvider lifecycle and memory isolation', () => {
     expect(mockRestore).toHaveBeenCalledTimes(1);
     await userEvent.press(screen.getByRole('button', { name: '核验' }));
     expect(await screen.findByText('authenticated:在线用户')).toBeOnTheScreen();
+  });
+  it('preserves identity across a native picker but still verifies online before resuming', async () => {
+    let change!: (state: 'active' | 'background') => void;
+    const listener = jest.mocked(AppState.addEventListener);
+    const original = listener.getMockImplementation();
+    listener.mockImplementation((_event, callback) => {
+      change = callback;
+      return { remove: jest.fn() };
+    });
+    try {
+      await mount();
+      expect(await screen.findByText('authenticated:在线用户')).toBeOnTheScreen();
+      await act(async () => {
+        change('background');
+      });
+      expect(screen.getByText('restoring:在线用户')).toBeOnTheScreen();
+      expect(mockRestore).toHaveBeenCalledTimes(1);
+      let finish!: (value: { data: typeof user }) => void;
+      mockRestore.mockReturnValueOnce(
+        new Promise((resolve) => {
+          finish = resolve;
+        }),
+      );
+      await act(async () => {
+        change('active');
+      });
+      expect(screen.getByText('restoring:在线用户')).toBeOnTheScreen();
+      expect(mockRestore).toHaveBeenCalledTimes(2);
+      await act(async () => {
+        finish({ data: user });
+      });
+      expect(screen.getByText('authenticated:在线用户')).toBeOnTheScreen();
+    } finally {
+      listener.mockImplementation(original!);
+    }
   });
   it('keeps remote-revocation failure visible after local sign out', async () => {
     await mount();

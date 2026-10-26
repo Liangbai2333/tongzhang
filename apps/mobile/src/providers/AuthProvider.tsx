@@ -37,9 +37,12 @@ export function AuthProvider({ children }: PropsWithChildren) {
     });
     void controller.restore();
     const focus = AppState.addEventListener('change', (next) => {
-      if (next === 'active' && ['authenticated', 'error'].includes(controller.getSnapshot().status))
+      if (
+        next === 'active' &&
+        ['authenticated', 'error', 'restoring'].includes(controller.getSnapshot().status)
+      )
         void controller.restore();
-      else if (next !== 'active') controller.suspend();
+      else if (next !== 'active') controller.suspend({ preserveScreen: true });
     });
     const network = Network.addNetworkStateListener((next) => {
       if (next.isConnected === false || next.isInternetReachable === false) controller.suspend();

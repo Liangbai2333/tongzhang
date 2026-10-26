@@ -91,11 +91,11 @@ export function createAuthController(api: Dependencies) {
     login: (input: EndpointInput<'login'>) => signIn('login', input),
     register: (input: EndpointInput<'register'>) => signIn('register', input),
     restore(): Promise<void> {
+      suspended = false;
       if (restorePending) return restorePending;
       if (state.operation) return Promise.resolve();
       const id = ++intent;
-      suspended = false;
-      update({ status: 'restoring', user: null, operation: 'restore', error: null });
+      update({ status: 'restoring', operation: 'restore', error: null });
       restorePending = (async () => {
         try {
           await verify(id);
@@ -149,15 +149,19 @@ export function createAuthController(api: Dependencies) {
         if (id === intent) update({ operation: null });
       }
     },
-    suspend() {
+    suspend({ preserveScreen = false }: { preserveScreen?: boolean } = {}) {
       suspended = true;
       if (state.operation) return;
       intent++;
-      if (state.status === 'authenticated')
+      if (state.user)
         update({
-          user: null,
-          status: 'error',
-          error: new ApiError('NETWORK_UNAVAILABLE', '请联网后重新核验登录状态'),
+          // A native permission/picker activity must not discard the in-memory form.
+          // Navigation blocks the retained screen until online verification succeeds.
+          user: preserveScreen ? state.user : null,
+          status: preserveScreen ? 'restoring' : 'error',
+          error: preserveScreen
+            ? null
+            : new ApiError('NETWORK_UNAVAILABLE', '请联网后重新核验登录状态'),
         });
     },
   };

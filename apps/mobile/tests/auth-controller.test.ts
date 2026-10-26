@@ -128,6 +128,38 @@ describe('mobile authentication and route admission state', () => {
     expect(auth.getSnapshot().notice).toBe('本机登录凭据已清除。');
     expect(api.logout).not.toHaveBeenCalled();
   });
+  it('retains a background screen only behind the online restoration gate', async () => {
+    const { api, auth } = fixture();
+    await auth.restore();
+    auth.suspend({ preserveScreen: true });
+    expect(auth.getSnapshot()).toMatchObject({ status: 'restoring', user, operation: null });
+    const request = deferred<{ data: typeof user }>();
+    api.getMe.mockReturnValueOnce(request.promise);
+    const pending = auth.restore();
+    expect(auth.getSnapshot()).toMatchObject({ status: 'restoring', user, operation: 'restore' });
+    request.resolve({ data: user });
+    await pending;
+    expect(auth.getSnapshot()).toMatchObject({ status: 'authenticated', user, operation: null });
+    expect(api.getMe).toHaveBeenCalledTimes(2);
+  });
+  it.each([
+    [new ApiError('UNAUTHENTICATED', 'revoked', 401), 'anonymous'],
+    [new ApiError('NETWORK_UNAVAILABLE', 'offline'), 'error'],
+  ])('discards a background screen if online verification fails (%s)', async (error, status) => {
+    const { api, auth } = fixture();
+    await auth.restore();
+    auth.suspend({ preserveScreen: true });
+    api.getMe.mockRejectedValueOnce(error);
+    await auth.restore();
+    expect(auth.getSnapshot()).toMatchObject({ status, user: null, operation: null });
+  });
+  it('drops retained identity on a real network loss before returning from the picker', async () => {
+    const { auth } = fixture();
+    await auth.restore();
+    auth.suspend({ preserveScreen: true });
+    auth.suspend();
+    expect(auth.getSnapshot()).toMatchObject({ status: 'error', user: null });
+  });
   it('unmounts protected data when suspended and re-verifies when requested', async () => {
     const { api, auth } = fixture();
     await auth.restore();

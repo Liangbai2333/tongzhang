@@ -22,7 +22,11 @@ export function InviteCodeField({
         <View style={styles.marker} />
         <Text style={styles.label}>6 位邀请码</Text>
       </View>
-      <View style={[styles.field, error && styles.error, disabled && styles.disabled]}>
+      {/* Keep the native input parent stable when busy ends during stack replacement. */}
+      <View
+        collapsable={false}
+        style={[styles.field, error && styles.error, disabled && styles.disabled]}
+      >
         <View
           pointerEvents="none"
           accessible={false}
