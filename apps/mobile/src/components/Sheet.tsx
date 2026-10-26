@@ -26,6 +26,7 @@ export function Sheet({
   contentKey,
   variant = 'default',
   headerAction,
+  hideClose = false,
 }: PropsWithChildren<{
   visible: boolean;
   title: string;
@@ -33,6 +34,7 @@ export function Sheet({
   contentKey?: string;
   variant?: 'default' | 'members' | 'join';
   headerAction?: ReactNode;
+  hideClose?: boolean;
 }>) {
   const [mounted, setMounted] = useState(visible);
   const progress = useRef(new Animated.Value(0)).current;
@@ -126,9 +128,11 @@ export function Sheet({
               {content.title}
             </Text>
             {content.headerAction}
-            <Touch accessibilityLabel="关闭面板" onPress={onClose} style={styles.close}>
-              <FigmaAsset asset={figmaAssets['157-990'].imgIconClose} />
-            </Touch>
+            {!hideClose && (
+              <Touch accessibilityLabel="关闭面板" onPress={onClose} style={styles.close}>
+                <FigmaAsset asset={figmaAssets['157-990'].imgIconClose} />
+              </Touch>
+            )}
           </View>
           <ScrollView
             key={content.contentKey}

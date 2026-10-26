@@ -1,0 +1,157 @@
+[
+  {
+    "at": "2026-10-26T12:09:13.722Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/6e1b35d2-bb0f-401f-94b0-0d10a8f61d2f",
+    "status": 200,
+    "dropped": false
+  },
+  {
+    "at": "2026-10-26T12:09:13.761Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/6e1b35d2-bb0f-401f-94b0-0d10a8f61d2f/settlement-preview",
+    "status": 200,
+    "dropped": false
+  },
+  {
+    "at": "2026-10-26T12:09:27.721Z",
+    "method": "POST",
+    "path": "/api/v1/ledgers/6e1b35d2-bb0f-401f-94b0-0d10a8f61d2f/settlement",
+    "status": 201,
+    "dropped": true,
+    "keyDigest": "1c3e45706e5e"
+  },
+  {
+    "at": "2026-10-26T12:09:39.628Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/6e1b35d2-bb0f-401f-94b0-0d10a8f61d2f/settlement",
+    "status": 200,
+    "dropped": false
+  },
+  {
+    "at": "2026-10-26T12:09:39.655Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/6e1b35d2-bb0f-401f-94b0-0d10a8f61d2f/settlement",
+    "status": 200,
+    "dropped": false
+  },
+  {
+    "at": "2026-10-26T12:09:49.334Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/9ca623e8-0b4a-43b4-8041-6871c0013903",
+    "status": 200,
+    "dropped": false
+  },
+  {
+    "at": "2026-10-26T12:09:49.377Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/9ca623e8-0b4a-43b4-8041-6871c0013903/settlement-preview",
+    "status": 200,
+    "dropped": false
+  },
+  {
+    "at": "2026-10-26T12:09:58.232Z",
+    "method": "POST",
+    "path": "/api/v1/ledgers/9ca623e8-0b4a-43b4-8041-6871c0013903/settlement",
+    "status": 201,
+    "dropped": true,
+    "keyDigest": "b4ddd924159e"
+  },
+  {
+    "at": "2026-10-26T12:10:02.022Z",
+    "method": "POST",
+    "path": "/api/v1/ledgers/9ca623e8-0b4a-43b4-8041-6871c0013903/settlement",
+    "status": 201,
+    "dropped": false,
+    "keyDigest": "b4ddd924159e"
+  },
+  {
+    "at": "2026-10-26T12:10:02.049Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/9ca623e8-0b4a-43b4-8041-6871c0013903/settlement",
+    "status": 200,
+    "dropped": false
+  },
+  {
+    "at": "2026-10-26T12:10:39.368Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/28561f7d-a7f8-4d19-9da3-86cefbcd4d3d/settlement",
+    "status": 200,
+    "dropped": false,
+    "keyDigest": "790e7d76c22b"
+  },
+  {
+    "at": "2026-10-26T12:10:39.388Z",
+    "method": "POST",
+    "path": "/api/v1/ledgers/28561f7d-a7f8-4d19-9da3-86cefbcd4d3d/settlement/transfers/d036001b-cb19-4c01-bbed-622c5cb88500/paid",
+    "status": 200,
+    "dropped": false,
+    "keyDigest": "790e7d76c22b"
+  },
+  {
+    "at": "2026-10-26T12:10:39.394Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/28561f7d-a7f8-4d19-9da3-86cefbcd4d3d/settlement",
+    "status": 200,
+    "dropped": false,
+    "keyDigest": "790e7d76c22b"
+  },
+  {
+    "at": "2026-10-26T12:10:39.399Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/9ca623e8-0b4a-43b4-8041-6871c0013903/settlement",
+    "status": 200,
+    "dropped": false,
+    "keyDigest": "790e7d76c22b"
+  },
+  {
+    "at": "2026-10-26T12:10:39.405Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/6e1b35d2-bb0f-401f-94b0-0d10a8f61d2f/settlement",
+    "status": 200,
+    "dropped": false,
+    "keyDigest": "790e7d76c22b"
+  },
+  {
+    "at": "2026-10-26T12:10:39.663Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/28561f7d-a7f8-4d19-9da3-86cefbcd4d3d",
+    "status": 200,
+    "dropped": false
+  },
+  {
+    "at": "2026-10-26T12:10:39.708Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/28561f7d-a7f8-4d19-9da3-86cefbcd4d3d/settlement",
+    "status": 200,
+    "dropped": false
+  },
+  {
+    "at": "2026-10-26T12:12:47.637Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/28561f7d-a7f8-4d19-9da3-86cefbcd4d3d/settlement",
+    "status": 200,
+    "dropped": false
+  },
+  {
+    "at": "2026-10-26T12:12:47.646Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/28561f7d-a7f8-4d19-9da3-86cefbcd4d3d",
+    "status": 200,
+    "dropped": false
+  },
+  {
+    "at": "2026-10-26T12:12:47.710Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/28561f7d-a7f8-4d19-9da3-86cefbcd4d3d/settlement",
+    "status": 200,
+    "dropped": false
+  },
+  {
+    "at": "2026-10-26T12:12:47.716Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/28561f7d-a7f8-4d19-9da3-86cefbcd4d3d",
+    "status": 200,
+    "dropped": false
+  }
+]

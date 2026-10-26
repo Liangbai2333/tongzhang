@@ -1,0 +1,106 @@
+[
+  {
+    "id": "f36aeb32-21c6-4ab0-942f-a4233931eee7",
+    "ledgerId": "28561f7d-a7f8-4d19-9da3-86cefbcd4d3d",
+    "sourceVersion": 7,
+    "expenseTotalCents": "30000",
+    "transferTotalCents": "9000",
+    "transferCount": 2,
+    "algorithmVersion": "zero-sum-dp-v1",
+    "createdAt": "2026-10-26T12:07:41.313Z",
+    "ledgerStatus": "SETTLING",
+    "transfers": [
+      {
+        "sequence": 1,
+        "payerMemberId": "8c1b9336-8637-4527-9d6e-d1daff1e35e7",
+        "payeeMemberId": "dc6e1eb9-e634-42bf-94b2-8b622462f5bb",
+        "amountCents": "6000",
+        "id": "fc7af6a8-a9e3-4544-9394-f0447083dc9a",
+        "status": "PENDING",
+        "registeredByMemberId": null,
+        "registeredAt": null,
+        "registrationNote": null
+      },
+      {
+        "sequence": 2,
+        "payerMemberId": "d72a68a1-bc8a-469f-b7ea-6e64a844f2f8",
+        "payeeMemberId": "e27e8f1d-6de1-4f4f-9e3d-e049b691bae6",
+        "amountCents": "3000",
+        "id": "d036001b-cb19-4c01-bbed-622c5cb88500",
+        "status": "PAID",
+        "registeredByMemberId": "e27e8f1d-6de1-4f4f-9e3d-e049b691bae6",
+        "registeredAt": "2026-10-26T12:10:39.383Z",
+        "registrationNote": "原生联调：线下登记验收"
+      }
+    ],
+    "progress": {
+      "paidCount": 1,
+      "totalCount": 2,
+      "remainingCents": "6000"
+    },
+    "netSnapshot": [
+      {
+        "memberId": "8c1b9336-8637-4527-9d6e-d1daff1e35e7",
+        "netCents": "-6000"
+      },
+      {
+        "memberId": "d72a68a1-bc8a-469f-b7ea-6e64a844f2f8",
+        "netCents": "-3000"
+      },
+      {
+        "memberId": "dc6e1eb9-e634-42bf-94b2-8b622462f5bb",
+        "netCents": "6000"
+      },
+      {
+        "memberId": "e27e8f1d-6de1-4f4f-9e3d-e049b691bae6",
+        "netCents": "3000"
+      }
+    ]
+  },
+  {
+    "id": "d6b51c53-29ce-4462-97bd-c3976db2f13b",
+    "ledgerId": "9ca623e8-0b4a-43b4-8041-6871c0013903",
+    "sourceVersion": 1,
+    "expenseTotalCents": "0",
+    "transferTotalCents": "0",
+    "transferCount": 0,
+    "algorithmVersion": "zero-sum-dp-v1",
+    "createdAt": "2026-10-26T12:09:58.222Z",
+    "ledgerStatus": "SETTLED",
+    "transfers": [],
+    "progress": {
+      "paidCount": 0,
+      "totalCount": 0,
+      "remainingCents": "0"
+    },
+    "netSnapshot": [
+      {
+        "memberId": "64ed0951-0b02-4a04-8c5b-821767112bc9",
+        "netCents": "0"
+      }
+    ]
+  },
+  {
+    "id": "1b99b8f2-669e-46e9-be1b-a5955f69a1ef",
+    "ledgerId": "6e1b35d2-bb0f-401f-94b0-0d10a8f61d2f",
+    "sourceVersion": 2,
+    "expenseTotalCents": "100",
+    "transferTotalCents": "0",
+    "transferCount": 0,
+    "algorithmVersion": "zero-sum-dp-v1",
+    "createdAt": "2026-10-26T12:09:27.705Z",
+    "ledgerStatus": "SETTLED",
+    "transfers": [],
+    "progress": {
+      "paidCount": 0,
+      "totalCount": 0,
+      "remainingCents": "0"
+    },
+    "netSnapshot": [
+      {
+        "memberId": "06c0995e-8c1d-49c5-8dbb-e9b57e06988d",
+        "netCents": "0"
+      }
+    ]
+  }
+]

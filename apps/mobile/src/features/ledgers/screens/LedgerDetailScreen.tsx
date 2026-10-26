@@ -196,21 +196,22 @@ export default function LedgerDetailScreen() {
               disabled
               onPress={() => {}}
             />
-            {ledger.status === 'ACTIVE' && (
-              <Button
-                compact
-                labelStyle={{ fontSize: 14 }}
-                title="结算预览"
-                variant="secondary"
-                icon={<FigmaAsset asset={expenseAssets.settle} />}
-                onPress={() =>
-                  router.push({
-                    pathname: '/ledgers/[ledgerId]/settlement-preview',
-                    params: { ledgerId },
-                  })
-                }
-              />
-            )}
+            <Button
+              compact
+              labelStyle={{ fontSize: 14 }}
+              title={ledger.status === 'ACTIVE' ? '结算预览' : '正式结算记录'}
+              variant="secondary"
+              icon={<FigmaAsset asset={expenseAssets.settle} />}
+              onPress={() =>
+                router.push({
+                  pathname:
+                    ledger.status === 'ACTIVE'
+                      ? '/ledgers/[ledgerId]/settlement-preview'
+                      : '/ledgers/[ledgerId]/settlement',
+                  params: { ledgerId },
+                })
+              }
+            />
           </View>
           <Text style={ui.caption}>支出统计暂未开放。</Text>
           {!empty && <ExpenseList ledger={ledger} userId={user!.id} />}
