@@ -8,7 +8,7 @@
 - 基线：已执行 `git pull --ff-only origin main`，从最新 `main` 的 `e0438a1` 创建；JWT 双令牌改动保留在该分支工作区，尚未提交。
 - 主任务：[Issue #1 · T03 接通真实登录、会话检查与退出](https://github.com/Liangbai2333/tongzhang/issues/1)。负责人为饶恩哲（`@Liangbai2333`），当前 open，已读取正文，暂无评论。
 - 本轮不提交、推送或创建 PR，不更新 Issue 为完成，不扣减冲刺点数。后续提交和 PR 只包含本任务文件，保留现有其他未提交工作。
-- 实施准备时仅完成底层能力，后续 PR 使用 `Refs #1`；移动端验收全部完成后再评估 `Closes #1`，由系统架构负责人审核，以 Rebase and merge 合并。
+- 实施准备时仅完成底层能力，后续 PR 使用 `Refs #1`；移动端验收全部完成后再评估 `Closes #1`，由系统架构负责人审核，合并方式遵循当前 [团队协作规范](../CONTRIBUTING.md#pr-与合并)。
 
 ## 实施前的能力与缺口
 
