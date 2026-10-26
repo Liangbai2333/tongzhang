@@ -228,6 +228,48 @@ describe('settlement progress, registration and closing on real PostgreSQL', () 
     ).toBe(true);
   });
 
+  it('keeps the formal settlement readable after personal archive in the real closing flow', async () => {
+    const s = await seed();
+    const batch = await freeze(s);
+    const archive = () =>
+      fixture.app.inject({
+        method: 'POST',
+        url: `/api/v1/ledgers/${ledgerId}/archive`,
+        headers: headers(s.third.accessToken),
+      });
+    expect((await archive()).statusCode).toBe(409);
+    await payAll(s, batch.transfers);
+    expect((await archive()).statusCode).toBe(409);
+    expect((await settle(s.owner.accessToken)).statusCode).toBe(200);
+    const before = await state();
+    const detail = (await get(s.third.accessToken)).json();
+    expect((await archive()).statusCode).toBe(200);
+    expect((await get(s.third.accessToken)).json()).toEqual(detail);
+    expect((await get(s.owner.accessToken)).json()).toEqual(detail);
+    const after = await state();
+    expect(after.ledger).toEqual(before.ledger);
+    expect(after.expenses).toEqual(before.expenses);
+    expect(after.splits).toEqual(before.splits);
+    expect(after.batches).toEqual(before.batches);
+    expect(after.transfers).toEqual(before.transfers);
+    const history = await fixture.app.inject({
+      url: '/api/v1/ledgers?archived=true',
+      headers: headers(s.third.accessToken),
+    });
+    expect(history.statusCode).toBe(200);
+    expect(history.json().data).toEqual([
+      expect.objectContaining({ id: ledgerId, status: 'SETTLED', expenseTotalCents: '30000' }),
+    ]);
+    const members = await fixture.db.orm
+      .select()
+      .from(ledgerMembers)
+      .where(eq(ledgerMembers.ledgerId, ledgerId));
+    expect(members.find((m) => m.userId === s.third.user.id)!.archivedAt).toBeInstanceOf(Date);
+    expect(
+      members.filter((m) => m.userId !== s.third.user.id).every((m) => m.archivedAt === null),
+    ).toBe(true);
+  });
+
   it('returns explicit missing errors and rejects anonymous, nonmembers, cross-ledger transfers and invalid writes', async () => {
     const s = await seed();
     const active = await state();
