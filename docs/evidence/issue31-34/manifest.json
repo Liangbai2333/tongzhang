@@ -1,0 +1,239 @@
+{
+  "baseCommit": "5abf9b095ea27311bd3d9e5c6e5ec01a631175a0",
+  "runtimeSourceCommit": "e653669b9613fb6403b2aba1d2a166dc92cae515",
+  "branch": "fix/31-34-native-acceptance",
+  "date": "2026-10-26",
+  "timezone": "America/Los_Angeles",
+  "environment": {
+    "node": "24.22.0",
+    "pnpm": "12.6.0",
+    "app": "0.1.0",
+    "expoSDK": 57,
+    "device": "iPhone 18 Pro / iOS 27.0 simulator",
+    "metro": 8091,
+    "api": 3331,
+    "proxy": 3332,
+    "database": "tongzhang_issue31_34"
+  },
+  "notes": [
+    "01 is the original equal-split baseline before the text relocation; 02 is the before-fix defect screenshot. 03 onward use the fixed runtime implementation.",
+    "18 displays state written by real A25/A26 API calls, not App write actions. 19 reads personal history after real A27 API call.",
+    "Fixture receipt is TEST DATA ONLY from the existing photo library, selected/uploaded again in this run. Its printed 10/25 date is not the capture date.",
+    "Final subsequent commits change only documentation and evidence. Manifest excludes itself to avoid circular hashing."
+  ],
+  "sourceFiles": [
+    {
+      "name": "apps/mobile/src/features/expenses/screens/CreateExpenseScreen.tsx",
+      "sha256": "9bdafcbce9b5b9ae029cb40b7c82b355dc94673d5030d79c95555ca3b6c09b63"
+    }
+  ],
+  "files": [
+    {
+      "name": "01-equal-split.png",
+      "byteSize": 323372,
+      "sha256": "43a7253fe8aaac3f406a61c1228576d7b187be4624084d78dea83695035274f7",
+      "width": 1206,
+      "height": 2622,
+      "capture": "iOS simulator direct screenshot"
+    },
+    {
+      "name": "02-upload-error-hidden-before.png",
+      "byteSize": 269815,
+      "sha256": "41b853e0d293668dd964650f182854f375a6063c989c4557144de61a6187868b",
+      "width": 1206,
+      "height": 2622,
+      "capture": "iOS simulator direct screenshot"
+    },
+    {
+      "name": "03-upload-error-visible-after.png",
+      "byteSize": 266867,
+      "sha256": "63754895a71ed53652061031fd87f36f4ec4f833f66c4cca00f80ae773b4cfb1",
+      "width": 1206,
+      "height": 2622,
+      "capture": "iOS simulator direct screenshot"
+    },
+    {
+      "name": "04-expense-unknown.png",
+      "byteSize": 270259,
+      "sha256": "4c60b1106f7c3a4dac50146f195216b0b3929a305ade7f4a094b40c6dd014b20",
+      "width": 1206,
+      "height": 2622,
+      "capture": "iOS simulator direct screenshot"
+    },
+    {
+      "name": "05-expense-detail.png",
+      "byteSize": 244393,
+      "sha256": "20fe5acf5f82798a7490f0bd07e51dd6a151cb5c736b1048aab169a0555b5a7e",
+      "width": 1206,
+      "height": 2622,
+      "capture": "iOS simulator direct screenshot"
+    },
+    {
+      "name": "06-authorized-receipt.png",
+      "byteSize": 278429,
+      "sha256": "72023c407349e8b80f760436622ac830aa36cd93255f6826bebe4f1e448de790",
+      "width": 1206,
+      "height": 2622,
+      "capture": "iOS simulator direct screenshot"
+    },
+    {
+      "name": "07-balances.png",
+      "byteSize": 258634,
+      "sha256": "1b2a049f376ce2a8bdbf9d063c617df639e5771d75f9e5ed0d5d569035a16797",
+      "width": 1206,
+      "height": 2622,
+      "capture": "iOS simulator direct screenshot"
+    },
+    {
+      "name": "08-preview.png",
+      "byteSize": 296149,
+      "sha256": "a9f6fa33a370ed4ba98824d1d0d64d2fc0152ee507b7f0c8b279bcce00cc3faf",
+      "width": 1206,
+      "height": 2622,
+      "capture": "iOS simulator direct screenshot"
+    },
+    {
+      "name": "09-freeze-confirm.png",
+      "byteSize": 303607,
+      "sha256": "1da9077bd7700327955f0409e8666f8d0161d63b58390e5bb126842f0ca555f9",
+      "width": 1206,
+      "height": 2622,
+      "capture": "iOS simulator direct screenshot"
+    },
+    {
+      "name": "10-freeze-submitting.png",
+      "byteSize": 290487,
+      "sha256": "653d5b41b936e404caee6bc9d500a7b7985147612a7c4a6813e24cadbdefa6c7",
+      "width": 1206,
+      "height": 2622,
+      "capture": "iOS simulator direct screenshot"
+    },
+    {
+      "name": "11-formal-record.png",
+      "byteSize": 303883,
+      "sha256": "b2f7e9893f92e654035092078900c8d385d5945233acc50b63be334feb818e8b",
+      "width": 1206,
+      "height": 2622,
+      "capture": "iOS simulator direct screenshot"
+    },
+    {
+      "name": "12-frozen-create.png",
+      "byteSize": 147812,
+      "sha256": "d31c33db87d965c64152e5b0f867cad0e12f8d36e7bcc33a5e9ec110a252357c",
+      "width": 1206,
+      "height": 2622,
+      "capture": "iOS simulator direct screenshot"
+    },
+    {
+      "name": "13-version-conflict.png",
+      "byteSize": 305117,
+      "sha256": "c7456b913068f8c48377bf5189f97a952ed77f162c9f4878cd46aabecb4862de",
+      "width": 1206,
+      "height": 2622,
+      "capture": "iOS simulator direct screenshot"
+    },
+    {
+      "name": "14-refreshed-preview.png",
+      "byteSize": 294665,
+      "sha256": "43a242ebb5147e5ae840dee9cc3e79cedca9c71b360fc674173ee05c0d472201",
+      "width": 1206,
+      "height": 2622,
+      "capture": "iOS simulator direct screenshot"
+    },
+    {
+      "name": "15-member-expense.png",
+      "byteSize": 239274,
+      "sha256": "519347f95775b697d2dce42cce051dd663cbbb28aabc58e79468cf54e8e9dfb1",
+      "width": 1206,
+      "height": 2622,
+      "capture": "iOS simulator direct screenshot"
+    },
+    {
+      "name": "16-member-receipt.png",
+      "byteSize": 279655,
+      "sha256": "73363e2be76810d8675878bd4d9d10bf8a82077d05a4a3d7cf2b547ce656eae2",
+      "width": 1206,
+      "height": 2622,
+      "capture": "iOS simulator direct screenshot"
+    },
+    {
+      "name": "17-member-no-freeze.png",
+      "byteSize": 286512,
+      "sha256": "b6c82a04b7fccf4ffa61866d89bf03fb2357a421517af120d18c1880efc25f23",
+      "width": 1206,
+      "height": 2622,
+      "capture": "iOS simulator direct screenshot"
+    },
+    {
+      "name": "18-settled-after-api.png",
+      "byteSize": 298046,
+      "sha256": "44ee1f31aa3b72b53db6e60851f90ea1a3e82030cb793f64d5191541cffe9eb4",
+      "width": 1206,
+      "height": 2622,
+      "capture": "iOS simulator direct screenshot"
+    },
+    {
+      "name": "19-owner-archived-list.png",
+      "byteSize": 205874,
+      "sha256": "1409cd3cfd66134dbc49cfd9d588f61926d6d96d8bb25d51456e1fac5ae3480a",
+      "width": 1206,
+      "height": 2622,
+      "capture": "iOS simulator direct screenshot"
+    },
+    {
+      "name": "check.log",
+      "byteSize": 652,
+      "sha256": "d901bfef3076b522eafa681e542f9e7030eb01c4d58115242b3db894999ae619"
+    },
+    {
+      "name": "cleanup.json",
+      "byteSize": 151,
+      "sha256": "d437dc8ad135c5a647a53156ac339364471a38b31410defce5e28b757f48ef89"
+    },
+    {
+      "name": "cleanup.log",
+      "byteSize": 371,
+      "sha256": "36238094d15e59dc4d6e220e7dbbc23818da45dd01c2821ca5e87521ef69b190"
+    },
+    {
+      "name": "database.json",
+      "byteSize": 906,
+      "sha256": "7af5313027a336eeaf5de0c5deb51dc94da44b97927a98f5f5929ee5f0481c40"
+    },
+    {
+      "name": "doctor.log",
+      "byteSize": 153,
+      "sha256": "63245f0348276a769a4ed0770f2ab59b7b709c337280526eb0ee302e61711ee3"
+    },
+    {
+      "name": "export.log",
+      "byteSize": 5744,
+      "sha256": "e82c0f92d931c2d94d5217102324cf2f6bd34edce744150bf604ec293dbaaad8"
+    },
+    {
+      "name": "lifecycle-and-images.json",
+      "byteSize": 11748,
+      "sha256": "eede2ec7ccd554630ca27aa4ed72b917f35b5bc15608a9cc1e6c3012a2306dfd"
+    },
+    {
+      "name": "mobile-tests.log",
+      "byteSize": 1127,
+      "sha256": "3dfe6d88c46b6ba739cb452cfb63b503a94d74eef5bd85cf0d713ddda6791f4a"
+    },
+    {
+      "name": "preview-and-access.json",
+      "byteSize": 8588,
+      "sha256": "2d4030a26ec33efae8cecf9dde21b9ce7963d6ca17ea0a43fb1c5354de1c98d4"
+    },
+    {
+      "name": "requests.json",
+      "byteSize": 20467,
+      "sha256": "98d86d51a063ac0db2fde5703fd53eacd7ce436d9f79b806f5ce459b2dba0eb5"
+    },
+    {
+      "name": "unit-tests.log",
+      "byteSize": 358,
+      "sha256": "e2f8d3b8920f523ce66d636b04968ea4895567cb5d2f77ba5e2f4fdd7bee3bd2"
+    }
+  ]
+}

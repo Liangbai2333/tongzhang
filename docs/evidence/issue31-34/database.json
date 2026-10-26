@@ -1,0 +1,42 @@
+{
+  "database": "tongzhang_issue31_34",
+  "ledgers": [
+    {
+      "id": "5a9c3b2a-c7f2-476a-ab36-082e4e01bd25",
+      "status": "SETTLED",
+      "version": 5,
+      "expenses": "1",
+      "splits": "2",
+      "batches": "1",
+      "receipt_links": "1"
+    },
+    {
+      "id": "56591944-2b89-42a5-94d4-0ab1b4981352",
+      "status": "ACTIVE",
+      "version": 3,
+      "expenses": "1",
+      "splits": "2",
+      "batches": "0",
+      "receipt_links": "0"
+    },
+    {
+      "id": "d6a4f476-3533-4ec3-bfd3-fc91232ea638",
+      "status": "ACTIVE",
+      "version": 2,
+      "expenses": "0",
+      "splits": "0",
+      "batches": "0",
+      "receipt_links": "0"
+    }
+  ],
+  "archive": [
+    {
+      "user_id": "cd6ab43b-d8e1-4827-9a70-00ca858b2d61",
+      "archived_at": "2026-10-26T13:01:02.536Z"
+    },
+    {
+      "user_id": "d5efb95f-ed28-4b01-a2c3-6b6efed2c850",
+      "archived_at": null
+    }
+  ]
+}

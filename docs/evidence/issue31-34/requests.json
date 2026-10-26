@@ -1,0 +1,773 @@
+[
+  {
+    "at": "2026-10-26T12:53:45.723Z",
+    "method": "POST",
+    "path": "/api/v1/auth/register",
+    "keyDigest": "05cde4039323",
+    "status": 201
+  },
+  {
+    "at": "2026-10-26T12:53:45.783Z",
+    "method": "POST",
+    "path": "/api/v1/auth/register",
+    "keyDigest": "c5df32bed3ba",
+    "status": 201
+  },
+  {
+    "at": "2026-10-26T12:53:45.810Z",
+    "method": "POST",
+    "path": "/api/v1/auth/register",
+    "keyDigest": "0c9dc8769888",
+    "status": 201
+  },
+  {
+    "at": "2026-10-26T12:53:45.843Z",
+    "method": "POST",
+    "path": "/api/v1/ledgers",
+    "keyDigest": "01313ef21bca",
+    "status": 201
+  },
+  {
+    "at": "2026-10-26T12:53:45.865Z",
+    "method": "POST",
+    "path": "/api/v1/invitations/join",
+    "keyDigest": "a1cda4f9cec3",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T12:53:45.875Z",
+    "method": "POST",
+    "path": "/api/v1/ledgers",
+    "keyDigest": "dd6a051a4144",
+    "status": 201
+  },
+  {
+    "at": "2026-10-26T12:53:45.884Z",
+    "method": "POST",
+    "path": "/api/v1/invitations/join",
+    "keyDigest": "42216b9aae0d",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T12:53:52.131Z",
+    "method": "POST",
+    "path": "/api/v1/auth/refresh",
+    "status": 401
+  },
+  {
+    "at": "2026-10-26T12:54:26.061Z",
+    "method": "POST",
+    "path": "/api/v1/auth/login",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T12:54:26.126Z",
+    "method": "GET",
+    "path": "/api/v1/me",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T12:54:26.200Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers?limit=20&archived=false",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T12:54:30.249Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T12:54:33.909Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T12:55:34.347Z",
+    "method": "POST",
+    "path": "/api/v1/images",
+    "fault": "disconnect-before-forward"
+  },
+  {
+    "at": "2026-10-26T12:55:51.800Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T12:56:28.976Z",
+    "method": "POST",
+    "path": "/api/v1/images",
+    "fault": "disconnect-before-forward"
+  },
+  {
+    "at": "2026-10-26T12:56:38.736Z",
+    "method": "POST",
+    "path": "/api/v1/images",
+    "status": 201
+  },
+  {
+    "at": "2026-10-26T12:56:38.797Z",
+    "method": "POST",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25/expenses",
+    "keyDigest": "bab7985c6f56",
+    "status": 201,
+    "fault": "drop"
+  },
+  {
+    "at": "2026-10-26T12:56:46.513Z",
+    "method": "POST",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25/expenses",
+    "keyDigest": "bab7985c6f56",
+    "status": 201,
+    "fault": "delay"
+  },
+  {
+    "at": "2026-10-26T12:56:53.582Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25/expenses/fed2da49-980b-4900-ac92-e6427648769e",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T12:57:02.298Z",
+    "method": "GET",
+    "path": "/api/v1/images/fd9505ce-488f-48db-ac2b-d22d4316fd37",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T12:57:15.999Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T12:57:16.054Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25/expenses?limit=20",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T12:57:20.486Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25/balances",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T12:57:20.487Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T12:57:32.543Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25/settlement-preview",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T12:57:32.544Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T12:57:32.627Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25/settlement-preview",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T12:57:47.303Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25",
+    "keyDigest": "77103f025a10",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T12:57:47.317Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25/expenses",
+    "keyDigest": "f27aab5784bd",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T12:57:47.321Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25/expenses/fed2da49-980b-4900-ac92-e6427648769e",
+    "keyDigest": "118ceab11b9e",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T12:57:47.327Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25/settlement-preview",
+    "keyDigest": "dca7462f906a",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T12:57:47.334Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25/settlement",
+    "keyDigest": "25b7e575eefb",
+    "status": 404
+  },
+  {
+    "at": "2026-10-26T12:57:47.339Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25/expenses",
+    "keyDigest": "dfd66bb30595",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T12:57:47.343Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25/expenses",
+    "keyDigest": "64e6f42eba73",
+    "status": 403
+  },
+  {
+    "at": "2026-10-26T12:57:47.347Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25/expenses/fed2da49-980b-4900-ac92-e6427648769e",
+    "keyDigest": "e39f0f1cf8c7",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T12:57:47.351Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25/expenses/fed2da49-980b-4900-ac92-e6427648769e",
+    "keyDigest": "f8a80aa66cdc",
+    "status": 403
+  },
+  {
+    "at": "2026-10-26T12:57:47.355Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25/balances",
+    "keyDigest": "785754c4477a",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T12:57:47.361Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25/balances",
+    "keyDigest": "feac69e8c0e9",
+    "status": 403
+  },
+  {
+    "at": "2026-10-26T12:57:47.364Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25/settlement-preview",
+    "keyDigest": "3ddb65ae00ff",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T12:57:47.368Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25/settlement-preview",
+    "keyDigest": "940080e63ac9",
+    "status": 403
+  },
+  {
+    "at": "2026-10-26T12:57:47.371Z",
+    "method": "GET",
+    "path": "/api/v1/images/fd9505ce-488f-48db-ac2b-d22d4316fd37",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T12:57:47.377Z",
+    "method": "GET",
+    "path": "/api/v1/images/fd9505ce-488f-48db-ac2b-d22d4316fd37",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T12:57:47.382Z",
+    "method": "GET",
+    "path": "/api/v1/images/fd9505ce-488f-48db-ac2b-d22d4316fd37",
+    "status": 403
+  },
+  {
+    "at": "2026-10-26T12:58:07.627Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25",
+    "keyDigest": "6baa9a6f07bd",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T12:58:07.639Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25/expenses",
+    "keyDigest": "dae5745500ce",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T12:58:07.644Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25/expenses/fed2da49-980b-4900-ac92-e6427648769e",
+    "keyDigest": "eb6e4c8038e7",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T12:58:07.650Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25/settlement-preview",
+    "keyDigest": "0f82cc08ef70",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T12:58:07.656Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25/settlement",
+    "keyDigest": "f550be3f1eb5",
+    "status": 404
+  },
+  {
+    "at": "2026-10-26T12:58:07.661Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25/expenses",
+    "keyDigest": "1bbb8dd60eb0",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T12:58:07.665Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25/expenses",
+    "keyDigest": "a8e66193822f",
+    "status": 403
+  },
+  {
+    "at": "2026-10-26T12:58:07.668Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25/expenses/fed2da49-980b-4900-ac92-e6427648769e",
+    "keyDigest": "227ee017bfbc",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T12:58:07.673Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25/expenses/fed2da49-980b-4900-ac92-e6427648769e",
+    "keyDigest": "d9fb97c5051c",
+    "status": 403
+  },
+  {
+    "at": "2026-10-26T12:58:07.676Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25/balances",
+    "keyDigest": "c434661531ae",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T12:58:07.680Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25/balances",
+    "keyDigest": "60197105c216",
+    "status": 403
+  },
+  {
+    "at": "2026-10-26T12:58:07.683Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25/settlement-preview",
+    "keyDigest": "a94d36f8c60f",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T12:58:07.689Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25/settlement-preview",
+    "keyDigest": "60dd3e269329",
+    "status": 403
+  },
+  {
+    "at": "2026-10-26T12:58:07.692Z",
+    "method": "GET",
+    "path": "/api/v1/images/fd9505ce-488f-48db-ac2b-d22d4316fd37",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T12:58:07.698Z",
+    "method": "GET",
+    "path": "/api/v1/images/fd9505ce-488f-48db-ac2b-d22d4316fd37",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T12:58:07.703Z",
+    "method": "GET",
+    "path": "/api/v1/images/fd9505ce-488f-48db-ac2b-d22d4316fd37",
+    "status": 403
+  },
+  {
+    "at": "2026-10-26T12:58:16.300Z",
+    "method": "POST",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25/settlement",
+    "keyDigest": "1238d3a4548c",
+    "status": 201,
+    "fault": "delay"
+  },
+  {
+    "at": "2026-10-26T12:58:23.373Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25/settlement",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T12:58:23.374Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T12:58:41.379Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T12:58:48.780Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/56591944-2b89-42a5-94d4-0ab1b4981352",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T12:58:48.835Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/56591944-2b89-42a5-94d4-0ab1b4981352/settlement-preview",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T12:58:59.857Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/56591944-2b89-42a5-94d4-0ab1b4981352",
+    "keyDigest": "e1196e77ce42",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T12:58:59.873Z",
+    "method": "POST",
+    "path": "/api/v1/ledgers/56591944-2b89-42a5-94d4-0ab1b4981352/expenses",
+    "keyDigest": "e1196e77ce42",
+    "status": 201
+  },
+  {
+    "at": "2026-10-26T12:59:03.433Z",
+    "method": "POST",
+    "path": "/api/v1/ledgers/56591944-2b89-42a5-94d4-0ab1b4981352/settlement",
+    "keyDigest": "4af20e4ca9bd",
+    "status": 409
+  },
+  {
+    "at": "2026-10-26T12:59:11.656Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/56591944-2b89-42a5-94d4-0ab1b4981352",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T12:59:11.701Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/56591944-2b89-42a5-94d4-0ab1b4981352/settlement-preview",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T12:59:31.120Z",
+    "method": "POST",
+    "path": "/api/v1/auth/logout",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T12:59:48.334Z",
+    "method": "POST",
+    "path": "/api/v1/auth/login",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T12:59:48.403Z",
+    "method": "GET",
+    "path": "/api/v1/me",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T12:59:48.457Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers?limit=20&archived=false",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T12:59:53.572Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25/expenses/fed2da49-980b-4900-ac92-e6427648769e",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T13:00:08.064Z",
+    "method": "GET",
+    "path": "/api/v1/images/fd9505ce-488f-48db-ac2b-d22d4316fd37",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T13:00:13.461Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/56591944-2b89-42a5-94d4-0ab1b4981352",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T13:00:13.517Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/56591944-2b89-42a5-94d4-0ab1b4981352/settlement-preview",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T13:01:02.418Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25",
+    "keyDigest": "177b1f331f1c",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T13:01:02.440Z",
+    "method": "POST",
+    "path": "/api/v1/ledgers/56591944-2b89-42a5-94d4-0ab1b4981352/settlement",
+    "keyDigest": "2e3ea902da16",
+    "status": 403
+  },
+  {
+    "at": "2026-10-26T13:01:02.445Z",
+    "method": "POST",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25/expenses",
+    "keyDigest": "85c9eab16884",
+    "status": 409
+  },
+  {
+    "at": "2026-10-26T13:01:02.451Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25/settlement",
+    "keyDigest": "fdd00e492710",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T13:01:02.457Z",
+    "method": "POST",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25/settle",
+    "keyDigest": "a771ac366a43",
+    "status": 409
+  },
+  {
+    "at": "2026-10-26T13:01:02.471Z",
+    "method": "POST",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25/archive",
+    "keyDigest": "611982c7d85c",
+    "status": 409
+  },
+  {
+    "at": "2026-10-26T13:01:02.479Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25/settlement",
+    "keyDigest": "0b0eacff2b9b",
+    "status": 403
+  },
+  {
+    "at": "2026-10-26T13:01:02.484Z",
+    "method": "POST",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25/settlement/transfers/6174963f-356c-4e36-929b-104fb8538195/paid",
+    "keyDigest": "31f61035f9c7",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T13:01:02.496Z",
+    "method": "POST",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25/settlement/transfers/6174963f-356c-4e36-929b-104fb8538195/paid",
+    "keyDigest": "31f61035f9c7",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T13:01:02.502Z",
+    "method": "POST",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25/settlement/transfers/6174963f-356c-4e36-929b-104fb8538195/paid",
+    "keyDigest": "d18f81cca82f",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T13:01:02.510Z",
+    "method": "POST",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25/settle",
+    "keyDigest": "cc1fd3b3111e",
+    "status": 403
+  },
+  {
+    "at": "2026-10-26T13:01:02.514Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25/balances",
+    "keyDigest": "ddb6debfd76a",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T13:01:02.519Z",
+    "method": "POST",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25/settle",
+    "keyDigest": "5c71dafc47df",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T13:01:02.529Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25/settlement",
+    "keyDigest": "fd85bcefb32a",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T13:01:02.533Z",
+    "method": "POST",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25/archive",
+    "keyDigest": "1adcc5fd4dee",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T13:01:02.539Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers?archived=true",
+    "keyDigest": "a4dc6651cee7",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T13:01:02.544Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers?archived=false",
+    "keyDigest": "96636e094c5d",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T13:01:02.548Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers?archived=false",
+    "keyDigest": "c3055a3db5ac",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T13:01:02.553Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25/settlement",
+    "keyDigest": "c9994e7ac6a7",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T13:01:02.559Z",
+    "method": "POST",
+    "path": "/api/v1/images",
+    "status": 201
+  },
+  {
+    "at": "2026-10-26T13:01:02.563Z",
+    "method": "GET",
+    "path": "/api/v1/images/a9099612-b6c7-4f12-8d1b-04f6505f3808",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T13:01:02.566Z",
+    "method": "GET",
+    "path": "/api/v1/images/a9099612-b6c7-4f12-8d1b-04f6505f3808",
+    "status": 403
+  },
+  {
+    "at": "2026-10-26T13:01:02.570Z",
+    "method": "POST",
+    "path": "/api/v1/ledgers",
+    "keyDigest": "0556001e6281",
+    "status": 201
+  },
+  {
+    "at": "2026-10-26T13:01:02.579Z",
+    "method": "POST",
+    "path": "/api/v1/invitations/join",
+    "keyDigest": "73974dd90dca",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T13:01:02.587Z",
+    "method": "GET",
+    "path": "/api/v1/images/a9099612-b6c7-4f12-8d1b-04f6505f3808",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T13:01:02.591Z",
+    "method": "GET",
+    "path": "/api/v1/images/a9099612-b6c7-4f12-8d1b-04f6505f3808",
+    "status": 403
+  },
+  {
+    "at": "2026-10-26T13:01:02.594Z",
+    "method": "POST",
+    "path": "/api/v1/images",
+    "status": 201
+  },
+  {
+    "at": "2026-10-26T13:01:16.547Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T13:01:16.586Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25/settlement",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T13:01:16.587Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T13:01:45.252Z",
+    "method": "POST",
+    "path": "/api/v1/auth/logout",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T13:02:29.835Z",
+    "method": "POST",
+    "path": "/api/v1/auth/login",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T13:02:29.894Z",
+    "method": "GET",
+    "path": "/api/v1/me",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T13:02:29.948Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers?limit=20&archived=false",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T13:02:36.305Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers?limit=20&archived=true",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T13:02:50.352Z",
+    "method": "GET",
+    "path": "/api/v1/images/ce994ba1-50ca-4f5c-a616-c02a92fdc123",
+    "status": 403
+  },
+  {
+    "at": "2026-10-26T13:02:50.353Z",
+    "method": "GET",
+    "path": "/api/v1/images/a9099612-b6c7-4f12-8d1b-04f6505f3808",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T13:08:05.187Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25",
+    "status": 200
+  },
+  {
+    "at": "2026-10-26T13:08:05.259Z",
+    "method": "GET",
+    "path": "/api/v1/ledgers/5a9c3b2a-c7f2-476a-ab36-082e4e01bd25/expenses?limit=20",
+    "status": 200
+  }
+]

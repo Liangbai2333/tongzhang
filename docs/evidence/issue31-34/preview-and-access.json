@@ -1,0 +1,304 @@
+{
+  "stage": "after native expense retry and preview",
+  "ledger": {
+    "status": 200,
+    "data": {
+      "id": "5a9c3b2a-c7f2-476a-ab36-082e4e01bd25",
+      "name": "两人午餐 · 31",
+      "coverKey": "mountain",
+      "coverImageId": null,
+      "status": "ACTIVE",
+      "version": 3,
+      "memberCount": 2,
+      "expenseTotalCents": "12000",
+      "myRemainingNetCents": "6000",
+      "archivedAt": null,
+      "createdAt": "2026-10-26T12:53:45.847Z",
+      "creatorUserId": "cd6ab43b-d8e1-4827-9a70-00ca858b2d61",
+      "myMemberId": "cf9464e9-fdff-4eb7-8aaf-8ea4ae258886",
+      "myPaidCents": "12000",
+      "mySharedCents": "6000",
+      "myNetCents": "6000",
+      "members": [
+        {
+          "id": "cf9464e9-fdff-4eb7-8aaf-8ea4ae258886",
+          "userId": "cd6ab43b-d8e1-4827-9a70-00ca858b2d61",
+          "username": "验收甲31",
+          "role": "CREATOR",
+          "joinedAt": "2026-10-26T12:53:45.847Z",
+          "netCents": "6000",
+          "remainingNetCents": "6000"
+        },
+        {
+          "id": "85b41e2a-770b-4dd9-9cb5-87bcbaf7efe5",
+          "userId": "d5efb95f-ed28-4b01-a2c3-6b6efed2c850",
+          "username": "验收乙31",
+          "role": "MEMBER",
+          "joinedAt": "2026-10-26T12:53:45.866Z",
+          "netCents": "-6000",
+          "remainingNetCents": "-6000"
+        }
+      ]
+    }
+  },
+  "expenses": {
+    "status": 200,
+    "data": [
+      {
+        "id": "fed2da49-980b-4900-ac92-e6427648769e",
+        "title": "Lunch receipt",
+        "amountCents": "12000",
+        "category": "DINING",
+        "occurredOn": "2026-10-26",
+        "payerMemberId": "cf9464e9-fdff-4eb7-8aaf-8ea4ae258886",
+        "payerName": "验收甲31",
+        "version": 1
+      }
+    ],
+    "page": {
+      "nextCursor": null
+    }
+  },
+  "expense": {
+    "status": 200,
+    "data": {
+      "id": "fed2da49-980b-4900-ac92-e6427648769e",
+      "title": "Lunch receipt",
+      "amountCents": "12000",
+      "category": "DINING",
+      "occurredOn": "2026-10-26",
+      "payerMemberId": "cf9464e9-fdff-4eb7-8aaf-8ea4ae258886",
+      "payerName": "验收甲31",
+      "version": 1,
+      "ledgerId": "5a9c3b2a-c7f2-476a-ab36-082e4e01bd25",
+      "recorderMemberId": "cf9464e9-fdff-4eb7-8aaf-8ea4ae258886",
+      "recorderName": "验收甲31",
+      "splitMode": "EQUAL",
+      "splits": [
+        {
+          "memberId": "85b41e2a-770b-4dd9-9cb5-87bcbaf7efe5",
+          "username": "验收乙31",
+          "shares": null,
+          "amountCents": "6000"
+        },
+        {
+          "memberId": "cf9464e9-fdff-4eb7-8aaf-8ea4ae258886",
+          "username": "验收甲31",
+          "shares": null,
+          "amountCents": "6000"
+        }
+      ],
+      "note": null,
+      "receiptImageId": "fd9505ce-488f-48db-ac2b-d22d4316fd37",
+      "createdAt": "2026-10-26T12:56:38.799Z",
+      "updatedAt": "2026-10-26T12:56:38.799Z",
+      "canEdit": true
+    }
+  },
+  "preview": {
+    "status": 200,
+    "data": {
+      "ledgerId": "5a9c3b2a-c7f2-476a-ab36-082e4e01bd25",
+      "ledgerVersion": 3,
+      "expenseTotalCents": "12000",
+      "transferTotalCents": "6000",
+      "transferCount": 1,
+      "members": [
+        {
+          "memberId": "85b41e2a-770b-4dd9-9cb5-87bcbaf7efe5",
+          "username": "验收乙31",
+          "paidCents": "0",
+          "sharedCents": "6000",
+          "netCents": "-6000",
+          "remainingNetCents": "-6000"
+        },
+        {
+          "memberId": "cf9464e9-fdff-4eb7-8aaf-8ea4ae258886",
+          "username": "验收甲31",
+          "paidCents": "12000",
+          "sharedCents": "6000",
+          "netCents": "6000",
+          "remainingNetCents": "6000"
+        }
+      ],
+      "transfers": [
+        {
+          "sequence": 1,
+          "payerMemberId": "85b41e2a-770b-4dd9-9cb5-87bcbaf7efe5",
+          "payeeMemberId": "cf9464e9-fdff-4eb7-8aaf-8ea4ae258886",
+          "amountCents": "6000"
+        }
+      ],
+      "algorithmVersion": "zero-sum-dp-v1"
+    }
+  },
+  "batch": {
+    "status": 404,
+    "error": {
+      "code": "SETTLEMENT_NOT_FOUND",
+      "message": "账本尚未生成正式结算"
+    },
+    "requestId": "e0615991-3d82-4976-9b2d-bbe6b0e5dc67"
+  },
+  "member_expenses": {
+    "status": 200,
+    "data": [
+      {
+        "id": "fed2da49-980b-4900-ac92-e6427648769e",
+        "title": "Lunch receipt",
+        "amountCents": "12000",
+        "category": "DINING",
+        "occurredOn": "2026-10-26",
+        "payerMemberId": "cf9464e9-fdff-4eb7-8aaf-8ea4ae258886",
+        "payerName": "验收甲31",
+        "version": 1
+      }
+    ],
+    "page": {
+      "nextCursor": null
+    }
+  },
+  "stranger_expenses": {
+    "status": 403,
+    "error": {
+      "code": "FORBIDDEN",
+      "message": "你没有权限访问此账本"
+    },
+    "requestId": "9fb6ad21-f8b0-4cee-baad-9b1a27eef2ba"
+  },
+  "member_expense": {
+    "status": 200,
+    "data": {
+      "id": "fed2da49-980b-4900-ac92-e6427648769e",
+      "title": "Lunch receipt",
+      "amountCents": "12000",
+      "category": "DINING",
+      "occurredOn": "2026-10-26",
+      "payerMemberId": "cf9464e9-fdff-4eb7-8aaf-8ea4ae258886",
+      "payerName": "验收甲31",
+      "version": 1,
+      "ledgerId": "5a9c3b2a-c7f2-476a-ab36-082e4e01bd25",
+      "recorderMemberId": "cf9464e9-fdff-4eb7-8aaf-8ea4ae258886",
+      "recorderName": "验收甲31",
+      "splitMode": "EQUAL",
+      "splits": [
+        {
+          "memberId": "85b41e2a-770b-4dd9-9cb5-87bcbaf7efe5",
+          "username": "验收乙31",
+          "shares": null,
+          "amountCents": "6000"
+        },
+        {
+          "memberId": "cf9464e9-fdff-4eb7-8aaf-8ea4ae258886",
+          "username": "验收甲31",
+          "shares": null,
+          "amountCents": "6000"
+        }
+      ],
+      "note": null,
+      "receiptImageId": "fd9505ce-488f-48db-ac2b-d22d4316fd37",
+      "createdAt": "2026-10-26T12:56:38.799Z",
+      "updatedAt": "2026-10-26T12:56:38.799Z",
+      "canEdit": false
+    }
+  },
+  "stranger_expense": {
+    "status": 403,
+    "error": {
+      "code": "FORBIDDEN",
+      "message": "你没有权限访问此账本"
+    },
+    "requestId": "9b79c43c-a7a9-4de7-b73b-9e945eae70b9"
+  },
+  "member_balances": {
+    "status": 200,
+    "data": {
+      "expenseTotalCents": "12000",
+      "members": [
+        {
+          "memberId": "85b41e2a-770b-4dd9-9cb5-87bcbaf7efe5",
+          "username": "验收乙31",
+          "paidCents": "0",
+          "sharedCents": "6000",
+          "netCents": "-6000",
+          "remainingNetCents": "-6000"
+        },
+        {
+          "memberId": "cf9464e9-fdff-4eb7-8aaf-8ea4ae258886",
+          "username": "验收甲31",
+          "paidCents": "12000",
+          "sharedCents": "6000",
+          "netCents": "6000",
+          "remainingNetCents": "6000"
+        }
+      ]
+    }
+  },
+  "stranger_balances": {
+    "status": 403,
+    "error": {
+      "code": "FORBIDDEN",
+      "message": "你没有权限访问此账本"
+    },
+    "requestId": "9bc08c7e-7ca9-48bf-8a3b-1a6b6bf27af7"
+  },
+  "member_preview": {
+    "status": 200,
+    "data": {
+      "ledgerId": "5a9c3b2a-c7f2-476a-ab36-082e4e01bd25",
+      "ledgerVersion": 3,
+      "expenseTotalCents": "12000",
+      "transferTotalCents": "6000",
+      "transferCount": 1,
+      "members": [
+        {
+          "memberId": "85b41e2a-770b-4dd9-9cb5-87bcbaf7efe5",
+          "username": "验收乙31",
+          "paidCents": "0",
+          "sharedCents": "6000",
+          "netCents": "-6000",
+          "remainingNetCents": "-6000"
+        },
+        {
+          "memberId": "cf9464e9-fdff-4eb7-8aaf-8ea4ae258886",
+          "username": "验收甲31",
+          "paidCents": "12000",
+          "sharedCents": "6000",
+          "netCents": "6000",
+          "remainingNetCents": "6000"
+        }
+      ],
+      "transfers": [
+        {
+          "sequence": 1,
+          "payerMemberId": "85b41e2a-770b-4dd9-9cb5-87bcbaf7efe5",
+          "payeeMemberId": "cf9464e9-fdff-4eb7-8aaf-8ea4ae258886",
+          "amountCents": "6000"
+        }
+      ],
+      "algorithmVersion": "zero-sum-dp-v1"
+    }
+  },
+  "stranger_preview": {
+    "status": 403,
+    "error": {
+      "code": "FORBIDDEN",
+      "message": "你没有权限访问此账本"
+    },
+    "requestId": "54098573-8095-4358-bd50-34e436285ae4"
+  },
+  "receipt_0": {
+    "status": 200,
+    "size": 138919,
+    "sha256": "97d17d32ca198db4a2eec694f234ea9e867e72b854f10f6d5f66edffd9ea1882"
+  },
+  "receipt_1": {
+    "status": 200,
+    "size": 138919,
+    "sha256": "97d17d32ca198db4a2eec694f234ea9e867e72b854f10f6d5f66edffd9ea1882"
+  },
+  "receipt_2": {
+    "status": 403,
+    "size": 124
+  }
+}

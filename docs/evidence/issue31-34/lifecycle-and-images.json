@@ -1,0 +1,415 @@
+{
+  "member_freeze_forbidden": {
+    "status": 403,
+    "error": {
+      "code": "FORBIDDEN",
+      "message": "你没有权限执行此操作"
+    },
+    "requestId": "540b4841-b9f3-4459-b428-7c0101bd740a"
+  },
+  "frozen_expense": {
+    "status": 409,
+    "error": {
+      "code": "LEDGER_FROZEN",
+      "message": "账本已进入结算，无法修改"
+    },
+    "requestId": "a25f1b5e-4db0-4ee2-b8fd-ad4350ce52f2"
+  },
+  "formal_before": {
+    "status": 200,
+    "data": {
+      "id": "229d7f11-e55c-467a-b249-130d15e094f9",
+      "ledgerId": "5a9c3b2a-c7f2-476a-ab36-082e4e01bd25",
+      "sourceVersion": 3,
+      "expenseTotalCents": "12000",
+      "transferTotalCents": "6000",
+      "transferCount": 1,
+      "algorithmVersion": "zero-sum-dp-v1",
+      "createdAt": "2026-10-26T12:58:23.305Z",
+      "ledgerStatus": "SETTLING",
+      "transfers": [
+        {
+          "sequence": 1,
+          "payerMemberId": "85b41e2a-770b-4dd9-9cb5-87bcbaf7efe5",
+          "payeeMemberId": "cf9464e9-fdff-4eb7-8aaf-8ea4ae258886",
+          "amountCents": "6000",
+          "id": "6174963f-356c-4e36-929b-104fb8538195",
+          "status": "PENDING",
+          "registeredByMemberId": null,
+          "registeredAt": null,
+          "registrationNote": null
+        }
+      ],
+      "progress": {
+        "paidCount": 0,
+        "totalCount": 1,
+        "remainingCents": "6000"
+      },
+      "netSnapshot": [
+        {
+          "memberId": "85b41e2a-770b-4dd9-9cb5-87bcbaf7efe5",
+          "netCents": "-6000"
+        },
+        {
+          "memberId": "cf9464e9-fdff-4eb7-8aaf-8ea4ae258886",
+          "netCents": "6000"
+        }
+      ]
+    }
+  },
+  "premature_settle": {
+    "status": 409,
+    "error": {
+      "code": "SETTLEMENT_INCOMPLETE",
+      "message": "请先登记全部转账并核对剩余余额"
+    },
+    "requestId": "b76d58ec-29ab-43e6-a291-a87a1ffb8ca8"
+  },
+  "premature_archive": {
+    "status": 409,
+    "error": {
+      "code": "LEDGER_STATE_INVALID",
+      "message": "只有已结清的账本可以归档"
+    },
+    "requestId": "fcb2d86d-ea65-4b84-8061-498b6d525bc4"
+  },
+  "nonmember_record": {
+    "status": 403,
+    "error": {
+      "code": "FORBIDDEN",
+      "message": "你没有权限访问此账本"
+    },
+    "requestId": "e1f0c43e-eff5-4817-97c0-7315550aea47"
+  },
+  "payer_mark_paid": {
+    "status": 200,
+    "data": {
+      "transfer": {
+        "sequence": 1,
+        "payerMemberId": "85b41e2a-770b-4dd9-9cb5-87bcbaf7efe5",
+        "payeeMemberId": "cf9464e9-fdff-4eb7-8aaf-8ea4ae258886",
+        "amountCents": "6000",
+        "id": "6174963f-356c-4e36-929b-104fb8538195",
+        "status": "PAID",
+        "registeredByMemberId": "85b41e2a-770b-4dd9-9cb5-87bcbaf7efe5",
+        "registeredAt": "2026-10-26T13:01:02.490Z",
+        "registrationNote": "线下人工登记验收，不是真实支付"
+      },
+      "progress": {
+        "paidCount": 1,
+        "totalCount": 1,
+        "remainingCents": "0"
+      }
+    }
+  },
+  "paid_same_key": {
+    "status": 200,
+    "data": {
+      "transfer": {
+        "sequence": 1,
+        "payerMemberId": "85b41e2a-770b-4dd9-9cb5-87bcbaf7efe5",
+        "payeeMemberId": "cf9464e9-fdff-4eb7-8aaf-8ea4ae258886",
+        "amountCents": "6000",
+        "id": "6174963f-356c-4e36-929b-104fb8538195",
+        "status": "PAID",
+        "registeredByMemberId": "85b41e2a-770b-4dd9-9cb5-87bcbaf7efe5",
+        "registeredAt": "2026-10-26T13:01:02.490Z",
+        "registrationNote": "线下人工登记验收，不是真实支付"
+      },
+      "progress": {
+        "paidCount": 1,
+        "totalCount": 1,
+        "remainingCents": "0"
+      }
+    }
+  },
+  "paid_new_key": {
+    "status": 200,
+    "data": {
+      "transfer": {
+        "sequence": 1,
+        "payerMemberId": "85b41e2a-770b-4dd9-9cb5-87bcbaf7efe5",
+        "payeeMemberId": "cf9464e9-fdff-4eb7-8aaf-8ea4ae258886",
+        "amountCents": "6000",
+        "id": "6174963f-356c-4e36-929b-104fb8538195",
+        "status": "PAID",
+        "registeredByMemberId": "85b41e2a-770b-4dd9-9cb5-87bcbaf7efe5",
+        "registeredAt": "2026-10-26T13:01:02.490Z",
+        "registrationNote": "线下人工登记验收，不是真实支付"
+      },
+      "progress": {
+        "paidCount": 1,
+        "totalCount": 1,
+        "remainingCents": "0"
+      }
+    }
+  },
+  "member_cannot_settle": {
+    "status": 403,
+    "error": {
+      "code": "FORBIDDEN",
+      "message": "你没有权限执行此操作"
+    },
+    "requestId": "9ed707ed-c3d6-4b46-a475-3fabfc4fe478"
+  },
+  "paid_balances": {
+    "status": 200,
+    "data": {
+      "expenseTotalCents": "12000",
+      "members": [
+        {
+          "memberId": "85b41e2a-770b-4dd9-9cb5-87bcbaf7efe5",
+          "username": "验收乙31",
+          "paidCents": "0",
+          "sharedCents": "6000",
+          "netCents": "-6000",
+          "remainingNetCents": "0"
+        },
+        {
+          "memberId": "cf9464e9-fdff-4eb7-8aaf-8ea4ae258886",
+          "username": "验收甲31",
+          "paidCents": "12000",
+          "sharedCents": "6000",
+          "netCents": "6000",
+          "remainingNetCents": "0"
+        }
+      ]
+    }
+  },
+  "owner_settle": {
+    "status": 200,
+    "data": {
+      "ledgerId": "5a9c3b2a-c7f2-476a-ab36-082e4e01bd25",
+      "status": "SETTLED",
+      "settledAt": "2026-10-26T13:01:02.526Z"
+    }
+  },
+  "settled_record": {
+    "status": 200,
+    "data": {
+      "id": "229d7f11-e55c-467a-b249-130d15e094f9",
+      "ledgerId": "5a9c3b2a-c7f2-476a-ab36-082e4e01bd25",
+      "sourceVersion": 3,
+      "expenseTotalCents": "12000",
+      "transferTotalCents": "6000",
+      "transferCount": 1,
+      "algorithmVersion": "zero-sum-dp-v1",
+      "createdAt": "2026-10-26T12:58:23.305Z",
+      "ledgerStatus": "SETTLED",
+      "transfers": [
+        {
+          "sequence": 1,
+          "payerMemberId": "85b41e2a-770b-4dd9-9cb5-87bcbaf7efe5",
+          "payeeMemberId": "cf9464e9-fdff-4eb7-8aaf-8ea4ae258886",
+          "amountCents": "6000",
+          "id": "6174963f-356c-4e36-929b-104fb8538195",
+          "status": "PAID",
+          "registeredByMemberId": "85b41e2a-770b-4dd9-9cb5-87bcbaf7efe5",
+          "registeredAt": "2026-10-26T13:01:02.490Z",
+          "registrationNote": "线下人工登记验收，不是真实支付"
+        }
+      ],
+      "progress": {
+        "paidCount": 1,
+        "totalCount": 1,
+        "remainingCents": "0"
+      },
+      "netSnapshot": [
+        {
+          "memberId": "85b41e2a-770b-4dd9-9cb5-87bcbaf7efe5",
+          "netCents": "-6000"
+        },
+        {
+          "memberId": "cf9464e9-fdff-4eb7-8aaf-8ea4ae258886",
+          "netCents": "6000"
+        }
+      ]
+    }
+  },
+  "owner_archive": {
+    "status": 200,
+    "data": {
+      "ledgerId": "5a9c3b2a-c7f2-476a-ab36-082e4e01bd25",
+      "archivedAt": "2026-10-26T13:01:02.536Z"
+    }
+  },
+  "owner_archived_list": {
+    "status": 200,
+    "data": [
+      {
+        "id": "5a9c3b2a-c7f2-476a-ab36-082e4e01bd25",
+        "name": "两人午餐 · 31",
+        "coverKey": "mountain",
+        "coverImageId": null,
+        "status": "SETTLED",
+        "version": 5,
+        "memberCount": 2,
+        "expenseTotalCents": "12000",
+        "myRemainingNetCents": "0",
+        "archivedAt": "2026-10-26T13:01:02.536Z",
+        "createdAt": "2026-10-26T12:53:45.847Z"
+      }
+    ],
+    "page": {
+      "nextCursor": null
+    }
+  },
+  "owner_current_list": {
+    "status": 200,
+    "data": [
+      {
+        "id": "56591944-2b89-42a5-94d4-0ab1b4981352",
+        "name": "版本冲突 · 31",
+        "coverKey": "mountain",
+        "coverImageId": null,
+        "status": "ACTIVE",
+        "version": 3,
+        "memberCount": 2,
+        "expenseTotalCents": "100",
+        "myRemainingNetCents": "50",
+        "archivedAt": null,
+        "createdAt": "2026-10-26T12:53:45.875Z"
+      }
+    ],
+    "page": {
+      "nextCursor": null
+    }
+  },
+  "member_current_list": {
+    "status": 200,
+    "data": [
+      {
+        "id": "56591944-2b89-42a5-94d4-0ab1b4981352",
+        "name": "版本冲突 · 31",
+        "coverKey": "mountain",
+        "coverImageId": null,
+        "status": "ACTIVE",
+        "version": 3,
+        "memberCount": 2,
+        "expenseTotalCents": "100",
+        "myRemainingNetCents": "-50",
+        "archivedAt": null,
+        "createdAt": "2026-10-26T12:53:45.875Z"
+      },
+      {
+        "id": "5a9c3b2a-c7f2-476a-ab36-082e4e01bd25",
+        "name": "两人午餐 · 31",
+        "coverKey": "mountain",
+        "coverImageId": null,
+        "status": "SETTLED",
+        "version": 5,
+        "memberCount": 2,
+        "expenseTotalCents": "12000",
+        "myRemainingNetCents": "0",
+        "archivedAt": null,
+        "createdAt": "2026-10-26T12:53:45.847Z"
+      }
+    ],
+    "page": {
+      "nextCursor": null
+    }
+  },
+  "archive_preserves_record": {
+    "status": 200,
+    "data": {
+      "id": "229d7f11-e55c-467a-b249-130d15e094f9",
+      "ledgerId": "5a9c3b2a-c7f2-476a-ab36-082e4e01bd25",
+      "sourceVersion": 3,
+      "expenseTotalCents": "12000",
+      "transferTotalCents": "6000",
+      "transferCount": 1,
+      "algorithmVersion": "zero-sum-dp-v1",
+      "createdAt": "2026-10-26T12:58:23.305Z",
+      "ledgerStatus": "SETTLED",
+      "transfers": [
+        {
+          "sequence": 1,
+          "payerMemberId": "85b41e2a-770b-4dd9-9cb5-87bcbaf7efe5",
+          "payeeMemberId": "cf9464e9-fdff-4eb7-8aaf-8ea4ae258886",
+          "amountCents": "6000",
+          "id": "6174963f-356c-4e36-929b-104fb8538195",
+          "status": "PAID",
+          "registeredByMemberId": "85b41e2a-770b-4dd9-9cb5-87bcbaf7efe5",
+          "registeredAt": "2026-10-26T13:01:02.490Z",
+          "registrationNote": "线下人工登记验收，不是真实支付"
+        }
+      ],
+      "progress": {
+        "paidCount": 1,
+        "totalCount": 1,
+        "remainingCents": "0"
+      },
+      "netSnapshot": [
+        {
+          "memberId": "85b41e2a-770b-4dd9-9cb5-87bcbaf7efe5",
+          "netCents": "-6000"
+        },
+        {
+          "memberId": "cf9464e9-fdff-4eb7-8aaf-8ea4ae258886",
+          "netCents": "6000"
+        }
+      ]
+    }
+  },
+  "upload_cover": {
+    "imageId": "a9099612-b6c7-4f12-8d1b-04f6505f3808",
+    "mimeType": "image/png",
+    "byteSize": 292,
+    "width": 80,
+    "height": 80
+  },
+  "unbound_owner": {
+    "status": 200,
+    "sha256": "9231070f9bd53f1447a0ce998e1c98384074cc3d095152a11b196b5e2ab92295"
+  },
+  "unbound_member_denied": {
+    "status": 403
+  },
+  "create_custom_cover": {
+    "status": 201,
+    "data": {
+      "ledger": {
+        "id": "d6a4f476-3533-4ec3-bfd3-fc91232ea638",
+        "name": "自定义封面接口验收34",
+        "coverKey": null,
+        "coverImageId": "a9099612-b6c7-4f12-8d1b-04f6505f3808",
+        "status": "ACTIVE",
+        "version": 1,
+        "memberCount": 1,
+        "expenseTotalCents": "0",
+        "myRemainingNetCents": "0",
+        "archivedAt": null,
+        "createdAt": "2026-10-26T13:01:02.570Z"
+      },
+      "invitation": {
+        "id": "0971535c-02bb-4c0a-88fb-2c0354ec84b8",
+        "code": "2GTB77",
+        "expiresAt": "2026-11-02T13:01:02.574Z",
+        "expired": false,
+        "qrPayload": "tongzhang:invite:v1:2GTB77"
+      }
+    }
+  },
+  "join_cover": {
+    "status": 200,
+    "data": {
+      "ledgerId": "d6a4f476-3533-4ec3-bfd3-fc91232ea638",
+      "memberId": "0d6c06e8-81dd-47a3-a274-202b61b39e69",
+      "alreadyMember": false
+    }
+  },
+  "bound_cover_member": {
+    "status": 200,
+    "sha256": "9231070f9bd53f1447a0ce998e1c98384074cc3d095152a11b196b5e2ab92295"
+  },
+  "bound_cover_stranger": {
+    "status": 403
+  },
+  "temporary_image": {
+    "imageId": "ce994ba1-50ca-4f5c-a616-c02a92fdc123",
+    "mimeType": "image/png",
+    "byteSize": 292,
+    "width": 80,
+    "height": 80
+  }
+}
