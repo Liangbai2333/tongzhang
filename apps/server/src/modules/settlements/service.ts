@@ -1,5 +1,4 @@
 import type { Handler } from '../../http/context.js';
-import { notReady } from '../../http/not-ready.js';
 import type { Orm } from '../../db/transaction.js';
 import { AppError } from '../../http/errors.js';
 import { computeBalances, readLedgerSnapshot, toBalanceDto } from '../balances/index.js';
@@ -7,6 +6,7 @@ import { computeBalances, readLedgerSnapshot, toBalanceDto } from '../balances/i
 import { requireActive } from '../ledgers/index.js';
 import { SETTLEMENT_ALGORITHM, solveSettlement } from './solver.js';
 import { createStartSettlement } from './start.js';
+import { createGetSettlement, createMarkTransferPaid, createSettleLedger } from './progress.js';
 
 export interface SettlementsService {
   previewSettlement: Handler<'previewSettlement'>;
@@ -53,8 +53,8 @@ export function createSettlementsService(db: Orm): SettlementsService {
       } as Awaited<ReturnType<Handler<'previewSettlement'>>>;
     },
     startSettlement: createStartSettlement(db),
-    getSettlement: notReady('getSettlement'),
-    markTransferPaid: notReady('markTransferPaid'),
-    settleLedger: notReady('settleLedger'),
+    getSettlement: createGetSettlement(db),
+    markTransferPaid: createMarkTransferPaid(db),
+    settleLedger: createSettleLedger(db),
   };
 }

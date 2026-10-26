@@ -9,6 +9,7 @@ import { ledgers, settlementBatches, settlementTransfers } from '../../db/schema
 import { computeBalances, readLedgerSnapshotInTransaction } from '../balances/index.js';
 import { requireActive, requireCreator, requireLedgerMember } from '../ledgers/index.js';
 import { SETTLEMENT_ALGORITHM, solveSettlement } from './solver.js';
+import { toSettlementDto } from './mapper.js';
 
 export function createStartSettlement(db: Orm): Handler<'startSettlement'> {
   return async (input, context) => {
@@ -106,29 +107,7 @@ export function createStartSettlement(db: Orm): Handler<'startSettlement'> {
           return endpoints.startSettlement.response.parse({
             data: {
               ledgerStatus,
-              batch: {
-                id: batch!.id,
-                ledgerId,
-                sourceVersion: ledger.version,
-                expenseTotalCents: expenseTotalCents.toString(),
-                transferTotalCents: transferTotalCents.toString(),
-                transferCount: plan.length,
-                algorithmVersion: SETTLEMENT_ALGORITHM,
-                createdAt: batch!.createdAt.toISOString(),
-                ledgerStatus,
-                transfers: transfers
-                  .sort((a, b) => a.sequence - b.sequence)
-                  .map((t) => ({
-                    ...t,
-                    amountCents: t.amountCents.toString(),
-                    registeredAt: null,
-                  })),
-                progress: {
-                  paidCount: 0,
-                  totalCount: plan.length,
-                  remainingCents: transferTotalCents.toString(),
-                },
-              },
+              batch: toSettlementDto(batch!, transfers, ledgerStatus),
             },
           });
         },

@@ -36,6 +36,7 @@ export function registerOperation<K extends Operation>(
         400: errorResponseSchema,
         401: errorResponseSchema,
         403: errorResponseSchema,
+        404: errorResponseSchema,
         409: errorResponseSchema,
         413: errorResponseSchema,
         429: errorResponseSchema,
