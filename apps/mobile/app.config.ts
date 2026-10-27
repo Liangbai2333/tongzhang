@@ -40,6 +40,7 @@ const config: ExpoConfig = {
   },
   plugins: [
     'expo-router',
+    './plugins/with-explicit-network-retries.cjs',
     'expo-secure-store',
     [
       'expo-camera',
