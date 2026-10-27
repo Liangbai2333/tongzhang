@@ -3,7 +3,7 @@ import { requestErrorMessage } from '@/components/Feedback';
 import { imagesApi } from './api';
 import { removeReceiptFile, selectReceipt } from './receipt-files';
 export type ReceiptSelection = { uri: string; byteSize: number; imageId?: string };
-export function useReceipt(ledgerId: string) {
+export function useImageSelection(kind: 'RECEIPT' | 'COVER', ledgerId?: string) {
   const [value, setValue] = useState<ReceiptSelection | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -52,8 +52,12 @@ export function useReceipt(ledgerId: string) {
     setError(null);
     try {
       const result = await imagesApi.upload(
-        { kind: 'RECEIPT', ledgerId },
-        { uri: selected.uri, name: 'receipt.jpg', type: 'image/jpeg' },
+        { kind, ledgerId },
+        {
+          uri: selected.uri,
+          name: kind === 'COVER' ? 'cover.jpg' : 'receipt.jpg',
+          type: 'image/jpeg',
+        },
       );
       if (!mounted.current) return undefined;
       update({ ...selected, imageId: result.data.imageId });
@@ -73,4 +77,8 @@ export function useReceipt(ledgerId: string) {
     setError(null);
   }
   return { value, busy, error, select, upload, remove };
+}
+
+export function useReceipt(ledgerId: string) {
+  return useImageSelection('RECEIPT', ledgerId);
 }

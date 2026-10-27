@@ -1,3 +1,4 @@
+import { AuthorizedImage } from '@/features/images/components/ReceiptImage';
 import { StyleSheet, Text, View } from 'react-native';
 import { FigmaAsset } from '@/icons/FigmaAsset';
 import { ledgerAssets } from '@/icons/ledger-assets';
@@ -7,11 +8,19 @@ import { covers, type CoverKey } from '../presentation';
 
 export function LedgerCover({
   coverKey,
+  imageId,
   preview = false,
 }: {
   coverKey: CoverKey | null;
+  imageId?: string | null;
   preview?: boolean;
 }) {
+  if (imageId)
+    return (
+      <View style={{ width: preview ? '100%' : 36, borderRadius: 12, overflow: 'hidden' }}>
+        <AuthorizedImage imageId={imageId} label="账本封面" height={preview ? 180 : 36} />
+      </View>
+    );
   const cover = covers[coverKey ?? 'plain'];
   const asset =
     coverKey === 'mountain'

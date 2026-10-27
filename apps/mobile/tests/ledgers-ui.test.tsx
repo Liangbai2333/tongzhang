@@ -12,6 +12,8 @@ import { ledgersApi } from '../src/features/ledgers/api';
 import { invitationsApi } from '../src/features/invitations/api';
 import { ApiError } from '../src/lib/api-error';
 import { createQueryClient } from '../src/lib/query-client';
+import { imagesApi } from '../src/features/images/api';
+import { selectReceipt } from '../src/features/images/receipt-files';
 import { setStringAsync } from 'expo-clipboard';
 
 const userId = '00000000-0000-4000-8000-000000000001';
@@ -20,7 +22,12 @@ const mockParams = { ledgerId };
 let mockKeyNumber = 0;
 jest.mock('../src/providers/AuthProvider', () => ({ useAuth: () => ({ user: { id: userId } }) }));
 jest.mock('../src/features/ledgers/api', () => ({
-  ledgersApi: { createLedger: jest.fn(), listLedgers: jest.fn(), getLedger: jest.fn() },
+  ledgersApi: {
+    createLedger: jest.fn(),
+    listLedgers: jest.fn(),
+    getLedger: jest.fn(),
+    archiveLedger: jest.fn(),
+  },
 }));
 jest.mock('../src/features/expenses/api', () => ({
   expensesApi: { listExpenses: jest.fn(async () => ({ data: [], page: { nextCursor: null } })) },
@@ -32,6 +39,13 @@ jest.mock('../src/features/invitations/api', () => ({
     getInvitation: jest.fn(),
     resetInvitation: jest.fn(),
   },
+}));
+jest.mock('../src/features/images/api', () => ({
+  imagesApi: { upload: jest.fn(), read: jest.fn() },
+}));
+jest.mock('../src/features/images/receipt-files', () => ({
+  selectReceipt: jest.fn(),
+  removeReceiptFile: jest.fn(),
 }));
 jest.mock('../src/lib/api', () => ({ createIdempotencyKey: () => `key-${++mockKeyNumber}` }));
 jest.mock('expo-clipboard', () => ({ setStringAsync: jest.fn() }));
@@ -118,6 +132,9 @@ async function previewCode() {
 beforeEach(() => {
   jest.clearAllMocks();
   mockKeyNumber = 0;
+  jest.mocked(imagesApi.upload).mockReset();
+  jest.mocked(selectReceipt).mockReset();
+  jest.mocked(ledgersApi.archiveLedger).mockReset();
   create.mockResolvedValue({ data: { ledger: summary, invitation } });
   list.mockResolvedValue({ data: [], page: { nextCursor: null } });
   get.mockResolvedValue({ data: detail });
@@ -460,5 +477,79 @@ describe('ledger pages with isolated API callbacks (no database/native claim)', 
     expect(screen.getByRole('button', { name: '复制邀请码' })).toBeDisabled();
     expect(screen.getByRole('button', { name: '分享邀请' })).toBeDisabled();
     expect(screen.getByRole('button', { name: '重置邀请码' })).toBeEnabled();
+  });
+});
+
+describe('custom covers and personal archive (API/native replacements)', () => {
+  it('keeps name and uploaded COVER reference after a failed create; retries without uploading again', async () => {
+    const pick = jest.mocked(selectReceipt);
+    const upload = jest.mocked(imagesApi.upload);
+    pick.mockResolvedValueOnce({ uri: 'file:///cache/cover.jpg', byteSize: 8000 });
+    upload.mockResolvedValue({
+      data: { imageId: userId, mimeType: 'image/jpeg', byteSize: 8000, width: 800, height: 1000 },
+    });
+    create.mockRejectedValueOnce(new ApiError('REQUEST_TIMEOUT', '建账结果未知'));
+    await show(<CreateLedgerScreen />);
+    await fireEvent.changeText(screen.getByLabelText('账本名称'), '自定义封面');
+    await userEvent.press(screen.getByRole('button', { name: '从相册选择自定义封面' }));
+    await userEvent.press(screen.getByRole('button', { name: '创建并邀请成员' }));
+    await screen.findByText('建账结果未知');
+    expect(screen.getByRole('button', { name: '从相册选择自定义封面' })).toBeDisabled();
+    expect(screen.getByLabelText('账本名称')).toHaveDisplayValue('自定义封面');
+    expect(upload).toHaveBeenCalledWith(
+      { kind: 'COVER', ledgerId: undefined },
+      { uri: 'file:///cache/cover.jpg', name: 'cover.jpg', type: 'image/jpeg' },
+    );
+    expect(create.mock.calls[0]?.[0].body).toEqual({ name: '自定义封面', coverImageId: userId });
+    await userEvent.press(screen.getByRole('button', { name: '重试原提交' }));
+    expect(upload).toHaveBeenCalledTimes(1);
+    expect(create.mock.calls[0]).toEqual(create.mock.calls[1]);
+  });
+  it('preserves cover selection on picker cancellation and upload error, and permits a preset after a definite failure', async () => {
+    const pick = jest.mocked(selectReceipt);
+    const upload = jest.mocked(imagesApi.upload);
+    pick
+      .mockResolvedValueOnce({ uri: 'file:///cache/cover.jpg', byteSize: 8000 })
+      .mockResolvedValueOnce(null);
+    upload.mockRejectedValueOnce(new ApiError('NETWORK_ERROR', '封面上传失败'));
+    await show(<CreateLedgerScreen />);
+    await fireEvent.changeText(screen.getByLabelText('账本名称'), '保留封面');
+    await userEvent.press(screen.getByRole('button', { name: '从相册选择自定义封面' }));
+    await userEvent.press(screen.getByRole('button', { name: '从相册选择自定义封面' }));
+    await userEvent.press(screen.getByRole('button', { name: '创建并邀请成员' }));
+    await screen.findByText('封面上传失败');
+    expect(screen.getByLabelText('自定义封面预览')).toBeOnTheScreen();
+    expect(create).not.toHaveBeenCalled();
+    await userEvent.press(screen.getByRole('radio', { name: '好友聚餐' }));
+    await userEvent.press(screen.getByRole('button', { name: '创建并邀请成员' }));
+    expect(create.mock.calls[0]?.[0].body).toEqual({ name: '保留封面', coverKey: 'dining' });
+  });
+  it('confirms personal archive only for SETTLED; resolves an unknown result through online membership read', async () => {
+    const archive = jest.mocked(ledgersApi.archiveLedger);
+    archive.mockRejectedValueOnce(new ApiError('REQUEST_TIMEOUT', '归档结果未知'));
+    get.mockResolvedValue({ data: { ...detail, status: 'SETTLED' } });
+    await show(<LedgerDetailScreen />);
+    await userEvent.press(await screen.findByRole('button', { name: '个人归档' }));
+    expect(archive).not.toHaveBeenCalled();
+    await userEvent.press(screen.getByRole('button', { name: '暂不归档' }));
+    await userEvent.press(screen.getByRole('button', { name: '个人归档' }));
+    await userEvent.press(screen.getByRole('button', { name: '确认归档' }));
+    await screen.findByText('归档结果未知');
+    expect(screen.getByRole('button', { name: '暂不归档' })).toBeDisabled();
+    get.mockResolvedValue({ data: { ...detail, status: 'SETTLED', archivedAt: detail.createdAt } });
+    await userEvent.press(screen.getByRole('button', { name: '在线核对结果' }));
+    await waitFor(() =>
+      expect(router.replace).toHaveBeenCalledWith({
+        pathname: '/ledgers',
+        params: { archivedNotice: ledgerId },
+      }),
+    );
+    expect(archive).toHaveBeenCalledTimes(1);
+  });
+  it.each(['ACTIVE', 'SETTLING'] as const)('cannot archive a %s ledger', async (status) => {
+    get.mockResolvedValue({ data: { ...detail, status } });
+    await show(<LedgerDetailScreen />);
+    await screen.findByRole('button', { name: '查看成员 · 1 / 12' });
+    expect(screen.queryByRole('button', { name: '个人归档' })).toBeNull();
   });
 });

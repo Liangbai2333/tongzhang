@@ -1,3 +1,9 @@
+import { completionAssets } from '../completion-assets';
+import { SettledSummary } from '../components/SettledSummary';
+import { router, Stack } from 'expo-router';
+import { useQueryClient } from '@tanstack/react-query';
+import { SettlementActionSheet } from '../components/SettlementActionSheet';
+import { ArchiveLedgerSheet } from '@/features/ledgers/components/ArchiveLedgerSheet';
 import { useRef, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import * as Clipboard from 'expo-clipboard';
@@ -27,6 +33,10 @@ export default function SettlementRecordScreen({
   initial?: Settlement;
 }) {
   const { user } = useAuth();
+  const client = useQueryClient();
+  const [action, setAction] = useState<
+    Settlement['transfers'][number] | 'settle' | 'archive' | null
+  >(null);
   const query = useOnlineQuery(
     [...settlementsKeys.ledger(user!.id, ledger.id), 'record'],
     async () => {
@@ -35,7 +45,11 @@ export default function SettlementRecordScreen({
         settlementsApi.getSettlement(input),
         ledgersApi.getLedger(input),
       ]);
-      return { settlement: settlement.data, members: currentLedger.data.members };
+      return {
+        settlement: settlement.data,
+        ledger: currentLedger.data,
+        members: currentLedger.data.members,
+      };
     },
   );
   const [copying, setCopying] = useState(false);
@@ -51,7 +65,17 @@ export default function SettlementRecordScreen({
         : undefined;
   const name = (id: string) =>
     (query.data?.members ?? ledger.members).find((member) => member.id === id)?.username ?? id;
+  const settled = record?.ledgerStatus === 'SETTLED';
+  const currentLedger = query.data?.ledger ?? ledger;
+  const creator = currentLedger.creatorUserId === user!.id;
+  const canSettle =
+    record?.ledgerStatus === 'SETTLING' &&
+    creator &&
+    record.progress.paidCount === record.progress.totalCount &&
+    record.progress.remainingCents === '0' &&
+    currentLedger.members.every((member) => member.remainingNetCents === '0');
   const refresh = () => {
+    if (action) return;
     setNotice(null);
     setCopyError(null);
     void query.refetch();
@@ -83,206 +107,323 @@ export default function SettlementRecordScreen({
     }
   }
   return (
-    <Screen
-      title={`${ledger.name} · ${record?.ledgerStatus === 'SETTLED' ? '已结清' : '结算中'}`}
-      variant="ledger"
-      onRefresh={refresh}
-      refreshing={query.isFetching && !query.isPending}
-      contentStyle={{ paddingTop: 8, gap: 16 }}
-      footer={
-        record && !loading ? (
+    <>
+      <Stack.Screen options={{ gestureEnabled: action === null }} />
+      <Screen
+        backDisabled={action !== null}
+        title={`${ledger.name} · ${record?.ledgerStatus === 'SETTLED' ? '已结清' : '结算中'}`}
+        variant="ledger"
+        onRefresh={action === null ? refresh : undefined}
+        refreshing={query.isFetching && !query.isPending}
+        contentStyle={{ paddingTop: 8, gap: 16 }}
+        footer={
+          record && !loading ? (
+            <>
+              <InlineError message={copyError} />
+              {notice && (
+                <Text accessibilityLiveRegion="polite" style={ui.caption}>
+                  {notice}
+                </Text>
+              )}
+              <Button
+                title="复制完整方案"
+                variant="secondary"
+                loading={copying}
+                onPress={() => {
+                  void copy();
+                }}
+              />
+              {record.ledgerStatus === 'SETTLING' && (
+                <>
+                  {creator ? (
+                    <Button
+                      title="确认整本结清"
+                      disabled={!canSettle || action !== null}
+                      onPress={() => setAction('settle')}
+                    />
+                  ) : (
+                    <Text style={ui.caption}>全部登记后，由账本创建者确认结清。</Text>
+                  )}
+                  {creator && !canSettle && (
+                    <Text style={ui.caption}>全部转账登记且每位成员剩余净额为零后才能结清。</Text>
+                  )}
+                </>
+              )}
+              {record.ledgerStatus === 'SETTLED' && !currentLedger.archivedAt && (
+                <Button
+                  title="归档账本"
+                  icon={<FigmaAsset asset={completionAssets.archiveButton} />}
+                  onPress={() => setAction('archive')}
+                />
+              )}
+              {currentLedger.archivedAt && (
+                <Text style={ui.caption}>已个人归档 · 历史记录只读</Text>
+              )}
+            </>
+          ) : undefined
+        }
+      >
+        {!record ? (
           <>
-            <InlineError message={copyError} />
-            {notice && (
-              <Text accessibilityLiveRegion="polite" style={ui.caption}>
-                {notice}
-              </Text>
+            {initial && (
+              <Text style={ui.caption}>已确认正式批次：{initial.id}。最新进度以在线查询为准。</Text>
             )}
-            <Button
-              title="复制完整方案"
-              variant="secondary"
-              loading={copying}
-              onPress={() => {
-                void copy();
-              }}
+            <RequestState
+              loading={loading}
+              title="暂时无法读取正式记录"
+              description="请手动重试在线查询，不会重复提交结算。"
+              error={query.error}
+              onRetry={refresh}
             />
           </>
-        ) : undefined
-      }
-    >
-      {!record ? (
-        <>
-          {initial && (
-            <Text style={ui.caption}>已确认正式批次：{initial.id}。最新进度以在线查询为准。</Text>
-          )}
-          <RequestState
-            loading={loading}
-            title="暂时无法读取正式记录"
-            description="请手动重试在线查询，不会重复提交结算。"
-            error={query.error}
-            onRetry={refresh}
-          />
-        </>
-      ) : (
-        <>
-          <View style={{ gap: 12 }}>
-            <Text style={s.frozen}>
-              {record.ledgerStatus === 'SETTLED' ? '账单已结清' : '账单已冻结'}
-            </Text>
-            <Text style={ui.title}>
-              {record.ledgerStatus === 'SETTLED'
-                ? '全部已结清'
-                : record.progress.paidCount === record.progress.totalCount
-                  ? '全部已还，待确认结清'
-                  : '待完成转账'}
-            </Text>
-            <View style={ui.between}>
-              <Text style={ui.muted}>
-                {record.progress.paidCount} / {record.progress.totalCount} 笔已登记
-              </Text>
-              <Text style={s.remaining}>待登记 {yuan(record.progress.remainingCents)}</Text>
-            </View>
-            <View
-              accessibilityRole="progressbar"
-              accessibilityValue={{
-                min: 0,
-                max: record.progress.totalCount || 1,
-                now: record.progress.totalCount ? record.progress.paidCount : 1,
-              }}
-              style={s.track}
-            >
-              <View
-                style={[
-                  s.fill,
-                  {
-                    width: `${record.progress.totalCount ? (record.progress.paidCount / record.progress.totalCount) * 100 : 100}%`,
-                  },
-                ]}
+        ) : (
+          <>
+            {settled ? (
+              <SettledSummary
+                total={record.expenseTotalCents}
+                transfers={record.transferCount}
+                members={currentLedger.memberCount}
               />
-            </View>
-          </View>
-          <View style={ui.divider} />
-          <Text accessibilityRole="header" style={ui.caption}>
-            收付款记录
-          </Text>
-          {record.transfers.length === 0 && (
-            <View style={ui.card}>
-              <Text style={ui.body}>无需转账，账本已直接结清。</Text>
-            </View>
-          )}
-          {record.transfers.map((transfer) => (
-            <View key={transfer.id} style={s.transfer}>
-              <View style={ui.between}>
-                <Text style={[s.badge, transfer.status === 'PAID' && s.paid]}>
-                  {transfer.status === 'PAID' ? '已登记' : '待登记'}
+            ) : (
+              <View style={{ gap: 12 }}>
+                <Text style={s.frozen}>
+                  {record.ledgerStatus === 'SETTLED' ? '账单已结清' : '账单已冻结'}
                 </Text>
-                <Text style={s.amount}>{yuan(transfer.amountCents)}</Text>
-              </View>
-              <View style={ui.row}>
-                <View
-                  accessibilityLabel={`付款人：${name(transfer.payerMemberId)}`}
-                  style={s.person}
-                >
-                  <View style={[s.avatar, { backgroundColor: colors.peach }]}>
-                    <Text style={s.avatarText}>
-                      {Array.from(name(transfer.payerMemberId)).at(-1)}
-                    </Text>
-                  </View>
-                  <Text style={s.name}>{name(transfer.payerMemberId)}</Text>
-                </View>
-                <View style={s.arrow}>
-                  <FigmaAsset
-                    asset={settlementAssets.arrow}
-                    style={{ transform: [{ rotate: '180deg' }, { scaleY: -1 }] }}
-                  />
+                <Text style={ui.title}>
+                  {record.ledgerStatus === 'SETTLED'
+                    ? '全部已结清'
+                    : record.progress.paidCount === record.progress.totalCount
+                      ? '全部转账已登记'
+                      : '待完成转账'}
+                </Text>
+                <View style={ui.between}>
+                  <Text style={ui.muted}>
+                    {record.progress.paidCount} / {record.progress.totalCount} 笔已登记
+                  </Text>
+                  <Text style={s.remaining}>待登记 {yuan(record.progress.remainingCents)}</Text>
                 </View>
                 <View
-                  accessibilityLabel={`收款人：${name(transfer.payeeMemberId)}`}
-                  style={s.person}
+                  accessibilityRole="progressbar"
+                  accessibilityValue={{
+                    min: 0,
+                    max: record.progress.totalCount || 1,
+                    now: record.progress.totalCount ? record.progress.paidCount : 1,
+                  }}
+                  style={s.track}
                 >
-                  <View style={[s.avatar, { backgroundColor: colors.mint }]}>
-                    <Text style={s.avatarText}>
-                      {Array.from(name(transfer.payeeMemberId)).at(-1)}
-                    </Text>
-                  </View>
-                  <Text style={s.name}>{name(transfer.payeeMemberId)}</Text>
+                  <View
+                    style={[
+                      s.fill,
+                      {
+                        width: `${record.progress.totalCount ? (record.progress.paidCount / record.progress.totalCount) * 100 : 100}%`,
+                      },
+                    ]}
+                  />
                 </View>
               </View>
-              <View style={[ui.row, { flexWrap: 'wrap', gap: 4 }]}>
-                {transfer.status === 'PENDING' && (
-                  <Button
-                    compact
-                    title="登记已还"
-                    variant="secondary"
-                    icon={<FigmaAsset asset={settlementAssets.check} />}
-                    disabled
-                    onPress={() => {}}
-                    style={{ paddingHorizontal: 8 }}
-                  />
+            )}
+            <View style={ui.divider} />
+            <Text accessibilityRole="header" style={ui.caption}>
+              {settled ? '结算记录' : '收付款记录'}
+            </Text>
+            {record.transfers.length === 0 && (
+              <View style={ui.card}>
+                <Text style={ui.body}>无需转账，账本已直接结清。</Text>
+              </View>
+            )}
+            {record.transfers.map((transfer) => (
+              <View
+                key={transfer.id}
+                style={[s.transfer, settled && { paddingVertical: 12, gap: 8 }]}
+              >
+                {!settled && (
+                  <View style={ui.between}>
+                    <Text style={[s.badge, transfer.status === 'PAID' && s.paid]}>
+                      {transfer.status === 'PAID' ? '已登记' : '待登记'}
+                    </Text>
+                    <Text style={s.amount}>{yuan(transfer.amountCents)}</Text>
+                  </View>
                 )}
+                <View style={ui.row}>
+                  <View
+                    accessibilityLabel={`付款人：${name(transfer.payerMemberId)}`}
+                    style={s.person}
+                  >
+                    <View style={[s.avatar, { backgroundColor: colors.peach }]}>
+                      <Text style={s.avatarText}>
+                        {Array.from(name(transfer.payerMemberId)).at(-1)}
+                      </Text>
+                    </View>
+                    <Text style={s.name}>{name(transfer.payerMemberId)}</Text>
+                  </View>
+                  <View style={s.arrow}>
+                    <FigmaAsset
+                      asset={settled ? completionAssets.arrow : settlementAssets.arrow}
+                      style={{ transform: [{ rotate: '180deg' }, { scaleY: -1 }] }}
+                    />
+                  </View>
+                  <View
+                    accessibilityLabel={`收款人：${name(transfer.payeeMemberId)}`}
+                    style={s.person}
+                  >
+                    <View style={[s.avatar, { backgroundColor: colors.mint }]}>
+                      <Text style={s.avatarText}>
+                        {Array.from(name(transfer.payeeMemberId)).at(-1)}
+                      </Text>
+                    </View>
+                    <Text style={s.name}>{name(transfer.payeeMemberId)}</Text>
+                  </View>
+                </View>
+                {settled && (
+                  <View style={ui.between}>
+                    <Text style={ui.muted}>转账金额</Text>
+                    <Text style={ui.strong}>{yuan(transfer.amountCents)}</Text>
+                  </View>
+                )}
+                {!settled && (
+                  <View style={[ui.row, { flexWrap: 'wrap', gap: 4 }]}>
+                    {record.ledgerStatus === 'SETTLING' &&
+                      transfer.status === 'PENDING' &&
+                      (creator || transfer.payerMemberId === currentLedger.myMemberId) && (
+                        <Button
+                          compact
+                          title="登记已还"
+                          variant="secondary"
+                          icon={<FigmaAsset asset={settlementAssets.check} />}
+                          disabled={action !== null}
+                          onPress={() => setAction(transfer)}
+                          style={{ paddingHorizontal: 8 }}
+                        />
+                      )}
+                    <Touch
+                      accessibilityRole="button"
+                      accessibilityLabel={`复制第 ${transfer.sequence} 笔转账信息`}
+                      disabled={copying || loading}
+                      style={{ flexGrow: 1, minHeight: 44, justifyContent: 'center' }}
+                      onPress={() => {
+                        void copy(transfer);
+                      }}
+                    >
+                      <View style={[ui.row, { gap: 6, justifyContent: 'center' }]}>
+                        <FigmaAsset asset={settlementAssets.copy} />
+                        <Text style={ui.caption}>复制转账信息</Text>
+                      </View>
+                    </Touch>
+                  </View>
+                )}
+                {transfer.registeredAt && (
+                  <Text style={ui.caption}>
+                    登记时间 {new Date(transfer.registeredAt).toLocaleString()}
+                  </Text>
+                )}
+                {transfer.registeredByMemberId && (
+                  <Text style={ui.caption}>登记人：{name(transfer.registeredByMemberId)}</Text>
+                )}
+                {transfer.registrationNote && (
+                  <Text style={ui.body}>备注：{transfer.registrationNote}</Text>
+                )}
+              </View>
+            ))}
+            {settled && (
+              <View style={[ui.card, { padding: 0, borderWidth: 1, borderColor: colors.border }]}>
                 <Touch
                   accessibilityRole="button"
-                  accessibilityLabel={`复制第 ${transfer.sequence} 笔转账信息`}
-                  disabled={copying || loading}
-                  style={{ flexGrow: 1, minHeight: 44, justifyContent: 'center' }}
-                  onPress={() => {
-                    void copy(transfer);
+                  accessibilityLabel="历史账单"
+                  onPress={() =>
+                    router.push({
+                      pathname: '/ledgers/[ledgerId]',
+                      params: { ledgerId: ledger.id },
+                    })
+                  }
+                  style={{
+                    minHeight: 52,
+                    paddingHorizontal: 20,
                   }}
                 >
-                  <View style={[ui.row, { gap: 6, justifyContent: 'center' }]}>
-                    <FigmaAsset asset={settlementAssets.copy} />
-                    <Text style={ui.caption}>复制转账信息</Text>
+                  <View style={[ui.row, { gap: 10 }]}>
+                    <View style={s.iconTile}>
+                      <FigmaAsset asset={completionAssets.ledger} />
+                    </View>
+                    <Text style={[ui.strong, ui.grow]}>历史账单</Text>
+                    <FigmaAsset asset={completionAssets.chevron} />
                   </View>
                 </Touch>
+                <View style={ui.divider} />
+                <View style={[ui.row, { paddingHorizontal: 20, paddingVertical: 8, gap: 10 }]}>
+                  <View style={s.iconTile}>
+                    <FigmaAsset asset={completionAssets.archive} />
+                  </View>
+                  <Text style={[ui.caption, ui.grow]}>
+                    账单与结算记录仅供查看，个人归档不影响其他成员。
+                  </Text>
+                </View>
               </View>
-              {transfer.registeredAt && (
-                <Text style={ui.caption}>
-                  登记时间 {new Date(transfer.registeredAt).toLocaleString()}
-                </Text>
-              )}
-              {transfer.registeredByMemberId && (
-                <Text style={ui.caption}>登记人：{name(transfer.registeredByMemberId)}</Text>
-              )}
-              {transfer.registrationNote && (
-                <Text style={ui.body}>备注：{transfer.registrationNote}</Text>
-              )}
-            </View>
-          ))}
-          <View style={s.notice}>
-            <FigmaAsset asset={settlementAssets.info} />
-            <View style={ui.grow}>
-              <Text style={[ui.strong, { color: colors.warning, fontSize: 13 }]}>
-                在应用外完成转账
+            )}
+            {!settled && (
+              <View style={s.notice}>
+                <FigmaAsset asset={settlementAssets.info} />
+                <View style={ui.grow}>
+                  <Text style={[ui.strong, { color: colors.warning, fontSize: 13 }]}>
+                    在应用外完成转账
+                  </Text>
+                  <Text style={ui.caption}>
+                    登记已还仅记录转账状态，请自行核实到账，应用不验证到账情况。
+                  </Text>
+                </View>
+              </View>
+            )}
+            <View style={ui.card}>
+              <Text style={ui.strong}>正式批次</Text>
+              <Text selectable style={ui.caption}>
+                {record.id}
               </Text>
               <Text style={ui.caption}>
-                登记已还仅记录转账状态，请自行核实到账，应用不验证到账情况。
+                冻结前版本 {record.sourceVersion} · {record.algorithmVersion}
+              </Text>
+              <Text style={ui.caption}>创建时间 {new Date(record.createdAt).toLocaleString()}</Text>
+              <Text style={ui.caption}>
+                消费总额 {yuan(record.expenseTotalCents)} · 转账共 {record.transferCount} 笔，合计{' '}
+                {yuan(record.transferTotalCents)}
               </Text>
             </View>
-          </View>
-          <View style={ui.card}>
-            <Text style={ui.strong}>正式批次</Text>
-            <Text selectable style={ui.caption}>
-              {record.id}
-            </Text>
-            <Text style={ui.caption}>
-              冻结前版本 {record.sourceVersion} · {record.algorithmVersion}
-            </Text>
-            <Text style={ui.caption}>创建时间 {new Date(record.createdAt).toLocaleString()}</Text>
-            <Text style={ui.caption}>
-              消费总额 {yuan(record.expenseTotalCents)} · 转账共 {record.transferCount} 笔，合计{' '}
-              {yuan(record.transferTotalCents)}
-            </Text>
-          </View>
-          <Text style={ui.caption}>
-            还款登记、确认结清与个人归档入口由后续任务接入。本页只展示在线查询的正式记录。
-          </Text>
-          <Button title="刷新正式记录" variant="secondary" onPress={refresh} />
-        </>
+            <Button title="刷新正式记录" variant="secondary" onPress={refresh} />
+          </>
+        )}
+      </Screen>
+      {action !== null && action !== 'archive' && (
+        <SettlementActionSheet
+          ledgerId={ledger.id}
+          ledgerName={ledger.name}
+          transferCount={record?.transferCount ?? 0}
+          transfer={action === 'settle' ? null : action}
+          name={name}
+          onCancel={() => setAction(null)}
+          onDone={() => {
+            setAction(null);
+            void client.invalidateQueries({ queryKey: ['user', user!.id] });
+            void query.refetch();
+          }}
+        />
       )}
-    </Screen>
+      {action === 'archive' && (
+        <ArchiveLedgerSheet
+          ledger={currentLedger}
+          userId={user!.id}
+          onCancel={() => setAction(null)}
+        />
+      )}
+    </>
   );
 }
 const s = StyleSheet.create({
+  iconTile: {
+    width: 36,
+    height: 36,
+    borderRadius: 12,
+    backgroundColor: colors.primarySoft,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   frozen: {
     alignSelf: 'flex-start',
     backgroundColor: colors.primarySoft,

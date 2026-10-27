@@ -1,3 +1,6 @@
+import { ArchiveLedgerSheet } from '../components/ArchiveLedgerSheet';
+import { LedgerCover } from '../components/LedgerCover';
+import { Stack } from 'expo-router';
 import { useState } from 'react';
 import { Text, View } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
@@ -28,6 +31,7 @@ export default function LedgerDetailScreen() {
     () => ledgersApi.getLedger({ params: { ledgerId }, query: {}, body: undefined }),
     valid,
   );
+  const [archiving, setArchiving] = useState(false);
   const [members, setMembers] = useState(false);
   const ledger = query.data?.data;
   const loading = valid && (query.isPending || query.isFetching);
@@ -106,6 +110,24 @@ export default function LedgerDetailScreen() {
         </RequestState>
       ) : (
         <>
+          <Stack.Screen options={{ gestureEnabled: !archiving }} />
+          {ledger.coverImageId && (
+            <LedgerCover coverKey={ledger.coverKey} imageId={ledger.coverImageId} preview />
+          )}
+          {ledger.archivedAt && <Text style={ui.caption}>已个人归档 · 历史详情只读</Text>}
+          {ledger.status !== 'ACTIVE' && (
+            <Text style={ui.caption}>账本已冻结，消费与分摊只读。</Text>
+          )}
+          {ledger.status === 'SETTLED' && !ledger.archivedAt && (
+            <Button title="个人归档" variant="secondary" onPress={() => setArchiving(true)} />
+          )}
+          {archiving && (
+            <ArchiveLedgerSheet
+              ledger={ledger}
+              userId={user!.id}
+              onCancel={() => setArchiving(false)}
+            />
+          )}
           {empty ? (
             <EmptyLedger
               totalCents={ledger.expenseTotalCents}

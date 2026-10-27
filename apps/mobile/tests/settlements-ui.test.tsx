@@ -11,15 +11,22 @@ import { createQueryClient } from '../src/lib/query-client';
 const userId = '00000000-0000-4000-8000-000000000001';
 const ledgerId = '00000000-0000-4000-8000-000000000002';
 const otherId = '00000000-0000-4000-8000-000000000003';
+let mockUserId = userId;
 let mockKeyNumber = 0;
 let mockLedgerId = ledgerId;
-jest.mock('../src/providers/AuthProvider', () => ({ useAuth: () => ({ user: { id: userId } }) }));
-jest.mock('../src/features/ledgers/api', () => ({ ledgersApi: { getLedger: jest.fn() } }));
+jest.mock('../src/providers/AuthProvider', () => ({
+  useAuth: () => ({ user: { id: mockUserId } }),
+}));
+jest.mock('../src/features/ledgers/api', () => ({
+  ledgersApi: { getLedger: jest.fn(), archiveLedger: jest.fn() },
+}));
 jest.mock('../src/features/settlements/api', () => ({
   settlementsApi: {
     previewSettlement: jest.fn(),
     startSettlement: jest.fn(),
     getSettlement: jest.fn(),
+    markTransferPaid: jest.fn(),
+    settleLedger: jest.fn(),
   },
 }));
 jest.mock('../src/lib/api', () => ({
@@ -155,7 +162,10 @@ async function confirm() {
 beforeEach(() => {
   jest.clearAllMocks();
   for (const callback of [get, start, read, preview]) callback.mockReset();
+  mockUserId = userId;
   mockKeyNumber = 0;
+  jest.mocked(settlementsApi.markTransferPaid).mockReset();
+  jest.mocked(settlementsApi.settleLedger).mockReset();
   mockLedgerId = ledgerId;
   jest.mocked(setStringAsync).mockResolvedValue(true);
   get.mockResolvedValue({ data: ledger });
@@ -340,5 +350,138 @@ describe('formal settlement UI with isolated API callbacks', () => {
     await screen.findByRole('button', { name: '正式发起结算' });
     expect(screen.queryByText(record.id)).toBeNull();
     expect(read).toHaveBeenCalledTimes(1);
+  });
+});
+
+const paidRecord = {
+  ...record,
+  transfers: record.transfers.map((t) => ({
+    ...t,
+    status: 'PAID' as const,
+    registeredByMemberId: otherId,
+    registeredAt: timestamp,
+    registrationNote: '已核实',
+  })),
+  progress: { paidCount: 1, totalCount: 1, remainingCents: '0' },
+};
+const zeroLedger = {
+  ...ledger,
+  status: 'SETTLING' as const,
+  myRemainingNetCents: '0',
+  members: ledger.members.map((m) => ({ ...m, remainingNetCents: '0' })),
+};
+async function openRecord() {
+  get.mockResolvedValue({ data: { ...ledger, status: 'SETTLING' } });
+  await show();
+  await screen.findByText('收付款记录');
+}
+describe('repayment and completion interactions (API replacements)', () => {
+  it('requires confirmation and a whole-transfer registration; retains note/key, blocks duplicate clicks and cancellation on timeout', async () => {
+    const mark = jest.mocked(settlementsApi.markTransferPaid);
+    let reject!: (error: unknown) => void;
+    mark.mockImplementationOnce(
+      () =>
+        new Promise((_, fail) => {
+          reject = fail;
+        }),
+    );
+    await openRecord();
+    expect(screen.getByRole('button', { name: '确认整本结清' })).toBeDisabled();
+    await userEvent.press(screen.getByRole('button', { name: '登记已还' }));
+    expect(mark).not.toHaveBeenCalled();
+    await userEvent.press(screen.getByRole('button', { name: '取消' }));
+    await userEvent.press(screen.getByRole('button', { name: '登记已还' }));
+    await fireEvent.changeText(screen.getByLabelText('登记说明（选填）'), ' 已核实 ');
+    const confirm = screen.getByRole('button', { name: '确认登记已还' });
+    await fireEvent.press(confirm);
+    await fireEvent.press(confirm);
+    expect(mark).toHaveBeenCalledTimes(1);
+    reject(new ApiError('REQUEST_TIMEOUT', '登记超时'));
+    await screen.findByText('登记超时');
+    expect(screen.getByLabelText('登记说明（选填）')).toHaveDisplayValue(' 已核实 ');
+    expect(screen.getByRole('button', { name: '取消' })).toBeDisabled();
+    expect(screen.getByLabelText('登记说明（选填）')).toBeDisabled();
+    read.mockResolvedValue({ data: paidRecord });
+    get.mockResolvedValue({ data: zeroLedger });
+    mark.mockResolvedValue({
+      data: { transfer: paidRecord.transfers[0]!, progress: paidRecord.progress },
+    });
+    await userEvent.press(screen.getByRole('button', { name: '重试原提交' }));
+    await screen.findByText('全部转账已登记');
+    expect(mark.mock.calls[0]).toEqual(mark.mock.calls[1]);
+    expect(mark.mock.calls[1]?.[0]).toEqual({
+      params: { ledgerId, transferId: otherId },
+      query: {},
+      body: { note: '已核实' },
+    });
+    expect(screen.getByRole('button', { name: '确认整本结清' })).toBeEnabled();
+  });
+  it('keeps an unconfirmed read in the panel, then resolves a committed registration online without another write', async () => {
+    const mark = jest.mocked(settlementsApi.markTransferPaid);
+    mark.mockRejectedValueOnce(new ApiError('REQUEST_TIMEOUT', '登记超时'));
+    await openRecord();
+    await userEvent.press(screen.getByRole('button', { name: '登记已还' }));
+    await userEvent.press(screen.getByRole('button', { name: '确认登记已还' }));
+    await screen.findByText('登记超时');
+    await userEvent.press(screen.getByRole('button', { name: '在线核对结果' }));
+    await screen.findByText('暂未确认操作完成；原提交已保留，请显式重试或再次在线核对。');
+    expect(screen.getByRole('button', { name: '取消' })).toBeDisabled();
+    read.mockResolvedValue({ data: paidRecord });
+    get.mockResolvedValue({ data: zeroLedger });
+    await userEvent.press(screen.getByRole('button', { name: '在线核对结果' }));
+    await screen.findByText('全部转账已登记');
+    expect(mark).toHaveBeenCalledTimes(1);
+  });
+  it.each([true, false])(
+    'permits a payer and rejects a payee who is not creator (payer=%s)',
+    async (payer) => {
+      mockUserId = payer ? otherId : userId;
+      get.mockResolvedValue({
+        data: { ...ledger, status: 'SETTLING', creatorUserId: ledgerId, myMemberId: mockUserId },
+      });
+      await show();
+      await screen.findByText('收付款记录');
+      if (payer) expect(screen.getByRole('button', { name: '登记已还' })).toBeEnabled();
+      else expect(screen.queryByRole('button', { name: '登记已还' })).toBeNull();
+      expect(screen.queryByRole('button', { name: '确认整本结清' })).toBeNull();
+    },
+  );
+  it('retains server permission errors in the repayment panel without changing progress', async () => {
+    jest
+      .mocked(settlementsApi.markTransferPaid)
+      .mockRejectedValueOnce(new ApiError('FORBIDDEN', '仅付款人或创建者可登记', 403));
+    await openRecord();
+    await userEvent.press(screen.getByRole('button', { name: '登记已还' }));
+    await userEvent.press(screen.getByRole('button', { name: '确认登记已还' }));
+    await screen.findByText('仅付款人或创建者可登记');
+    await userEvent.press(screen.getByRole('button', { name: '取消' }));
+    expect(screen.getByText('0 / 1 笔已登记')).toBeOnTheScreen();
+  });
+  it('requires every member balance to be zero before allowing creator completion', async () => {
+    read.mockResolvedValue({ data: paidRecord });
+    await openRecord();
+    expect(screen.getByRole('button', { name: '确认整本结清' })).toBeDisabled();
+  });
+  it('confirms completion, resolves an unknown result online, then exposes the read-only history and archive entry', async () => {
+    const settle = jest.mocked(settlementsApi.settleLedger);
+    settle.mockRejectedValueOnce(new ApiError('NETWORK_ERROR', '结清结果未知'));
+    get.mockResolvedValue({ data: zeroLedger });
+    read.mockResolvedValue({ data: paidRecord });
+    await show();
+    await screen.findByText('全部转账已登记');
+    await userEvent.press(screen.getByRole('button', { name: '确认整本结清' }));
+    expect(settle).not.toHaveBeenCalled();
+    await userEvent.press(screen.getByRole('button', { name: '返回核对' }));
+    await userEvent.press(screen.getByRole('button', { name: '确认整本结清' }));
+    await userEvent.press(screen.getByRole('button', { name: '确认结清' }));
+    await screen.findByText('结清结果未知');
+    read.mockResolvedValue({ data: { ...paidRecord, ledgerStatus: 'SETTLED' } });
+    get.mockResolvedValue({ data: { ...zeroLedger, status: 'SETTLED' } });
+    await userEvent.press(screen.getByRole('button', { name: '在线核对结果' }));
+    await screen.findByText('账本已结清');
+    expect(screen.getByRole('button', { name: '归档账本' })).toBeEnabled();
+    expect(screen.getByRole('button', { name: '历史账单' })).toBeEnabled();
+    expect(screen.queryByRole('button', { name: '登记已还' })).toBeNull();
+    expect(settle).toHaveBeenCalledTimes(1);
   });
 });

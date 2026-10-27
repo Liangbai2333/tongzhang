@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { router, useFocusEffect } from 'expo-router';
+import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { Screen, ui } from '@/components/Screen';
 import { Button } from '@/components/Button';
@@ -19,6 +19,7 @@ import { remaining, statusLabels, yuan } from '../presentation';
 
 export default function LedgerListScreen() {
   const { user } = useAuth();
+  const { archivedNotice } = useLocalSearchParams<{ archivedNotice?: string }>();
   const [menu, setMenu] = useState(false);
   const [archived, setArchived] = useState(false);
   const query = useInfiniteQuery({
@@ -63,6 +64,20 @@ export default function LedgerListScreen() {
         void refetch();
       }}
     >
+      {archivedNotice && !archived && !loading && !failed && (
+        <View style={[ui.card, { backgroundColor: colors.mint }]}>
+          <Text accessibilityLiveRegion="polite" style={ui.strong}>
+            账本已归档
+          </Text>
+          <Text style={ui.caption}>仅从你的当前列表移出，历史记录仍可查看。</Text>
+          <Button
+            compact
+            title="查看历史账本"
+            variant="secondary"
+            onPress={() => setArchived(true)}
+          />
+        </View>
+      )}
       <View style={styles.welcome}>
         <View style={ui.grow}>
           <Text style={styles.greeting}>
@@ -123,7 +138,7 @@ export default function LedgerListScreen() {
                 <View style={styles.cardContent}>
                   <View style={ui.between}>
                     <View style={[styles.identity, ui.grow]}>
-                      <LedgerCover coverKey={ledger.coverKey} />
+                      <LedgerCover imageId={ledger.coverImageId} coverKey={ledger.coverKey} />
                       <View style={ui.grow}>
                         <Text style={ui.body}>{ledger.name}</Text>
                         <Text style={ui.caption}>{ledger.memberCount} 位成员</Text>

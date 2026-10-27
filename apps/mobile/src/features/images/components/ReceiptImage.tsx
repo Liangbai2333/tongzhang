@@ -1,3 +1,6 @@
+import { ActivityIndicator, Text, View } from 'react-native';
+import { Touch } from '@/components/Touch';
+import { colors } from '@/theme/tokens';
 import { Image } from 'expo-image';
 import { MAX_IMAGE_BYTES } from '@tongzhang/contracts';
 import { RequestState } from '@/components/Feedback';
@@ -22,7 +25,15 @@ export function imageDataUri(content: Uint8Array, mimeType: string) {
   }
   return `data:${mimeType};base64,${base64}`;
 }
-export function ReceiptImage({ imageId }: { imageId: string }) {
+export function AuthorizedImage({
+  imageId,
+  label = '收据图片',
+  height = 340,
+}: {
+  imageId: string;
+  label?: string;
+  height?: number;
+}) {
   const { user } = useAuth();
   const query = useOnlineQuery(['user', user!.id, 'image', imageId], async () => {
     const result = await imagesApi.read(imageId);
@@ -30,11 +41,29 @@ export function ReceiptImage({ imageId }: { imageId: string }) {
       throw new ApiError('INVALID_IMAGE', '图片超过允许大小');
     return imageDataUri(result.content, result.mimeType);
   });
+  if (height <= 60 && (query.isPending || query.isFetching || query.isError))
+    return (
+      <View style={{ height, width: height, alignItems: 'center', justifyContent: 'center' }}>
+        {query.isError ? (
+          <Touch
+            accessibilityRole="button"
+            accessibilityLabel="重新读取账本封面"
+            onPress={() => {
+              void query.refetch();
+            }}
+          >
+            <Text style={{ color: colors.muted, fontSize: 10 }}>重试</Text>
+          </Touch>
+        ) : (
+          <ActivityIndicator size="small" color={colors.muted} />
+        )}
+      </View>
+    );
   if (query.isPending || query.isFetching || query.isError)
     return (
       <RequestState
         loading={query.isPending || query.isFetching}
-        title="暂时无法读取收据"
+        title={`暂时无法读取${label}`}
         description="图片需在线核验成员权限，请手动重试。"
         error={query.error}
         onRetry={() => {
@@ -45,11 +74,15 @@ export function ReceiptImage({ imageId }: { imageId: string }) {
   return (
     <Image
       accessible
-      accessibilityLabel="收据图片"
+      accessibilityLabel={label}
       source={{ uri: query.data }}
       cachePolicy="none"
       contentFit="contain"
-      style={{ width: '100%', height: 340 }}
+      style={{ width: '100%', height }}
     />
   );
+}
+
+export function ReceiptImage({ imageId }: { imageId: string }) {
+  return <AuthorizedImage imageId={imageId} />;
 }

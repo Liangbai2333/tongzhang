@@ -1,5 +1,7 @@
-import { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { useEffect, useRef, useState } from 'react';
+import { BackHandler, StyleSheet, Text, View } from 'react-native';
+import { Image } from 'expo-image';
+import { useImageSelection } from '@/features/images/use-receipt';
 import { router, Stack } from 'expo-router';
 import { createLedgerBodySchema } from '@tongzhang/contracts';
 import { useQueryClient } from '@tanstack/react-query';
@@ -25,35 +27,57 @@ export default function CreateLedgerScreen() {
   const [coverKey, setCoverKey] = useState<CoverKey>('mountain');
   const [fieldError, setFieldError] = useState<string>();
   const write = useIdempotentWrite();
+  const cover = useImageSelection('COVER');
+  const submitLock = useRef(false);
+  const [submitting, setSubmitting] = useState(false);
+  const busy = submitting || write.busy || cover.busy;
+  const locked = busy || write.uncertain;
+  useEffect(() => {
+    const subscription = BackHandler.addEventListener('hardwareBackPress', () => busy);
+    return () => subscription.remove();
+  }, [busy]);
   async function create() {
-    const body = createLedgerBodySchema.safeParse({ name, coverKey });
-    if (!body.success) {
+    if (submitLock.current || cover.busy) return;
+    if (!name.trim() || name.trim().length > 40) {
       setFieldError('请输入 1–40 个字符的账本名称');
       return;
     }
     setFieldError(undefined);
-    const result = await write.submit(body.data, (key) =>
-      ledgersApi.createLedger({ params: {}, query: {}, body: body.data }, { idempotencyKey: key }),
-    );
-    if (result) {
-      void client.invalidateQueries({ queryKey: ledgersKeys.root(user!.id) });
-      router.replace({
-        pathname: '/ledgers/[ledgerId]/invitation',
-        params: { ledgerId: result.data.ledger.id },
+    submitLock.current = true;
+    setSubmitting(true);
+    try {
+      const imageId = await cover.upload();
+      if (imageId === undefined) return;
+      const body = createLedgerBodySchema.parse({
+        name,
+        ...(imageId ? { coverImageId: imageId } : { coverKey }),
       });
+      const result = await write.submit(body, (key) =>
+        ledgersApi.createLedger({ params: {}, query: {}, body }, { idempotencyKey: key }),
+      );
+      if (result) {
+        void client.invalidateQueries({ queryKey: ledgersKeys.root(user!.id) });
+        router.replace({
+          pathname: '/ledgers/[ledgerId]/invitation',
+          params: { ledgerId: result.data.ledger.id },
+        });
+      }
+    } finally {
+      submitLock.current = false;
+      setSubmitting(false);
     }
   }
-  const locked = write.busy || write.uncertain;
   return (
     <>
-      <Stack.Screen options={{ gestureEnabled: !write.busy }} />
+      <Stack.Screen options={{ gestureEnabled: !busy }} />
       <Screen
         title="创建账本"
         variant="ledger"
         contentStyle={{ paddingTop: 8 }}
-        backDisabled={write.busy}
+        backDisabled={busy}
         footer={
           <>
+            <InlineError message={cover.error} />
             <InlineError message={write.error ? requestErrorMessage(write.error) : null} />
             {write.uncertain && (
               <Text style={ui.muted}>
@@ -62,7 +86,7 @@ export default function CreateLedgerScreen() {
             )}
             <Button
               title={write.uncertain ? '重试原提交' : '创建并邀请成员'}
-              loading={write.busy}
+              loading={busy}
               onPress={() => {
                 void create();
               }}
@@ -89,38 +113,75 @@ export default function CreateLedgerScreen() {
             <View style={styles.marker} />
             <Text style={ui.muted}>账本封面</Text>
           </View>
-          <LedgerCover coverKey={coverKey} preview />
+          {cover.value ? (
+            <View style={{ gap: 8 }}>
+              <Image
+                accessibilityLabel="自定义封面预览"
+                source={{ uri: cover.value.uri }}
+                cachePolicy="none"
+                contentFit="cover"
+                style={{ width: '100%', height: 180, borderRadius: 20 }}
+              />
+              <Text style={ui.caption}>
+                自定义封面 · {cover.value.byteSize} 字节
+                {cover.value.imageId ? ' · 已上传，待创建绑定' : ''}
+              </Text>
+            </View>
+          ) : (
+            <LedgerCover coverKey={coverKey} preview />
+          )}
           <View style={styles.choices}>
             {(Object.keys(covers) as CoverKey[]).map((key) => (
               <Touch
                 key={key}
                 accessibilityRole="radio"
                 accessibilityLabel={covers[key].label}
-                accessibilityState={{ selected: key === coverKey, disabled: locked }}
+                accessibilityState={{
+                  selected: !cover.value && key === coverKey,
+                  disabled: locked,
+                }}
                 disabled={locked}
-                onPress={() => setCoverKey(key)}
+                onPress={() => {
+                  cover.remove();
+                  setCoverKey(key);
+                }}
                 style={styles.choice}
               >
                 <View style={styles.choiceContent}>
-                  <Text style={[styles.choiceText, key === coverKey && styles.selectedText]}>
+                  <Text
+                    style={[
+                      styles.choiceText,
+                      !cover.value && key === coverKey && styles.selectedText,
+                    ]}
+                  >
                     {
                       ({ mountain: '山野', dining: '聚餐', city: '城市', plain: '日常' } as const)[
                         key
                       ]
                     }
                   </Text>
-                  {key === coverKey && <FigmaAsset asset={ledgerAssets.check} />}
+                  {!cover.value && key === coverKey && <FigmaAsset asset={ledgerAssets.check} />}
                 </View>
               </Touch>
             ))}
           </View>
-          <View style={styles.upload} accessibilityLabel="上传自己的封面图片，暂未开放">
-            <View style={styles.addTile}>
-              <FigmaAsset asset={ledgerAssets.add} />
+          <Touch
+            style={styles.upload}
+            accessibilityRole="button"
+            accessibilityLabel="从相册选择自定义封面"
+            disabled={locked}
+            onPress={() => {
+              void cover.select(false);
+            }}
+          >
+            <View style={[ui.row, { gap: 8 }]}>
+              <View style={styles.addTile}>
+                <FigmaAsset asset={ledgerAssets.add} />
+              </View>
+              <Text style={[ui.muted, ui.grow]}>上传自己的封面图片</Text>
+              <Text style={ui.caption}>{cover.busy ? '处理中' : '选择图片'}</Text>
             </View>
-            <Text style={[ui.muted, ui.grow]}>上传自己的封面图片</Text>
-            <Text style={ui.caption}>暂未开放</Text>
-          </View>
+          </Touch>
         </View>
         <View style={styles.notice}>
           <FigmaAsset asset={ledgerAssets.info} />
@@ -154,9 +215,6 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     paddingHorizontal: 16,
     paddingVertical: 14,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
   },
   addTile: {
     width: 28,
