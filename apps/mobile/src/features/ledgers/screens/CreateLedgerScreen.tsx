@@ -33,9 +33,9 @@ export default function CreateLedgerScreen() {
   const busy = submitting || write.busy || cover.busy;
   const locked = busy || write.uncertain;
   useEffect(() => {
-    const subscription = BackHandler.addEventListener('hardwareBackPress', () => busy);
+    const subscription = BackHandler.addEventListener('hardwareBackPress', () => locked);
     return () => subscription.remove();
-  }, [busy]);
+  }, [locked]);
   async function create() {
     if (submitLock.current || cover.busy) return;
     if (!name.trim() || name.trim().length > 40) {
@@ -69,12 +69,12 @@ export default function CreateLedgerScreen() {
   }
   return (
     <>
-      <Stack.Screen options={{ gestureEnabled: !busy }} />
+      <Stack.Screen options={{ gestureEnabled: !locked }} />
       <Screen
         title="创建账本"
         variant="ledger"
         contentStyle={{ paddingTop: 8 }}
-        backDisabled={busy}
+        backDisabled={locked}
         footer={
           <>
             <InlineError message={cover.error} />
@@ -91,6 +91,14 @@ export default function CreateLedgerScreen() {
                 void create();
               }}
             />
+            {write.uncertain && (
+              <Button
+                title="返回账本列表在线核对"
+                variant="secondary"
+                disabled={busy}
+                onPress={() => router.replace('/ledgers')}
+              />
+            )}
           </>
         }
       >

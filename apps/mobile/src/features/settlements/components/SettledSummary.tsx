@@ -27,11 +27,11 @@ export function SettledSummary({
       <View style={[ui.row, { flexWrap: 'wrap', gap: 8 }]}>
         <View style={s.stat}>
           <FigmaAsset asset={completionAssets.transferDot} />
-          <Text style={ui.caption}>{transfers} 笔转账</Text>
+          <Text style={s.statText}>{transfers} 笔转账</Text>
         </View>
         <View style={s.stat}>
           <FigmaAsset asset={completionAssets.memberDot} />
-          <Text style={ui.caption}>{members} 位成员</Text>
+          <Text style={s.statText}>{members} 位成员</Text>
         </View>
       </View>
     </View>
@@ -56,6 +56,7 @@ const s = StyleSheet.create({
   title: { color: colors.text, fontSize: 22, fontWeight: '700', lineHeight: 30 },
   caption: { color: colors.success, fontSize: 11, lineHeight: 16, letterSpacing: 0.5 },
   amount: { color: colors.text, fontSize: 32, lineHeight: 42, fontWeight: '700' },
+  statText: { color: colors.text, fontSize: 12, lineHeight: 17, fontWeight: '700' },
   stat: {
     flexDirection: 'row',
     alignItems: 'center',

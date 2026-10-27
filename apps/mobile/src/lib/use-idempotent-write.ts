@@ -9,6 +9,7 @@ const RETRY_WINDOW = 24 * 60 * 60 * 1000;
 export function useIdempotentWrite() {
   const locked = useRef(false);
   const completed = useRef(false);
+  const unresolved = useRef(false);
   const mounted = useRef(true);
   const attempt = useRef<{ payload: string; key: string; startedAt: number } | null>(null);
   const [busy, setBusy] = useState(false);
@@ -40,7 +41,7 @@ export function useIdempotentWrite() {
       );
       return;
     }
-    if (uncertain && attempt.current?.payload !== payload) {
+    if (unresolved.current && attempt.current?.payload !== payload) {
       setError(
         new ApiError('RESULT_UNKNOWN', '上次提交结果尚未确认，请先重试原提交或返回列表核对'),
       );
@@ -55,18 +56,22 @@ export function useIdempotentWrite() {
       const result = await send(attempt.current!.key);
       if (!mounted.current) return;
       completed.current = true;
+      unresolved.current = false;
       setUncertain(false);
       return result;
     } catch (cause) {
       if (mounted.current) {
         setError(cause);
-        setUncertain(
+        // A rejected retry says nothing about an earlier request that may have committed.
+        // Only a confirmed success or the caller's explicit online reconciliation resolves it.
+        unresolved.current =
+          unresolved.current ||
           !(cause instanceof ApiError) ||
-            ['REQUEST_TIMEOUT', 'NETWORK_ERROR', 'INVALID_RESPONSE', 'HTTP_ERROR'].includes(
-              cause.code,
-            ) ||
-            (cause.status ?? 0) >= 500,
-        );
+          ['REQUEST_TIMEOUT', 'NETWORK_ERROR', 'INVALID_RESPONSE', 'HTTP_ERROR'].includes(
+            cause.code,
+          ) ||
+          (cause.status ?? 0) >= 500;
+        setUncertain(unresolved.current);
       }
     } finally {
       locked.current = false;
@@ -74,7 +79,7 @@ export function useIdempotentWrite() {
     }
   }
   function reset() {
-    if (locked.current || uncertain) return;
+    if (locked.current || unresolved.current) return;
     completed.current = false;
     attempt.current = null;
     setError(null);

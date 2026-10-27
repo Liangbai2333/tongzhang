@@ -21,7 +21,7 @@ export function Field({
   trailingIcon?: DesignAsset;
   error?: string;
   passwordHiddenIcon?: DesignAsset;
-  variant?: 'default' | 'inset' | 'compact';
+  variant?: 'default' | 'inset' | 'compact' | 'panel';
 }) {
   const [focused, setFocused] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -45,20 +45,29 @@ export function Field({
         props.style,
         variant === 'inset' && styles.insetInput,
         variant === 'compact' && styles.compactInput,
+        variant === 'panel' && styles.panelInput,
       ]}
     />
   );
   return (
-    <View style={{ gap: variant === 'compact' ? 4 : 8 }}>
+    <View style={{ gap: variant === 'compact' ? 4 : variant === 'panel' ? 12 : 8 }}>
       <View style={variant === 'inset' ? styles.labelRow : undefined}>
         {variant === 'inset' && <View style={styles.labelMarker} />}
-        <Text style={variant === 'inset' ? ui.muted : ui.caption}>{label}</Text>
+        <Text
+          style={[
+            variant === 'inset' ? ui.muted : ui.caption,
+            variant === 'panel' && styles.panelLabel,
+          ]}
+        >
+          {label}
+        </Text>
       </View>
       <View
         style={[
           styles.field,
           variant === 'inset' && styles.inset,
           variant === 'compact' && styles.compactField,
+          variant === 'panel' && styles.panelField,
           focused && styles.focused,
           error && { borderColor: colors.danger },
         ]}
@@ -112,6 +121,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     minHeight: 56,
   },
+  panelField: { minHeight: 50, borderRadius: 10, borderWidth: 1, paddingHorizontal: 14 },
+  panelInput: { paddingVertical: 14, fontSize: 14, lineHeight: 20 },
+  panelLabel: { fontSize: 13, lineHeight: 19 },
   compactField: { minHeight: 44 },
   compactInput: { paddingVertical: 8 },
   focused: { borderColor: colors.primary },

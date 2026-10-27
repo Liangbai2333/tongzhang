@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 import { QueryClientProvider } from '@tanstack/react-query';
-import { fireEvent, render, screen, userEvent, waitFor } from '@testing-library/react-native';
+import { act, fireEvent, render, screen, userEvent, waitFor } from '@testing-library/react-native';
 import { router } from 'expo-router';
 import type { EndpointOutput } from '@tongzhang/contracts';
 import CreateLedgerScreen from '../src/features/ledgers/screens/CreateLedgerScreen';
@@ -131,6 +131,7 @@ async function previewCode() {
 }
 beforeEach(() => {
   jest.clearAllMocks();
+  mockParams.ledgerId = ledgerId;
   mockKeyNumber = 0;
   jest.mocked(imagesApi.upload).mockReset();
   jest.mocked(selectReceipt).mockReset();
@@ -552,4 +553,89 @@ describe('custom covers and personal archive (API/native replacements)', () => {
     await screen.findByRole('button', { name: '查看成员 · 1 / 12' });
     expect(screen.queryByRole('button', { name: '个人归档' })).toBeNull();
   });
+});
+
+it('retains unknown create locks across an offline retry and offers an explicit online check instead of ordinary back navigation', async () => {
+  create
+    .mockRejectedValueOnce(new ApiError('REQUEST_TIMEOUT', '创建超时'))
+    .mockRejectedValueOnce(new ApiError('NETWORK_UNAVAILABLE', '当前断网'));
+  await show(<CreateLedgerScreen />);
+  await fireEvent.changeText(screen.getByLabelText('账本名称'), '原账本');
+  await userEvent.press(screen.getByRole('button', { name: '创建并邀请成员' }));
+  await screen.findByText('创建超时');
+  await userEvent.press(screen.getByRole('button', { name: '重试原提交' }));
+  await screen.findByText('当前断网');
+  expect(screen.getByLabelText('账本名称')).toBeDisabled();
+  expect(screen.getByRole('button', { name: '返回' })).toBeDisabled();
+  expect(screen.getByRole('button', { name: '从相册选择自定义封面' })).toBeDisabled();
+  expect(create.mock.calls[0]).toEqual(create.mock.calls[1]);
+  expect(create).toHaveBeenCalledTimes(2);
+  await userEvent.press(screen.getByRole('button', { name: '返回账本列表在线核对' }));
+  expect(router.replace).toHaveBeenCalledWith('/ledgers');
+  expect(create).toHaveBeenCalledTimes(2);
+});
+
+it('does not carry an unresolved archive confirmation into another ledger in the same route instance', async () => {
+  get.mockResolvedValue({ data: { ...detail, status: 'SETTLED' } });
+  const archive = jest.mocked(ledgersApi.archiveLedger);
+  archive.mockRejectedValueOnce(new ApiError('REQUEST_TIMEOUT', '归档仍未知'));
+  const client = createQueryClient();
+  const node = () => (
+    <QueryClientProvider client={client}>
+      <LedgerDetailScreen />
+    </QueryClientProvider>
+  );
+  const view = await render(node());
+  await userEvent.press(await screen.findByRole('button', { name: '个人归档' }));
+  await userEvent.press(screen.getByRole('button', { name: '确认归档' }));
+  await screen.findByText('归档仍未知');
+  const nextId = '00000000-0000-4000-8000-000000000009';
+  mockParams.ledgerId = nextId;
+  get.mockResolvedValue({ data: { ...detail, id: nextId, name: '另一账本', status: 'SETTLED' } });
+  await view.rerender(node());
+  await waitFor(() => expect(get.mock.calls.at(-1)?.[0].params.ledgerId).toBe(nextId));
+  await screen.findByRole('header', { name: '另一账本', includeHiddenElements: true });
+  expect(screen.queryByRole('header', { name: '确认归档账本？' })).toBeNull();
+  expect(archive).toHaveBeenCalledTimes(1);
+});
+
+it('keeps the unresolved archive attempt mounted while its ledger is refetched', async () => {
+  const settled = { data: { ...detail, status: 'SETTLED' as const } };
+  get.mockResolvedValue(settled);
+  const archive = jest.mocked(ledgersApi.archiveLedger);
+  archive.mockRejectedValueOnce(new ApiError('REQUEST_TIMEOUT', '归档仍未知'));
+  const client = createQueryClient();
+  const view = await render(
+    <QueryClientProvider client={client}>
+      <LedgerDetailScreen />
+    </QueryClientProvider>,
+  );
+  await userEvent.press(await screen.findByRole('button', { name: '个人归档' }));
+  await userEvent.press(screen.getByRole('button', { name: '确认归档' }));
+  await screen.findByText('归档仍未知');
+  let resolve!: (value: typeof settled) => void;
+  get.mockImplementationOnce(
+    () =>
+      new Promise((done) => {
+        resolve = done;
+      }),
+  );
+  let refetch!: Promise<typeof settled>;
+  await act(async () => {
+    refetch = client.fetchQuery({
+      queryKey: ['user', userId, 'ledgers', ledgerId],
+      staleTime: 0,
+      queryFn: () => get({ params: { ledgerId }, query: {}, body: undefined }),
+    });
+  });
+  await waitFor(() => expect(get).toHaveBeenCalledTimes(2));
+  expect(screen.getByText('归档仍未知')).toBeOnTheScreen();
+  await act(async () => {
+    resolve(settled);
+    await refetch;
+  });
+  await userEvent.press(await screen.findByRole('button', { name: '重试原提交' }));
+  expect(archive.mock.calls[0]).toEqual(archive.mock.calls[1]);
+  await view.unmount();
+  client.clear();
 });
