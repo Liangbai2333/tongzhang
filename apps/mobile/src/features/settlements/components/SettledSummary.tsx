@@ -24,7 +24,7 @@ export function SettledSummary({
         <Text style={s.caption}>本次账本总支出</Text>
         <Text style={s.amount}>{yuan(total)}</Text>
       </View>
-      <View style={[ui.row, { flexWrap: 'wrap', gap: 8 }]}>
+      <View style={[ui.row, { flexWrap: 'wrap', gap: 8, marginTop: 2 }]}>
         <View style={s.stat}>
           <FigmaAsset asset={completionAssets.transferDot} />
           <Text style={s.statText}>{transfers} 笔转账</Text>

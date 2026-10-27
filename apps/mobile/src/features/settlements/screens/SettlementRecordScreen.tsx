@@ -227,10 +227,10 @@ export default function SettlementRecordScreen({
             )}
             {!settled && <View style={ui.divider} />}
             <View style={ui.between}>
-              <Text accessibilityRole="header" style={settled ? ui.strong : ui.caption}>
+              <Text accessibilityRole="header" style={settled ? s.settledHeading : ui.caption}>
                 {settled ? '结算记录' : '收付款记录'}
               </Text>
-              {settled && <Text style={ui.caption}>{record.transferCount} 笔</Text>}
+              {settled && <Text style={s.settledCount}>{record.transferCount} 笔</Text>}
             </View>
             {record.transfers.length === 0 && (
               <View style={ui.card}>
@@ -429,6 +429,8 @@ export default function SettlementRecordScreen({
   );
 }
 const s = StyleSheet.create({
+  settledHeading: { color: colors.text, fontSize: 14, lineHeight: 20, fontWeight: '700' },
+  settledCount: { color: colors.muted, fontSize: 13, lineHeight: 19 },
   iconTile: {
     width: 36,
     height: 36,

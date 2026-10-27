@@ -95,6 +95,7 @@ export function OnlineWriteSheet({
       <Button
         compact
         style={{ borderRadius: plain ? 16 : 12 }}
+        labelStyle={{ fontSize: 15, lineHeight: 22, fontWeight: '700' }}
         title={write.uncertain ? '重试原提交' : confirmTitle}
         loading={write.busy}
         disabled={checking}
@@ -117,6 +118,7 @@ export function OnlineWriteSheet({
         title={cancelTitle}
         compact
         style={{ borderRadius: plain ? 16 : 12 }}
+        labelStyle={{ fontSize: 15, lineHeight: 22, fontWeight: '700' }}
         variant={plain ? 'quiet' : 'outlined'}
         disabled={locked}
         onPress={onCancel}

@@ -35,8 +35,8 @@ export function SettledTransferCard({
         </Text>
       </View>
       <View style={ui.between}>
-        <Text style={ui.muted}>转账金额</Text>
-        <Text style={ui.strong}>{yuan(transfer.amountCents)}</Text>
+        <Text style={[ui.muted, { lineHeight: 20 }]}>转账金额</Text>
+        <Text style={s.amount}>{yuan(transfer.amountCents)}</Text>
       </View>
       {transfer.registeredAt && (
         <Text style={ui.caption}>登记时间 {new Date(transfer.registeredAt).toLocaleString()}</Text>
@@ -49,6 +49,7 @@ export function SettledTransferCard({
   );
 }
 const s = StyleSheet.create({
+  amount: { color: colors.text, fontSize: 15, lineHeight: 22, fontWeight: '700' },
   card: {
     backgroundColor: colors.surface,
     borderWidth: 1,
