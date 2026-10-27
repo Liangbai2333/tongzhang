@@ -1,3 +1,4 @@
+import { SettledTransferCard } from '../components/SettledTransferCard';
 import { completionAssets } from '../completion-assets';
 import { SettledSummary } from '../components/SettledSummary';
 import { router, Stack } from 'expo-router';
@@ -115,7 +116,7 @@ export default function SettlementRecordScreen({
         variant="ledger"
         onRefresh={action === null ? refresh : undefined}
         refreshing={query.isFetching && !query.isPending}
-        contentStyle={{ paddingTop: 8, gap: 16 }}
+        contentStyle={{ paddingTop: 8, gap: settled ? 12 : 16 }}
         footer={
           record && !loading ? (
             <>
@@ -125,14 +126,16 @@ export default function SettlementRecordScreen({
                   {notice}
                 </Text>
               )}
-              <Button
-                title="复制完整方案"
-                variant="secondary"
-                loading={copying}
-                onPress={() => {
-                  void copy();
-                }}
-              />
+              {!settled && (
+                <Button
+                  title="复制完整方案"
+                  variant="secondary"
+                  loading={copying}
+                  onPress={() => {
+                    void copy();
+                  }}
+                />
+              )}
               {record.ledgerStatus === 'SETTLING' && (
                 <>
                   {creator ? (
@@ -222,65 +225,59 @@ export default function SettlementRecordScreen({
                 </View>
               </View>
             )}
-            <View style={ui.divider} />
-            <Text accessibilityRole="header" style={ui.caption}>
-              {settled ? '结算记录' : '收付款记录'}
-            </Text>
+            {!settled && <View style={ui.divider} />}
+            <View style={ui.between}>
+              <Text accessibilityRole="header" style={settled ? ui.strong : ui.caption}>
+                {settled ? '结算记录' : '收付款记录'}
+              </Text>
+              {settled && <Text style={ui.caption}>{record.transferCount} 笔</Text>}
+            </View>
             {record.transfers.length === 0 && (
               <View style={ui.card}>
                 <Text style={ui.body}>无需转账，账本已直接结清。</Text>
               </View>
             )}
-            {record.transfers.map((transfer) => (
-              <View
-                key={transfer.id}
-                style={[s.transfer, settled && { paddingVertical: 12, gap: 8 }]}
-              >
-                {!settled && (
+            {record.transfers.map((transfer) =>
+              settled ? (
+                <SettledTransferCard key={transfer.id} transfer={transfer} name={name} />
+              ) : (
+                <View key={transfer.id} style={s.transfer}>
                   <View style={ui.between}>
                     <Text style={[s.badge, transfer.status === 'PAID' && s.paid]}>
                       {transfer.status === 'PAID' ? '已登记' : '待登记'}
                     </Text>
                     <Text style={s.amount}>{yuan(transfer.amountCents)}</Text>
                   </View>
-                )}
-                <View style={ui.row}>
-                  <View
-                    accessibilityLabel={`付款人：${name(transfer.payerMemberId)}`}
-                    style={s.person}
-                  >
-                    <View style={[s.avatar, { backgroundColor: colors.peach }]}>
-                      <Text style={s.avatarText}>
-                        {Array.from(name(transfer.payerMemberId)).at(-1)}
-                      </Text>
+                  <View style={ui.row}>
+                    <View
+                      accessibilityLabel={`付款人：${name(transfer.payerMemberId)}`}
+                      style={s.person}
+                    >
+                      <View style={[s.avatar, { backgroundColor: colors.peach }]}>
+                        <Text style={s.avatarText}>
+                          {Array.from(name(transfer.payerMemberId)).at(-1)}
+                        </Text>
+                      </View>
+                      <Text style={s.name}>{name(transfer.payerMemberId)}</Text>
                     </View>
-                    <Text style={s.name}>{name(transfer.payerMemberId)}</Text>
-                  </View>
-                  <View style={s.arrow}>
-                    <FigmaAsset
-                      asset={settled ? completionAssets.arrow : settlementAssets.arrow}
-                      style={{ transform: [{ rotate: '180deg' }, { scaleY: -1 }] }}
-                    />
-                  </View>
-                  <View
-                    accessibilityLabel={`收款人：${name(transfer.payeeMemberId)}`}
-                    style={s.person}
-                  >
-                    <View style={[s.avatar, { backgroundColor: colors.mint }]}>
-                      <Text style={s.avatarText}>
-                        {Array.from(name(transfer.payeeMemberId)).at(-1)}
-                      </Text>
+                    <View style={s.arrow}>
+                      <FigmaAsset
+                        asset={settlementAssets.arrow}
+                        style={{ transform: [{ rotate: '180deg' }, { scaleY: -1 }] }}
+                      />
                     </View>
-                    <Text style={s.name}>{name(transfer.payeeMemberId)}</Text>
+                    <View
+                      accessibilityLabel={`收款人：${name(transfer.payeeMemberId)}`}
+                      style={s.person}
+                    >
+                      <View style={[s.avatar, { backgroundColor: colors.mint }]}>
+                        <Text style={s.avatarText}>
+                          {Array.from(name(transfer.payeeMemberId)).at(-1)}
+                        </Text>
+                      </View>
+                      <Text style={s.name}>{name(transfer.payeeMemberId)}</Text>
+                    </View>
                   </View>
-                </View>
-                {settled && (
-                  <View style={ui.between}>
-                    <Text style={ui.muted}>转账金额</Text>
-                    <Text style={ui.strong}>{yuan(transfer.amountCents)}</Text>
-                  </View>
-                )}
-                {!settled && (
                   <View style={[ui.row, { flexWrap: 'wrap', gap: 4 }]}>
                     {record.ledgerStatus === 'SETTLING' &&
                       transfer.status === 'PENDING' &&
@@ -310,22 +307,27 @@ export default function SettlementRecordScreen({
                       </View>
                     </Touch>
                   </View>
-                )}
-                {transfer.registeredAt && (
-                  <Text style={ui.caption}>
-                    登记时间 {new Date(transfer.registeredAt).toLocaleString()}
-                  </Text>
-                )}
-                {transfer.registeredByMemberId && (
-                  <Text style={ui.caption}>登记人：{name(transfer.registeredByMemberId)}</Text>
-                )}
-                {transfer.registrationNote && (
-                  <Text style={ui.body}>备注：{transfer.registrationNote}</Text>
-                )}
-              </View>
-            ))}
+                  {transfer.registeredAt && (
+                    <Text style={ui.caption}>
+                      登记时间 {new Date(transfer.registeredAt).toLocaleString()}
+                    </Text>
+                  )}
+                  {transfer.registeredByMemberId && (
+                    <Text style={ui.caption}>登记人：{name(transfer.registeredByMemberId)}</Text>
+                  )}
+                  {transfer.registrationNote && (
+                    <Text style={ui.body}>备注：{transfer.registrationNote}</Text>
+                  )}
+                </View>
+              ),
+            )}
             {settled && (
-              <View style={[ui.card, { padding: 0, borderWidth: 1, borderColor: colors.border }]}>
+              <View
+                style={[
+                  ui.card,
+                  { padding: 0, gap: 0, borderWidth: 1, borderColor: colors.border },
+                ]}
+              >
                 <Touch
                   accessibilityRole="button"
                   accessibilityLabel="历史账单"
@@ -337,6 +339,7 @@ export default function SettlementRecordScreen({
                   }
                   style={{
                     minHeight: 52,
+                    justifyContent: 'center',
                     paddingHorizontal: 20,
                   }}
                 >
@@ -386,6 +389,16 @@ export default function SettlementRecordScreen({
                 {yuan(record.transferTotalCents)}
               </Text>
             </View>
+            {settled && (
+              <Button
+                title="复制完整方案"
+                variant="secondary"
+                loading={copying}
+                onPress={() => {
+                  void copy();
+                }}
+              />
+            )}
             <Button title="刷新正式记录" variant="secondary" onPress={refresh} />
           </>
         )}

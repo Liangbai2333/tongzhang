@@ -32,6 +32,14 @@ export function OnlineWriteSheet({
 }) {
   const write = useIdempotentWrite();
   const checkingLock = useRef(false);
+  const mounted = useRef(true);
+  const resolved = useRef(false);
+  useEffect(() => {
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
+    };
+  }, []);
   const [checking, setChecking] = useState(false);
   const [checkError, setCheckError] = useState<string | null>(null);
   const locked = write.busy || write.uncertain || checking;
@@ -39,24 +47,31 @@ export function OnlineWriteSheet({
     const subscription = BackHandler.addEventListener('hardwareBackPress', () => locked);
     return () => subscription.remove();
   }, [locked]);
+  function finish() {
+    if (!mounted.current || resolved.current) return;
+    resolved.current = true;
+    onDone();
+  }
   async function submit() {
-    if (checkingLock.current) return;
+    if (checkingLock.current || resolved.current || !mounted.current) return;
     const result = await write.submit(payload, send);
-    if (result) onDone();
+    if (result) finish();
   }
   async function verify() {
-    if (write.busy || checkingLock.current) return;
+    if (write.busy || checkingLock.current || resolved.current || !mounted.current) return;
     checkingLock.current = true;
     setChecking(true);
     setCheckError(null);
     try {
-      if (await check()) onDone();
+      const confirmed = await check();
+      if (!mounted.current) return;
+      if (confirmed) finish();
       else setCheckError('暂未确认操作完成；原提交已保留，请显式重试或再次在线核对。');
     } catch (cause) {
-      setCheckError(requestErrorMessage(cause));
+      if (mounted.current) setCheckError(requestErrorMessage(cause));
     } finally {
       checkingLock.current = false;
-      setChecking(false);
+      if (mounted.current) setChecking(false);
     }
   }
   return (

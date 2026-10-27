@@ -82,6 +82,7 @@ export function SettlementActionSheet({
                 请确认这笔转账已在应用外完成。 同账不会验证真实到账；仅整笔登记，不可撤销。
               </Text>
               <Field
+                variant="panel"
                 label="登记说明（选填）"
                 placeholder="线下转账，已核实"
                 value={note}

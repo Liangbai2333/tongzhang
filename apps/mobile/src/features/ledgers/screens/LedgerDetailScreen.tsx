@@ -24,6 +24,10 @@ import { statusLabels, yuan } from '../presentation';
 
 export default function LedgerDetailScreen() {
   const { ledgerId } = useLocalSearchParams<{ ledgerId: string }>();
+  return <LedgerPage key={ledgerId} ledgerId={ledgerId} />;
+}
+
+function LedgerPage({ ledgerId }: { ledgerId: string }) {
   const { user } = useAuth();
   const valid = uuidSchema.safeParse(ledgerId).success;
   const query = useOnlineQuery(
@@ -41,11 +45,12 @@ export default function LedgerDetailScreen() {
     router.push({ pathname: '/ledgers/[ledgerId]/invitation', params: { ledgerId } });
   return (
     <Screen
+      backDisabled={archiving}
       title={ready ? ledger.name : '账本详情'}
       variant="ledger"
       contentStyle={{ paddingTop: 16 }}
       onRefresh={
-        valid
+        valid && !archiving
           ? () => {
               setMembers(false);
               void query.refetch();
@@ -88,6 +93,7 @@ export default function LedgerDetailScreen() {
         ) : undefined
       }
     >
+      <Stack.Screen options={{ gestureEnabled: !archiving }} />
       {!ready ? (
         <RequestState
           loading={loading}
@@ -110,7 +116,6 @@ export default function LedgerDetailScreen() {
         </RequestState>
       ) : (
         <>
-          <Stack.Screen options={{ gestureEnabled: !archiving }} />
           {ledger.coverImageId && (
             <LedgerCover coverKey={ledger.coverKey} imageId={ledger.coverImageId} preview />
           )}
@@ -120,13 +125,6 @@ export default function LedgerDetailScreen() {
           )}
           {ledger.status === 'SETTLED' && !ledger.archivedAt && (
             <Button title="个人归档" variant="secondary" onPress={() => setArchiving(true)} />
-          )}
-          {archiving && (
-            <ArchiveLedgerSheet
-              ledger={ledger}
-              userId={user!.id}
-              onCancel={() => setArchiving(false)}
-            />
           )}
           {empty ? (
             <EmptyLedger
@@ -258,6 +256,13 @@ export default function LedgerDetailScreen() {
             }}
           />
         </>
+      )}
+      {archiving && ledger && (
+        <ArchiveLedgerSheet
+          ledger={ledger}
+          userId={user!.id}
+          onCancel={() => setArchiving(false)}
+        />
       )}
     </Screen>
   );

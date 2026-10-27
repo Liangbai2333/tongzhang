@@ -485,3 +485,21 @@ describe('repayment and completion interactions (API replacements)', () => {
     expect(settle).toHaveBeenCalledTimes(1);
   });
 });
+
+it('uses membership IDs rather than user IDs to authorize a non-creator payer', async () => {
+  mockUserId = '00000000-0000-4000-8000-000000000009';
+  get.mockResolvedValue({
+    data: {
+      ...ledger,
+      status: 'SETTLING',
+      myMemberId: otherId,
+      members: ledger.members.map((member) =>
+        member.id === otherId ? { ...member, userId: mockUserId } : member,
+      ),
+    },
+  });
+  await show();
+  await screen.findByText('收付款记录');
+  expect(screen.getByRole('button', { name: '登记已还' })).toBeEnabled();
+  expect(screen.queryByRole('button', { name: '确认整本结清' })).toBeNull();
+});
