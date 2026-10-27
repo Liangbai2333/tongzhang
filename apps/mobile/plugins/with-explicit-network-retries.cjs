@@ -5,6 +5,7 @@ const marker = '// TongZhang: explicit network retries only.';
 const factory = `${marker}
     com.facebook.react.modules.network.OkHttpClientProvider.setOkHttpClientFactory {
       com.facebook.react.modules.network.OkHttpClientProvider.createClientBuilder()
+        .connectionPool(okhttp3.ConnectionPool(0, 1, java.util.concurrent.TimeUnit.SECONDS))
         .retryOnConnectionFailure(false)
         .followRedirects(false)
         .followSslRedirects(false)
@@ -15,7 +16,12 @@ const factory = `${marker}
 function configureMainApplication(contents, language) {
   if (language !== 'kt')
     throw new Error('Explicit network retry policy requires Kotlin MainApplication');
-  if (contents.includes(marker)) return contents;
+  if (contents.includes(marker)) {
+    const previous = /\/\/ TongZhang: explicit network retries only\.[\s\S]*?\n {4}}/;
+    if (!previous.test(contents))
+      throw new Error('Existing native network policy was not recognized');
+    return contents.replace(previous, factory);
+  }
   const anchor = /super\.onCreate\(\)/;
   if (!anchor.test(contents)) throw new Error('MainApplication onCreate anchor was not found');
   return contents.replace(anchor, (match) => `${match}\n    ${factory}`);

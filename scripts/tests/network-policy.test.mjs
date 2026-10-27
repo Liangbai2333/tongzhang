@@ -12,6 +12,9 @@ it('configures the shared native fetch factory before React starts, and survives
   expect(generated.indexOf('setOkHttpClientFactory')).toBeLessThan(
     generated.indexOf('loadReactNative'),
   );
+  expect(generated).toContain(
+    '.connectionPool(okhttp3.ConnectionPool(0, 1, java.util.concurrent.TimeUnit.SECONDS))',
+  );
   expect(generated).toContain('.retryOnConnectionFailure(false)');
   expect(generated).toContain('.followRedirects(false)');
   expect(generated).toContain('.followSslRedirects(false)');
@@ -20,4 +23,14 @@ it('configures the shared native fetch factory before React starts, and survives
 it('fails Prebuild rather than silently leaving automatic retries enabled on an unknown native template', () => {
   expect(() => configureMainApplication('class OtherApplication {}', 'kt')).toThrow('anchor');
   expect(() => configureMainApplication('super.onCreate()', 'java')).toThrow('Kotlin');
+});
+
+it('updates an existing generated policy when the idle connection policy changes', () => {
+  const previous = configureMainApplication(
+    'super.onCreate()\nloadReactNative(this)',
+    'kt',
+  ).replace(/ {8}\.connectionPool[^\n]+\n/, '');
+  expect(configureMainApplication(previous, 'kt')).toContain(
+    '.connectionPool(okhttp3.ConnectionPool(0, 1, java.util.concurrent.TimeUnit.SECONDS))',
+  );
 });
