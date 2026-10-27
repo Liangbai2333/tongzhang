@@ -1,0 +1,20 @@
+{
+  "database": "tongzhang_issue42_test",
+  "checkedAt": "2026-10-27T12:05:45.258Z",
+  "counts": {
+    "users": 0,
+    "auth_sessions": 0,
+    "ledgers": 0,
+    "ledger_members": 0,
+    "invitations": 0,
+    "expenses": 0,
+    "expense_splits": 0,
+    "image_assets": 0,
+    "expense_images": 0,
+    "settlement_batches": 0,
+    "settlement_transfers": 0,
+    "operation_logs": 0,
+    "idempotency_keys": 0
+  },
+  "note": "Read-only after the complete 129-test run. Fixtures remove their own rows; no global table truncation or acceptance database cleanup."
+}
