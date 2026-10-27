@@ -79,86 +79,17 @@ Test Suites: 2 failed, 2 total
 Tests:       8 failed, 8 total
 
 Cross-ledger archive before scope fix
-  ● Console
-       8 |     void AccessibilityInfo.isReduceMotionEnabled()
-       9 |       .then((value) => {
-    > 10 |         if (active) setReduced(value);
-      11 |       })
-      12 |       .catch(() => {
-      13 |         /* Keep motion disabled if the system preference cannot be read. */
-       8 |     void AccessibilityInfo.isReduceMotionEnabled()
-       9 |       .then((value) => {
-    > 10 |         if (active) setReduced(value);
-      11 |       })
-      12 |       .catch(() => {
-      13 |         /* Keep motion disabled if the system preference cannot be read. */
-       8 |     void AccessibilityInfo.isReduceMotionEnabled()
-       9 |       .then((value) => {
-    > 10 |         if (active) setReduced(value);
-      11 |       })
-      12 |       .catch(() => {
-      13 |         /* Keep motion disabled if the system preference cannot be read. */
-       8 |     void AccessibilityInfo.isReduceMotionEnabled()
-       9 |       .then((value) => {
-    > 10 |         if (active) setReduced(value);
-      11 |       })
-      12 |       .catch(() => {
-      13 |         /* Keep motion disabled if the system preference cannot be read. */
-       8 |     void AccessibilityInfo.isReduceMotionEnabled()
-       9 |       .then((value) => {
-    > 10 |         if (active) setReduced(value);
-      11 |       })
-      12 |       .catch(() => {
-      13 |         /* Keep motion disabled if the system preference cannot be read. */
-       8 |     void AccessibilityInfo.isReduceMotionEnabled()
-       9 |       .then((value) => {
-    > 10 |         if (active) setReduced(value);
-      11 |       })
-      12 |       .catch(() => {
-      13 |         /* Keep motion disabled if the system preference cannot be read. */
-       8 |     void AccessibilityInfo.isReduceMotionEnabled()
-       9 |       .then((value) => {
-    > 10 |         if (active) setReduced(value);
-      11 |       })
-      12 |       .catch(() => {
-      13 |         /* Keep motion disabled if the system preference cannot be read. */
-       8 |     void AccessibilityInfo.isReduceMotionEnabled()
-       9 |       .then((value) => {
-    > 10 |         if (active) setReduced(value);
-      11 |       })
-      12 |       .catch(() => {
-      13 |         /* Keep motion disabled if the system preference cannot be read. */
-       8 |     void AccessibilityInfo.isReduceMotionEnabled()
-       9 |       .then((value) => {
-    > 10 |         if (active) setReduced(value);
-      11 |       })
-      12 |       .catch(() => {
-      13 |         /* Keep motion disabled if the system preference cannot be read. */
-       8 |     void AccessibilityInfo.isReduceMotionEnabled()
-       9 |       .then((value) => {
-    > 10 |         if (active) setReduced(value);
-      11 |       })
-      12 |       .catch(() => {
-      13 |         /* Keep motion disabled if the system preference cannot be read. */
-       8 |     void AccessibilityInfo.isReduceMotionEnabled()
-       9 |       .then((value) => {
-    > 10 |         if (active) setReduced(value);
-      11 |       })
-      12 |       .catch(() => {
-      13 |         /* Keep motion disabled if the system preference cannot be read. */
-       8 |     void AccessibilityInfo.isReduceMotionEnabled()
-       9 |       .then((value) => {
-    > 10 |         if (active) setReduced(value);
-      11 |       })
-      12 |       .catch(() => {
-      13 |         /* Keep motion disabled if the system preference cannot be read. */
-       8 |     void AccessibilityInfo.isReduceMotionEnabled()
-       9 |       .then((value) => {
-    > 10 |         if (active) setReduced(value);
-      11 |       })
-      12 |       .catch(() => {
-      13 |         /* Keep motion disabled if the system preference cannot be read. */
-       8 |     void AccessibilityInfo.isReduceMotionEnabled()
+  ● does not carry an unresolved archive confirmation into another ledger in the same route instance
+    expect(received).toBeNull()
+    Received: <Text accessibilityRole="header" style={[{"color": "#262626", "fontSize": 18, "fontWeight": "700", "lineHeight": 27}, {"flex": 1, "minWidth": 0}, {"fontSize": 20, "lineHeight": 29}]}>确认归档账本？</Text>
+      595 |   await view.rerender(node());
+      596 |   await waitFor(() => expect(get.mock.calls.at(-1)?.[0].params.ledgerId).toBe(nextId));
+    > 597 |   expect(screen.queryByRole('header', { name: '确认归档账本？' })).toBeNull();
+      598 |   expect(archive).toHaveBeenCalledTimes(1);
+      599 | });
+      600 |
+Test Suites: 1 failed, 1 passed, 2 total
+Tests:       1 failed, 62 skipped, 1 passed, 64 total
 
 Archive sheet unmounted during ledger refetch before fix
   ● keeps the unresolved archive attempt mounted while its ledger is refetched
