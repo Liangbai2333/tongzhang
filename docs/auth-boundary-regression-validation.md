@@ -8,11 +8,11 @@
 
 本轮新增 `apps/server/tests/auth-boundary-regression.integration.test.ts`（3 项）：
 
-| 场景 | 固定预期与实际断言 |
-| --- | --- |
-| 唯一用户名登录 | 仅重名用户名有 409 断言、登录成功只有邮箱路径断言，唯一用户名登录此前无覆盖；本轮断言 200、契约解析通过、不含 passwordHash、refreshToken 与注册会话不同、两枚访问令牌均可在 getMe 使用、未撤销会话数为 2 |
-| 匿名退出与 getMe | `POST /api/v1/auth/logout` 无凭据 401 UNAUTHENTICATED；非法 Bearer 头 401 UNAUTHENTICATED；匿名 `GET /api/v1/me` 401 UNAUTHENTICATED（service 层与 authenticate 中间件的显式拒绝此前无直接断言） |
-| 未认证接口限流 | 未认证端点 `rateLimit max: 10/min` 从未测试；本轮连续 11 次登录（未知账号）断言前 10 次 401 INVALID_CREDENTIALS 语义链路、第 11 次 429 RATE_LIMITED（全局错误处理器将 429 映射为该码），且不产生任何用户/会话副作用 |
+| 场景             | 固定预期与实际断言                                                                                                                                                                                                  |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 唯一用户名登录   | 仅重名用户名有 409 断言、登录成功只有邮箱路径断言，唯一用户名登录此前无覆盖；本轮断言 200、契约解析通过、不含 passwordHash、refreshToken 与注册会话不同、两枚访问令牌均可在 getMe 使用、未撤销会话数为 2            |
+| 匿名退出与 getMe | `POST /api/v1/auth/logout` 无凭据 401 UNAUTHENTICATED；非法 Bearer 头 401 UNAUTHENTICATED；匿名 `GET /api/v1/me` 401 UNAUTHENTICATED（service 层与 authenticate 中间件的显式拒绝此前无直接断言）                    |
+| 未认证接口限流   | 未认证端点 `rateLimit max: 10/min` 从未测试；本轮连续 11 次登录（未知账号）断言前 10 次 401 INVALID_CREDENTIALS 语义链路、第 11 次 429 RATE_LIMITED（全局错误处理器将 429 映射为该码），且不产生任何用户/会话副作用 |
 
 ## 实际运行
 
