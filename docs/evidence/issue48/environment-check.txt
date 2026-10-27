@@ -1,0 +1,3 @@
+$ node scripts/check-env.mjs --tools-only --skip-docker
+[warn] Node: v24.22.0; repository 24.21.0
+[pass] pnpm: 12.6.0; repository 12.6.0

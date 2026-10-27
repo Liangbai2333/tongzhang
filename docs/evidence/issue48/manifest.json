@@ -1,0 +1,412 @@
+{
+  "sourceCommit": "af03672fb929caa26db1b407039a436e9cbf4e4e",
+  "screenshotMethod": "adb exec-out screencap -p; unmodified original pixels",
+  "screenshotCount": 46,
+  "files": {
+    "01-owner-empty.png": {
+      "bytes": 106768,
+      "sha256": "f5b22ec50ee4cef88fdd45f73b38f9eacba4d19712cba0a0ff76f175848e2f7a",
+      "capturedOrWrittenAt": "2026-10-27T14:43:17.119Z"
+    },
+    "02-system-cover-picker.png": {
+      "bytes": 184945,
+      "sha256": "996e149f4e599402acd6adfa7ec4ecc9b363ff7cd33b89ad6448d3c8de6bebd2",
+      "capturedOrWrittenAt": "2026-10-27T14:43:43.007Z"
+    },
+    "03-cover-cancel-keeps-name.png": {
+      "bytes": 151153,
+      "sha256": "345982c350112b687577c7fd8b3f21743da9b8a581d3d3b752ead51058e678fb",
+      "capturedOrWrittenAt": "2026-10-27T14:43:54.508Z"
+    },
+    "04-cover-selected.png": {
+      "bytes": 152789,
+      "sha256": "242591d43c869934db8169abde987f6057001a0e95fd512960d8e722f9983207",
+      "capturedOrWrittenAt": "2026-10-27T14:44:51.579Z"
+    },
+    "05-foreground-verification-gate.png": {
+      "bytes": 58462,
+      "sha256": "b2239bad641c1e93c3e607c0f3819e749daa4853ad0fb37d2757dda0e92d5a6d",
+      "capturedOrWrittenAt": "2026-10-27T14:44:53.877Z"
+    },
+    "06-foreground-form-retained.png": {
+      "bytes": 153163,
+      "sha256": "1e8b7cc87b91b75b6c0c3ec0def9798fd4f5dbb9b3d401789b61a14e0fc95738",
+      "capturedOrWrittenAt": "2026-10-27T14:45:14.006Z"
+    },
+    "07-offline-pending-response-gate.png": {
+      "bytes": 57501,
+      "sha256": "bdcfaf24a3640929fa4d6b9d1b336c12193e83ab0172fb4af97e2859206b4439",
+      "capturedOrWrittenAt": "2026-10-27T14:45:18.188Z"
+    },
+    "08-late-200-stays-locked.png": {
+      "bytes": 78929,
+      "sha256": "858a30940b1babc889e8de34c403d124c897c0d00f90a0cb41af53d60013eb8b",
+      "capturedOrWrittenAt": "2026-10-27T14:45:36.440Z"
+    },
+    "09-offline-explicit-verification.png": {
+      "bytes": 75874,
+      "sha256": "225866f63604a724adc499f57ac4402325b39f2cce4986f9abc580137db2eca4",
+      "capturedOrWrittenAt": "2026-10-27T14:45:41.192Z"
+    },
+    "10-online-still-needs-verification.png": {
+      "bytes": 79664,
+      "sha256": "66ceddb4094b82f6ca41cef0d02a8a978ce1e841daf5a8455afa99943df9829d",
+      "capturedOrWrittenAt": "2026-10-27T14:45:55.673Z"
+    },
+    "11-online-verification-restores-form.png": {
+      "bytes": 153301,
+      "sha256": "74f7092ac05c9e53e7b31d7488727ab7d696b56433748120d321df1c57475404",
+      "capturedOrWrittenAt": "2026-10-27T14:46:04.634Z"
+    },
+    "12-created-invitation.png": {
+      "bytes": 174712,
+      "sha256": "1d39ebc3c64474247b8e98badac07f753c6de3b47a89dc9a076fcdf21fa38ef6",
+      "capturedOrWrittenAt": "2026-10-27T14:46:27.527Z"
+    },
+    "13-member-join-preview.png": {
+      "bytes": 210504,
+      "sha256": "71bd5615735bd638c2de3a01f6d8abf275a454d5318109dd04c501e8201f8d02",
+      "capturedOrWrittenAt": "2026-10-27T14:48:03.713Z"
+    },
+    "14-member-joined.png": {
+      "bytes": 171648,
+      "sha256": "d3ea25d343a876cfe00f5b0e089ba4405e168cb028c282e3c7be8c65bf4c1957",
+      "capturedOrWrittenAt": "2026-10-27T14:48:19.371Z"
+    },
+    "15-camera-system-permission.png": {
+      "bytes": 162542,
+      "sha256": "ec45c3eec1a2fe3896eb325d14bcf26cdd21ecea70de10daec461b50893a8caf",
+      "capturedOrWrittenAt": "2026-10-27T14:48:59.197Z"
+    },
+    "16-denied-keeps-expense.png": {
+      "bytes": 197568,
+      "sha256": "b59570ee28a3bcd1e3e5c641f9354d487e2e88f07b1d190a95d16705c8d8a92d",
+      "capturedOrWrittenAt": "2026-10-27T14:49:07.114Z"
+    },
+    "17-receipt-reselect-system.png": {
+      "bytes": 172011,
+      "sha256": "1a40ab1f879d50dd7ca7ea11cc10da21fb024d27964736984e63adf853cf4a47",
+      "capturedOrWrittenAt": "2026-10-27T14:49:36.455Z"
+    },
+    "18-cancel-keeps-selected-receipt.png": {
+      "bytes": 182230,
+      "sha256": "7d67ae65e9eec187de97829b9221e41cbee9ef58574b2f5768ee1217c863df84",
+      "capturedOrWrittenAt": "2026-10-27T14:49:44.289Z"
+    },
+    "19-denied-keeps-selected-receipt.png": {
+      "bytes": 186359,
+      "sha256": "aec487e5449545bb6970ac641159e1bcdc35fe5adf6239c40a34e42a1b3808a7",
+      "capturedOrWrittenAt": "2026-10-27T14:50:04.117Z"
+    },
+    "20-member-expense-splits.png": {
+      "bytes": 161515,
+      "sha256": "e2ca995c5bd099aa7b4e263b60723687f2b714763a95f8d5b06c2572ade245c0",
+      "capturedOrWrittenAt": "2026-10-27T14:50:30.176Z"
+    },
+    "21-member-receipt.png": {
+      "bytes": 169797,
+      "sha256": "9a786926fea1be480842a40676bed34f6fd4c1fa6273c557de459dad3ee0d93a",
+      "capturedOrWrittenAt": "2026-10-27T14:50:39.327Z"
+    },
+    "22-member-preview-no-freeze.png": {
+      "bytes": 185845,
+      "sha256": "4a8eaa499fb312d3fe76f18c4b0b7e23934740463512f38bb246d133b6f25e21",
+      "capturedOrWrittenAt": "2026-10-27T14:51:06.313Z"
+    },
+    "23-owner-authorized-receipt.png": {
+      "bytes": 169980,
+      "sha256": "f5de8aaa383991e2fc36814046bb3be6c86c94b0112f94fd2ed9b692c81ba42d",
+      "capturedOrWrittenAt": "2026-10-27T14:53:05.836Z"
+    },
+    "24-owner-preview.png": {
+      "bytes": 193883,
+      "sha256": "2a27db8096a9ad0e43db3fb31e9e7c35f4ccbd1817a97f036af34c60287f834a",
+      "capturedOrWrittenAt": "2026-10-27T14:53:28.314Z"
+    },
+    "25-freeze-version3.png": {
+      "bytes": 246274,
+      "sha256": "f33562ac867d34023f91fa4ea49d6719953d4d8a6bd68f488cc23741f6d34603",
+      "capturedOrWrittenAt": "2026-10-27T14:53:35.720Z"
+    },
+    "26-frozen-pending.png": {
+      "bytes": 224749,
+      "sha256": "fcff9bd611a4fd1baaa7bc28727c70684d32fdd7b16e0a4f0988233b317f2944",
+      "capturedOrWrittenAt": "2026-10-27T14:53:47.337Z"
+    },
+    "27-register-6000.png": {
+      "bytes": 199549,
+      "sha256": "5fd38f77e51ee7d062814e9cd3148327a213d9d754471bdf2b6a57cf61705397",
+      "capturedOrWrittenAt": "2026-10-27T14:54:01.749Z"
+    },
+    "28-paid-zero-remaining.png": {
+      "bytes": 205228,
+      "sha256": "34773fbc783a1c4a40a0be4330b1bbe68893d7b3d406aee3406e6c48ee335d71",
+      "capturedOrWrittenAt": "2026-10-27T14:54:11.713Z"
+    },
+    "29-settled.png": {
+      "bytes": 230216,
+      "sha256": "7b86d952c77389ff2fe1e4f3bdae890b3f89be683e5a05cb4ceae509d7220a2a",
+      "capturedOrWrittenAt": "2026-10-27T14:54:27.497Z"
+    },
+    "30-personal-archive-confirm.png": {
+      "bytes": 233194,
+      "sha256": "ac0f2f023354eea37514c76000eca4f1900a463a9fd03f3a5f11b4da8d3eb05f",
+      "capturedOrWrittenAt": "2026-10-27T14:54:35.369Z"
+    },
+    "31-owner-current-empty.png": {
+      "bytes": 137772,
+      "sha256": "7410816a2290e97700e917b72c2ca3cdb17063f876a967d2bb6da970ddce1185",
+      "capturedOrWrittenAt": "2026-10-27T14:54:46.259Z"
+    },
+    "32-owner-history.png": {
+      "bytes": 107680,
+      "sha256": "1fbde48cc33205b9d3e608893a7bb1fd3bd3f3d824e8379ef780b47f4dd7e6f0",
+      "capturedOrWrittenAt": "2026-10-27T14:54:55.233Z"
+    },
+    "33-owner-history-detail.png": {
+      "bytes": 187872,
+      "sha256": "7aed70fc3e9a7b45ac5d7d5db18d7cc2d41d31deed38d0624f7ec95d8333f074",
+      "capturedOrWrittenAt": "2026-10-27T14:55:04.933Z"
+    },
+    "34-owner-history-batch.png": {
+      "bytes": 233714,
+      "sha256": "e35d1d9408a5f6e86aa653d8ea8bd8789a130909667bb9074df2979ea2e355f8",
+      "capturedOrWrittenAt": "2026-10-27T14:55:10.728Z"
+    },
+    "35-cold-offline-gate.png": {
+      "bytes": 88530,
+      "sha256": "9b0fc04f67f60db9cddeff565c3e073607bad5e1dcf762519137544fff7c00b2",
+      "capturedOrWrittenAt": "2026-10-27T14:56:31.935Z"
+    },
+    "36-cold-online-not-auto-unlocked.png": {
+      "bytes": 90219,
+      "sha256": "ce1c865dbd3ff06054f969a3f63e31cff2224fdd90198e04cf78ed099d5b3d49",
+      "capturedOrWrittenAt": "2026-10-27T14:56:33.114Z"
+    },
+    "37-cold-refresh-verification-gate.png": {
+      "bytes": 67773,
+      "sha256": "a4a99005066bd95bc3fb74a7e2a6be440ed1246a707655e118934805d94810b9",
+      "capturedOrWrittenAt": "2026-10-27T14:56:35.857Z"
+    },
+    "38-cold-verified-list.png": {
+      "bytes": 107050,
+      "sha256": "da1072484cc39f974d582fbdb3d6aee2ddd06997a6ddd2e7c612c94389619bf4",
+      "capturedOrWrittenAt": "2026-10-27T14:56:57.521Z"
+    },
+    "39-form-before-real-revocation.png": {
+      "bytes": 151554,
+      "sha256": "9fcd22b7c3269aff4d42f88237b2c14cff22abeb5f0e23db95e45ed0661ffd42",
+      "capturedOrWrittenAt": "2026-10-27T14:57:27.525Z"
+    },
+    "40-real-401-removes-form.png": {
+      "bytes": 144143,
+      "sha256": "e9929a569d7f6920a2bafb782b7ee024cb44a920a5522712f22e89a4d484c607",
+      "capturedOrWrittenAt": "2026-10-27T14:57:35.097Z"
+    },
+    "41-protected-deeplink-rejected.png": {
+      "bytes": 144143,
+      "sha256": "e9929a569d7f6920a2bafb782b7ee024cb44a920a5522712f22e89a4d484c607",
+      "capturedOrWrittenAt": "2026-10-27T14:57:45.313Z"
+    },
+    "42-member-current-unarchived.png": {
+      "bytes": 113655,
+      "sha256": "892981382a4bddf029631268a9d843fae0fb7808c68def941af3983d124ea95f",
+      "capturedOrWrittenAt": "2026-10-27T14:58:14.185Z"
+    },
+    "43-member-same-settled-batch.png": {
+      "bytes": 230672,
+      "sha256": "7b538cbf7f617e338d7b416ad74565333f8d2f451e43a5df2aa765795cf63d80",
+      "capturedOrWrittenAt": "2026-10-27T14:58:22.940Z"
+    },
+    "44-member-history-empty.png": {
+      "bytes": 107180,
+      "sha256": "593044059b9ea49b58498cf521a08555d427b56c92a77f507dd1fc492485dc47",
+      "capturedOrWrittenAt": "2026-10-27T14:58:56.276Z"
+    },
+    "45-cold-revoked-refresh-401.png": {
+      "bytes": 144687,
+      "sha256": "9c91098d2ee40bff1733a6404ffe6f97f8888fe2e7270ff4bdc6abb752d5aa9e",
+      "capturedOrWrittenAt": "2026-10-27T14:59:35.180Z"
+    },
+    "46-repro-runner-same-batch.png": {
+      "bytes": 234177,
+      "sha256": "231f349b2c01887dc6de1cf31becd212cb21c5ece2a1d4c18c1da2c7e1c7e57e",
+      "capturedOrWrittenAt": "2026-10-27T15:04:39.031Z"
+    },
+    "app-requests.json": {
+      "bytes": 98246,
+      "sha256": "7b1fecb882801ec897abff93f1a0a5ac105c851d0ecd66fa62d6c57a67a06e71",
+      "capturedOrWrittenAt": "2026-10-27T15:00:01.107Z"
+    },
+    "build-server.txt": {
+      "bytes": 170,
+      "sha256": "11c3ace6b03232969966c2cfb0e2eb4eefd2184a7b6dec309e5b0a2527b268ec",
+      "capturedOrWrittenAt": "2026-10-27T15:00:00.871Z"
+    },
+    "check-delivery.txt": {
+      "bytes": 652,
+      "sha256": "b369bb08ae045e36016bba329162f9ef60f9870403f049ea6b36d39ae2049d1f",
+      "capturedOrWrittenAt": "2026-10-27T15:06:39.581Z"
+    },
+    "check-source.txt": {
+      "bytes": 652,
+      "sha256": "b369bb08ae045e36016bba329162f9ef60f9870403f049ea6b36d39ae2049d1f",
+      "capturedOrWrittenAt": "2026-10-27T15:00:00.872Z"
+    },
+    "cold-offline-device.json": {
+      "bytes": 137,
+      "sha256": "808afe9253662758fe155ffbe163520b10328e97cf291346a7133cf7534a7205",
+      "capturedOrWrittenAt": "2026-10-27T15:00:01.110Z"
+    },
+    "db-archived.json": {
+      "bytes": 7745,
+      "sha256": "58387523c155561c8943da22e5b4c723ebf741324835dae6c574f286db7227db",
+      "capturedOrWrittenAt": "2026-10-27T14:54:50.781Z"
+    },
+    "db-evidence.mjs": {
+      "bytes": 1643,
+      "sha256": "7650e66dcf62753b0438e516054af1cb051eca2e4c9e26bfc5f79a4a2125e312",
+      "capturedOrWrittenAt": "2026-10-27T15:00:01.122Z"
+    },
+    "db-frozen.json": {
+      "bytes": 6234,
+      "sha256": "da73bb02f85ea93f109a6d50d3ca2a621e9ad1c9ce8df7900cca0b5adf629be8",
+      "capturedOrWrittenAt": "2026-10-27T14:53:41.616Z"
+    },
+    "db-paid.json": {
+      "bytes": 6768,
+      "sha256": "948b102a5823707d10bc663b9df9fabdb53887525393b4bbe0cd28a4760ccc36",
+      "capturedOrWrittenAt": "2026-10-27T14:54:09.613Z"
+    },
+    "db-preview.json": {
+      "bytes": 4363,
+      "sha256": "61c033265fa81a5a27d52eefaaa8bf2bb9885e4550288705304780862b86bea8",
+      "capturedOrWrittenAt": "2026-10-27T14:51:06.174Z"
+    },
+    "db-revoke-1.json": {
+      "bytes": 472,
+      "sha256": "c961cbca65e4f5cf3443fdabef76365d5fbb3134c33ccedda6a5425286267c1c",
+      "capturedOrWrittenAt": "2026-10-27T14:58:56.664Z"
+    },
+    "db-revoke.json": {
+      "bytes": 472,
+      "sha256": "e54f97e9ac8cc07517b15d972d6bedc5f99193157f7cfcb785a996ef74c1dbdb",
+      "capturedOrWrittenAt": "2026-10-27T14:57:27.808Z"
+    },
+    "dependencies.txt": {
+      "bytes": 88,
+      "sha256": "90b4b326da7e840e0b5d55a01ea23ce8dc1d6946379ad02891fbe497efd32f38",
+      "capturedOrWrittenAt": "2026-10-27T15:00:00.872Z"
+    },
+    "doctor.txt": {
+      "bytes": 153,
+      "sha256": "c6fa35471648ff6426b2e8b66f57018445996fbde86035926b0959a100bc3a72",
+      "capturedOrWrittenAt": "2026-10-27T15:00:00.872Z"
+    },
+    "environment-check.txt": {
+      "bytes": 137,
+      "sha256": "33b02e00f1add02505c2976d928e66ef1501122d75689123d3eedbab2f775ca0",
+      "capturedOrWrittenAt": "2026-10-27T15:05:47.980Z"
+    },
+    "environment.json": {
+      "bytes": 3194,
+      "sha256": "53ed8a7933c73396d91625321c0404f96888eba69504c560f08be6df4169590f",
+      "capturedOrWrittenAt": "2026-10-27T15:06:39.624Z"
+    },
+    "export.txt": {
+      "bytes": 7674,
+      "sha256": "0dbe20faa85527528d25d07b0b43f657c831577124f2b05b298adabebc4a6c37",
+      "capturedOrWrittenAt": "2026-10-27T15:00:00.873Z"
+    },
+    "gate-audit.json": {
+      "bytes": 1157,
+      "sha256": "b0a86b62eeb44baa603d3fefab657d900fd53631d2fe4b952d2a06a8e0da54c6",
+      "capturedOrWrittenAt": "2026-10-27T15:05:12.376Z"
+    },
+    "http-requests.json": {
+      "bytes": 50189,
+      "sha256": "b4c1ae8bfa76b77bb7cce4614f3082824d6b87607ca55939629a4230a2898da7",
+      "capturedOrWrittenAt": "2026-10-27T15:05:47.979Z"
+    },
+    "http-verification.txt": {
+      "bytes": 114,
+      "sha256": "690359f6cce054a1393fad26700d654482b8527db414c9d09ea0d121a189b7c4",
+      "capturedOrWrittenAt": "2026-10-27T15:05:47.981Z"
+    },
+    "install.txt": {
+      "bytes": 924,
+      "sha256": "950d42112c4cd0174c466d08b586f5669e780ec48cee01ff6522123727a6bd83",
+      "capturedOrWrittenAt": "2026-10-27T15:00:00.871Z"
+    },
+    "integration.txt": {
+      "bytes": 382,
+      "sha256": "dddb0761b6cf253389ca30446f8c98b49e5b6fd58ad900423dfa094f2e627fce",
+      "capturedOrWrittenAt": "2026-10-27T15:00:00.872Z"
+    },
+    "loaded-js.json": {
+      "bytes": 17365,
+      "sha256": "65c1c06caba3657b82c77c61d66e1208ca880a4ad762533bb8303b76aee9d8b3",
+      "capturedOrWrittenAt": "2026-10-27T15:02:03.459Z"
+    },
+    "mobile.txt": {
+      "bytes": 1315,
+      "sha256": "e42057a70300dedb0041a95f8f28db4d954ed5108e592ecf72a38365e4163a1f",
+      "capturedOrWrittenAt": "2026-10-27T15:00:00.872Z"
+    },
+    "native-api-runner.mjs": {
+      "bytes": 1908,
+      "sha256": "1a32accbeeea1519c0136ab4e7b46c3154104486eedd6201ea28d18a310aa2c8",
+      "capturedOrWrittenAt": "2026-10-27T15:00:25.358Z"
+    },
+    "native-migrate.txt": {
+      "bytes": 96,
+      "sha256": "d97d24ccea4abb757877c27e68631d66dfda8377b69c972ec09feee850da0bdb",
+      "capturedOrWrittenAt": "2026-10-27T15:05:47.981Z"
+    },
+    "native-verification.json": {
+      "bytes": 17326,
+      "sha256": "19b72dd15ef0af0987bf158420593e7793f303d4c90a300b99233aae9a13f49e",
+      "capturedOrWrittenAt": "2026-10-27T15:05:48.316Z"
+    },
+    "prepare-environment.mjs": {
+      "bytes": 1089,
+      "sha256": "80d7a0d15951499a108bcccdf27dccf21d771971efd15c1afc1a5bf5ad86aa68",
+      "capturedOrWrittenAt": "2026-10-27T15:00:01.146Z"
+    },
+    "register-fixtures.mjs": {
+      "bytes": 855,
+      "sha256": "022eee8d2b9891046f983495e6534f32067d2a55a5b8dd4e21395fd63df1f6af",
+      "capturedOrWrittenAt": "2026-10-27T15:00:01.149Z"
+    },
+    "run-with-env.mjs": {
+      "bytes": 406,
+      "sha256": "d7dd28180b149befd260d697fee5c4e165ebd2594762374c813bdf955c162995",
+      "capturedOrWrittenAt": "2026-10-27T15:00:01.151Z"
+    },
+    "runner-smoke-requests.json": {
+      "bytes": 13266,
+      "sha256": "0003f5bdd38ff2c4db7fb58e305a218c4246b631acd23b94fc4cce6e3b0a4e83",
+      "capturedOrWrittenAt": "2026-10-27T15:05:47.979Z"
+    },
+    "test-database-cleanup.json": {
+      "bytes": 433,
+      "sha256": "e2463ddcef970d7541b5160e2e5d9d4917879ae853ab1610f348c49c995539c4",
+      "capturedOrWrittenAt": "2026-10-27T14:56:51.030Z"
+    },
+    "test-migrate.txt": {
+      "bytes": 96,
+      "sha256": "d97d24ccea4abb757877c27e68631d66dfda8377b69c972ec09feee850da0bdb",
+      "capturedOrWrittenAt": "2026-10-27T15:05:47.981Z"
+    },
+    "unit.txt": {
+      "bytes": 354,
+      "sha256": "2fccf3421b3d95d288fdbf0cfeeee45d3d1a954eeae0ac7555a35730b709766e",
+      "capturedOrWrittenAt": "2026-10-27T15:00:00.872Z"
+    },
+    "verify-fixture.mjs": {
+      "bytes": 6367,
+      "sha256": "9f1f1b127586118bd53a1884d59ed2d906b6305854aef35c3dfd437e1d289d86",
+      "capturedOrWrittenAt": "2026-10-27T15:05:47.980Z"
+    }
+  }
+}
