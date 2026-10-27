@@ -1,0 +1,8 @@
+PASS Android tests/ledgers-ui.test.tsx (12.727 s)
+PASS iOS tests/ledgers-ui.test.tsx (12.603 s)
+
+Test Suites: 2 passed, 2 total
+Tests:       66 passed, 66 total
+Snapshots:   0 total
+Time:        25.439 s
+Ran all test suites matching /ledgers-ui/i in 2 projects.

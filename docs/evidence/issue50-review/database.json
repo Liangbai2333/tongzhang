@@ -1,0 +1,55 @@
+{
+  "ledger": [
+    {
+      "id": "e5565677-1a12-4c06-81e4-974e3f8540f2",
+      "name": "Issue50-Review-Retry",
+      "status": "SETTLING",
+      "version": 4,
+      "cover_image_id": "782193a2-2c1b-4ca3-818a-b1c41bb48d8d",
+      "ledgers": 1,
+      "invitations": 1,
+      "bound_covers": 1,
+      "creation_audits": 1,
+      "members": 2
+    }
+  ],
+  "actions": [
+    {
+      "action": "EXPENSE_CREATED",
+      "count": 1
+    },
+    {
+      "action": "LEDGER_CREATED",
+      "count": 1
+    },
+    {
+      "action": "MEMBER_JOINED",
+      "count": 1
+    },
+    {
+      "action": "SETTLEMENT_STARTED",
+      "count": 1
+    }
+  ],
+  "transfers": [
+    {
+      "amount_cents": "50",
+      "status": "PENDING",
+      "registered_at": null
+    }
+  ],
+  "originalMainLedger": [
+    {
+      "status": "SETTLED",
+      "version": 5,
+      "user_id": "92f8392f-76ef-4d9e-b77b-d0a3a3a94af4",
+      "archived_at": null
+    },
+    {
+      "status": "SETTLED",
+      "version": 5,
+      "user_id": "d068a1ac-f38c-45a8-9dd0-d5274fe88296",
+      "archived_at": "2026-10-27T11:11:15.058Z"
+    }
+  ]
+}

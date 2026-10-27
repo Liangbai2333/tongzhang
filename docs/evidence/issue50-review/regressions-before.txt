@@ -1,0 +1,173 @@
+Continuous failure and unmounted verification before fixes
+  ● uncertain writes remain unresolved until a confirmed result › keeps the original payload/key locked after a retry returns NETWORK_UNAVAILABLE
+    expect(received).toBe(expected) // Object.is equality
+    Expected: true
+    Received: false
+      33 |         await hook.result.current.submit({ note: 'original' }, send);
+      34 |       });
+    > 35 |       expect(hook.result.current.uncertain).toBe(true);
+      36 |       await act(async () => {
+      37 |         await hook.result.current.submit({ note: 'changed' }, send);
+      38 |       });
+  ● uncertain writes remain unresolved until a confirmed result › keeps the original payload/key locked after a retry returns FORBIDDEN
+    expect(received).toBe(expected) // Object.is equality
+    Expected: true
+    Received: false
+      33 |         await hook.result.current.submit({ note: 'original' }, send);
+      34 |       });
+    > 35 |       expect(hook.result.current.uncertain).toBe(true);
+      36 |       await act(async () => {
+      37 |         await hook.result.current.submit({ note: 'changed' }, send);
+      38 |       });
+  ● uncertain writes remain unresolved until a confirmed result › keeps the original payload/key locked after a retry returns UNAUTHENTICATED
+    expect(received).toBe(expected) // Object.is equality
+    Expected: true
+    Received: false
+      33 |         await hook.result.current.submit({ note: 'original' }, send);
+      34 |       });
+    > 35 |       expect(hook.result.current.uncertain).toBe(true);
+      36 |       await act(async () => {
+      37 |         await hook.result.current.submit({ note: 'changed' }, send);
+      38 |       });
+  ● uncertain writes remain unresolved until a confirmed result › ignores an online verification that resolves after its sheet was unmounted
+    expect(jest.fn()).not.toHaveBeenCalled()
+      76 |       resolve(true);
+      77 |     });
+    > 78 |     expect(onDone).not.toHaveBeenCalled();
+      79 |   });
+      80 | });
+      81 |
+  ● uncertain writes remain unresolved until a confirmed result › keeps the original payload/key locked after a retry returns NETWORK_UNAVAILABLE
+    expect(received).toBe(expected) // Object.is equality
+    Expected: true
+    Received: false
+      33 |         await hook.result.current.submit({ note: 'original' }, send);
+      34 |       });
+    > 35 |       expect(hook.result.current.uncertain).toBe(true);
+      36 |       await act(async () => {
+      37 |         await hook.result.current.submit({ note: 'changed' }, send);
+      38 |       });
+  ● uncertain writes remain unresolved until a confirmed result › keeps the original payload/key locked after a retry returns FORBIDDEN
+    expect(received).toBe(expected) // Object.is equality
+    Expected: true
+    Received: false
+      33 |         await hook.result.current.submit({ note: 'original' }, send);
+      34 |       });
+    > 35 |       expect(hook.result.current.uncertain).toBe(true);
+      36 |       await act(async () => {
+      37 |         await hook.result.current.submit({ note: 'changed' }, send);
+      38 |       });
+  ● uncertain writes remain unresolved until a confirmed result › keeps the original payload/key locked after a retry returns UNAUTHENTICATED
+    expect(received).toBe(expected) // Object.is equality
+    Expected: true
+    Received: false
+      33 |         await hook.result.current.submit({ note: 'original' }, send);
+      34 |       });
+    > 35 |       expect(hook.result.current.uncertain).toBe(true);
+      36 |       await act(async () => {
+      37 |         await hook.result.current.submit({ note: 'changed' }, send);
+      38 |       });
+  ● uncertain writes remain unresolved until a confirmed result › ignores an online verification that resolves after its sheet was unmounted
+    expect(jest.fn()).not.toHaveBeenCalled()
+      76 |       resolve(true);
+      77 |     });
+    > 78 |     expect(onDone).not.toHaveBeenCalled();
+      79 |   });
+      80 | });
+      81 |
+Test Suites: 2 failed, 2 total
+Tests:       8 failed, 8 total
+
+Cross-ledger archive before scope fix
+  ● Console
+       8 |     void AccessibilityInfo.isReduceMotionEnabled()
+       9 |       .then((value) => {
+    > 10 |         if (active) setReduced(value);
+      11 |       })
+      12 |       .catch(() => {
+      13 |         /* Keep motion disabled if the system preference cannot be read. */
+       8 |     void AccessibilityInfo.isReduceMotionEnabled()
+       9 |       .then((value) => {
+    > 10 |         if (active) setReduced(value);
+      11 |       })
+      12 |       .catch(() => {
+      13 |         /* Keep motion disabled if the system preference cannot be read. */
+       8 |     void AccessibilityInfo.isReduceMotionEnabled()
+       9 |       .then((value) => {
+    > 10 |         if (active) setReduced(value);
+      11 |       })
+      12 |       .catch(() => {
+      13 |         /* Keep motion disabled if the system preference cannot be read. */
+       8 |     void AccessibilityInfo.isReduceMotionEnabled()
+       9 |       .then((value) => {
+    > 10 |         if (active) setReduced(value);
+      11 |       })
+      12 |       .catch(() => {
+      13 |         /* Keep motion disabled if the system preference cannot be read. */
+       8 |     void AccessibilityInfo.isReduceMotionEnabled()
+       9 |       .then((value) => {
+    > 10 |         if (active) setReduced(value);
+      11 |       })
+      12 |       .catch(() => {
+      13 |         /* Keep motion disabled if the system preference cannot be read. */
+       8 |     void AccessibilityInfo.isReduceMotionEnabled()
+       9 |       .then((value) => {
+    > 10 |         if (active) setReduced(value);
+      11 |       })
+      12 |       .catch(() => {
+      13 |         /* Keep motion disabled if the system preference cannot be read. */
+       8 |     void AccessibilityInfo.isReduceMotionEnabled()
+       9 |       .then((value) => {
+    > 10 |         if (active) setReduced(value);
+      11 |       })
+      12 |       .catch(() => {
+      13 |         /* Keep motion disabled if the system preference cannot be read. */
+       8 |     void AccessibilityInfo.isReduceMotionEnabled()
+       9 |       .then((value) => {
+    > 10 |         if (active) setReduced(value);
+      11 |       })
+      12 |       .catch(() => {
+      13 |         /* Keep motion disabled if the system preference cannot be read. */
+       8 |     void AccessibilityInfo.isReduceMotionEnabled()
+       9 |       .then((value) => {
+    > 10 |         if (active) setReduced(value);
+      11 |       })
+      12 |       .catch(() => {
+      13 |         /* Keep motion disabled if the system preference cannot be read. */
+       8 |     void AccessibilityInfo.isReduceMotionEnabled()
+       9 |       .then((value) => {
+    > 10 |         if (active) setReduced(value);
+      11 |       })
+      12 |       .catch(() => {
+      13 |         /* Keep motion disabled if the system preference cannot be read. */
+       8 |     void AccessibilityInfo.isReduceMotionEnabled()
+       9 |       .then((value) => {
+    > 10 |         if (active) setReduced(value);
+      11 |       })
+      12 |       .catch(() => {
+      13 |         /* Keep motion disabled if the system preference cannot be read. */
+       8 |     void AccessibilityInfo.isReduceMotionEnabled()
+       9 |       .then((value) => {
+    > 10 |         if (active) setReduced(value);
+      11 |       })
+      12 |       .catch(() => {
+      13 |         /* Keep motion disabled if the system preference cannot be read. */
+       8 |     void AccessibilityInfo.isReduceMotionEnabled()
+       9 |       .then((value) => {
+    > 10 |         if (active) setReduced(value);
+      11 |       })
+      12 |       .catch(() => {
+      13 |         /* Keep motion disabled if the system preference cannot be read. */
+       8 |     void AccessibilityInfo.isReduceMotionEnabled()
+
+Archive sheet unmounted during ledger refetch before fix
+  ● keeps the unresolved archive attempt mounted while its ledger is refetched
+    Unable to find an element with text: 归档仍未知
+      625 |   });
+      626 |   await waitFor(() => expect(get).toHaveBeenCalledTimes(2));
+    > 627 |   expect(screen.getByText('归档仍未知')).toBeOnTheScreen();
+      628 |   await act(async () => { resolve(settled); await refetch; });
+      629 |   await userEvent.press(await screen.findByRole('button', { name: '重试原提交' }));
+      630 |   expect(archive.mock.calls[0]).toEqual(archive.mock.calls[1]);
+Test Suites: 1 failed, 1 passed, 2 total
+Tests:       1 failed, 64 skipped, 1 passed, 66 total
