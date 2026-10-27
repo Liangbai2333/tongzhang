@@ -68,6 +68,51 @@ async function settledLedger() {
 }
 
 describe('personal archive and history', () => {
+  it("paginates only the caller's archived memberships without mixing current or other-member history", async () => {
+    const owner = await fixture.register('历史分页甲');
+    const friend = await fixture.register('历史分页乙');
+    const archivedIds: string[] = [];
+    for (let i = 0; i < 3; i++) {
+      const ledgerId = await fixture.ledger(owner, [friend]);
+      const closed = await fixture.app.inject({
+        method: 'POST',
+        url: `/api/v1/ledgers/${ledgerId}/settlement`,
+        headers: { ...auth(owner), 'idempotency-key': randomUUID() },
+        payload: { expectedVersion: 1 },
+      });
+      expect(closed.statusCode).toBe(201);
+      expect(closed.json().data.ledgerStatus).toBe('SETTLED');
+      expect((await archive(owner, ledgerId)).statusCode).toBe(200);
+      archivedIds.push(ledgerId);
+    }
+    const currentId = await fixture.ledger(owner, [friend]);
+    const seen: string[] = [];
+    let cursor: string | null = null;
+    for (let page = 0; page < 3; page++) {
+      const response = await get(
+        owner,
+        `/api/v1/ledgers?archived=true&limit=1${cursor ? `&cursor=${cursor}` : ''}`,
+      );
+      expect(response.statusCode).toBe(200);
+      const body = response.json();
+      expect(body.data).toHaveLength(1);
+      expect(body.data[0].archivedAt).toEqual(expect.any(String));
+      seen.push(body.data[0].id);
+      cursor = body.page.nextCursor;
+      if (page < 2) expect(cursor).toEqual(expect.any(String));
+    }
+    expect(cursor).toBeNull();
+    expect(new Set(seen)).toEqual(new Set(archivedIds));
+    expect(
+      (await get(owner, '/api/v1/ledgers')).json().data.map((l: { id: string }) => l.id),
+    ).toEqual([currentId]);
+    expect((await get(friend, '/api/v1/ledgers?archived=true')).json()).toEqual({
+      data: [],
+      page: { nextCursor: null },
+    });
+    expect((await get(friend, '/api/v1/ledgers')).json().data).toHaveLength(4);
+  });
+
   it('archives only the caller of a settled ledger and keeps history readable', async () => {
     const { owner, friend, ledgerId, settledAt } = await settledLedger();
     const key = randomUUID();

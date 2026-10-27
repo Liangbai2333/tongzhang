@@ -174,6 +174,44 @@ describe('ledger pages with isolated API callbacks (no database/native claim)', 
     await screen.findByText('还没有账本');
     expect(list.mock.calls.at(-1)?.[0].query.archived).toBe('false');
   });
+  it('keeps archive filtering when fetching the next history page', async () => {
+    await show(<LedgerListScreen />);
+    await screen.findByText('还没有账本');
+    list.mockResolvedValueOnce({
+      data: [{ ...summary, status: 'SETTLED', archivedAt: summary.createdAt }],
+      page: { nextCursor: 'history-cursor' },
+    });
+    await userEvent.press(screen.getByRole('button', { name: '已归档账本' }));
+    await screen.findByText('鼓山一日');
+    list.mockResolvedValueOnce({
+      data: [
+        {
+          ...summary,
+          id: userId,
+          name: '历史第二本',
+          status: 'SETTLED',
+          archivedAt: summary.createdAt,
+        },
+      ],
+      page: { nextCursor: null },
+    });
+    await userEvent.press(screen.getByRole('button', { name: '加载更多' }));
+    await screen.findByText('历史第二本');
+    expect(list.mock.calls.at(-1)?.[0].query).toMatchObject({
+      archived: 'true',
+      cursor: 'history-cursor',
+    });
+    expect(screen.getByText('鼓山一日')).toBeOnTheScreen();
+    expect(screen.queryByRole('button', { name: '加载更多' })).toBeNull();
+  });
+  it('shows an online empty history instead of the current-list empty copy', async () => {
+    await show(<LedgerListScreen />);
+    await screen.findByText('还没有账本');
+    await userEvent.press(screen.getByRole('button', { name: '已归档账本' }));
+    await screen.findByText('还没有已归档账本');
+    expect(screen.queryByText('还没有账本')).toBeNull();
+    expect(list.mock.calls.at(-1)?.[0].query.archived).toBe('true');
+  });
   it('shows the empty-ledger design only after reading a real zero total and opens expense creation for ACTIVE ledgers', async () => {
     await show(<LedgerDetailScreen />);
     await screen.findByText('你们的故事，从第一笔开始。');
