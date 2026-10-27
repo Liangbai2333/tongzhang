@@ -2,7 +2,7 @@
 
 2026-10-27，复核 [PR #50](https://github.com/Liangbai2333/tongzhang/pull/50) 的权限、幂等恢复和指定 Figma 对齐。在原分支 `feat/42-settlement-cover` 修复，不改写既有提交、不合并。原始完整业务验收见 [Issue #42 验证记录](issue42-mobile-completion-validation.md)。
 
-最终代码修复提交为 `75325d9`。截图采集于本轮修复工作区；截图后补充的详情归档状态隔离及导航配置不改变所示建账、结算与登记面板。
+逻辑修复提交为 `75325d9`，最终排版修复提交为 `f46ed0c`。01、02、07 截图在最终排版提交后更新，03–06 的建账界面与该提交一致。
 
 ## 发现与修复
 
@@ -52,5 +52,7 @@
 | 显式设置 `TEST_DATABASE_URL` 后 `pnpm test:integration` | 独立 `tongzhang_issue42_test`，14 文件 / 128 项通过 |
 | `pnpm export:mobile`                                    | Android/iOS JavaScript 导出通过                     |
 | `NODE_USE_ENV_PROXY=1 pnpm doctor:mobile`               | 21/21 通过                                          |
+
+完整 226 项组件/Hook 测试通过后，最终详情导航调整另跑 66 项账本测试，最终字重与行高调整另跑 50 项结算/恢复测试；均通过。最终 `pnpm check` 与双端导出包含所有排版调整。
 
 命令日志、修复前失败摘录、源码及截图哈希保存在 [复核证据目录](evidence/issue50-review)。没有物理真机或 iOS 原生安装验收；组件测试、JS 导出和 Android 原生操作分别记录。未修改 Issue 完成状态或剩余点数，等待系统架构负责人审核，不合并 PR。
