@@ -71,14 +71,14 @@ export function SettlementActionSheet({
                   gap: 6,
                 }}
               >
-                <Text style={[ui.strong, { fontSize: 17, lineHeight: 25 }]}>
+                <Text style={[ui.strong, { fontSize: 17, lineHeight: 25, fontWeight: '700' }]}>
                   {name(transfer.payerMemberId)} → {name(transfer.payeeMemberId)}
                 </Text>
                 <Text style={[ui.heading, { fontSize: 22, lineHeight: 32 }]}>
                   {yuan(transfer.amountCents)}
                 </Text>
               </View>
-              <Text style={ui.muted}>
+              <Text style={[ui.muted, { fontSize: 13, lineHeight: 19 }]}>
                 请确认这笔转账已在应用外完成。 同账不会验证真实到账；仅整笔登记，不可撤销。
               </Text>
               <Field
