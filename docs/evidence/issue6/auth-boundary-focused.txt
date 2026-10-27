@@ -1,0 +1,37 @@
+Targeted auth boundary batch (new file + existing auth/access/idempotency), TEST_DATABASE_URL on dedicated PostgreSQL 17.11 _test database:
+
+ RUN  v5.0.4 C:/tz3
+
+ ✓ apps/server/tests/idempotency.integration.test.ts (11 tests) 24432ms
+     ✓ replays the exact success body without duplicating the ledger change or audit
+     ✓ rejects the same key with different content using a contract error and no new effects
+     ✓ serializes concurrent requests using differently cased UUIDs into one committed effect
+     ✓ permits one winner for simultaneous conflicting content
+     ✓ rolls back the business row, audit and replay result together, then allows explicit retry
+     ✓ isolates the same key by user and normalized resource path
+     ✓ rolls back when the result is not JSON-safe instead of storing a broken success
+     ✓ checks current membership before replaying an existing success
+     ✓ rejects replay when membership is revoked while waiting for the idempotency lock
+     ✓ replaces an expired replay record without extending active replay retention
+     ✓ rejects missing or malformed keys before creating effects
+ ✓ apps/server/tests/auth.integration.test.ts (10 tests) 7769ms
+     ✓ rejects unknown accounts and ambiguous usernames with independent contract expectations
+     ✓ registers, logs in, rotates without extending the session, and immediately revokes on logout
+     ✓ commits revocation on refresh replay, invalidating the replacement pair
+     ✓ serializes duplicate refreshes and treats the duplicate as replay
+     ✓ serializes refresh and logout so the final state is revoked
+     ✓ keeps the session revoked when refresh queues first on the session lock
+     ✓ keeps the session revoked when logout queues first on the session lock
+     ✓ rejects expired access but allows refresh until the absolute session expiry
+     ✓ rejects malformed, unknown and wrong-purpose credentials without revoking a valid session
+     ✓ preserves credential errors and registration uniqueness without creating extra sessions
+ ✓ apps/server/tests/access.integration.test.ts (2 tests) 4091ms
+     ✓ returns contract 401/403 errors for anonymous and nonmember requests without leaking the ledger
+     ✓ resolves creator/member roles from the real database while unfinished endpoints remain explicit
+ ✓ apps/server/tests/auth-boundary-regression.integration.test.ts (3 tests) 1999ms
+     ✓ logs in with a unique username and issues an independent second session
+     ✓ rejects anonymous logout and getMe with the contract error and no session effects
+     ✓ throttles the eleventh unauthenticated login in the window without creating side effects
+
+ Test Files  4 passed (4)
+      Tests  26 passed (26)

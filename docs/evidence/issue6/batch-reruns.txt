@@ -1,0 +1,27 @@
+Environment-affected batch reruns (PostgreSQL data files periodically locked by local antivirus, PANIC + crash recovery loop; per-file/per-describe retry). Final captured results:
+
+apps/server/tests/images.integration.test.ts        Test Files 1 passed, Tests 10 passed
+apps/server/tests/schema.integration.test.ts        Test Files 1 passed, Tests 3 passed
+apps/server/tests/database.integration.test.ts      Test Files 1 passed, Tests 1 passed
+apps/server/tests/settlements.integration.test.ts   Test Files 1 passed, Tests 13 passed (42330ms, full names captured)
+apps/server/tests/expenses.integration.test.ts      Test Files 1 passed, Tests 16 passed
+apps/server/tests/balances.integration.test.ts      Test Files 1 passed, Tests 7 passed
+apps/server/tests/cover-archive-repayment...        Test Files 1 passed, Tests 6 passed | 10 todo (16)
+apps/server/tests/ledgers.integration.test.ts       createLedger describe: Test Files 1 passed (5 of 12 retry rounds, e.g. attempt 5/7/8/10/11)
+                                                    invitations describe: 4 of 5 passed; "never exceeds 12 members" hit
+                                                    "could not open file base/16384/2601: Permission denied"
+                                                    on bulk seedUser in all 20 retries (environment, not code)
+
+Sample settlements tail:
+ ✓ apps/server/tests/settlements.integration.test.ts (13 tests) 42330ms
+   ✓ formal settlement on real PostgreSQL (13)
+     ✓ keeps preview read-only, persists the server plan and freezes subsequent expense writes 2904ms
+     ✓ serializes concurrent duplicate requests including uppercase UUIDs into one batch and exact replay 3550ms
+     ✓ serializes a real expense/freeze race: settlement-first 5044ms
+     ...
+
+Sample environment failure (ledgers, "never exceeds"):
+ Caused by: error: could not open file "base/16384/2601": Permission denied
+   ❯ Object.seedUser apps/server/tests/fixtures/integration.ts:56:21
+ PostgreSQL log repeatedly shows: PANIC: could not open file "global/pg_control": Permission denied
+   then: server process was terminated by exception 0xC0000409, automatic recovery in progress

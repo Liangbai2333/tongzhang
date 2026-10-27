@@ -1,0 +1,21 @@
+Unit tests (no database) and static checks:
+
+ TMP/TEMP pointed at an ASCII path (node --run cannot resolve a non-ASCII temp dir, see validation doc).
+
+ RUN  v5.0.4 (root vitest.config.ts)
+ Test Files  3 failed | 15 passed (18)
+      Tests  2 failed | 83 passed (85)
+
+ Failures, all unrelated to this change (only apps/server/tests/auth-boundary-regression.integration.test.ts added):
+ - apps/mobile/tests/auth-controller.test.ts, auth-session.test.ts:
+     TSCONFIG_ERROR Failed to load tsconfig 'expo/tsconfig.base': Tsconfig not found
+     (expo dependency tree lost to a broken `pnpm exec` store write earlier this session)
+ - scripts/tests/deploy.test.mjs (2 cases): PATH is joined with ':' for stub binaries,
+     which is not a valid separator on Windows; environment difference, scripts/infra untouched.
+
+Typecheck (per-package tsc, equivalent to pnpm -r typecheck):
+ contracts: OK, domain: OK, server: OK, server-tools: OK, mobile: OK
+ (initial run exposed one noUncheckedIndexedAccess error in the new test file; fixed with .at())
+
+eslint . --max-warnings=0 : clean
+prettier --check on the new test file: "All matched files use Prettier code style!"
