@@ -1,0 +1,241 @@
+{
+  "sourceCommit": "7616adbff4502f1fcab1d233fa07938071004041",
+  "generatedAt": "2026-10-27T15:39:19.766894+00:00",
+  "screenshots": "Raw adb exec-out screencap -p from this Issue49 run; submitting states explicitly labelled. Test image contents reused; no historical screenshots reused.",
+  "files": [
+    {
+      "path": "02-create-submitting.png",
+      "bytes": 149409,
+      "sha256": "7b02667587b4057de74f34bb5f57367ceb07060b2fd5160ea4ab5ce86bb2cb1d",
+      "capturedOrWrittenAt": "2026-10-27T15:22:27.253845+00:00"
+    },
+    {
+      "path": "03-join-preview.png",
+      "bytes": 212689,
+      "sha256": "1174656830a0af61a585448e622564b143120086685854f774333132639b057d",
+      "capturedOrWrittenAt": "2026-10-27T15:24:56.697803+00:00"
+    },
+    {
+      "path": "05-equal-splits.png",
+      "bytes": 180711,
+      "sha256": "d6e0804008ba1d8c75845e8b15daf6b20a4a076acd15efc5a8d6042bdeb9eac1",
+      "capturedOrWrittenAt": "2026-10-27T15:27:39.343865+00:00"
+    },
+    {
+      "path": "07-expense-submitting.png",
+      "bytes": 175929,
+      "sha256": "555f5e059fb1bf62d71773fe9b30309d38191ad307ff67a31271c10f970481c5",
+      "capturedOrWrittenAt": "2026-10-27T15:28:36.857547+00:00"
+    },
+    {
+      "path": "08-member-receipt.png",
+      "bytes": 165974,
+      "sha256": "d23052c09a32eafb64841b76c81a579677eb7c33a4475b5076308f09414f5010",
+      "capturedOrWrittenAt": "2026-10-27T15:29:03.871467+00:00"
+    },
+    {
+      "path": "09-balances.png",
+      "bytes": 158030,
+      "sha256": "e283f5a20b5df7000627135395597f0441cd5e62a0f5e47ef2cf0a4311f3cb31",
+      "capturedOrWrittenAt": "2026-10-27T15:29:19.708224+00:00"
+    },
+    {
+      "path": "11-owner-active-detail.png",
+      "bytes": 165768,
+      "sha256": "01b10191f6c96bbb033a18584417c447680f3f5866b55f3cf48c49eb5bc7a8ef",
+      "capturedOrWrittenAt": "2026-10-27T15:31:51.308733+00:00"
+    },
+    {
+      "path": "12-owner-expense-detail.png",
+      "bytes": 155470,
+      "sha256": "344d2d8f3305e05851c2713272c6320ca050ea8f81193a89d105f6138c996c9a",
+      "capturedOrWrittenAt": "2026-10-27T15:31:57.379780+00:00"
+    },
+    {
+      "path": "13-owner-receipt.png",
+      "bytes": 165880,
+      "sha256": "e02f959dad24b113b0e73e12f3a6c784da2700c7fefba675e2f8ac73f7d3901e",
+      "capturedOrWrittenAt": "2026-10-27T15:32:03.477775+00:00"
+    },
+    {
+      "path": "14-members-reread.png",
+      "bytes": 146001,
+      "sha256": "9465e05a9d9078f75b52df3fc9eee93aed0c638577f35aef07483822cc0c4f62",
+      "capturedOrWrittenAt": "2026-10-27T15:32:45.177914+00:00"
+    },
+    {
+      "path": "15-invitation-reread.png",
+      "bytes": 177742,
+      "sha256": "4d3cabc5d0405e359d2daa7a468b916725af6f0e6215562eddb8ff7a9ab344c2",
+      "capturedOrWrittenAt": "2026-10-27T15:32:51.258507+00:00"
+    },
+    {
+      "path": "16-owner-preview.png",
+      "bytes": 194012,
+      "sha256": "691d8b484a23abb150fd00e776dcf79e5e975785e9c62b4bbf2ebbbe58b27bf2",
+      "capturedOrWrittenAt": "2026-10-27T15:33:01.439349+00:00"
+    },
+    {
+      "path": "17-freeze-confirm.png",
+      "bytes": 243858,
+      "sha256": "f9588cbd98f9d5c29967b958774aa4d88d6cebb7528af247f4fc95eb1f1e8f3a",
+      "capturedOrWrittenAt": "2026-10-27T15:33:12.537195+00:00"
+    },
+    {
+      "path": "18-frozen.png",
+      "bytes": 222108,
+      "sha256": "6f299889cfd394103ea744516df0a7e7e547d5b5c7243fcfb25000adb2bcd6bf",
+      "capturedOrWrittenAt": "2026-10-27T15:33:18.706064+00:00"
+    },
+    {
+      "path": "19-paid-confirm.png",
+      "bytes": 197348,
+      "sha256": "3e090386348fe7fbdba1b189731f09d99b0f675feb14eeac9eefab76bb3bd74e",
+      "capturedOrWrittenAt": "2026-10-27T15:33:50.210508+00:00"
+    },
+    {
+      "path": "20-paid.png",
+      "bytes": 203383,
+      "sha256": "41dd49dca5abfbe9b064cfaa49d31a8694d1c243e4627854f817e47401066b4c",
+      "capturedOrWrittenAt": "2026-10-27T15:33:56.339648+00:00"
+    },
+    {
+      "path": "21-settled.png",
+      "bytes": 228674,
+      "sha256": "1e88636211c5510a1ff090072f5650ec359e41d53bef9bb166918f0d02bc25ce",
+      "capturedOrWrittenAt": "2026-10-27T15:34:52.824701+00:00"
+    },
+    {
+      "path": "22-archive-confirm.png",
+      "bytes": 229007,
+      "sha256": "67300f22ea419ead519de10214f30af4ff0f6a200190d605efcc43fdbb937f70",
+      "capturedOrWrittenAt": "2026-10-27T15:34:57.868600+00:00"
+    },
+    {
+      "path": "23-owner-current.png",
+      "bytes": 138508,
+      "sha256": "fdf31beac94e72ce530f7be06b989e77dc13529cd89933e3589a108b733209f5",
+      "capturedOrWrittenAt": "2026-10-27T15:35:03.988279+00:00"
+    },
+    {
+      "path": "24-owner-history.png",
+      "bytes": 107513,
+      "sha256": "0b10ef6483115dacce7e36f6a99aeb9d444b137964daee460a68eee7f2214269",
+      "capturedOrWrittenAt": "2026-10-27T15:35:10.049698+00:00"
+    },
+    {
+      "path": "25-history-detail.png",
+      "bytes": 182641,
+      "sha256": "860720be7fae06142df18254155cbab8df3f565267c0495b6e6758927c88df70",
+      "capturedOrWrittenAt": "2026-10-27T15:36:23.856230+00:00"
+    },
+    {
+      "path": "26-history-receipt.png",
+      "bytes": 165992,
+      "sha256": "83d49403bf248efa1cf5cfbed459ef93380a495e798a2d852dc39d029d5d5d59",
+      "capturedOrWrittenAt": "2026-10-27T15:36:33.926971+00:00"
+    },
+    {
+      "path": "27-history-batch.png",
+      "bytes": 232552,
+      "sha256": "97d5dd71989614a099572de664e657e6db770f78acc1aa4b811e7d87d78bebd6",
+      "capturedOrWrittenAt": "2026-10-27T15:36:46.339671+00:00"
+    },
+    {
+      "path": "28-member-current.png",
+      "bytes": 112685,
+      "sha256": "cafbdde9308087981e4a7cc640bedc9dfc9f19645143830b9bc965ec6122683e",
+      "capturedOrWrittenAt": "2026-10-27T15:38:19.500938+00:00"
+    },
+    {
+      "path": "29-member-batch.png",
+      "bytes": 228828,
+      "sha256": "c740685763bfe8b3062999aed5408d75361531c843a96b3b963c08a636847fca",
+      "capturedOrWrittenAt": "2026-10-27T15:38:29.653720+00:00"
+    },
+    {
+      "path": "30-member-history.png",
+      "bytes": 107271,
+      "sha256": "00c4f4825bc508535ed2cb8d2c6da73e6f9fa1972f315a11519476756d43e168",
+      "capturedOrWrittenAt": "2026-10-27T15:38:47.424430+00:00"
+    },
+    {
+      "path": "app-requests.json",
+      "bytes": 97922,
+      "sha256": "b93fc7a2a0a33ed2e0fcf0119278898dc87ea04c8fd3152bedd301cd680c50f7",
+      "capturedOrWrittenAt": "2026-10-27T15:38:04.872605+00:00"
+    },
+    {
+      "path": "build-server.txt",
+      "bytes": 170,
+      "sha256": "11c3ace6b03232969966c2cfb0e2eb4eefd2184a7b6dec309e5b0a2527b268ec",
+      "capturedOrWrittenAt": "2026-10-27T15:38:04.873233+00:00"
+    },
+    {
+      "path": "check.txt",
+      "bytes": 652,
+      "sha256": "b369bb08ae045e36016bba329162f9ef60f9870403f049ea6b36d39ae2049d1f",
+      "capturedOrWrittenAt": "2026-10-27T15:38:04.872858+00:00"
+    },
+    {
+      "path": "db-archived.json",
+      "bytes": 7733,
+      "sha256": "a065b296ff14aaf49db69cfd074731f21d5ea467da9c11056685bda3204951c9",
+      "capturedOrWrittenAt": "2026-10-27T15:35:10.300314+00:00"
+    },
+    {
+      "path": "db-frozen.json",
+      "bytes": 6222,
+      "sha256": "42672b03f79ef05c57f462375355d344051ec0f0b3194ee12479dd089a8df272",
+      "capturedOrWrittenAt": "2026-10-27T15:33:34.025673+00:00"
+    },
+    {
+      "path": "db-paid.json",
+      "bytes": 6756,
+      "sha256": "cf717a355e19f61db80995b1d0a404f34a02b74950d1686b55e31e027b3476e9",
+      "capturedOrWrittenAt": "2026-10-27T15:33:56.567204+00:00"
+    },
+    {
+      "path": "db-preview.json",
+      "bytes": 4351,
+      "sha256": "eaf6af2cd37331a5334f996e7ebbafda254eda50702c8286a8bb2961986ba663",
+      "capturedOrWrittenAt": "2026-10-27T15:29:54.178375+00:00"
+    },
+    {
+      "path": "document-checks.json",
+      "bytes": 1703,
+      "sha256": "5b74b1f8a005c9901f4fa6b276af838a34591d9e3359739c3deafb54918e5ec3",
+      "capturedOrWrittenAt": "2026-10-27T15:39:19.539461+00:00"
+    },
+    {
+      "path": "endpoint-audit.json",
+      "bytes": 5762,
+      "sha256": "e5880504c9977ff7877780916357c759ad4a243c00c2e905a49a1aae6870d237",
+      "capturedOrWrittenAt": "2026-10-27T15:32:32.126088+00:00"
+    },
+    {
+      "path": "environment.json",
+      "bytes": 18742,
+      "sha256": "981d3f8d1e6252d88323ec0ccdd00b52658fdca32843b4c3b7898a72674a7bca",
+      "capturedOrWrittenAt": "2026-10-27T15:30:11.545815+00:00"
+    },
+    {
+      "path": "install.txt",
+      "bytes": 924,
+      "sha256": "134503bb2ce95a506167e2ca2c2a2856ec240ad9bea4e2696eb370be07b2aa1e",
+      "capturedOrWrittenAt": "2026-10-27T15:38:04.873065+00:00"
+    },
+    {
+      "path": "migrate.txt",
+      "bytes": 96,
+      "sha256": "d97d24ccea4abb757877c27e68631d66dfda8377b69c972ec09feee850da0bdb",
+      "capturedOrWrittenAt": "2026-10-27T15:38:04.873388+00:00"
+    },
+    {
+      "path": "native-assertions.json",
+      "bytes": 550,
+      "sha256": "0b2680f6674d2e4cd95dc48760c32e2c6f31d08036d94ec3adbe15ca9f08a899",
+      "capturedOrWrittenAt": "2026-10-27T15:37:06.705555+00:00"
+    }
+  ]
+}

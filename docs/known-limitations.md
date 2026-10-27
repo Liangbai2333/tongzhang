@@ -1,0 +1,19 @@
+# 当前已知限制
+
+基于 `7616adb`（2026-10-27），与 [App 手册](app-user-guide.md)、[接口索引](api-reference.md)、[#49 实操](issue49-documentation-validation.md)共同维护。产品规格和原型是目标，不等于当前实现。
+
+| 范围           | 实际边界                                                                                                                                                                   | 依据                                                                                                                           |
+| -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| 消费改删       | A16/A17 已登记契约/路由，service 返回 501 NOT_IMPLEMENTED；App 未开放。canEdit 不能作为已实现证明                                                                          | [消费 service](../apps/server/src/modules/expenses/service.ts)                                                                 |
+| 支出统计       | A21 返回 501，App「支出统计」禁用；余额明细 A20 可用                                                                                                                       | [余额 service](../apps/server/src/modules/balances/service.ts)                                                                 |
+| 资料与偏好     | A28/A29 返回 501；「我的」只读账号和在线核验，不能改用户名或保存通知开关，通知事件未实现                                                                                   | [资料 service](../apps/server/src/modules/profile/service.ts)                                                                  |
+| 扫码/邀请唤起  | 展示二维码、手输邀请码加入可用；扫码按钮禁用，未实现邀请链接唤起                                                                                                           | [加入页](../apps/mobile/src/features/invitations/screens/JoinLedgerScreen.tsx)                                                 |
+| 支付与生命周期 | 人工整笔登记，不对接支付、不验证到账；无部分还款、撤销登记、取消冻结、重新开账；归档仅本人，无取消归档入口                                                                 | [结算](../apps/server/src/modules/settlements/progress.ts)、[账本](../apps/server/src/modules/ledgers/service.ts)              |
+| 图片           | 最多一张收据，JPEG/PNG ≤1 MiB；无 OCR、多图、图片公开链接。上传没有业务幂等；失败可能留下临时图。生产定时清理未部署验收                                                    | [图片 service](../apps/server/src/modules/images/service.ts)、[清理](development.md#临时图片清理与调度)                        |
+| 在线与恢复     | 不支持离线业务访问、持久业务缓存、离线队列或持久草稿。未知写结果仅当前页面内存保留，重启后先在线核对；不自动重试写操作                                                     | [提交封装](../apps/mobile/src/lib/use-idempotent-write.ts)、[在线确认面板](../apps/mobile/src/components/OnlineWriteSheet.tsx) |
+| 原生实测       | #49 在 macOS 上 Android 17/API 37 ARM64 模拟器、兼容开发客户端实操；不是物理真机、双设备并发或签名发布包验收。本轮未新构建客户端；#48 的冷启动/权限/认证证据保留其版本归属 | [#49](issue49-documentation-validation.md)、[#48](issue48-native-candidate-validation.md)                                      |
+| 尚未原生复测   | iOS 当前完整主链、成功拍照、物理弱网、Windows/Linux 安装全流程；按份/按金额、12 人边界本轮没有重新原生实操。组件/集成测试不代替这些验收                                    | [#48 范围](issue48-native-candidate-validation.md)、[环境](environment-setup.md)                                               |
+| 发布与生产     | 尚未绑定 EAS 项目/签名、执行云构建或真实生产部署；本地 HTTP 只适用 development，发布配置要求 HTTPS                                                                         | [开发部署](development.md)                                                                                                     |
+| 其他首版范围   | 最多 12 人、单人民币；无聊天、预算、行程日、CSV、多币种、成员移除、真实支付                                                                                                | [业务规格](product-spec.md)                                                                                                    |
+
+出现候选源码变化时，先比较 contracts、service、App 页面、提交/认证封装、原生依赖与配置；更新受影响说明并按 [#49 复核规则](issue49-documentation-validation.md#候选变化后的复核)补证据。不得修改旧报告的版本、旧截图或历史结果来制造当前通过。T18 整项 8 点不因本次文档 PR 提前扣减。

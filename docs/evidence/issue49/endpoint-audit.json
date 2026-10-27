@@ -1,0 +1,247 @@
+{
+  "sourceCommit": "7616adb",
+  "checkedAt": "2026-10-27T15:32:32.125Z",
+  "tableRows": 30,
+  "endpoints": [
+    {
+      "id": "A01",
+      "method": "POST",
+      "path": "/api/v1/auth/register",
+      "status": 201,
+      "authenticated": false,
+      "idempotencyRequired": false
+    },
+    {
+      "id": "A02",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "status": 200,
+      "authenticated": false,
+      "idempotencyRequired": false
+    },
+    {
+      "id": "A03",
+      "method": "POST",
+      "path": "/api/v1/auth/logout",
+      "status": 200,
+      "authenticated": true,
+      "idempotencyRequired": false
+    },
+    {
+      "id": "A04",
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "authenticated": true,
+      "idempotencyRequired": false
+    },
+    {
+      "id": "A05",
+      "method": "POST",
+      "path": "/api/v1/ledgers",
+      "status": 201,
+      "authenticated": true,
+      "idempotencyRequired": true
+    },
+    {
+      "id": "A06",
+      "method": "GET",
+      "path": "/api/v1/ledgers",
+      "status": 200,
+      "authenticated": true,
+      "idempotencyRequired": false
+    },
+    {
+      "id": "A07",
+      "method": "GET",
+      "path": "/api/v1/ledgers/:ledgerId",
+      "status": 200,
+      "authenticated": true,
+      "idempotencyRequired": false
+    },
+    {
+      "id": "A08",
+      "method": "GET",
+      "path": "/api/v1/ledgers/:ledgerId/members",
+      "status": 200,
+      "authenticated": true,
+      "idempotencyRequired": false
+    },
+    {
+      "id": "A09",
+      "method": "GET",
+      "path": "/api/v1/ledgers/:ledgerId/invitation",
+      "status": 200,
+      "authenticated": true,
+      "idempotencyRequired": false
+    },
+    {
+      "id": "A10",
+      "method": "POST",
+      "path": "/api/v1/ledgers/:ledgerId/invitation/reset",
+      "status": 200,
+      "authenticated": true,
+      "idempotencyRequired": true
+    },
+    {
+      "id": "A11",
+      "method": "POST",
+      "path": "/api/v1/invitations/preview",
+      "status": 200,
+      "authenticated": true,
+      "idempotencyRequired": false
+    },
+    {
+      "id": "A12",
+      "method": "POST",
+      "path": "/api/v1/invitations/join",
+      "status": 200,
+      "authenticated": true,
+      "idempotencyRequired": true
+    },
+    {
+      "id": "A13",
+      "method": "POST",
+      "path": "/api/v1/ledgers/:ledgerId/expenses",
+      "status": 201,
+      "authenticated": true,
+      "idempotencyRequired": true
+    },
+    {
+      "id": "A14",
+      "method": "GET",
+      "path": "/api/v1/ledgers/:ledgerId/expenses",
+      "status": 200,
+      "authenticated": true,
+      "idempotencyRequired": false
+    },
+    {
+      "id": "A15",
+      "method": "GET",
+      "path": "/api/v1/ledgers/:ledgerId/expenses/:expenseId",
+      "status": 200,
+      "authenticated": true,
+      "idempotencyRequired": false
+    },
+    {
+      "id": "A16",
+      "method": "PATCH",
+      "path": "/api/v1/ledgers/:ledgerId/expenses/:expenseId",
+      "status": 200,
+      "authenticated": true,
+      "idempotencyRequired": true
+    },
+    {
+      "id": "A17",
+      "method": "DELETE",
+      "path": "/api/v1/ledgers/:ledgerId/expenses/:expenseId",
+      "status": 200,
+      "authenticated": true,
+      "idempotencyRequired": true
+    },
+    {
+      "id": "A18",
+      "method": "POST",
+      "path": "/api/v1/images",
+      "status": 201,
+      "authenticated": true,
+      "idempotencyRequired": false
+    },
+    {
+      "id": "A19",
+      "method": "GET",
+      "path": "/api/v1/images/:imageId",
+      "status": 200,
+      "authenticated": true,
+      "idempotencyRequired": false
+    },
+    {
+      "id": "A20",
+      "method": "GET",
+      "path": "/api/v1/ledgers/:ledgerId/balances",
+      "status": 200,
+      "authenticated": true,
+      "idempotencyRequired": false
+    },
+    {
+      "id": "A21",
+      "method": "GET",
+      "path": "/api/v1/ledgers/:ledgerId/statistics",
+      "status": 200,
+      "authenticated": true,
+      "idempotencyRequired": false
+    },
+    {
+      "id": "A22",
+      "method": "GET",
+      "path": "/api/v1/ledgers/:ledgerId/settlement-preview",
+      "status": 200,
+      "authenticated": true,
+      "idempotencyRequired": false
+    },
+    {
+      "id": "A23",
+      "method": "POST",
+      "path": "/api/v1/ledgers/:ledgerId/settlement",
+      "status": 201,
+      "authenticated": true,
+      "idempotencyRequired": true
+    },
+    {
+      "id": "A24",
+      "method": "GET",
+      "path": "/api/v1/ledgers/:ledgerId/settlement",
+      "status": 200,
+      "authenticated": true,
+      "idempotencyRequired": false
+    },
+    {
+      "id": "A25",
+      "method": "POST",
+      "path": "/api/v1/ledgers/:ledgerId/settlement/transfers/:transferId/paid",
+      "status": 200,
+      "authenticated": true,
+      "idempotencyRequired": true
+    },
+    {
+      "id": "A26",
+      "method": "POST",
+      "path": "/api/v1/ledgers/:ledgerId/settle",
+      "status": 200,
+      "authenticated": true,
+      "idempotencyRequired": true
+    },
+    {
+      "id": "A27",
+      "method": "POST",
+      "path": "/api/v1/ledgers/:ledgerId/archive",
+      "status": 200,
+      "authenticated": true,
+      "idempotencyRequired": true
+    },
+    {
+      "id": "A28",
+      "method": "PATCH",
+      "path": "/api/v1/me",
+      "status": 200,
+      "authenticated": true,
+      "idempotencyRequired": false
+    },
+    {
+      "id": "A29",
+      "method": "PATCH",
+      "path": "/api/v1/me/preferences",
+      "status": 200,
+      "authenticated": true,
+      "idempotencyRequired": false
+    },
+    {
+      "id": "A30",
+      "method": "POST",
+      "path": "/api/v1/auth/refresh",
+      "status": 200,
+      "authenticated": false,
+      "idempotencyRequired": false
+    }
+  ]
+}

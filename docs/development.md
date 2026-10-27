@@ -1,5 +1,7 @@
 # 环境、开发与部署
 
+命令与配置核对基线：`7616adb`（2026-10-27）；业务操作见 [App 手册](app-user-guide.md)，协议见 [当前接口索引](api-reference.md)，未验收范围见 [已知限制](known-limitations.md)。历史报告仍按各自版本阅读。
+
 ## 1. 职责与配置来源
 
 | 层级       | 职责                                                   | 入口                                               |
@@ -131,7 +133,9 @@ Metro 独占终端输入和原生终端输出；其他进程的日志带名称�
 | 物理真机             | `http://电脑局域网IP:3300` |
 | preview / production | 实际部署的 HTTPS API 地址  |
 
-修改 `apps/mobile/.env` 后重启 Metro。若改变 API 端口，同步更新移动端地址。所有地址都指向 API；本项目没有 Web 应用。
+Android 也可保留 `http://localhost:3300`，配合 `adb reverse tcp:3300 tcp:3300`；设备重启/重连后重新转发，多设备加 `-s <序列号>`。真机使用 localhost 时指手机自身，只有 USB reverse 才转向电脑。API 地址不包含 `/api/v1`，不要误填 Metro 的 8081 端口。API 和 Metro 独立；本轮隔离验收端口只是夹具，不是项目默认值。
+
+修改 `apps/mobile/.env` 后重启 Metro并重新载入 App。若改变 API 端口，同步更新移动端地址。所有地址都指向 API；本项目没有 Web 应用。
 
 `APP_VARIANT=development` 允许开发 HTTP；`production` 禁止原生明文通信。preview 和 production 的 EAS profile 显式设置生产 variant，缺失或无效的 HTTPS API 地址会在读取 app config 时失败。EAS environments 分别为 development / preview / production，需要在 Expo 项目中设置各自的 `EXPO_PUBLIC_API_BASE_URL`。目前尚未绑定 Expo 项目、签名或执行云构建。
 
@@ -245,17 +249,7 @@ docker compose --env-file infra/.env -f infra/compose.prod.yml exec -T postgres 
 
 ## 7. 提交与 PR
 
-所有需要保留的修改都通过 Git commit 记录。PR 用于将分支上的提交审查后合入主分支；“直接提交”指直接向 `main` 提交并推送，不经过 PR。
-
-| 变更范围                                                               | 提交方式                        |
-| ---------------------------------------------------------------------- | ------------------------------- |
-| 文档错字、排版、链接修复、补充已有行为的使用说明；不影响行为的注释修改 | 可以直接提交                    |
-| 已确认没有引用、不参与构建和运行的临时文件或残余备份清理               | 可以直接提交；不确定用途时走 PR |
-| 业务功能、页面交互、接口契约、权限、金额计算、数据库结构与迁移         | 走 PR                           |
-| 依赖升级、原生配置、环境变量约定、启动脚本、Docker、CI、生产发布流程   | 走 PR                           |
-| 跨模块重构，或改变产品规则、架构边界、运维操作要求的文档               | 走 PR                           |
-
-按改动的影响判断，不只看文件扩展名。比如补充 Windows 环境安装步骤可以直接提交；改变生产迁移顺序，即使只修改 Markdown，也需要 PR。文档与代码一起改变行为时，放在同一个 PR 中。
+遵守 [CONTRIBUTING.md](../CONTRIBUTING.md) 和 [AGENTS.md](../AGENTS.md)：从最新 main 建立任务分支，成员修改（含纯文档）通过独立 PR 交系统架构负责人审核。未经用户明确授权，不提交、推送或合并；不直接推送 main。分支按类型使用 feat/fix/test/docs/chore/ci 前缀，提交英文、PR 简述任务与实际验证。优先 fast-forward，不能快进时普通 merge；仅用户明确要求才 rebase。本节不再将纯文档列为可直接向 main 提交的例外。
 
 ### 提交与验证
 

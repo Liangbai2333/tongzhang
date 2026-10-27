@@ -1,0 +1,14 @@
+{
+  "checkedAt": "2026-10-27T15:37:06.704Z",
+  "sourceCommit": "7616adb",
+  "passed": true,
+  "assertions": [
+    "Original expense, splits and receipt binding unchanged across all four snapshots",
+    "Preview has no batch",
+    "One frozen batch unchanged by paid/settled/archive",
+    "Paid transfer unchanged by settled/archive",
+    "ACTIVE/v3 -> SETTLING/v4 -> SETTLING/v4 -> SETTLED/v5",
+    "One 12000-cent expense, two 6000-cent shares, one PAID 6000-cent transfer",
+    "Only creator member archivedAt set; other member remains null"
+  ]
+}

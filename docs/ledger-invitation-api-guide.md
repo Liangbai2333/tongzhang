@@ -1,5 +1,7 @@
 # 建账与邀请接口索引、双账号操作说明
 
+> 历史版本记录：本文保留原日期、版本、截图及当时未接通的 App 步骤。当前 `7616adb` 的完整 App 入口与新实操见 [操作手册](app-user-guide.md)、[接口索引](api-reference.md)和 [#49 验收](issue49-documentation-validation.md)；不要将本文通过 API 补写后的 App 读取当成当前 App 写入验收。
+
 后续消费/图片、正式冻结/记录、登记已还/结清及个人归档的 2026-10-26 同版本操作与可用边界，见 [#34 接口操作说明](expense-settlement-api-guide.md)；本页保留 #20 当日的建账与邀请记录。
 
 2026-10-25，负责人袁湘湘（@circlexxl）。对应 [Issue #20](https://github.com/Liangbai2333/tongzhang/issues/20) 的账本/邀请文档交付；本轮不重复开发 #8 协议弹窗，不代表 T18 整项完成或重复扣减 T08 点数。

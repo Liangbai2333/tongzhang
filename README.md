@@ -2,7 +2,9 @@
 
 多人共享记账与结算移动端 App。React Native / Expo + Fastify + PostgreSQL，全栈 TypeScript。
 
-当前包含模块工程骨架：30项接口契约与路由、14张业务/支撑表及迁移、前后端模块边界、分摊与结算算法、移动端API与面板状态模型。默认启动欢迎与登录流程，已接通移动端注册、登录、在线会话恢复和退出；登录后进入真实账本列表，可查看账号资料。账号注册/登录/刷新/退出与 `getMe` 已接通，采用 15 分钟 JWT Access Token + 最长 30 天 Refresh Token，支持刷新轮换和退出即时撤销；账本创建/查询/成员及自定义封面事务绑定、邀请预览/加入/重置、消费新增/查询、图片上传与授权读取、临时图片清理、正式结算、账本冻结、进度读取、整笔已还登记、创建者结清与个人归档已接通真实数据库；其余未接通业务 Service 仍返回501；应用图标和启动图暂用Expo模板资源。
+当前可在真实 API / PostgreSQL 上完成注册登录、在线会话核验、自定义封面建账、邀请码加入、消费与收据、余额和结算预览、正式冻结、整笔已还登记、创建者结清、个人归档与历史只读查看。当前文档基于 `7616adb`（2026-10-27，含 #48 候选验收）；#49 已用两个真实账号在 Android 模拟器重新走完这条 App 路径，见[逐项实操与版本证据](docs/issue49-documentation-validation.md)。
+
+消费修改/删除、统计、资料修改、通知偏好保存仍为 501，扫码未开放。已还只是人工登记，不改变消费；个人归档只影响本人。发布签名包、物理真机、iOS 当前完整主链及生产部署未在本轮验收。完整边界见[已知限制](docs/known-limitations.md)。
 
 ## 快速开始
 
@@ -58,7 +60,15 @@ pnpm export:mobile
 - 普通 CI 负责检查和测试；手动运行 **Publish server image** 发布已验证镜像，在服务器执行 `bash infra/deploy.sh` 完成备份、迁移与健康验收。
 - 变量清单、发布和恢复步骤见 [开发与部署说明](docs/development.md)。目前未部署真实生产环境。
 
-## 文档
+## 当前操作与接口
+
+- [完整 App 操作手册](docs/app-user-guide.md)：安装登录、双账号完整路径、图片权限与显式恢复。
+- [30 项接口索引](docs/api-reference.md)：请求/响应字段、权限、整数分字符串、成员 ID、幂等与版本冲突。
+- [已知限制](docs/known-limitations.md)与 [#49 逐项验收](docs/issue49-documentation-validation.md)：新截图、实际版本、检查和遗留项。
+
+## 历史验收与设计资料
+
+下列记录保留各自日期、源码与原生包归属，不是当前版本验收的统一声明；当前使用入口以上方手册/索引为准。
 
 - [模块架构、职责与开发入口](docs/modules/README.md)
 - [移动端认证实现与验证](docs/mobile-auth-validation.md)
@@ -94,7 +104,3 @@ pnpm export:mobile
 - [环境、启动、数据库与部署](docs/development.md)
 - [macOS、Linux 与 Windows 成员环境配置](docs/environment-setup.md)
 - [本次工程验收记录](docs/engineering-status.md)
-
-账号、账本、邀请、消费新增/查询、收据、余额和只读结算预览的移动端页面已接通真实接口；正式冻结、记录查询、整笔已还登记、创建者结清、个人归档及历史只读查看均已接通；建账支持从相册选择自定义封面。
-
-移动端建账、账本列表/详情、成员面板和邀请码预览/加入已按真实接口契约接线，登录后进入账本列表。对应服务端 [PR #21](https://github.com/Liangbai2333/tongzhang/pull/21) 与移动端 [PR #25](https://github.com/Liangbai2333/tongzhang/pull/25) 均已合入主线；当前版本的接口与双账号操作见 [接口索引](docs/ledger-invitation-api-guide.md)，主线 `3cb6e0b` 的本轮复测见 [原生联调记录](docs/issue19-native-environment-validation.md)。原生截图、历史隔离联调及本次主线回归结果见 [建账与邀请界面验证](docs/ledger-invitation-ui-validation.md)。本轮已接通消费与收据的移动端流程、成员余额和只读结算预览，见 [实际验证](docs/mobile-expenses-validation.md)；正式结算进度、登记已还和创建者结清服务端已完成，见 [接口与验证](docs/settlement-progress-validation.md)。个人归档服务端已随主线接通；消费改删服务端仍未实现。

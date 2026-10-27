@@ -1,0 +1,186 @@
+{
+  "time": "2026-10-27T15:33:56.539Z",
+  "stage": "paid",
+  "database": "tongzhang_49_native",
+  "tables": {
+    "ledgers": [
+      {
+        "id": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+        "created_by_user_id": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+        "name": "Issue49-App-Manual",
+        "cover_key": null,
+        "cover_image_id": "29a8022c-36f9-467c-bd08-98e1b1037321",
+        "status": "SETTLING",
+        "version": 4,
+        "settled_at": null,
+        "created_at": "2026-10-27T15:22:26.586Z",
+        "updated_at": "2026-10-27T15:33:52.258Z"
+      }
+    ],
+    "ledger_members": [
+      {
+        "id": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+        "ledger_id": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+        "user_id": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+        "archived_at": null,
+        "joined_at": "2026-10-27T15:22:26.586Z"
+      },
+      {
+        "id": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+        "ledger_id": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+        "user_id": "dca386bb-a674-4fcc-87ac-9c519c45d05d",
+        "archived_at": null,
+        "joined_at": "2026-10-27T15:26:38.141Z"
+      }
+    ],
+    "expenses": [
+      {
+        "id": "f681f10e-a843-4c85-882c-785a7829080d",
+        "ledger_id": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+        "recorder_member_id": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+        "payer_member_id": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+        "title": "Issue49-Lunch",
+        "amount_cents": "12000",
+        "category": "DINING",
+        "occurred_on": "2026-10-27T07:00:00.000Z",
+        "split_mode": "EQUAL",
+        "note": null,
+        "version": 1,
+        "deleted_at": null,
+        "created_at": "2026-10-27T15:28:35.826Z",
+        "updated_at": "2026-10-27T15:28:35.826Z"
+      }
+    ],
+    "expense_splits": [
+      {
+        "expense_id": "f681f10e-a843-4c85-882c-785a7829080d",
+        "member_id": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+        "ledger_id": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+        "shares": null,
+        "amount_cents": "6000",
+        "created_at": "2026-10-27T15:28:35.826Z"
+      },
+      {
+        "expense_id": "f681f10e-a843-4c85-882c-785a7829080d",
+        "member_id": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+        "ledger_id": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+        "shares": null,
+        "amount_cents": "6000",
+        "created_at": "2026-10-27T15:28:35.826Z"
+      }
+    ],
+    "expense_images": [
+      {
+        "expense_id": "f681f10e-a843-4c85-882c-785a7829080d",
+        "ledger_id": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+        "image_id": "68ac720f-a6ba-4166-b098-69dde14f511d",
+        "created_at": "2026-10-27T15:28:35.826Z"
+      }
+    ],
+    "settlement_batches": [
+      {
+        "id": "471c2421-3674-4646-920b-d648e24efb75",
+        "ledger_id": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+        "created_by_member_id": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+        "source_version": 3,
+        "expense_total_cents": "12000",
+        "transfer_total_cents": "6000",
+        "transfer_count": 1,
+        "net_snapshot": [
+          {
+            "memberId": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+            "netCents": "-6000"
+          },
+          {
+            "memberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+            "netCents": "6000"
+          }
+        ],
+        "algorithm_version": "zero-sum-dp-v1",
+        "created_at": "2026-10-27T15:33:14.691Z"
+      }
+    ],
+    "settlement_transfers": [
+      {
+        "id": "41dc358a-17df-4dd7-ac2b-0a5cb68ecc96",
+        "ledger_id": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+        "batch_id": "471c2421-3674-4646-920b-d648e24efb75",
+        "sequence": 1,
+        "payer_member_id": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+        "payee_member_id": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+        "amount_cents": "6000",
+        "status": "PAID",
+        "registered_by_member_id": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+        "registered_at": "2026-10-27T15:33:52.258Z",
+        "registration_note": "Issue49-6000",
+        "created_at": "2026-10-27T15:33:14.691Z"
+      }
+    ],
+    "operation_logs": [
+      {
+        "id": "fc89f108-96a9-4dc4-bd37-e77c96a8b87e",
+        "actor_user_id": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+        "ledger_id": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+        "action": "LEDGER_CREATED",
+        "target_type": "LEDGER",
+        "target_id": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+        "request_id": "baea6ee3-0a39-47cc-8193-29ab0732f091",
+        "details": {},
+        "created_at": "2026-10-27T15:22:26.586Z"
+      },
+      {
+        "id": "d8bd800d-cdcb-4dab-a6a2-37973b4431d2",
+        "actor_user_id": "dca386bb-a674-4fcc-87ac-9c519c45d05d",
+        "ledger_id": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+        "action": "MEMBER_JOINED",
+        "target_type": "LEDGER_MEMBER",
+        "target_id": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+        "request_id": "b9364f2d-e4e9-4bbe-b722-fe4c566d6213",
+        "details": {
+          "invitationId": "676a102a-0989-40d7-8e67-73d327f66abf"
+        },
+        "created_at": "2026-10-27T15:26:38.141Z"
+      },
+      {
+        "id": "aef2080d-940b-4af0-bc5d-ab448a9341cb",
+        "actor_user_id": "dca386bb-a674-4fcc-87ac-9c519c45d05d",
+        "ledger_id": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+        "action": "EXPENSE_CREATED",
+        "target_type": "EXPENSE",
+        "target_id": "f681f10e-a843-4c85-882c-785a7829080d",
+        "request_id": "6de92ed3-4cb5-4bd6-baca-89e868accd41",
+        "details": {
+          "splitMode": "EQUAL",
+          "amountCents": "12000"
+        },
+        "created_at": "2026-10-27T15:28:35.826Z"
+      },
+      {
+        "id": "bf4bec93-ef42-46b0-bb68-1de31269562e",
+        "actor_user_id": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+        "ledger_id": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+        "action": "SETTLEMENT_STARTED",
+        "target_type": "SETTLEMENT_BATCH",
+        "target_id": "471c2421-3674-4646-920b-d648e24efb75",
+        "request_id": "9d3358da-b0da-4a2e-ad05-0ae010f20c88",
+        "details": {
+          "ledgerStatus": "SETTLING",
+          "sourceVersion": 3,
+          "transferCount": 1
+        },
+        "created_at": "2026-10-27T15:33:14.691Z"
+      },
+      {
+        "id": "e12bbc01-647e-4747-b9f2-865b42164372",
+        "actor_user_id": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+        "ledger_id": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+        "action": "TRANSFER_PAID",
+        "target_type": "SETTLEMENT_TRANSFER",
+        "target_id": "41dc358a-17df-4dd7-ac2b-0a5cb68ecc96",
+        "request_id": "779fec0b-54ab-421c-90f8-b5ea16289ac9",
+        "details": {},
+        "created_at": "2026-10-27T15:33:52.249Z"
+      }
+    ]
+  }
+}
