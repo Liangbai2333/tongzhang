@@ -189,6 +189,30 @@ beforeEach(() => {
   jest.mocked(setStringAsync).mockResolvedValue(true);
 });
 describe('expense flow with isolated API callbacks, not native/database proof', () => {
+  it('shows local validation, write rejection and picker failure independently without losing the uploaded reference', async () => {
+    create.mockRejectedValueOnce(new ApiError('FORBIDDEN', '成员权限已变化，请在线核对', 403));
+    await form();
+    await userEvent.press(screen.getByRole('button', { name: '从相册选择' }));
+    await screen.findByRole('button', { name: '移除收据' });
+    await userEvent.press(screen.getByRole('button', { name: '保存消费' }));
+    await screen.findByText('成员权限已变化，请在线核对');
+    select.mockRejectedValueOnce(
+      new ApiError('CAMERA_PERMISSION', '未获得相机权限，可从相册选择收据'),
+    );
+    await userEvent.press(screen.getByRole('button', { name: '拍摄收据' }));
+    await screen.findByText('未获得相机权限，可从相册选择收据');
+    await fireEvent.changeText(screen.getByLabelText('消费金额'), '1.001');
+    await userEvent.press(screen.getByRole('button', { name: '保存消费' }));
+    expect(screen.getAllByRole('alert')).toHaveLength(3);
+    expect(screen.getByText('成员权限已变化，请在线核对')).toBeOnTheScreen();
+    expect(screen.getByText('未获得相机权限，可从相册选择收据')).toBeOnTheScreen();
+    expect(create).toHaveBeenCalledTimes(1);
+    expect(upload).toHaveBeenCalledTimes(1);
+    await fireEvent.changeText(screen.getByLabelText('消费金额'), '120.00');
+    await userEvent.press(screen.getByRole('button', { name: '保存消费' }));
+    expect(create.mock.calls[1]).toEqual(create.mock.calls[0]);
+    expect(upload).toHaveBeenCalledTimes(1);
+  });
   it('rejects invalid amounts before writing and sends exact integer cents with actual member IDs', async () => {
     await form();
     await fireEvent.changeText(screen.getByLabelText('消费金额'), '1.001');

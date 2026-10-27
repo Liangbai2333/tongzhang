@@ -159,16 +159,19 @@ describe('mobile authentication and route admission state', () => {
     expect(api.getMe).toHaveBeenCalledTimes(2);
   });
   it.each([
-    [new ApiError('UNAUTHENTICATED', 'revoked', 401), 'anonymous'],
-    [new ApiError('NETWORK_UNAVAILABLE', 'offline'), 'error'],
-  ])('discards a background screen if online verification fails (%s)', async (error, status) => {
-    const { api, auth } = fixture();
-    await auth.restore();
-    auth.suspend({ preserveScreen: true });
-    api.getMe.mockRejectedValueOnce(error);
-    await auth.restore();
-    expect(auth.getSnapshot()).toMatchObject({ status, user: null, operation: null });
-  });
+    [new ApiError('UNAUTHENTICATED', 'revoked', 401), 'anonymous', null],
+    [new ApiError('NETWORK_UNAVAILABLE', 'offline'), 'error', user],
+  ])(
+    'keeps recoverable form memory gated and discards revoked identity (%s)',
+    async (error, status, identity) => {
+      const { api, auth } = fixture();
+      await auth.restore();
+      auth.suspend({ preserveScreen: true });
+      api.getMe.mockRejectedValueOnce(error);
+      await auth.restore();
+      expect(auth.getSnapshot()).toMatchObject({ status, user: identity, operation: null });
+    },
+  );
   it('drops retained identity on a real network loss before returning from the picker', async () => {
     const { auth } = fixture();
     await auth.restore();

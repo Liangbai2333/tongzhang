@@ -1,0 +1,35 @@
+$ pnpm build:shared && pnpm --filter @tongzhang/mobile test
+$ pnpm -r --filter "./packages/*" build
+$ tsc -p tsconfig.json
+$ tsc -p tsconfig.json
+$ jest --runInBand
+PASS iOS tests/auth-provider.test.tsx
+PASS Android tests/ledgers-ui.test.tsx (13.365 s)
+PASS Android tests/expenses-ui.test.tsx (10.109 s)
+PASS Android tests/settlements-ui.test.tsx (7.424 s)
+PASS Android tests/auth-ui.test.tsx (6.136 s)
+PASS Android tests/receipt-files.test.tsx
+PASS Android tests/feedback.test.tsx
+PASS Android tests/write-recovery.test.tsx
+PASS Android tests/auth-api.test.tsx
+PASS Android tests/auth-navigation.test.tsx
+PASS Android tests/images-api.test.tsx
+PASS Android tests/session-token.test.tsx
+PASS iOS tests/ledgers-ui.test.tsx (12.975 s)
+PASS iOS tests/expenses-ui.test.tsx (10.178 s)
+PASS iOS tests/settlements-ui.test.tsx (7.537 s)
+PASS iOS tests/auth-ui.test.tsx (6.139 s)
+PASS Android tests/auth-provider.test.tsx
+PASS iOS tests/write-recovery.test.tsx
+PASS iOS tests/feedback.test.tsx
+PASS iOS tests/auth-navigation.test.tsx
+PASS iOS tests/receipt-files.test.tsx
+PASS iOS tests/images-api.test.tsx
+PASS iOS tests/auth-api.test.tsx
+PASS iOS tests/session-token.test.tsx
+
+Test Suites: 24 passed, 24 total
+Tests:       232 passed, 232 total
+Snapshots:   0 total
+Time:        77.747 s
+Ran all test suites in 2 projects.

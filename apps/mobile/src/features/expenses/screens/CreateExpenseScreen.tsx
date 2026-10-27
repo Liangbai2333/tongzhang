@@ -201,9 +201,8 @@ function ExpenseForm({ ledger, userId }: { ledger: Ledger; userId: string }) {
         onBack={back}
         footer={
           <>
-            <InlineError
-              message={error ?? (write.error ? requestErrorMessage(write.error) : null)}
-            />
+            <InlineError message={error} />
+            <InlineError message={write.error ? requestErrorMessage(write.error) : null} />
             <InlineError message={receipt.error} />
             {write.uncertain && (
               <Text style={ui.caption}>结果尚未确认，输入已保留；重试将核对原提交。</Text>

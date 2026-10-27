@@ -1,0 +1,35 @@
+{
+  "ledgerId": "7b33c66e-5e4d-4e2f-878d-9482aa01d7e2",
+  "createRequests": [
+    {
+      "time": "2026-10-27T12:51:03.915Z",
+      "keyDigest": "07f62ad0ca76",
+      "injectedAfterCommit": "HTTP_ERROR"
+    },
+    {
+      "time": "2026-10-27T12:51:35.287Z",
+      "keyDigest": "07f62ad0ca76",
+      "injectedAfterCommit": null
+    }
+  ],
+  "uploads": [
+    {
+      "time": "2026-10-27T12:51:03.576Z",
+      "imageId": "91b2c887-0c78-49f7-9e1b-fb76d699636a"
+    },
+    {
+      "time": "2026-10-27T12:54:28.578Z",
+      "imageId": "b00d4f35-ffc9-43da-beb0-3a3cda064771"
+    }
+  ],
+  "additionalUploadsBetweenUnknownAndExplicitRetry": 0,
+  "auditCounts": {
+    "EXPENSE_CREATED": 1,
+    "LEDGER_ARCHIVED": 1,
+    "LEDGER_CREATED": 1,
+    "LEDGER_SETTLED": 1,
+    "MEMBER_JOINED": 1,
+    "SETTLEMENT_STARTED": 1,
+    "TRANSFER_PAID": 1
+  }
+}

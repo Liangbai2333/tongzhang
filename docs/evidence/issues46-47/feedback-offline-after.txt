@@ -1,0 +1,13 @@
+$ jest --runInBand --runTestsByPath tests/auth-provider.test.tsx tests/auth-navigation.test.tsx tests/expenses-ui.test.tsx
+PASS iOS tests/auth-provider.test.tsx
+PASS Android tests/expenses-ui.test.tsx (10.937 s)
+PASS Android tests/auth-provider.test.tsx
+PASS Android tests/auth-navigation.test.tsx
+PASS iOS tests/expenses-ui.test.tsx (10.418 s)
+PASS iOS tests/auth-navigation.test.tsx
+
+Test Suites: 6 passed, 6 total
+Tests:       52 passed, 52 total
+Snapshots:   0 total
+Time:        23.502 s
+Ran all test suites within paths "tests/auth-provider.test.tsx", "tests/auth-navigation.test.tsx", "tests/expenses-ui.test.tsx" in 2 projects.

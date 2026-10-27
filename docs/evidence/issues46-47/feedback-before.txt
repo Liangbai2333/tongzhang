@@ -1,0 +1,53 @@
+$ jest --runInBand --runTestsByPath tests/expenses-ui.test.tsx '--testNamePattern=shows local validation'
+FAIL Android tests/expenses-ui.test.tsx
+  ● expense flow with isolated API callbacks, not native/database proof › shows local validation, write rejection and picker failure independently without losing the uploaded reference
+
+    expect(received).toHaveLength(expected)
+
+    Expected length: 3
+    Received length: 2
+    Received array:  [<Text accessibilityLiveRegion="polite" accessibilityRole="alert" style={{"color": "#B83D40", "fontSize": 13, "lineHeight": 20}}>金额必须为十进制数字，最多两位小数</Text>, <Text accessibilityLiveRegion="polite" accessibilityRole="alert" style={{"color": "#B83D40", "fontSize": 13, "lineHeight": 20}}>未获得相机权限，可从相册选择收据</Text>]
+
+      202 |     await fireEvent.changeText(screen.getByLabelText('消费金额'), '1.001');
+      203 |     await userEvent.press(screen.getByRole('button', { name: '保存消费' }));
+    > 204 |     expect(screen.getAllByRole('alert')).toHaveLength(3);
+          |                                          ^
+      205 |     expect(screen.getByText('成员权限已变化，请在线核对')).toBeOnTheScreen();
+      206 |     expect(screen.getByText('未获得相机权限，可从相册选择收据')).toBeOnTheScreen();
+      207 |     expect(create).toHaveBeenCalledTimes(1);
+
+      at Object.toHaveLength (tests/expenses-ui.test.tsx:204:42)
+      at asyncGeneratorStep (../../node_modules/.pnpm/@babel+runtime@7.29.10/node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (../../node_modules/.pnpm/@babel+runtime@7.29.10/node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+FAIL iOS tests/expenses-ui.test.tsx
+  ● expense flow with isolated API callbacks, not native/database proof › shows local validation, write rejection and picker failure independently without losing the uploaded reference
+
+    expect(received).toHaveLength(expected)
+
+    Expected length: 3
+    Received length: 2
+    Received array:  [<Text accessibilityLiveRegion="polite" accessibilityRole="alert" style={{"color": "#B83D40", "fontSize": 13, "lineHeight": 20}}>金额必须为十进制数字，最多两位小数</Text>, <Text accessibilityLiveRegion="polite" accessibilityRole="alert" style={{"color": "#B83D40", "fontSize": 13, "lineHeight": 20}}>未获得相机权限，可从相册选择收据</Text>]
+
+      202 |     await fireEvent.changeText(screen.getByLabelText('消费金额'), '1.001');
+      203 |     await userEvent.press(screen.getByRole('button', { name: '保存消费' }));
+    > 204 |     expect(screen.getAllByRole('alert')).toHaveLength(3);
+          |                                          ^
+      205 |     expect(screen.getByText('成员权限已变化，请在线核对')).toBeOnTheScreen();
+      206 |     expect(screen.getByText('未获得相机权限，可从相册选择收据')).toBeOnTheScreen();
+      207 |     expect(create).toHaveBeenCalledTimes(1);
+
+      at Object.toHaveLength (tests/expenses-ui.test.tsx:204:42)
+      at asyncGeneratorStep (../../node_modules/.pnpm/@babel+runtime@7.29.10/node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (../../node_modules/.pnpm/@babel+runtime@7.29.10/node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+Test Suites: 2 failed, 2 total
+Tests:       2 failed, 38 skipped, 40 total
+Snapshots:   0 total
+Time:        4.008 s
+Ran all test suites within paths "tests/expenses-ui.test.tsx" in 2 projects.
+[ELIFECYCLE] Test failed. See above for more details.
+Error: ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL
+
+  × "pnpm recursive run" failed in /Users/liangbai/.codex/worktrees/issues46-
+  │ 47-acceptance/tongzhang/apps/mobile

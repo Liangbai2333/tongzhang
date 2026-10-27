@@ -1,0 +1,13 @@
+$ pnpm build:shared && vitest run --config vitest.integration.config.ts apps/server/tests/full-lifecycle.integration.test.ts --reporter=verbose
+$ pnpm -r --filter "./packages/*" build
+$ tsc -p tsconfig.json
+$ tsc -p tsconfig.json
+
+ RUN  v5.0.4 /Users/liangbai/.codex/worktrees/issues46-47-acceptance/tongzhang
+
+ ✓ apps/server/tests/full-lifecycle.integration.test.ts > preserves the 12000/6000 lifecycle through cover, receipt, settlement and personal history over TCP HTTP 494ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed (1)
+   Start at  05:43:06
+   Duration  1.27s (tests 54%, import 37%, transform 9%)

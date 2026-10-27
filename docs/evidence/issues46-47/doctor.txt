@@ -1,0 +1,10 @@
+$ pnpm dlx expo-doctor@1.21.5 apps/mobile
+.../mvqomzfp-202y                        | Progress: resolved 0, reused 1, downloaded 0, added 0
+.../mvqomzfp-202y                        | Progress: resolved 1, reused 1, downloaded 0, added 1, done
+
+dependencies:
++ expo-doctor 1.21.5
+
+Running 21 checks on your project...
+21/21 checks passed. No issues detected!
+Done in 9s using pnpm v12.11.2
