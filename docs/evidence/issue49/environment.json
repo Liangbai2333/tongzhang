@@ -1,0 +1,445 @@
+{
+  "checkedAt": "2026-10-27T15:30:11.357Z",
+  "sourceCommit": "7616adbff4502f1fcab1d233fa07938071004041",
+  "worktree": "/Users/liangbai/.codex/worktrees/issue49-docs/tongzhang",
+  "api": "http://127.0.0.1:3349",
+  "metro": "http://127.0.0.1:8049",
+  "database": "tongzhang_49_native",
+  "nativeCompatibility": {
+    "baseSource": "209727140390a519c59f9ee287b8e7cd3e3472e7",
+    "command": "git diff 2097271 7616adb -- apps/mobile/package.json pnpm-lock.yaml apps/mobile/app.config.ts apps/mobile/plugins apps/mobile/assets",
+    "changedInputs": [],
+    "rebuiltThisRun": false
+  },
+  "device": {
+    "release": "17",
+    "api": "37",
+    "abi": "arm64-v8a",
+    "size": "Physical size: 1080x2400",
+    "density": "Physical density: 420"
+  },
+  "apk": {
+    "bytes": 99547334,
+    "sha256": "72504440573ae6985ad362bbd53854b03b46ac4d5a97c17513b0b53a61bbecf0"
+  },
+  "loadedJs": {
+    "bytes": 10058407,
+    "sha256": "bc8b36de20684c44fdfacea5bbed63381e9eb65df9748cf4870573ff173b94a8",
+    "launchAsset": "http://127.0.0.1:8049/apps/mobile/node_modules/expo-router/entry.bundle?platform=android&dev=true&hot=false&lazy=true&transform.engine=hermes&transform.bytecode=1&transform.routerRoot=app&unstable_transformProfile=hermes-stable",
+    "sourceMapMatchingFiles": [
+      {
+        "path": "apps/mobile/app/(app)/_layout.tsx",
+        "sha256": "b167ccb60014d4d9d934a37e8d4f5dac3071c3977c540c6df33b357aabc1d8e1"
+      },
+      {
+        "path": "apps/mobile/app/(app)/account.tsx",
+        "sha256": "46d1c3927a24a38c1337754170aac8fbd30a6c6caeeedecee0fb8a75da08dd38"
+      },
+      {
+        "path": "apps/mobile/src/features/profile/screens/AccountScreen.tsx",
+        "sha256": "44db89d24ec752fcf48258aa830d60191f3f27f0e71f3b10e91a6538cf2d7feb"
+      },
+      {
+        "path": "apps/mobile/src/components/Screen.tsx",
+        "sha256": "c444ef78321e2e8234b7d02cedcca264b01a3be01dc211fb83b8ce1769135260"
+      },
+      {
+        "path": "apps/mobile/src/icons/FigmaAsset.tsx",
+        "sha256": "92100c8aefa6e0dd7030760e5b1be1c9565f90c93f7ab9b34bcc95ee61d512b6"
+      },
+      {
+        "path": "apps/mobile/src/icons/figma-assets.ts",
+        "sha256": "b2f0112dd16026d08a0cd48acea20efbe793842bc2f95482cf0b8f4c9ae98214"
+      },
+      {
+        "path": "apps/mobile/src/theme/tokens.ts",
+        "sha256": "a210f91d8596bc4afd9fe43f993c3ae55553d2e3eedefdbd5539f0066747f12a"
+      },
+      {
+        "path": "apps/mobile/src/components/Touch.tsx",
+        "sha256": "af94553554dc45e76fe923d6c0fa44d99fe235779054abbeae48a533dbb33888"
+      },
+      {
+        "path": "apps/mobile/src/components/motion.ts",
+        "sha256": "11c3fe04cb0baecf9cc26f18e8dba11d237126316d7959b53606d3547ee3bcc8"
+      },
+      {
+        "path": "apps/mobile/src/components/MainTabs.tsx",
+        "sha256": "062a965795e1c17bfd109054b337299539fb2848df3782495435eab7a7ea4c5e"
+      },
+      {
+        "path": "apps/mobile/src/icons/ledger-assets.ts",
+        "sha256": "c5f6f9c3d006e5a429e3baec5c05a3d748eaf01b05524edbd575abdbbedc39e4"
+      },
+      {
+        "path": "apps/mobile/src/components/Button.tsx",
+        "sha256": "bf0728836b4b7b41906fd8e716f115e0ef3766a108a53729516374e117734267"
+      },
+      {
+        "path": "apps/mobile/src/components/Sheet.tsx",
+        "sha256": "68d4f9565c895547aea46bb3e48195b6894b3bd73a6d84dc08d2ed8f502eb305"
+      },
+      {
+        "path": "apps/mobile/src/providers/AuthProvider.tsx",
+        "sha256": "620f7cc61edc966b69a31accd10a0da5e588fcef3812f402f9679144bed5975e"
+      },
+      {
+        "path": "apps/mobile/src/features/auth/api.ts",
+        "sha256": "d4e8857b2eda7313d6a0ea7fbe6468c0aba98606181c6b9056197f6c3ecdc83c"
+      },
+      {
+        "path": "apps/mobile/src/lib/api.ts",
+        "sha256": "2eea6bbc553e13dd4ad94b628d333c3aaf820648b55769f6b9abebb877f897cf"
+      },
+      {
+        "path": "apps/mobile/src/lib/http.ts",
+        "sha256": "9f851ff8d0af7c1002ec7e612c6e70fee832a22a9eb8d7c97884f3ddafb20763"
+      },
+      {
+        "path": "apps/mobile/src/lib/api-error.ts",
+        "sha256": "8e22510bfae33c8af457059d3c98956fb66308f2a6971c21d6f8305618892245"
+      },
+      {
+        "path": "apps/mobile/src/lib/session-token.ts",
+        "sha256": "d0ceb1cee17b4eef5491f696c22cdfc43a9dd713bb886a4abace409bcd3ca6d0"
+      },
+      {
+        "path": "apps/mobile/src/lib/auth-session.ts",
+        "sha256": "a4fb61d9ba01aecdc5cfc6e6d0b6d89d8940abbedcd6a82e43e16e293f1c158a"
+      },
+      {
+        "path": "apps/mobile/src/features/auth/controller.ts",
+        "sha256": "027df9ed5a1af0f0d2e34c9bf4247461704b9e91e3418810f90e916cf6f14e7d"
+      },
+      {
+        "path": "apps/mobile/src/features/profile/components/DocumentSheet.tsx",
+        "sha256": "630c164ebcdcfd2bcfc04a6a7e15a9669fa82eb0c16a4eef5d23626e4ea4f1a0"
+      },
+      {
+        "path": "apps/mobile/src/features/profile/documents.ts",
+        "sha256": "8aa026741bfd8c7c4e4e8578ac0ea5372a233e5585c2424d5708827b4460f894"
+      },
+      {
+        "path": "apps/mobile/app/(app)/invitations/join.tsx",
+        "sha256": "d7b3287b4f1c9ae2388c494772d7e791d35c13a1f86512d7c1ee85af9195566f"
+      },
+      {
+        "path": "apps/mobile/src/features/invitations/screens/JoinLedgerScreen.tsx",
+        "sha256": "dd1b64ff654a80d2f8e3bd8710fbcac32e95e6204a5dcf0a242351c6f7b5254b"
+      },
+      {
+        "path": "apps/mobile/src/icons/invitation-assets.ts",
+        "sha256": "a6ebe83a32de78a3dfdfb66c79fe407e07ae6cf0bf0023a26c90b78b0bbeca54"
+      },
+      {
+        "path": "apps/mobile/src/features/invitations/components/InviteCodeField.tsx",
+        "sha256": "582a85a60589ee4f9274d2ffb8a6399e6166416543c9739e056be015209aaf51"
+      },
+      {
+        "path": "apps/mobile/src/components/Feedback.tsx",
+        "sha256": "aa44a1310e7919e7ce7a52b7b36a8456eef99ea608910e3aec0e91e36f78cb45"
+      },
+      {
+        "path": "apps/mobile/src/features/invitations/components/JoinInvitationHero.tsx",
+        "sha256": "9b4045ccff010947682ef73f798f10489d493d8fc000e3e76c453ae58f1eb5df"
+      },
+      {
+        "path": "apps/mobile/src/lib/use-idempotent-write.ts",
+        "sha256": "f0ce17ef29f15d59dac0c82997e2ca69d11973b34dbacf83e3b35da11a3b7c58"
+      },
+      {
+        "path": "apps/mobile/src/features/ledgers/query-keys.ts",
+        "sha256": "bbe9e0340c8ed0f21cdad38c2abdd6ac10f00abe75b4e91b2c6d25d4d2634ac8"
+      },
+      {
+        "path": "apps/mobile/src/features/invitations/api.ts",
+        "sha256": "48e5b9042dd74b0ba8761eb0c491144df2f86dd855879b63d10b950d9d9cde76"
+      },
+      {
+        "path": "apps/mobile/app/(app)/ledgers/[ledgerId]/balances.tsx",
+        "sha256": "8dbc70c270c11779ab1daf1c6c24a4ab3b62ef3aa4695ed532bcedf3064f36a8"
+      },
+      {
+        "path": "apps/mobile/src/features/balances/screens/BalancesScreen.tsx",
+        "sha256": "106e380ff7a59479cd5f186944fd41efbbac93b1c83c32a02612784f85d5fcc7"
+      },
+      {
+        "path": "apps/mobile/src/lib/use-online-query.ts",
+        "sha256": "860fc98e529e442cb05e89fd66ba6c3e96952b6ffe1e193056d061e0194b9d87"
+      },
+      {
+        "path": "apps/mobile/src/features/ledgers/api.ts",
+        "sha256": "aeb535873db7539554701f637bbd9ecc77bb1afa21d24520d421b28797424083"
+      },
+      {
+        "path": "apps/mobile/src/features/ledgers/presentation.ts",
+        "sha256": "04d9d894356174eac3358fa337a5b6cfaa5dede79fa02648413fe5c7123be746"
+      },
+      {
+        "path": "apps/mobile/src/features/expenses/components/ExpenseUI.tsx",
+        "sha256": "6d55eb9fc514ecbc2cbbfd0f41ca8400e335f07e25ae22ca899868cbd34a15af"
+      },
+      {
+        "path": "apps/mobile/src/icons/expense-assets.ts",
+        "sha256": "6ab131276713bf790fe266f4f026297f050617f580fc8c36088770b0858a4728"
+      },
+      {
+        "path": "apps/mobile/src/features/balances/api.ts",
+        "sha256": "484021924c66e26bdc1b41d350d69623461131dea700b8654541a161e25ef8d8"
+      },
+      {
+        "path": "apps/mobile/src/features/balances/query-keys.ts",
+        "sha256": "8311287c3856d2c9e6d11b82ee59488940ee565900644c77f1149a31b649d3b1"
+      },
+      {
+        "path": "apps/mobile/app/(app)/ledgers/[ledgerId]/expenses/[expenseId].tsx",
+        "sha256": "a6e1c02bad522a111348a5f54981f24b8732b1e135a884b58359f3ad13d5679f"
+      },
+      {
+        "path": "apps/mobile/src/features/expenses/screens/ExpenseDetailScreen.tsx",
+        "sha256": "a680fdb95f594cedf15a28b4ed080106a85d88fd815f8b2d79b9fd6463052f84"
+      },
+      {
+        "path": "apps/mobile/src/features/images/components/ReceiptImage.tsx",
+        "sha256": "f76543faec65f92f5276a697843221527bdb74c1a4fa6ebd7728249e1cc1f34f"
+      },
+      {
+        "path": "apps/mobile/src/features/images/api.ts",
+        "sha256": "5836e8acf230ed7207aa14fd0764b79cf52e389762d1ff52fe11fb30cdb48585"
+      },
+      {
+        "path": "apps/mobile/src/features/expenses/api.ts",
+        "sha256": "be31ced31770f4d5a1ea715d9e888ed189f4444430e58cfa8bf65f70353ce949"
+      },
+      {
+        "path": "apps/mobile/src/features/expenses/query-keys.ts",
+        "sha256": "e03ed38e38fd8eca00c0ee51756abc481b98c668e81c4d4c41d553fd96a706a3"
+      },
+      {
+        "path": "apps/mobile/src/features/expenses/presentation.ts",
+        "sha256": "0fdd1ea081cbf82b246b3a93102783c5a14db8dc6d3529a44a7709fbff50d3f4"
+      },
+      {
+        "path": "apps/mobile/src/features/expenses/components/ExpenseList.tsx",
+        "sha256": "b7ccae42688e63a249dafc73e6b87988c8673ce8aaa9b93c20cef74be039073a"
+      },
+      {
+        "path": "apps/mobile/src/components/Field.tsx",
+        "sha256": "a9916ea6cfcf6095387a0b0e902825385d1812c86ea955a726a702fa619180d9"
+      },
+      {
+        "path": "apps/mobile/app/(app)/ledgers/[ledgerId]/expenses/create.tsx",
+        "sha256": "85e1155dbabf2f65262529b6694bf0d0e4943fe7503c593f00e4f0e74fef9bfe"
+      },
+      {
+        "path": "apps/mobile/src/features/expenses/screens/CreateExpenseScreen.tsx",
+        "sha256": "4ecda73e4846c53d3311867f555a581e93ade252d0ead7962bb87860cd91ec53"
+      },
+      {
+        "path": "apps/mobile/src/features/images/use-receipt.ts",
+        "sha256": "8aba17618425984685f9bfe647753e3ec5b4140d0c0245d6ce44b5314910cd8c"
+      },
+      {
+        "path": "apps/mobile/src/features/images/receipt-files.ts",
+        "sha256": "787d15bc3c158a6b58b703c0fbfbc8a58328b1f07ece8f9ddbc2459ae873aff6"
+      },
+      {
+        "path": "apps/mobile/src/features/expenses/components/ChoiceSheet.tsx",
+        "sha256": "a731231b516f0e2c4d7ed8cef126fe2cd4bec829fef23710da562f96b64243a4"
+      },
+      {
+        "path": "apps/mobile/src/features/expenses/components/DateSheet.tsx",
+        "sha256": "d495bb9be086523ee4bf406b9b7ecf23bb5711aa93305881dde9e7c9376c7cc8"
+      },
+      {
+        "path": "apps/mobile/src/features/expenses/components/SplitEditorSheet.tsx",
+        "sha256": "ed0f7a2fa5a95644a646cc9a22b4d925ad35c62b22705f8c9b570d3a80f81917"
+      },
+      {
+        "path": "apps/mobile/app/(app)/ledgers/[ledgerId]/index.tsx",
+        "sha256": "667d334e583253f8f84d21df1c98a6b76f7ede1a1c8b0d28e77e8947e1f8de8d"
+      },
+      {
+        "path": "apps/mobile/src/features/ledgers/screens/LedgerDetailScreen.tsx",
+        "sha256": "ac5da1a1dc1b57a102b95de1feb13300bdb73f13b222d1a04de1b05ef8977a65"
+      },
+      {
+        "path": "apps/mobile/src/features/ledgers/components/ArchiveLedgerSheet.tsx",
+        "sha256": "43715d6a5c1490211bf7e356941f6c4de8ec0141762dfcd6c7dc1ea835de1456"
+      },
+      {
+        "path": "apps/mobile/src/components/OnlineWriteSheet.tsx",
+        "sha256": "06461723208b1e8116de109dd0993f84f8f3cd4688a5db3db2300aabe7dacef2"
+      },
+      {
+        "path": "apps/mobile/src/features/ledgers/components/LedgerCover.tsx",
+        "sha256": "368e9133fbef1a5a031a46be583246b900bbd2a84ec302c91e17d05e1472d9c9"
+      },
+      {
+        "path": "apps/mobile/src/features/ledgers/components/LedgerMembersSheet.tsx",
+        "sha256": "3dff9f6f1eb703fb9d6f5420a69e548ba15011897e402fa488d20ea8275dd6c5"
+      },
+      {
+        "path": "apps/mobile/src/features/invitations/use-invitation-reset.ts",
+        "sha256": "21f1c16608d5114aeb5e450d44b5da6b18b54674acc83021e7ad4cedf70c46fa"
+      },
+      {
+        "path": "apps/mobile/src/features/invitations/components/ResetInvitationContent.tsx",
+        "sha256": "66649a40556da6debe386a9f7a0861942a52fea54bca363013529ce7a4619f03"
+      },
+      {
+        "path": "apps/mobile/src/features/ledgers/components/EmptyLedger.tsx",
+        "sha256": "c98113d788210a97718518f0501c268300ba377ef2fd575a73376ca6297cd23b"
+      },
+      {
+        "path": "apps/mobile/app/(app)/ledgers/[ledgerId]/invitation.tsx",
+        "sha256": "64d6b7ff3932da1e64f9a6b6a53922f5d17d4b24f3a6e2319ab1b01054997a02"
+      },
+      {
+        "path": "apps/mobile/src/features/invitations/screens/InvitationScreen.tsx",
+        "sha256": "2f9cf277da278b43548794a039300f1d5746da29d23e84b97010d9064026611d"
+      },
+      {
+        "path": "apps/mobile/src/features/invitations/query-keys.ts",
+        "sha256": "e88e910f97f85a649e6670147bdcb2df3e57a1ea71f295cf2f3a74b4153f8f1b"
+      },
+      {
+        "path": "apps/mobile/app/(app)/ledgers/[ledgerId]/settlement-preview.tsx",
+        "sha256": "3b204f7484c381d7d41946ea485b2d588c25614395814b015125b07e13a9a80f"
+      },
+      {
+        "path": "apps/mobile/src/features/settlements/screens/SettlementPreviewScreen.tsx",
+        "sha256": "37aba363415e29db4bf1ee8378c663b157ef4f9b1393c55e41f6d0b70e25a8fc"
+      },
+      {
+        "path": "apps/mobile/src/features/settlements/screens/SettlementRecordScreen.tsx",
+        "sha256": "25a8435f3e9395a36e94501ac80baf8d7bb98ec5230c22573024e4c04b14c012"
+      },
+      {
+        "path": "apps/mobile/src/features/settlements/components/SettledTransferCard.tsx",
+        "sha256": "8ad9c3d5bacb2faccfd8fa335a1dc3671cfe9b547df6219a160ff5f5c087671c"
+      },
+      {
+        "path": "apps/mobile/src/features/settlements/completion-assets.ts",
+        "sha256": "c561378d706d98ebcefb90c9ce229abe56c4d814fbf77b45fd992ebe70fc8f1f"
+      },
+      {
+        "path": "apps/mobile/src/features/settlements/components/SettledSummary.tsx",
+        "sha256": "aebd488de4295d14fc8759330d5c96cd17835e247b6d0d3c2584ce7220e6aa4c"
+      },
+      {
+        "path": "apps/mobile/src/features/settlements/components/SettlementActionSheet.tsx",
+        "sha256": "018699e1ac59abbecd5de9d7d2f48ab74d34d69078c4c0cc150a867be4980566"
+      },
+      {
+        "path": "apps/mobile/src/features/settlements/api.ts",
+        "sha256": "65d4c2365b4509baeba56fe28fef07f350416d8f1d9d355af8789dbd12a6ee59"
+      },
+      {
+        "path": "apps/mobile/src/features/settlements/query-keys.ts",
+        "sha256": "c9311ac84a46a3c346b88743ae17efb10635cd7c178cfa8574478149e2ef1064"
+      },
+      {
+        "path": "apps/mobile/src/features/settlements/assets.ts",
+        "sha256": "d84488d9e35e0fac5c2f047eabeb5379c305569ab24089ef99fc6c3cbcfdc69f"
+      },
+      {
+        "path": "apps/mobile/app/(app)/ledgers/[ledgerId]/settlement.tsx",
+        "sha256": "3b204f7484c381d7d41946ea485b2d588c25614395814b015125b07e13a9a80f"
+      },
+      {
+        "path": "apps/mobile/app/(app)/ledgers/create.tsx",
+        "sha256": "c840749244262430e89a8795388a53f04685419f7ea96b700c29c8843f399a02"
+      },
+      {
+        "path": "apps/mobile/src/features/ledgers/screens/CreateLedgerScreen.tsx",
+        "sha256": "82963ea744e5b52f9374f6170dbe76edc4d609744f69676bb2f79d7703c83c0a"
+      },
+      {
+        "path": "apps/mobile/app/(app)/ledgers/index.tsx",
+        "sha256": "ee0556ed37602161215db0211fc9f22bfbce72fb0732066fb6a366988caaeb1a"
+      },
+      {
+        "path": "apps/mobile/src/features/ledgers/screens/LedgerListScreen.tsx",
+        "sha256": "89e0c51894dba504fcacd533d6dfdcb5acb57051706b80584e231c80d6c0ea88"
+      },
+      {
+        "path": "apps/mobile/src/features/ledgers/components/LedgerActionsMenu.tsx",
+        "sha256": "385db1abf4b3817182353319facf95af1cbb9823cdc29565b629510d927d3610"
+      },
+      {
+        "path": "apps/mobile/app/(auth)/_layout.tsx",
+        "sha256": "28c097ff379e66fc745167c675ff05a3f6a5f56f0c8c99a44299167417ca7134"
+      },
+      {
+        "path": "apps/mobile/app/(auth)/login.tsx",
+        "sha256": "92796dfaa432c55c674da41ce061507818a4cde4e8accc6d764db6bd63b2f84a"
+      },
+      {
+        "path": "apps/mobile/src/features/auth/screens/AuthScreen.tsx",
+        "sha256": "86c11bbe5ad04385f1e72e7f6af9f1781e800fa161cee258b5015d2d3c6c015c"
+      },
+      {
+        "path": "apps/mobile/src/features/auth/form.ts",
+        "sha256": "38ccb885cdbc37da155eb98a5a2e330382af6f4f3cf25720fca69893d50e41de"
+      },
+      {
+        "path": "apps/mobile/src/features/auth/components.tsx",
+        "sha256": "279ba87fb6ec9eada61de9e4dccd4cb9acaede8d7052ae93d1c5ecdd2fabe495"
+      },
+      {
+        "path": "apps/mobile/src/features/profile/index.ts",
+        "sha256": "4a9dba428b99ccc02aed58f8be32cbaa84a02c0a1201a57cca3bf673fc1ed9e8"
+      },
+      {
+        "path": "apps/mobile/src/features/profile/api.ts",
+        "sha256": "90087da4458b1b11cb2567fdb1a51511e60bf8b350d6867fb21e3a050b8b90e3"
+      },
+      {
+        "path": "apps/mobile/src/features/profile/model.ts",
+        "sha256": "770e7fc68147e160a6b749d9f73fb70302406df0852c9a50fc3eafbff4152498"
+      },
+      {
+        "path": "apps/mobile/src/features/profile/query-keys.ts",
+        "sha256": "f6240401514e51dd9e50c25f8138737a54a98579d2325679d5cfb76b7d7a296f"
+      },
+      {
+        "path": "apps/mobile/app/(auth)/register.tsx",
+        "sha256": "5b98daeb1c33794771fa5bd08a01ea2e5678e8229f53af5b691407fc7c2890ee"
+      },
+      {
+        "path": "apps/mobile/app/(auth)/welcome.tsx",
+        "sha256": "0233581e87e124f4bda3d1b376f832485f4a958f4e0a8657ad82da9144ddaa79"
+      },
+      {
+        "path": "apps/mobile/src/features/auth/screens/WelcomeScreen.tsx",
+        "sha256": "c9b8e8b87bc364885ebb7c900028edaa4266b71d893cd7a94d50034906bf7910"
+      },
+      {
+        "path": "apps/mobile/app/_layout.tsx",
+        "sha256": "69f53898046b6122057620ab5ba2e1fb8a7bfbf12952e28ff1752cf4505b965d"
+      },
+      {
+        "path": "apps/mobile/src/providers/AppProviders.tsx",
+        "sha256": "802f2c59ba912a2584995b713d2b2a2bc8f5dead0fceeeb3de468e15d6ed0c48"
+      },
+      {
+        "path": "apps/mobile/src/lib/query-client.ts",
+        "sha256": "a69bff49c32af14c276c67479e7dbd8e5c4adfac7bffe7e968aeb53640dc14a2"
+      },
+      {
+        "path": "apps/mobile/src/features/auth/screens/SessionRecovery.tsx",
+        "sha256": "e7459b2b9c1dcc8c28b5de5f8262a40381819cb8d05383b2e21288aff91c1e90"
+      },
+      {
+        "path": "apps/mobile/app/index.tsx",
+        "sha256": "2ce439d29adda542cfa4dfe479067758fd5f7d88fca3355025388adb29023a44"
+      }
+    ],
+    "mismatches": 0
+  },
+  "host": {
+    "node": "v24.22.0",
+    "pnpm": "12.6.0"
+  }
+}

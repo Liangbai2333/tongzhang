@@ -1,0 +1,2946 @@
+{
+  "sourceCommit": "7616adb",
+  "businessWrites": "All successful business writes below were initiated through rendered native App controls; registration only prepares two accounts. No success HTTP/SQL business backfill.",
+  "events": [
+    {
+      "time": "2026-10-27T15:20:42.580Z",
+      "requestId": "4ada7d83-65e9-4dda-b920-644b9b0d749d",
+      "method": "POST",
+      "path": "/api/v1/auth/register",
+      "status": 201,
+      "origin": "account-preparation-via-real-registration"
+    },
+    {
+      "time": "2026-10-27T15:20:42.607Z",
+      "requestId": "a621a9ac-b5d7-4d1b-8391-f94d9ee8581d",
+      "method": "POST",
+      "path": "/api/v1/auth/register",
+      "status": 201,
+      "origin": "account-preparation-via-real-registration"
+    },
+    {
+      "time": "2026-10-27T15:20:48.294Z",
+      "requestId": "e1ce9a64-4d01-455d-a028-cd1d4b31d02c",
+      "method": "POST",
+      "path": "/api/v1/auth/refresh",
+      "status": 401,
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:21:17.445Z",
+      "requestId": "543aa965-1d21-4df2-b722-9ed0d3fdc7a7",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "status": 200,
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:21:17.556Z",
+      "requestId": "d07dc910-d54c-490c-95e6-0966075e0a70",
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+          "username": "Issue49-owner",
+          "email": "issue49-owner@example.test",
+          "notificationEnabled": true
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:21:17.848Z",
+      "requestId": "46f90604-fd8f-49f3-a639-a18c39c5bff4",
+      "method": "GET",
+      "path": "/api/v1/ledgers?limit=20&archived=false",
+      "status": 200,
+      "body": {
+        "data": [],
+        "page": {
+          "nextCursor": null
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:22:22.632Z",
+      "requestId": "4fad9346-4725-49c7-84f5-41c062604b9d",
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+          "username": "Issue49-owner",
+          "email": "issue49-owner@example.test",
+          "notificationEnabled": true
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:22:26.405Z",
+      "requestId": "d0c10630-5a0f-4865-a9b5-2d532a7a751b",
+      "method": "POST",
+      "path": "/api/v1/images",
+      "status": 201,
+      "body": {
+        "data": {
+          "imageId": "29a8022c-36f9-467c-bd08-98e1b1037321",
+          "mimeType": "image/jpeg",
+          "byteSize": 37140,
+          "width": 1200,
+          "height": 1500
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:22:26.607Z",
+      "requestId": "baea6ee3-0a39-47cc-8193-29ab0732f091",
+      "method": "POST",
+      "path": "/api/v1/ledgers",
+      "status": 201,
+      "keyDigest": "2d7553ca1a70",
+      "body": {
+        "data": {
+          "ledger": {
+            "id": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+            "name": "Issue49-App-Manual",
+            "coverKey": null,
+            "coverImageId": "29a8022c-36f9-467c-bd08-98e1b1037321",
+            "status": "ACTIVE",
+            "version": 1,
+            "memberCount": 1,
+            "expenseTotalCents": "0",
+            "myRemainingNetCents": "0",
+            "archivedAt": null,
+            "createdAt": "2026-10-27T15:22:26.586Z"
+          },
+          "invitation": {
+            "id": "676a102a-0989-40d7-8e67-73d327f66abf",
+            "code": "48N8X6",
+            "expiresAt": "2026-11-03T15:22:26.597Z",
+            "expired": false,
+            "qrPayload": "tongzhang:invite:v1:48N8X6"
+          }
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:22:26.973Z",
+      "requestId": "6c98c02c-7424-436d-a790-671d91d9f715",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087/invitation",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "676a102a-0989-40d7-8e67-73d327f66abf",
+          "code": "48N8X6",
+          "expiresAt": "2026-11-03T15:22:26.597Z",
+          "expired": false,
+          "qrPayload": "tongzhang:invite:v1:48N8X6"
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:22:27.027Z",
+      "requestId": "6c1d4494-1d18-49b4-b9ac-305353889478",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+          "name": "Issue49-App-Manual",
+          "coverKey": null,
+          "coverImageId": "29a8022c-36f9-467c-bd08-98e1b1037321",
+          "status": "ACTIVE",
+          "version": 1,
+          "memberCount": 1,
+          "expenseTotalCents": "0",
+          "myRemainingNetCents": "0",
+          "archivedAt": null,
+          "createdAt": "2026-10-27T15:22:26.586Z",
+          "creatorUserId": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+          "myMemberId": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+          "myPaidCents": "0",
+          "mySharedCents": "0",
+          "myNetCents": "0",
+          "members": [
+            {
+              "id": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+              "userId": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+              "username": "Issue49-owner",
+              "role": "CREATOR",
+              "joinedAt": "2026-10-27T15:22:26.586Z",
+              "netCents": "0",
+              "remainingNetCents": "0"
+            }
+          ]
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:22:41.031Z",
+      "requestId": "d2602ea6-759a-446a-bbe8-e7f8a0a7408b",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+          "name": "Issue49-App-Manual",
+          "coverKey": null,
+          "coverImageId": "29a8022c-36f9-467c-bd08-98e1b1037321",
+          "status": "ACTIVE",
+          "version": 1,
+          "memberCount": 1,
+          "expenseTotalCents": "0",
+          "myRemainingNetCents": "0",
+          "archivedAt": null,
+          "createdAt": "2026-10-27T15:22:26.586Z",
+          "creatorUserId": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+          "myMemberId": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+          "myPaidCents": "0",
+          "mySharedCents": "0",
+          "myNetCents": "0",
+          "members": [
+            {
+              "id": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+              "userId": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+              "username": "Issue49-owner",
+              "role": "CREATOR",
+              "joinedAt": "2026-10-27T15:22:26.586Z",
+              "netCents": "0",
+              "remainingNetCents": "0"
+            }
+          ]
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:22:41.448Z",
+      "requestId": "cb2c4234-0a2e-4259-81d9-4b3cd98ea2d5",
+      "method": "GET",
+      "path": "/api/v1/images/29a8022c-36f9-467c-bd08-98e1b1037321",
+      "status": 200,
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:22:44.077Z",
+      "requestId": "6e7a7ed1-3a5d-4787-9b6b-b5205f7b467b",
+      "method": "GET",
+      "path": "/api/v1/ledgers?limit=20&archived=false",
+      "status": 200,
+      "body": {
+        "data": [
+          {
+            "id": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+            "name": "Issue49-App-Manual",
+            "coverKey": null,
+            "coverImageId": "29a8022c-36f9-467c-bd08-98e1b1037321",
+            "status": "ACTIVE",
+            "version": 1,
+            "memberCount": 1,
+            "expenseTotalCents": "0",
+            "myRemainingNetCents": "0",
+            "archivedAt": null,
+            "createdAt": "2026-10-27T15:22:26.586Z"
+          }
+        ],
+        "page": {
+          "nextCursor": null
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:22:44.178Z",
+      "requestId": "e7451c4b-fe66-4095-8aa0-b0517f89d0e4",
+      "method": "GET",
+      "path": "/api/v1/images/29a8022c-36f9-467c-bd08-98e1b1037321",
+      "status": 200,
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:22:51.160Z",
+      "requestId": "3e12eec0-3ecb-4398-befc-c90c79167b3d",
+      "method": "POST",
+      "path": "/api/v1/auth/logout",
+      "status": 200,
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:23:09.431Z",
+      "requestId": "ea4a6f33-ad91-4ced-badd-ce67abfaa353",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "status": 200,
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:23:09.603Z",
+      "requestId": "ce8108a7-9609-4c20-ac04-8350f8b1ff16",
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "dca386bb-a674-4fcc-87ac-9c519c45d05d",
+          "username": "Issue49-member",
+          "email": "issue49-member@example.test",
+          "notificationEnabled": true
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:23:09.771Z",
+      "requestId": "143094a5-b220-44b7-b198-ea8907730a04",
+      "method": "GET",
+      "path": "/api/v1/ledgers?limit=20&archived=false",
+      "status": 200,
+      "body": {
+        "data": [],
+        "page": {
+          "nextCursor": null
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:24:56.154Z",
+      "requestId": "f027179a-a35d-4ec4-b75d-6d3c1db15e80",
+      "method": "POST",
+      "path": "/api/v1/invitations/preview",
+      "status": 200,
+      "body": {
+        "data": {
+          "ledgerId": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+          "name": "Issue49-App-Manual",
+          "creatorName": "Issue49-owner",
+          "memberCount": 1,
+          "alreadyMember": false,
+          "canJoin": true
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:26:38.155Z",
+      "requestId": "b9364f2d-e4e9-4bbe-b722-fe4c566d6213",
+      "method": "POST",
+      "path": "/api/v1/invitations/join",
+      "status": 200,
+      "keyDigest": "d970b5c8e105",
+      "body": {
+        "data": {
+          "ledgerId": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+          "memberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+          "alreadyMember": false
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:26:38.567Z",
+      "requestId": "9efd3404-a1f5-4d58-a442-0247c2b08434",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+          "name": "Issue49-App-Manual",
+          "coverKey": null,
+          "coverImageId": "29a8022c-36f9-467c-bd08-98e1b1037321",
+          "status": "ACTIVE",
+          "version": 2,
+          "memberCount": 2,
+          "expenseTotalCents": "0",
+          "myRemainingNetCents": "0",
+          "archivedAt": null,
+          "createdAt": "2026-10-27T15:22:26.586Z",
+          "creatorUserId": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+          "myMemberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+          "myPaidCents": "0",
+          "mySharedCents": "0",
+          "myNetCents": "0",
+          "members": [
+            {
+              "id": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+              "userId": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+              "username": "Issue49-owner",
+              "role": "CREATOR",
+              "joinedAt": "2026-10-27T15:22:26.586Z",
+              "netCents": "0",
+              "remainingNetCents": "0"
+            },
+            {
+              "id": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+              "userId": "dca386bb-a674-4fcc-87ac-9c519c45d05d",
+              "username": "Issue49-member",
+              "role": "MEMBER",
+              "joinedAt": "2026-10-27T15:26:38.141Z",
+              "netCents": "0",
+              "remainingNetCents": "0"
+            }
+          ]
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:26:39.229Z",
+      "requestId": "403950ca-9ee2-48a9-92c8-3088863d85df",
+      "method": "GET",
+      "path": "/api/v1/images/29a8022c-36f9-467c-bd08-98e1b1037321",
+      "status": 200,
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:26:41.793Z",
+      "requestId": "4ed538d9-2151-47b9-b25f-ee788ad273b4",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+          "name": "Issue49-App-Manual",
+          "coverKey": null,
+          "coverImageId": "29a8022c-36f9-467c-bd08-98e1b1037321",
+          "status": "ACTIVE",
+          "version": 2,
+          "memberCount": 2,
+          "expenseTotalCents": "0",
+          "myRemainingNetCents": "0",
+          "archivedAt": null,
+          "createdAt": "2026-10-27T15:22:26.586Z",
+          "creatorUserId": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+          "myMemberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+          "myPaidCents": "0",
+          "mySharedCents": "0",
+          "myNetCents": "0",
+          "members": [
+            {
+              "id": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+              "userId": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+              "username": "Issue49-owner",
+              "role": "CREATOR",
+              "joinedAt": "2026-10-27T15:22:26.586Z",
+              "netCents": "0",
+              "remainingNetCents": "0"
+            },
+            {
+              "id": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+              "userId": "dca386bb-a674-4fcc-87ac-9c519c45d05d",
+              "username": "Issue49-member",
+              "role": "MEMBER",
+              "joinedAt": "2026-10-27T15:26:38.141Z",
+              "netCents": "0",
+              "remainingNetCents": "0"
+            }
+          ]
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:28:31.413Z",
+      "requestId": "e8de3b28-95ae-4164-9433-580ab03d9b39",
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "dca386bb-a674-4fcc-87ac-9c519c45d05d",
+          "username": "Issue49-member",
+          "email": "issue49-member@example.test",
+          "notificationEnabled": true
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:28:35.757Z",
+      "requestId": "1102d28e-522a-4ca2-9b54-66be9ce470b0",
+      "method": "POST",
+      "path": "/api/v1/images",
+      "status": 201,
+      "body": {
+        "data": {
+          "imageId": "68ac720f-a6ba-4166-b098-69dde14f511d",
+          "mimeType": "image/jpeg",
+          "byteSize": 43782,
+          "width": 1200,
+          "height": 1500
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:28:35.842Z",
+      "requestId": "6de92ed3-4cb5-4bd6-baca-89e868accd41",
+      "method": "POST",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087/expenses",
+      "status": 201,
+      "keyDigest": "7390b5356cf1",
+      "body": {
+        "data": {
+          "id": "f681f10e-a843-4c85-882c-785a7829080d",
+          "title": "Issue49-Lunch",
+          "amountCents": "12000",
+          "category": "DINING",
+          "occurredOn": "2026-10-27",
+          "payerMemberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+          "payerName": "Issue49-member",
+          "version": 1,
+          "ledgerId": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+          "recorderMemberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+          "recorderName": "Issue49-member",
+          "splitMode": "EQUAL",
+          "splits": [
+            {
+              "memberId": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+              "username": "Issue49-owner",
+              "shares": null,
+              "amountCents": "6000"
+            },
+            {
+              "memberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+              "username": "Issue49-member",
+              "shares": null,
+              "amountCents": "6000"
+            }
+          ],
+          "note": null,
+          "receiptImageId": "68ac720f-a6ba-4166-b098-69dde14f511d",
+          "createdAt": "2026-10-27T15:28:35.826Z",
+          "updatedAt": "2026-10-27T15:28:35.826Z",
+          "canEdit": true
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:28:36.535Z",
+      "requestId": "41e6827a-2f6e-469d-ac88-537311d16317",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087/expenses/f681f10e-a843-4c85-882c-785a7829080d",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "f681f10e-a843-4c85-882c-785a7829080d",
+          "title": "Issue49-Lunch",
+          "amountCents": "12000",
+          "category": "DINING",
+          "occurredOn": "2026-10-27",
+          "payerMemberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+          "payerName": "Issue49-member",
+          "version": 1,
+          "ledgerId": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+          "recorderMemberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+          "recorderName": "Issue49-member",
+          "splitMode": "EQUAL",
+          "splits": [
+            {
+              "memberId": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+              "username": "Issue49-owner",
+              "shares": null,
+              "amountCents": "6000"
+            },
+            {
+              "memberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+              "username": "Issue49-member",
+              "shares": null,
+              "amountCents": "6000"
+            }
+          ],
+          "note": null,
+          "receiptImageId": "68ac720f-a6ba-4166-b098-69dde14f511d",
+          "createdAt": "2026-10-27T15:28:35.826Z",
+          "updatedAt": "2026-10-27T15:28:35.826Z",
+          "canEdit": true
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:29:03.148Z",
+      "requestId": "32d1db06-4d2a-48f2-a860-5e777892be95",
+      "method": "GET",
+      "path": "/api/v1/images/68ac720f-a6ba-4166-b098-69dde14f511d",
+      "status": 200,
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:29:15.913Z",
+      "requestId": "6c90febb-4f1a-436f-a4b3-3c60a6d5eb53",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+          "name": "Issue49-App-Manual",
+          "coverKey": null,
+          "coverImageId": "29a8022c-36f9-467c-bd08-98e1b1037321",
+          "status": "ACTIVE",
+          "version": 3,
+          "memberCount": 2,
+          "expenseTotalCents": "12000",
+          "myRemainingNetCents": "6000",
+          "archivedAt": null,
+          "createdAt": "2026-10-27T15:22:26.586Z",
+          "creatorUserId": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+          "myMemberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+          "myPaidCents": "12000",
+          "mySharedCents": "6000",
+          "myNetCents": "6000",
+          "members": [
+            {
+              "id": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+              "userId": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+              "username": "Issue49-owner",
+              "role": "CREATOR",
+              "joinedAt": "2026-10-27T15:22:26.586Z",
+              "netCents": "-6000",
+              "remainingNetCents": "-6000"
+            },
+            {
+              "id": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+              "userId": "dca386bb-a674-4fcc-87ac-9c519c45d05d",
+              "username": "Issue49-member",
+              "role": "MEMBER",
+              "joinedAt": "2026-10-27T15:26:38.141Z",
+              "netCents": "6000",
+              "remainingNetCents": "6000"
+            }
+          ]
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:29:15.917Z",
+      "requestId": "b8d8d083-0e6f-467d-9753-442aa47c3d35",
+      "method": "GET",
+      "path": "/api/v1/images/29a8022c-36f9-467c-bd08-98e1b1037321",
+      "status": 200,
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:29:16.275Z",
+      "requestId": "2dd2e10b-b290-44b1-a08e-ba139d337797",
+      "method": "GET",
+      "path": "/api/v1/images/29a8022c-36f9-467c-bd08-98e1b1037321",
+      "status": 200,
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:29:16.327Z",
+      "requestId": "86e4d152-75fa-4b6d-9205-22a31fcecdaa",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087/expenses?limit=20",
+      "status": 200,
+      "body": {
+        "data": [
+          {
+            "id": "f681f10e-a843-4c85-882c-785a7829080d",
+            "title": "Issue49-Lunch",
+            "amountCents": "12000",
+            "category": "DINING",
+            "occurredOn": "2026-10-27",
+            "payerMemberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+            "payerName": "Issue49-member",
+            "version": 1
+          }
+        ],
+        "page": {
+          "nextCursor": null
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:29:18.894Z",
+      "requestId": "472aa4dc-f5fc-435f-8b31-8fce3d500429",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087/balances",
+      "status": 200,
+      "body": {
+        "data": {
+          "expenseTotalCents": "12000",
+          "members": [
+            {
+              "memberId": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+              "username": "Issue49-owner",
+              "paidCents": "0",
+              "sharedCents": "6000",
+              "netCents": "-6000",
+              "remainingNetCents": "-6000"
+            },
+            {
+              "memberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+              "username": "Issue49-member",
+              "paidCents": "12000",
+              "sharedCents": "6000",
+              "netCents": "6000",
+              "remainingNetCents": "6000"
+            }
+          ]
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:29:18.900Z",
+      "requestId": "13c0758f-8343-43b0-9d2d-9f7c55b57be4",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+          "name": "Issue49-App-Manual",
+          "coverKey": null,
+          "coverImageId": "29a8022c-36f9-467c-bd08-98e1b1037321",
+          "status": "ACTIVE",
+          "version": 3,
+          "memberCount": 2,
+          "expenseTotalCents": "12000",
+          "myRemainingNetCents": "6000",
+          "archivedAt": null,
+          "createdAt": "2026-10-27T15:22:26.586Z",
+          "creatorUserId": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+          "myMemberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+          "myPaidCents": "12000",
+          "mySharedCents": "6000",
+          "myNetCents": "6000",
+          "members": [
+            {
+              "id": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+              "userId": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+              "username": "Issue49-owner",
+              "role": "CREATOR",
+              "joinedAt": "2026-10-27T15:22:26.586Z",
+              "netCents": "-6000",
+              "remainingNetCents": "-6000"
+            },
+            {
+              "id": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+              "userId": "dca386bb-a674-4fcc-87ac-9c519c45d05d",
+              "username": "Issue49-member",
+              "role": "MEMBER",
+              "joinedAt": "2026-10-27T15:26:38.141Z",
+              "netCents": "6000",
+              "remainingNetCents": "6000"
+            }
+          ]
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:29:40.709Z",
+      "requestId": "464ddd6f-f925-466e-bc07-ed538f410bea",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087/settlement-preview",
+      "status": 200,
+      "body": {
+        "data": {
+          "ledgerId": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+          "ledgerVersion": 3,
+          "expenseTotalCents": "12000",
+          "transferTotalCents": "6000",
+          "transferCount": 1,
+          "members": [
+            {
+              "memberId": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+              "username": "Issue49-owner",
+              "paidCents": "0",
+              "sharedCents": "6000",
+              "netCents": "-6000",
+              "remainingNetCents": "-6000"
+            },
+            {
+              "memberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+              "username": "Issue49-member",
+              "paidCents": "12000",
+              "sharedCents": "6000",
+              "netCents": "6000",
+              "remainingNetCents": "6000"
+            }
+          ],
+          "transfers": [
+            {
+              "sequence": 1,
+              "payerMemberId": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+              "payeeMemberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+              "amountCents": "6000"
+            }
+          ],
+          "algorithmVersion": "zero-sum-dp-v1"
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:29:40.710Z",
+      "requestId": "0a53d749-043c-493c-bb0e-f42668e9d305",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+          "name": "Issue49-App-Manual",
+          "coverKey": null,
+          "coverImageId": "29a8022c-36f9-467c-bd08-98e1b1037321",
+          "status": "ACTIVE",
+          "version": 3,
+          "memberCount": 2,
+          "expenseTotalCents": "12000",
+          "myRemainingNetCents": "6000",
+          "archivedAt": null,
+          "createdAt": "2026-10-27T15:22:26.586Z",
+          "creatorUserId": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+          "myMemberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+          "myPaidCents": "12000",
+          "mySharedCents": "6000",
+          "myNetCents": "6000",
+          "members": [
+            {
+              "id": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+              "userId": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+              "username": "Issue49-owner",
+              "role": "CREATOR",
+              "joinedAt": "2026-10-27T15:22:26.586Z",
+              "netCents": "-6000",
+              "remainingNetCents": "-6000"
+            },
+            {
+              "id": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+              "userId": "dca386bb-a674-4fcc-87ac-9c519c45d05d",
+              "username": "Issue49-member",
+              "role": "MEMBER",
+              "joinedAt": "2026-10-27T15:26:38.141Z",
+              "netCents": "6000",
+              "remainingNetCents": "6000"
+            }
+          ]
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:29:41.498Z",
+      "requestId": "72770c30-f75a-4c03-9193-1a0e4efc3777",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087/settlement-preview",
+      "status": 200,
+      "body": {
+        "data": {
+          "ledgerId": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+          "ledgerVersion": 3,
+          "expenseTotalCents": "12000",
+          "transferTotalCents": "6000",
+          "transferCount": 1,
+          "members": [
+            {
+              "memberId": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+              "username": "Issue49-owner",
+              "paidCents": "0",
+              "sharedCents": "6000",
+              "netCents": "-6000",
+              "remainingNetCents": "-6000"
+            },
+            {
+              "memberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+              "username": "Issue49-member",
+              "paidCents": "12000",
+              "sharedCents": "6000",
+              "netCents": "6000",
+              "remainingNetCents": "6000"
+            }
+          ],
+          "transfers": [
+            {
+              "sequence": 1,
+              "payerMemberId": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+              "payeeMemberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+              "amountCents": "6000"
+            }
+          ],
+          "algorithmVersion": "zero-sum-dp-v1"
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:29:56.197Z",
+      "requestId": "e4da8251-811c-45f5-9747-7d2abe7da69f",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087/balances",
+      "status": 200,
+      "body": {
+        "data": {
+          "expenseTotalCents": "12000",
+          "members": [
+            {
+              "memberId": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+              "username": "Issue49-owner",
+              "paidCents": "0",
+              "sharedCents": "6000",
+              "netCents": "-6000",
+              "remainingNetCents": "-6000"
+            },
+            {
+              "memberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+              "username": "Issue49-member",
+              "paidCents": "12000",
+              "sharedCents": "6000",
+              "netCents": "6000",
+              "remainingNetCents": "6000"
+            }
+          ]
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:29:56.201Z",
+      "requestId": "22a9ca47-2522-473f-ac11-7c817093ca91",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+          "name": "Issue49-App-Manual",
+          "coverKey": null,
+          "coverImageId": "29a8022c-36f9-467c-bd08-98e1b1037321",
+          "status": "ACTIVE",
+          "version": 3,
+          "memberCount": 2,
+          "expenseTotalCents": "12000",
+          "myRemainingNetCents": "6000",
+          "archivedAt": null,
+          "createdAt": "2026-10-27T15:22:26.586Z",
+          "creatorUserId": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+          "myMemberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+          "myPaidCents": "12000",
+          "mySharedCents": "6000",
+          "myNetCents": "6000",
+          "members": [
+            {
+              "id": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+              "userId": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+              "username": "Issue49-owner",
+              "role": "CREATOR",
+              "joinedAt": "2026-10-27T15:22:26.586Z",
+              "netCents": "-6000",
+              "remainingNetCents": "-6000"
+            },
+            {
+              "id": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+              "userId": "dca386bb-a674-4fcc-87ac-9c519c45d05d",
+              "username": "Issue49-member",
+              "role": "MEMBER",
+              "joinedAt": "2026-10-27T15:26:38.141Z",
+              "netCents": "6000",
+              "remainingNetCents": "6000"
+            }
+          ]
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:29:58.664Z",
+      "requestId": "13955fa8-a46d-43c7-9b50-59d7337a1300",
+      "method": "GET",
+      "path": "/api/v1/images/29a8022c-36f9-467c-bd08-98e1b1037321",
+      "status": 200,
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:29:58.667Z",
+      "requestId": "335bf27a-8439-486e-b9cb-fca5625fc160",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+          "name": "Issue49-App-Manual",
+          "coverKey": null,
+          "coverImageId": "29a8022c-36f9-467c-bd08-98e1b1037321",
+          "status": "ACTIVE",
+          "version": 3,
+          "memberCount": 2,
+          "expenseTotalCents": "12000",
+          "myRemainingNetCents": "6000",
+          "archivedAt": null,
+          "createdAt": "2026-10-27T15:22:26.586Z",
+          "creatorUserId": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+          "myMemberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+          "myPaidCents": "12000",
+          "mySharedCents": "6000",
+          "myNetCents": "6000",
+          "members": [
+            {
+              "id": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+              "userId": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+              "username": "Issue49-owner",
+              "role": "CREATOR",
+              "joinedAt": "2026-10-27T15:22:26.586Z",
+              "netCents": "-6000",
+              "remainingNetCents": "-6000"
+            },
+            {
+              "id": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+              "userId": "dca386bb-a674-4fcc-87ac-9c519c45d05d",
+              "username": "Issue49-member",
+              "role": "MEMBER",
+              "joinedAt": "2026-10-27T15:26:38.141Z",
+              "netCents": "6000",
+              "remainingNetCents": "6000"
+            }
+          ]
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:29:58.725Z",
+      "requestId": "8c114b2a-3cce-4ef5-941b-4131eb2f5a05",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087/expenses?limit=20",
+      "status": 200,
+      "body": {
+        "data": [
+          {
+            "id": "f681f10e-a843-4c85-882c-785a7829080d",
+            "title": "Issue49-Lunch",
+            "amountCents": "12000",
+            "category": "DINING",
+            "occurredOn": "2026-10-27",
+            "payerMemberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+            "payerName": "Issue49-member",
+            "version": 1
+          }
+        ],
+        "page": {
+          "nextCursor": null
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:29:59.028Z",
+      "requestId": "0637f071-0f7d-4f56-af3b-d25dd7c735c4",
+      "method": "GET",
+      "path": "/api/v1/images/29a8022c-36f9-467c-bd08-98e1b1037321",
+      "status": 200,
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:29:59.075Z",
+      "requestId": "77a43ef3-d936-47fb-89fd-3893a8b3d869",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087/expenses?limit=20",
+      "status": 200,
+      "body": {
+        "data": [
+          {
+            "id": "f681f10e-a843-4c85-882c-785a7829080d",
+            "title": "Issue49-Lunch",
+            "amountCents": "12000",
+            "category": "DINING",
+            "occurredOn": "2026-10-27",
+            "payerMemberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+            "payerName": "Issue49-member",
+            "version": 1
+          }
+        ],
+        "page": {
+          "nextCursor": null
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:30:32.490Z",
+      "requestId": "0c588daa-c98d-4c1d-ab41-444caaf0300b",
+      "method": "GET",
+      "path": "/api/v1/ledgers?limit=20&archived=false",
+      "status": 200,
+      "body": {
+        "data": [
+          {
+            "id": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+            "name": "Issue49-App-Manual",
+            "coverKey": null,
+            "coverImageId": "29a8022c-36f9-467c-bd08-98e1b1037321",
+            "status": "ACTIVE",
+            "version": 3,
+            "memberCount": 2,
+            "expenseTotalCents": "12000",
+            "myRemainingNetCents": "6000",
+            "archivedAt": null,
+            "createdAt": "2026-10-27T15:22:26.586Z"
+          }
+        ],
+        "page": {
+          "nextCursor": null
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:30:32.664Z",
+      "requestId": "fed5b2cc-aa86-4c3a-9676-1c86509e2bf0",
+      "method": "GET",
+      "path": "/api/v1/images/29a8022c-36f9-467c-bd08-98e1b1037321",
+      "status": 200,
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:30:40.577Z",
+      "requestId": "e04b3951-cff3-4875-817a-7b11b72f67f1",
+      "method": "POST",
+      "path": "/api/v1/auth/logout",
+      "status": 200,
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:30:58.935Z",
+      "requestId": "db296af5-6cb8-41f2-a9c4-ca2db2d3d3b2",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "status": 200,
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:30:59.061Z",
+      "requestId": "a7d296bf-c322-40af-ae58-7daaf224d698",
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+          "username": "Issue49-owner",
+          "email": "issue49-owner@example.test",
+          "notificationEnabled": true
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:30:59.333Z",
+      "requestId": "47f7db46-4998-41c7-ba7d-175a8a7f0f21",
+      "method": "GET",
+      "path": "/api/v1/ledgers?limit=20&archived=false",
+      "status": 200,
+      "body": {
+        "data": [
+          {
+            "id": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+            "name": "Issue49-App-Manual",
+            "coverKey": null,
+            "coverImageId": "29a8022c-36f9-467c-bd08-98e1b1037321",
+            "status": "ACTIVE",
+            "version": 3,
+            "memberCount": 2,
+            "expenseTotalCents": "12000",
+            "myRemainingNetCents": "-6000",
+            "archivedAt": null,
+            "createdAt": "2026-10-27T15:22:26.586Z"
+          }
+        ],
+        "page": {
+          "nextCursor": null
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:30:59.610Z",
+      "requestId": "b812718b-88d8-41d2-9b05-4ec401743815",
+      "method": "GET",
+      "path": "/api/v1/images/29a8022c-36f9-467c-bd08-98e1b1037321",
+      "status": 200,
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:31:36.624Z",
+      "requestId": "a4cbe432-4ace-43eb-82ad-0c27a5fb2b1c",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+          "name": "Issue49-App-Manual",
+          "coverKey": null,
+          "coverImageId": "29a8022c-36f9-467c-bd08-98e1b1037321",
+          "status": "ACTIVE",
+          "version": 3,
+          "memberCount": 2,
+          "expenseTotalCents": "12000",
+          "myRemainingNetCents": "-6000",
+          "archivedAt": null,
+          "createdAt": "2026-10-27T15:22:26.586Z",
+          "creatorUserId": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+          "myMemberId": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+          "myPaidCents": "0",
+          "mySharedCents": "6000",
+          "myNetCents": "-6000",
+          "members": [
+            {
+              "id": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+              "userId": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+              "username": "Issue49-owner",
+              "role": "CREATOR",
+              "joinedAt": "2026-10-27T15:22:26.586Z",
+              "netCents": "-6000",
+              "remainingNetCents": "-6000"
+            },
+            {
+              "id": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+              "userId": "dca386bb-a674-4fcc-87ac-9c519c45d05d",
+              "username": "Issue49-member",
+              "role": "MEMBER",
+              "joinedAt": "2026-10-27T15:26:38.141Z",
+              "netCents": "6000",
+              "remainingNetCents": "6000"
+            }
+          ]
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:31:37.150Z",
+      "requestId": "aa670749-422b-4f21-a1f9-c67abffb07c5",
+      "method": "GET",
+      "path": "/api/v1/images/29a8022c-36f9-467c-bd08-98e1b1037321",
+      "status": 200,
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:31:37.160Z",
+      "requestId": "4758739b-0501-4dc1-bff4-b84d3150c549",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087/expenses?limit=20",
+      "status": 200,
+      "body": {
+        "data": [
+          {
+            "id": "f681f10e-a843-4c85-882c-785a7829080d",
+            "title": "Issue49-Lunch",
+            "amountCents": "12000",
+            "category": "DINING",
+            "occurredOn": "2026-10-27",
+            "payerMemberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+            "payerName": "Issue49-member",
+            "version": 1
+          }
+        ],
+        "page": {
+          "nextCursor": null
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:31:53.424Z",
+      "requestId": "87e17c3c-5c91-4b0f-92c6-3bb7c4d56745",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087/expenses/f681f10e-a843-4c85-882c-785a7829080d",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "f681f10e-a843-4c85-882c-785a7829080d",
+          "title": "Issue49-Lunch",
+          "amountCents": "12000",
+          "category": "DINING",
+          "occurredOn": "2026-10-27",
+          "payerMemberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+          "payerName": "Issue49-member",
+          "version": 1,
+          "ledgerId": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+          "recorderMemberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+          "recorderName": "Issue49-member",
+          "splitMode": "EQUAL",
+          "splits": [
+            {
+              "memberId": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+              "username": "Issue49-owner",
+              "shares": null,
+              "amountCents": "6000"
+            },
+            {
+              "memberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+              "username": "Issue49-member",
+              "shares": null,
+              "amountCents": "6000"
+            }
+          ],
+          "note": null,
+          "receiptImageId": "68ac720f-a6ba-4166-b098-69dde14f511d",
+          "createdAt": "2026-10-27T15:28:35.826Z",
+          "updatedAt": "2026-10-27T15:28:35.826Z",
+          "canEdit": true
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:31:59.598Z",
+      "requestId": "17ba64bb-424a-40d5-bbfa-393c88e9700e",
+      "method": "GET",
+      "path": "/api/v1/images/68ac720f-a6ba-4166-b098-69dde14f511d",
+      "status": 200,
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:32:26.617Z",
+      "requestId": "cb60deb1-b71d-4367-bfe8-358a79a7676a",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+          "name": "Issue49-App-Manual",
+          "coverKey": null,
+          "coverImageId": "29a8022c-36f9-467c-bd08-98e1b1037321",
+          "status": "ACTIVE",
+          "version": 3,
+          "memberCount": 2,
+          "expenseTotalCents": "12000",
+          "myRemainingNetCents": "-6000",
+          "archivedAt": null,
+          "createdAt": "2026-10-27T15:22:26.586Z",
+          "creatorUserId": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+          "myMemberId": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+          "myPaidCents": "0",
+          "mySharedCents": "6000",
+          "myNetCents": "-6000",
+          "members": [
+            {
+              "id": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+              "userId": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+              "username": "Issue49-owner",
+              "role": "CREATOR",
+              "joinedAt": "2026-10-27T15:22:26.586Z",
+              "netCents": "-6000",
+              "remainingNetCents": "-6000"
+            },
+            {
+              "id": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+              "userId": "dca386bb-a674-4fcc-87ac-9c519c45d05d",
+              "username": "Issue49-member",
+              "role": "MEMBER",
+              "joinedAt": "2026-10-27T15:26:38.141Z",
+              "netCents": "6000",
+              "remainingNetCents": "6000"
+            }
+          ]
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:32:26.646Z",
+      "requestId": "baf90fea-5e10-414e-bc95-865f11f76fa5",
+      "method": "GET",
+      "path": "/api/v1/images/29a8022c-36f9-467c-bd08-98e1b1037321",
+      "status": 200,
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:32:26.693Z",
+      "requestId": "4ff8f96f-906c-46d9-bf3a-ec1e326c96a3",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087/expenses?limit=20",
+      "status": 200,
+      "body": {
+        "data": [
+          {
+            "id": "f681f10e-a843-4c85-882c-785a7829080d",
+            "title": "Issue49-Lunch",
+            "amountCents": "12000",
+            "category": "DINING",
+            "occurredOn": "2026-10-27",
+            "payerMemberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+            "payerName": "Issue49-member",
+            "version": 1
+          }
+        ],
+        "page": {
+          "nextCursor": null
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:32:27.181Z",
+      "requestId": "7286dca3-7a04-4130-a957-dcdd268a3288",
+      "method": "GET",
+      "path": "/api/v1/images/29a8022c-36f9-467c-bd08-98e1b1037321",
+      "status": 200,
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:32:27.189Z",
+      "requestId": "973547b6-8671-4428-8ae1-553fc1ff1443",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087/expenses?limit=20",
+      "status": 200,
+      "body": {
+        "data": [
+          {
+            "id": "f681f10e-a843-4c85-882c-785a7829080d",
+            "title": "Issue49-Lunch",
+            "amountCents": "12000",
+            "category": "DINING",
+            "occurredOn": "2026-10-27",
+            "payerMemberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+            "payerName": "Issue49-member",
+            "version": 1
+          }
+        ],
+        "page": {
+          "nextCursor": null
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:32:47.486Z",
+      "requestId": "50e07c9e-e2da-49ff-a34a-e0415c93d741",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+          "name": "Issue49-App-Manual",
+          "coverKey": null,
+          "coverImageId": "29a8022c-36f9-467c-bd08-98e1b1037321",
+          "status": "ACTIVE",
+          "version": 3,
+          "memberCount": 2,
+          "expenseTotalCents": "12000",
+          "myRemainingNetCents": "-6000",
+          "archivedAt": null,
+          "createdAt": "2026-10-27T15:22:26.586Z",
+          "creatorUserId": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+          "myMemberId": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+          "myPaidCents": "0",
+          "mySharedCents": "6000",
+          "myNetCents": "-6000",
+          "members": [
+            {
+              "id": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+              "userId": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+              "username": "Issue49-owner",
+              "role": "CREATOR",
+              "joinedAt": "2026-10-27T15:22:26.586Z",
+              "netCents": "-6000",
+              "remainingNetCents": "-6000"
+            },
+            {
+              "id": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+              "userId": "dca386bb-a674-4fcc-87ac-9c519c45d05d",
+              "username": "Issue49-member",
+              "role": "MEMBER",
+              "joinedAt": "2026-10-27T15:26:38.141Z",
+              "netCents": "6000",
+              "remainingNetCents": "6000"
+            }
+          ]
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:32:47.507Z",
+      "requestId": "c7e4e9ee-2445-4448-a631-5c7ccba773e6",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087/invitation",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "676a102a-0989-40d7-8e67-73d327f66abf",
+          "code": "48N8X6",
+          "expiresAt": "2026-11-03T15:22:26.597Z",
+          "expired": false,
+          "qrPayload": "tongzhang:invite:v1:48N8X6"
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:32:53.701Z",
+      "requestId": "1bdc3e2b-1873-4fa2-9fd9-322496c64c42",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+          "name": "Issue49-App-Manual",
+          "coverKey": null,
+          "coverImageId": "29a8022c-36f9-467c-bd08-98e1b1037321",
+          "status": "ACTIVE",
+          "version": 3,
+          "memberCount": 2,
+          "expenseTotalCents": "12000",
+          "myRemainingNetCents": "-6000",
+          "archivedAt": null,
+          "createdAt": "2026-10-27T15:22:26.586Z",
+          "creatorUserId": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+          "myMemberId": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+          "myPaidCents": "0",
+          "mySharedCents": "6000",
+          "myNetCents": "-6000",
+          "members": [
+            {
+              "id": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+              "userId": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+              "username": "Issue49-owner",
+              "role": "CREATOR",
+              "joinedAt": "2026-10-27T15:22:26.586Z",
+              "netCents": "-6000",
+              "remainingNetCents": "-6000"
+            },
+            {
+              "id": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+              "userId": "dca386bb-a674-4fcc-87ac-9c519c45d05d",
+              "username": "Issue49-member",
+              "role": "MEMBER",
+              "joinedAt": "2026-10-27T15:26:38.141Z",
+              "netCents": "6000",
+              "remainingNetCents": "6000"
+            }
+          ]
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:32:53.704Z",
+      "requestId": "a3f45582-dd03-492b-9981-5da3ea4d710e",
+      "method": "GET",
+      "path": "/api/v1/images/29a8022c-36f9-467c-bd08-98e1b1037321",
+      "status": 200,
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:32:53.704Z",
+      "requestId": "ef5d7c15-4490-49f7-a5d3-b0dfff579de7",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087/expenses?limit=20",
+      "status": 200,
+      "body": {
+        "data": [
+          {
+            "id": "f681f10e-a843-4c85-882c-785a7829080d",
+            "title": "Issue49-Lunch",
+            "amountCents": "12000",
+            "category": "DINING",
+            "occurredOn": "2026-10-27",
+            "payerMemberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+            "payerName": "Issue49-member",
+            "version": 1
+          }
+        ],
+        "page": {
+          "nextCursor": null
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:32:54.192Z",
+      "requestId": "9e3b39a9-f308-476c-af95-c45a4d36c8c3",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087/expenses?limit=20",
+      "status": 200,
+      "body": {
+        "data": [
+          {
+            "id": "f681f10e-a843-4c85-882c-785a7829080d",
+            "title": "Issue49-Lunch",
+            "amountCents": "12000",
+            "category": "DINING",
+            "occurredOn": "2026-10-27",
+            "payerMemberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+            "payerName": "Issue49-member",
+            "version": 1
+          }
+        ],
+        "page": {
+          "nextCursor": null
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:32:54.193Z",
+      "requestId": "9db66cad-35d6-40b7-b17d-121dac90551f",
+      "method": "GET",
+      "path": "/api/v1/images/29a8022c-36f9-467c-bd08-98e1b1037321",
+      "status": 200,
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:32:57.732Z",
+      "requestId": "5dc94100-0587-4669-b833-6575bf95fc89",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087/settlement-preview",
+      "status": 200,
+      "body": {
+        "data": {
+          "ledgerId": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+          "ledgerVersion": 3,
+          "expenseTotalCents": "12000",
+          "transferTotalCents": "6000",
+          "transferCount": 1,
+          "members": [
+            {
+              "memberId": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+              "username": "Issue49-owner",
+              "paidCents": "0",
+              "sharedCents": "6000",
+              "netCents": "-6000",
+              "remainingNetCents": "-6000"
+            },
+            {
+              "memberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+              "username": "Issue49-member",
+              "paidCents": "12000",
+              "sharedCents": "6000",
+              "netCents": "6000",
+              "remainingNetCents": "6000"
+            }
+          ],
+          "transfers": [
+            {
+              "sequence": 1,
+              "payerMemberId": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+              "payeeMemberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+              "amountCents": "6000"
+            }
+          ],
+          "algorithmVersion": "zero-sum-dp-v1"
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:32:57.732Z",
+      "requestId": "5cd576e4-7bee-4489-abcd-57caf1ac8886",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+          "name": "Issue49-App-Manual",
+          "coverKey": null,
+          "coverImageId": "29a8022c-36f9-467c-bd08-98e1b1037321",
+          "status": "ACTIVE",
+          "version": 3,
+          "memberCount": 2,
+          "expenseTotalCents": "12000",
+          "myRemainingNetCents": "-6000",
+          "archivedAt": null,
+          "createdAt": "2026-10-27T15:22:26.586Z",
+          "creatorUserId": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+          "myMemberId": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+          "myPaidCents": "0",
+          "mySharedCents": "6000",
+          "myNetCents": "-6000",
+          "members": [
+            {
+              "id": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+              "userId": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+              "username": "Issue49-owner",
+              "role": "CREATOR",
+              "joinedAt": "2026-10-27T15:22:26.586Z",
+              "netCents": "-6000",
+              "remainingNetCents": "-6000"
+            },
+            {
+              "id": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+              "userId": "dca386bb-a674-4fcc-87ac-9c519c45d05d",
+              "username": "Issue49-member",
+              "role": "MEMBER",
+              "joinedAt": "2026-10-27T15:26:38.141Z",
+              "netCents": "6000",
+              "remainingNetCents": "6000"
+            }
+          ]
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:32:58.166Z",
+      "requestId": "8b662692-12a3-42cf-8894-335fa4f9a56e",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087/settlement-preview",
+      "status": 200,
+      "body": {
+        "data": {
+          "ledgerId": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+          "ledgerVersion": 3,
+          "expenseTotalCents": "12000",
+          "transferTotalCents": "6000",
+          "transferCount": 1,
+          "members": [
+            {
+              "memberId": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+              "username": "Issue49-owner",
+              "paidCents": "0",
+              "sharedCents": "6000",
+              "netCents": "-6000",
+              "remainingNetCents": "-6000"
+            },
+            {
+              "memberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+              "username": "Issue49-member",
+              "paidCents": "12000",
+              "sharedCents": "6000",
+              "netCents": "6000",
+              "remainingNetCents": "6000"
+            }
+          ],
+          "transfers": [
+            {
+              "sequence": 1,
+              "payerMemberId": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+              "payeeMemberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+              "amountCents": "6000"
+            }
+          ],
+          "algorithmVersion": "zero-sum-dp-v1"
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:33:14.707Z",
+      "requestId": "9d3358da-b0da-4a2e-ad05-0ae010f20c88",
+      "method": "POST",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087/settlement",
+      "status": 201,
+      "keyDigest": "a5f8727083c8",
+      "body": {
+        "data": {
+          "batch": {
+            "id": "471c2421-3674-4646-920b-d648e24efb75",
+            "ledgerId": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+            "sourceVersion": 3,
+            "expenseTotalCents": "12000",
+            "transferTotalCents": "6000",
+            "transferCount": 1,
+            "algorithmVersion": "zero-sum-dp-v1",
+            "createdAt": "2026-10-27T15:33:14.691Z",
+            "ledgerStatus": "SETTLING",
+            "transfers": [
+              {
+                "sequence": 1,
+                "payerMemberId": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+                "payeeMemberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+                "amountCents": "6000",
+                "id": "41dc358a-17df-4dd7-ac2b-0a5cb68ecc96",
+                "status": "PENDING",
+                "registeredByMemberId": null,
+                "registeredAt": null,
+                "registrationNote": null
+              }
+            ],
+            "progress": {
+              "paidCount": 0,
+              "totalCount": 1,
+              "remainingCents": "6000"
+            }
+          },
+          "ledgerStatus": "SETTLING"
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:33:15.145Z",
+      "requestId": "b56c5065-8862-4597-bfeb-ed4262df4e08",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087/settlement",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "471c2421-3674-4646-920b-d648e24efb75",
+          "ledgerId": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+          "sourceVersion": 3,
+          "expenseTotalCents": "12000",
+          "transferTotalCents": "6000",
+          "transferCount": 1,
+          "algorithmVersion": "zero-sum-dp-v1",
+          "createdAt": "2026-10-27T15:33:14.691Z",
+          "ledgerStatus": "SETTLING",
+          "transfers": [
+            {
+              "sequence": 1,
+              "payerMemberId": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+              "payeeMemberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+              "amountCents": "6000",
+              "id": "41dc358a-17df-4dd7-ac2b-0a5cb68ecc96",
+              "status": "PENDING",
+              "registeredByMemberId": null,
+              "registeredAt": null,
+              "registrationNote": null
+            }
+          ],
+          "progress": {
+            "paidCount": 0,
+            "totalCount": 1,
+            "remainingCents": "6000"
+          },
+          "netSnapshot": [
+            {
+              "memberId": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+              "netCents": "-6000"
+            },
+            {
+              "memberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+              "netCents": "6000"
+            }
+          ]
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:33:15.149Z",
+      "requestId": "d6c52b2d-9311-4d79-acb7-8632993f3461",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+          "name": "Issue49-App-Manual",
+          "coverKey": null,
+          "coverImageId": "29a8022c-36f9-467c-bd08-98e1b1037321",
+          "status": "SETTLING",
+          "version": 4,
+          "memberCount": 2,
+          "expenseTotalCents": "12000",
+          "myRemainingNetCents": "-6000",
+          "archivedAt": null,
+          "createdAt": "2026-10-27T15:22:26.586Z",
+          "creatorUserId": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+          "myMemberId": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+          "myPaidCents": "0",
+          "mySharedCents": "6000",
+          "myNetCents": "-6000",
+          "members": [
+            {
+              "id": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+              "userId": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+              "username": "Issue49-owner",
+              "role": "CREATOR",
+              "joinedAt": "2026-10-27T15:22:26.586Z",
+              "netCents": "-6000",
+              "remainingNetCents": "-6000"
+            },
+            {
+              "id": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+              "userId": "dca386bb-a674-4fcc-87ac-9c519c45d05d",
+              "username": "Issue49-member",
+              "role": "MEMBER",
+              "joinedAt": "2026-10-27T15:26:38.141Z",
+              "netCents": "6000",
+              "remainingNetCents": "6000"
+            }
+          ]
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:33:52.264Z",
+      "requestId": "779fec0b-54ab-421c-90f8-b5ea16289ac9",
+      "method": "POST",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087/settlement/transfers/41dc358a-17df-4dd7-ac2b-0a5cb68ecc96/paid",
+      "status": 200,
+      "keyDigest": "169bf0611a68",
+      "body": {
+        "data": {
+          "transfer": {
+            "sequence": 1,
+            "payerMemberId": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+            "payeeMemberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+            "amountCents": "6000",
+            "id": "41dc358a-17df-4dd7-ac2b-0a5cb68ecc96",
+            "status": "PAID",
+            "registeredByMemberId": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+            "registeredAt": "2026-10-27T15:33:52.258Z",
+            "registrationNote": "Issue49-6000"
+          },
+          "progress": {
+            "paidCount": 1,
+            "totalCount": 1,
+            "remainingCents": "0"
+          }
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:33:52.406Z",
+      "requestId": "23437a4a-9d23-46fa-b0df-038bdf079fe6",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087/settlement",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "471c2421-3674-4646-920b-d648e24efb75",
+          "ledgerId": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+          "sourceVersion": 3,
+          "expenseTotalCents": "12000",
+          "transferTotalCents": "6000",
+          "transferCount": 1,
+          "algorithmVersion": "zero-sum-dp-v1",
+          "createdAt": "2026-10-27T15:33:14.691Z",
+          "ledgerStatus": "SETTLING",
+          "transfers": [
+            {
+              "sequence": 1,
+              "payerMemberId": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+              "payeeMemberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+              "amountCents": "6000",
+              "id": "41dc358a-17df-4dd7-ac2b-0a5cb68ecc96",
+              "status": "PAID",
+              "registeredByMemberId": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+              "registeredAt": "2026-10-27T15:33:52.258Z",
+              "registrationNote": "Issue49-6000"
+            }
+          ],
+          "progress": {
+            "paidCount": 1,
+            "totalCount": 1,
+            "remainingCents": "0"
+          },
+          "netSnapshot": [
+            {
+              "memberId": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+              "netCents": "-6000"
+            },
+            {
+              "memberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+              "netCents": "6000"
+            }
+          ]
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:33:52.417Z",
+      "requestId": "89ccf04f-63fd-4b46-988a-90a4baa8feb4",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+          "name": "Issue49-App-Manual",
+          "coverKey": null,
+          "coverImageId": "29a8022c-36f9-467c-bd08-98e1b1037321",
+          "status": "SETTLING",
+          "version": 4,
+          "memberCount": 2,
+          "expenseTotalCents": "12000",
+          "myRemainingNetCents": "0",
+          "archivedAt": null,
+          "createdAt": "2026-10-27T15:22:26.586Z",
+          "creatorUserId": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+          "myMemberId": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+          "myPaidCents": "0",
+          "mySharedCents": "6000",
+          "myNetCents": "-6000",
+          "members": [
+            {
+              "id": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+              "userId": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+              "username": "Issue49-owner",
+              "role": "CREATOR",
+              "joinedAt": "2026-10-27T15:22:26.586Z",
+              "netCents": "-6000",
+              "remainingNetCents": "0"
+            },
+            {
+              "id": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+              "userId": "dca386bb-a674-4fcc-87ac-9c519c45d05d",
+              "username": "Issue49-member",
+              "role": "MEMBER",
+              "joinedAt": "2026-10-27T15:26:38.141Z",
+              "netCents": "6000",
+              "remainingNetCents": "0"
+            }
+          ]
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:34:48.705Z",
+      "requestId": "c0dadca6-ccd8-43c6-88eb-6fa9e32f54ed",
+      "method": "POST",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087/settle",
+      "status": 200,
+      "keyDigest": "17c1d04eb122",
+      "body": {
+        "data": {
+          "ledgerId": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+          "status": "SETTLED",
+          "settledAt": "2026-10-27T15:34:48.700Z"
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:34:48.727Z",
+      "requestId": "2accd562-a841-4a2e-8ce3-31bf138a9906",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087/settlement",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "471c2421-3674-4646-920b-d648e24efb75",
+          "ledgerId": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+          "sourceVersion": 3,
+          "expenseTotalCents": "12000",
+          "transferTotalCents": "6000",
+          "transferCount": 1,
+          "algorithmVersion": "zero-sum-dp-v1",
+          "createdAt": "2026-10-27T15:33:14.691Z",
+          "ledgerStatus": "SETTLED",
+          "transfers": [
+            {
+              "sequence": 1,
+              "payerMemberId": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+              "payeeMemberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+              "amountCents": "6000",
+              "id": "41dc358a-17df-4dd7-ac2b-0a5cb68ecc96",
+              "status": "PAID",
+              "registeredByMemberId": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+              "registeredAt": "2026-10-27T15:33:52.258Z",
+              "registrationNote": "Issue49-6000"
+            }
+          ],
+          "progress": {
+            "paidCount": 1,
+            "totalCount": 1,
+            "remainingCents": "0"
+          },
+          "netSnapshot": [
+            {
+              "memberId": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+              "netCents": "-6000"
+            },
+            {
+              "memberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+              "netCents": "6000"
+            }
+          ]
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:34:48.739Z",
+      "requestId": "8da1d6ad-6fb4-4dc9-a2d3-7ea7ae837ee1",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+          "name": "Issue49-App-Manual",
+          "coverKey": null,
+          "coverImageId": "29a8022c-36f9-467c-bd08-98e1b1037321",
+          "status": "SETTLED",
+          "version": 5,
+          "memberCount": 2,
+          "expenseTotalCents": "12000",
+          "myRemainingNetCents": "0",
+          "archivedAt": null,
+          "createdAt": "2026-10-27T15:22:26.586Z",
+          "creatorUserId": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+          "myMemberId": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+          "myPaidCents": "0",
+          "mySharedCents": "6000",
+          "myNetCents": "-6000",
+          "members": [
+            {
+              "id": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+              "userId": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+              "username": "Issue49-owner",
+              "role": "CREATOR",
+              "joinedAt": "2026-10-27T15:22:26.586Z",
+              "netCents": "-6000",
+              "remainingNetCents": "0"
+            },
+            {
+              "id": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+              "userId": "dca386bb-a674-4fcc-87ac-9c519c45d05d",
+              "username": "Issue49-member",
+              "role": "MEMBER",
+              "joinedAt": "2026-10-27T15:26:38.141Z",
+              "netCents": "6000",
+              "remainingNetCents": "0"
+            }
+          ]
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:34:59.903Z",
+      "requestId": "85bc25d8-2b7c-4f7c-a9cc-92cfc0de524a",
+      "method": "POST",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087/archive",
+      "status": 200,
+      "keyDigest": "9d90f62f7187",
+      "body": {
+        "data": {
+          "ledgerId": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+          "archivedAt": "2026-10-27T15:34:59.900Z"
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:35:00.701Z",
+      "requestId": "c9a7f582-e38e-4c01-a0d6-6f9d5ceead7b",
+      "method": "GET",
+      "path": "/api/v1/ledgers?limit=20&archived=false",
+      "status": 200,
+      "body": {
+        "data": [],
+        "page": {
+          "nextCursor": null
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:35:00.703Z",
+      "requestId": "9dd4fd8f-04a7-4570-8fa0-11b1e6a7a547",
+      "method": "GET",
+      "path": "/api/v1/images/29a8022c-36f9-467c-bd08-98e1b1037321",
+      "status": 200,
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:35:06.030Z",
+      "requestId": "3d5c352e-8b1c-4d97-b6c9-c8954640f57e",
+      "method": "GET",
+      "path": "/api/v1/ledgers?limit=20&archived=true",
+      "status": 200,
+      "body": {
+        "data": [
+          {
+            "id": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+            "name": "Issue49-App-Manual",
+            "coverKey": null,
+            "coverImageId": "29a8022c-36f9-467c-bd08-98e1b1037321",
+            "status": "SETTLED",
+            "version": 5,
+            "memberCount": 2,
+            "expenseTotalCents": "12000",
+            "myRemainingNetCents": "0",
+            "archivedAt": "2026-10-27T15:34:59.900Z",
+            "createdAt": "2026-10-27T15:22:26.586Z"
+          }
+        ],
+        "page": {
+          "nextCursor": null
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:35:06.162Z",
+      "requestId": "3ce7f185-9ae7-4d60-a68d-2270fbd52c57",
+      "method": "GET",
+      "path": "/api/v1/images/29a8022c-36f9-467c-bd08-98e1b1037321",
+      "status": 200,
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:36:20.153Z",
+      "requestId": "0018df78-11fb-41cc-9790-5c00b90d0ea4",
+      "method": "GET",
+      "path": "/api/v1/images/29a8022c-36f9-467c-bd08-98e1b1037321",
+      "status": 200,
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:36:20.155Z",
+      "requestId": "8868ca4f-1144-4bae-ab72-d8548377098b",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087/expenses?limit=20",
+      "status": 200,
+      "body": {
+        "data": [
+          {
+            "id": "f681f10e-a843-4c85-882c-785a7829080d",
+            "title": "Issue49-Lunch",
+            "amountCents": "12000",
+            "category": "DINING",
+            "occurredOn": "2026-10-27",
+            "payerMemberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+            "payerName": "Issue49-member",
+            "version": 1
+          }
+        ],
+        "page": {
+          "nextCursor": null
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:36:20.160Z",
+      "requestId": "71d3358d-da26-4469-938c-b94d73128e20",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+          "name": "Issue49-App-Manual",
+          "coverKey": null,
+          "coverImageId": "29a8022c-36f9-467c-bd08-98e1b1037321",
+          "status": "SETTLED",
+          "version": 5,
+          "memberCount": 2,
+          "expenseTotalCents": "12000",
+          "myRemainingNetCents": "0",
+          "archivedAt": "2026-10-27T15:34:59.900Z",
+          "createdAt": "2026-10-27T15:22:26.586Z",
+          "creatorUserId": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+          "myMemberId": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+          "myPaidCents": "0",
+          "mySharedCents": "6000",
+          "myNetCents": "-6000",
+          "members": [
+            {
+              "id": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+              "userId": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+              "username": "Issue49-owner",
+              "role": "CREATOR",
+              "joinedAt": "2026-10-27T15:22:26.586Z",
+              "netCents": "-6000",
+              "remainingNetCents": "0"
+            },
+            {
+              "id": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+              "userId": "dca386bb-a674-4fcc-87ac-9c519c45d05d",
+              "username": "Issue49-member",
+              "role": "MEMBER",
+              "joinedAt": "2026-10-27T15:26:38.141Z",
+              "netCents": "6000",
+              "remainingNetCents": "0"
+            }
+          ]
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:36:20.691Z",
+      "requestId": "33f0f849-de4b-4b88-af21-eefab426fdeb",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087/expenses?limit=20",
+      "status": 200,
+      "body": {
+        "data": [
+          {
+            "id": "f681f10e-a843-4c85-882c-785a7829080d",
+            "title": "Issue49-Lunch",
+            "amountCents": "12000",
+            "category": "DINING",
+            "occurredOn": "2026-10-27",
+            "payerMemberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+            "payerName": "Issue49-member",
+            "version": 1
+          }
+        ],
+        "page": {
+          "nextCursor": null
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:36:20.692Z",
+      "requestId": "77d1d520-4864-4316-b336-e98f825d67df",
+      "method": "GET",
+      "path": "/api/v1/images/29a8022c-36f9-467c-bd08-98e1b1037321",
+      "status": 200,
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:36:26.088Z",
+      "requestId": "0891aa85-d9a0-4438-999d-aa04e41426e1",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087/expenses/f681f10e-a843-4c85-882c-785a7829080d",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "f681f10e-a843-4c85-882c-785a7829080d",
+          "title": "Issue49-Lunch",
+          "amountCents": "12000",
+          "category": "DINING",
+          "occurredOn": "2026-10-27",
+          "payerMemberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+          "payerName": "Issue49-member",
+          "version": 1,
+          "ledgerId": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+          "recorderMemberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+          "recorderName": "Issue49-member",
+          "splitMode": "EQUAL",
+          "splits": [
+            {
+              "memberId": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+              "username": "Issue49-owner",
+              "shares": null,
+              "amountCents": "6000"
+            },
+            {
+              "memberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+              "username": "Issue49-member",
+              "shares": null,
+              "amountCents": "6000"
+            }
+          ],
+          "note": null,
+          "receiptImageId": "68ac720f-a6ba-4166-b098-69dde14f511d",
+          "createdAt": "2026-10-27T15:28:35.826Z",
+          "updatedAt": "2026-10-27T15:28:35.826Z",
+          "canEdit": false
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:36:30.045Z",
+      "requestId": "0489cbd9-5d72-44b9-a6e4-3f0ae0dfde37",
+      "method": "GET",
+      "path": "/api/v1/images/68ac720f-a6ba-4166-b098-69dde14f511d",
+      "status": 200,
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:36:38.751Z",
+      "requestId": "0df3200c-cbb7-4233-824a-fc3830b45ad8",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+          "name": "Issue49-App-Manual",
+          "coverKey": null,
+          "coverImageId": "29a8022c-36f9-467c-bd08-98e1b1037321",
+          "status": "SETTLED",
+          "version": 5,
+          "memberCount": 2,
+          "expenseTotalCents": "12000",
+          "myRemainingNetCents": "0",
+          "archivedAt": "2026-10-27T15:34:59.900Z",
+          "createdAt": "2026-10-27T15:22:26.586Z",
+          "creatorUserId": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+          "myMemberId": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+          "myPaidCents": "0",
+          "mySharedCents": "6000",
+          "myNetCents": "-6000",
+          "members": [
+            {
+              "id": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+              "userId": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+              "username": "Issue49-owner",
+              "role": "CREATOR",
+              "joinedAt": "2026-10-27T15:22:26.586Z",
+              "netCents": "-6000",
+              "remainingNetCents": "0"
+            },
+            {
+              "id": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+              "userId": "dca386bb-a674-4fcc-87ac-9c519c45d05d",
+              "username": "Issue49-member",
+              "role": "MEMBER",
+              "joinedAt": "2026-10-27T15:26:38.141Z",
+              "netCents": "6000",
+              "remainingNetCents": "0"
+            }
+          ]
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:36:38.779Z",
+      "requestId": "417177a0-5836-4489-be75-f4a385dbb5a6",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087/expenses?limit=20",
+      "status": 200,
+      "body": {
+        "data": [
+          {
+            "id": "f681f10e-a843-4c85-882c-785a7829080d",
+            "title": "Issue49-Lunch",
+            "amountCents": "12000",
+            "category": "DINING",
+            "occurredOn": "2026-10-27",
+            "payerMemberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+            "payerName": "Issue49-member",
+            "version": 1
+          }
+        ],
+        "page": {
+          "nextCursor": null
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:36:38.780Z",
+      "requestId": "f9a7d68d-bbbf-4154-aa48-e309bad72db5",
+      "method": "GET",
+      "path": "/api/v1/images/29a8022c-36f9-467c-bd08-98e1b1037321",
+      "status": 200,
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:36:39.480Z",
+      "requestId": "e16c5677-165f-4f6a-9708-9eaa4cc26a3d",
+      "method": "GET",
+      "path": "/api/v1/images/29a8022c-36f9-467c-bd08-98e1b1037321",
+      "status": 200,
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:36:39.524Z",
+      "requestId": "5b4a4a7b-6459-4cd5-ba3b-3f44f72e8b13",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087/expenses?limit=20",
+      "status": 200,
+      "body": {
+        "data": [
+          {
+            "id": "f681f10e-a843-4c85-882c-785a7829080d",
+            "title": "Issue49-Lunch",
+            "amountCents": "12000",
+            "category": "DINING",
+            "occurredOn": "2026-10-27",
+            "payerMemberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+            "payerName": "Issue49-member",
+            "version": 1
+          }
+        ],
+        "page": {
+          "nextCursor": null
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:36:42.437Z",
+      "requestId": "d3d214d5-4ca4-46d4-8cd6-579f89b5f556",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087/settlement",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "471c2421-3674-4646-920b-d648e24efb75",
+          "ledgerId": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+          "sourceVersion": 3,
+          "expenseTotalCents": "12000",
+          "transferTotalCents": "6000",
+          "transferCount": 1,
+          "algorithmVersion": "zero-sum-dp-v1",
+          "createdAt": "2026-10-27T15:33:14.691Z",
+          "ledgerStatus": "SETTLED",
+          "transfers": [
+            {
+              "sequence": 1,
+              "payerMemberId": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+              "payeeMemberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+              "amountCents": "6000",
+              "id": "41dc358a-17df-4dd7-ac2b-0a5cb68ecc96",
+              "status": "PAID",
+              "registeredByMemberId": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+              "registeredAt": "2026-10-27T15:33:52.258Z",
+              "registrationNote": "Issue49-6000"
+            }
+          ],
+          "progress": {
+            "paidCount": 1,
+            "totalCount": 1,
+            "remainingCents": "0"
+          },
+          "netSnapshot": [
+            {
+              "memberId": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+              "netCents": "-6000"
+            },
+            {
+              "memberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+              "netCents": "6000"
+            }
+          ]
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:36:42.440Z",
+      "requestId": "6c0b8f85-1967-48dc-86f8-79b3e5a678c0",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+          "name": "Issue49-App-Manual",
+          "coverKey": null,
+          "coverImageId": "29a8022c-36f9-467c-bd08-98e1b1037321",
+          "status": "SETTLED",
+          "version": 5,
+          "memberCount": 2,
+          "expenseTotalCents": "12000",
+          "myRemainingNetCents": "0",
+          "archivedAt": "2026-10-27T15:34:59.900Z",
+          "createdAt": "2026-10-27T15:22:26.586Z",
+          "creatorUserId": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+          "myMemberId": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+          "myPaidCents": "0",
+          "mySharedCents": "6000",
+          "myNetCents": "-6000",
+          "members": [
+            {
+              "id": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+              "userId": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+              "username": "Issue49-owner",
+              "role": "CREATOR",
+              "joinedAt": "2026-10-27T15:22:26.586Z",
+              "netCents": "-6000",
+              "remainingNetCents": "0"
+            },
+            {
+              "id": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+              "userId": "dca386bb-a674-4fcc-87ac-9c519c45d05d",
+              "username": "Issue49-member",
+              "role": "MEMBER",
+              "joinedAt": "2026-10-27T15:26:38.141Z",
+              "netCents": "6000",
+              "remainingNetCents": "0"
+            }
+          ]
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:36:42.445Z",
+      "requestId": "756af8a6-d715-407f-9b4f-c413200750a3",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+          "name": "Issue49-App-Manual",
+          "coverKey": null,
+          "coverImageId": "29a8022c-36f9-467c-bd08-98e1b1037321",
+          "status": "SETTLED",
+          "version": 5,
+          "memberCount": 2,
+          "expenseTotalCents": "12000",
+          "myRemainingNetCents": "0",
+          "archivedAt": "2026-10-27T15:34:59.900Z",
+          "createdAt": "2026-10-27T15:22:26.586Z",
+          "creatorUserId": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+          "myMemberId": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+          "myPaidCents": "0",
+          "mySharedCents": "6000",
+          "myNetCents": "-6000",
+          "members": [
+            {
+              "id": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+              "userId": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+              "username": "Issue49-owner",
+              "role": "CREATOR",
+              "joinedAt": "2026-10-27T15:22:26.586Z",
+              "netCents": "-6000",
+              "remainingNetCents": "0"
+            },
+            {
+              "id": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+              "userId": "dca386bb-a674-4fcc-87ac-9c519c45d05d",
+              "username": "Issue49-member",
+              "role": "MEMBER",
+              "joinedAt": "2026-10-27T15:26:38.141Z",
+              "netCents": "6000",
+              "remainingNetCents": "0"
+            }
+          ]
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:36:43.560Z",
+      "requestId": "b92abbc7-781e-4491-9bfa-77433e882f61",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087/settlement",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "471c2421-3674-4646-920b-d648e24efb75",
+          "ledgerId": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+          "sourceVersion": 3,
+          "expenseTotalCents": "12000",
+          "transferTotalCents": "6000",
+          "transferCount": 1,
+          "algorithmVersion": "zero-sum-dp-v1",
+          "createdAt": "2026-10-27T15:33:14.691Z",
+          "ledgerStatus": "SETTLED",
+          "transfers": [
+            {
+              "sequence": 1,
+              "payerMemberId": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+              "payeeMemberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+              "amountCents": "6000",
+              "id": "41dc358a-17df-4dd7-ac2b-0a5cb68ecc96",
+              "status": "PAID",
+              "registeredByMemberId": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+              "registeredAt": "2026-10-27T15:33:52.258Z",
+              "registrationNote": "Issue49-6000"
+            }
+          ],
+          "progress": {
+            "paidCount": 1,
+            "totalCount": 1,
+            "remainingCents": "0"
+          },
+          "netSnapshot": [
+            {
+              "memberId": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+              "netCents": "-6000"
+            },
+            {
+              "memberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+              "netCents": "6000"
+            }
+          ]
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:36:43.561Z",
+      "requestId": "52cdeff7-25b6-4d5b-abd4-4b6b89655f29",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+          "name": "Issue49-App-Manual",
+          "coverKey": null,
+          "coverImageId": "29a8022c-36f9-467c-bd08-98e1b1037321",
+          "status": "SETTLED",
+          "version": 5,
+          "memberCount": 2,
+          "expenseTotalCents": "12000",
+          "myRemainingNetCents": "0",
+          "archivedAt": "2026-10-27T15:34:59.900Z",
+          "createdAt": "2026-10-27T15:22:26.586Z",
+          "creatorUserId": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+          "myMemberId": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+          "myPaidCents": "0",
+          "mySharedCents": "6000",
+          "myNetCents": "-6000",
+          "members": [
+            {
+              "id": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+              "userId": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+              "username": "Issue49-owner",
+              "role": "CREATOR",
+              "joinedAt": "2026-10-27T15:22:26.586Z",
+              "netCents": "-6000",
+              "remainingNetCents": "0"
+            },
+            {
+              "id": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+              "userId": "dca386bb-a674-4fcc-87ac-9c519c45d05d",
+              "username": "Issue49-member",
+              "role": "MEMBER",
+              "joinedAt": "2026-10-27T15:26:38.141Z",
+              "netCents": "6000",
+              "remainingNetCents": "0"
+            }
+          ]
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:37:11.231Z",
+      "requestId": "9cbf368b-bc92-43ba-8813-513554acab00",
+      "method": "GET",
+      "path": "/api/v1/images/29a8022c-36f9-467c-bd08-98e1b1037321",
+      "status": 200,
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:37:11.236Z",
+      "requestId": "14506907-d4f3-4d95-aada-bf4b4936ab17",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+          "name": "Issue49-App-Manual",
+          "coverKey": null,
+          "coverImageId": "29a8022c-36f9-467c-bd08-98e1b1037321",
+          "status": "SETTLED",
+          "version": 5,
+          "memberCount": 2,
+          "expenseTotalCents": "12000",
+          "myRemainingNetCents": "0",
+          "archivedAt": "2026-10-27T15:34:59.900Z",
+          "createdAt": "2026-10-27T15:22:26.586Z",
+          "creatorUserId": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+          "myMemberId": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+          "myPaidCents": "0",
+          "mySharedCents": "6000",
+          "myNetCents": "-6000",
+          "members": [
+            {
+              "id": "197d99f7-5cb3-4d63-8086-96dac8247ebd",
+              "userId": "cb9c636c-e15e-45a5-a790-455caffaf7eb",
+              "username": "Issue49-owner",
+              "role": "CREATOR",
+              "joinedAt": "2026-10-27T15:22:26.586Z",
+              "netCents": "-6000",
+              "remainingNetCents": "0"
+            },
+            {
+              "id": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+              "userId": "dca386bb-a674-4fcc-87ac-9c519c45d05d",
+              "username": "Issue49-member",
+              "role": "MEMBER",
+              "joinedAt": "2026-10-27T15:26:38.141Z",
+              "netCents": "6000",
+              "remainingNetCents": "0"
+            }
+          ]
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:37:11.292Z",
+      "requestId": "9391b1b4-7b6e-4c08-a6db-9d14c41fcd97",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087/expenses?limit=20",
+      "status": 200,
+      "body": {
+        "data": [
+          {
+            "id": "f681f10e-a843-4c85-882c-785a7829080d",
+            "title": "Issue49-Lunch",
+            "amountCents": "12000",
+            "category": "DINING",
+            "occurredOn": "2026-10-27",
+            "payerMemberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+            "payerName": "Issue49-member",
+            "version": 1
+          }
+        ],
+        "page": {
+          "nextCursor": null
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:37:11.629Z",
+      "requestId": "72e5ea75-0dec-42b5-80c0-264b76940ddb",
+      "method": "GET",
+      "path": "/api/v1/ledgers/8fea9ea6-e34c-4e52-82c5-1639d2b4d087/expenses?limit=20",
+      "status": 200,
+      "body": {
+        "data": [
+          {
+            "id": "f681f10e-a843-4c85-882c-785a7829080d",
+            "title": "Issue49-Lunch",
+            "amountCents": "12000",
+            "category": "DINING",
+            "occurredOn": "2026-10-27",
+            "payerMemberId": "ed62c0a1-da73-4d6d-9e68-9808366fa447",
+            "payerName": "Issue49-member",
+            "version": 1
+          }
+        ],
+        "page": {
+          "nextCursor": null
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:37:11.629Z",
+      "requestId": "30924ef8-50c2-45aa-94a0-8dd751ce61a3",
+      "method": "GET",
+      "path": "/api/v1/images/29a8022c-36f9-467c-bd08-98e1b1037321",
+      "status": 200,
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:37:16.500Z",
+      "requestId": "483552f6-9d55-47e1-a4a4-03800e6c3742",
+      "method": "GET",
+      "path": "/api/v1/images/29a8022c-36f9-467c-bd08-98e1b1037321",
+      "status": 200,
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:37:16.503Z",
+      "requestId": "8cb44ba4-692d-4b4f-961b-516b4319e38a",
+      "method": "GET",
+      "path": "/api/v1/ledgers?limit=20&archived=true",
+      "status": 200,
+      "body": {
+        "data": [
+          {
+            "id": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+            "name": "Issue49-App-Manual",
+            "coverKey": null,
+            "coverImageId": "29a8022c-36f9-467c-bd08-98e1b1037321",
+            "status": "SETTLED",
+            "version": 5,
+            "memberCount": 2,
+            "expenseTotalCents": "12000",
+            "myRemainingNetCents": "0",
+            "archivedAt": "2026-10-27T15:34:59.900Z",
+            "createdAt": "2026-10-27T15:22:26.586Z"
+          }
+        ],
+        "page": {
+          "nextCursor": null
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:37:16.838Z",
+      "requestId": "98964f20-1284-453a-a46f-9c80cd75a8c4",
+      "method": "GET",
+      "path": "/api/v1/images/29a8022c-36f9-467c-bd08-98e1b1037321",
+      "status": 200,
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:37:27.070Z",
+      "requestId": "1a686eb3-b0ae-4f3f-97c2-0fbad2ce7788",
+      "method": "POST",
+      "path": "/api/v1/auth/logout",
+      "status": 200,
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:37:45.532Z",
+      "requestId": "28382324-974d-4713-9567-ff69600f7e47",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "status": 200,
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:37:45.658Z",
+      "requestId": "d89b3862-2d23-4474-82af-d63a5694de4d",
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "dca386bb-a674-4fcc-87ac-9c519c45d05d",
+          "username": "Issue49-member",
+          "email": "issue49-member@example.test",
+          "notificationEnabled": true
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:37:45.861Z",
+      "requestId": "91f25463-20b7-4744-9e06-a19ed013d7f7",
+      "method": "GET",
+      "path": "/api/v1/ledgers?limit=20&archived=false",
+      "status": 200,
+      "body": {
+        "data": [
+          {
+            "id": "8fea9ea6-e34c-4e52-82c5-1639d2b4d087",
+            "name": "Issue49-App-Manual",
+            "coverKey": null,
+            "coverImageId": "29a8022c-36f9-467c-bd08-98e1b1037321",
+            "status": "SETTLED",
+            "version": 5,
+            "memberCount": 2,
+            "expenseTotalCents": "12000",
+            "myRemainingNetCents": "0",
+            "archivedAt": null,
+            "createdAt": "2026-10-27T15:22:26.586Z"
+          }
+        ],
+        "page": {
+          "nextCursor": null
+        }
+      },
+      "origin": "native-app"
+    },
+    {
+      "time": "2026-10-27T15:37:46.172Z",
+      "requestId": "ed5ea467-aab3-42bd-9c12-1bf64dfabd9d",
+      "method": "GET",
+      "path": "/api/v1/images/29a8022c-36f9-467c-bd08-98e1b1037321",
+      "status": 200,
+      "origin": "native-app"
+    }
+  ]
+}

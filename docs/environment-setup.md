@@ -1,5 +1,7 @@
 # 成员环境配置：macOS、Linux 与 Windows
 
+当前说明核对到 `7616adb`（2026-10-27）。安装后按 [App 操作手册](app-user-guide.md)使用两个真实账号核对业务；本轮复用兼容 Android 开发客户端的具体版本见 [#49 记录](issue49-documentation-validation.md)，不表示本轮重新构建或完成 Windows/Linux 安装验收。
+
 按操作系统安装 Node、pnpm、JDK 和 Android SDK，配置本机环境变量，再运行项目命令。各平台的安装、检查和启动步骤如下。
 
 本文面向本机开发；生产服务器配置见 [开发与部署说明](development.md)。工具链变量 `JAVA_HOME`、`ANDROID_HOME` 和 PATH 配在本机 shell 或系统中；应用变量仍放在 `apps/server/.env`、`apps/mobile/.env`，不把数据库凭据写进全局环境配置。

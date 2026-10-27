@@ -1,0 +1,43 @@
+{
+  "sourceCommit": "7616adb",
+  "checks": {
+    "pnpm check": "passed; see check.txt",
+    "pnpm install --frozen-lockfile": "passed; lock unchanged",
+    "pnpm build:server": "passed; actual native API used this output",
+    "pnpm migrate:db": "passed on new tongzhang_49_native only",
+    "endpoint table": "30 IDs, methods, paths and idempotency flags matched compiled contracts",
+    "request and response fields": "manually compared with current Zod schemas and real App responses",
+    "staged SQL assertions": "passed; see native-assertions.json",
+    "candidate drift": "fetch origin/main still 7616adbff4502f1fcab1d233fa07938071004041; product diff empty",
+    "scripts": "root and mobile documented command names checked against package.json",
+    "git diff --check": "passed"
+  },
+  "localMarkdownLinks": {
+    "files": [
+      "README.md",
+      "docs/environment-setup.md",
+      "docs/development.md",
+      "docs/app-user-guide.md",
+      "docs/api-reference.md",
+      "docs/known-limitations.md",
+      "docs/ledger-invitation-api-guide.md",
+      "docs/expense-settlement-api-guide.md",
+      "docs/issue49-documentation-validation.md"
+    ],
+    "localLinks": 232,
+    "anchors": 11,
+    "errors": []
+  },
+  "externalReferencesChecked": [
+    "https://docs.expo.dev/versions/v57.0.0/sdk/imagepicker/",
+    "https://docs.expo.dev/versions/v57.0.0/sdk/build-properties/"
+  ],
+  "notRunLocally": [
+    "unit/mobile/integration tests",
+    "Expo Doctor",
+    "JS export",
+    "native build/install"
+  ],
+  "reason": "Documentation and captured evidence only; no product code, contracts, routes, dependencies or native config changes",
+  "checkedAt": "2026-10-27T15:39:19.539015+00:00"
+}
