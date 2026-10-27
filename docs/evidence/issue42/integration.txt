@@ -1,0 +1,12 @@
+$ pnpm build:shared && vitest run --config vitest.integration.config.ts
+$ pnpm -r --filter "./packages/*" build
+$ tsc -p tsconfig.json
+$ tsc -p tsconfig.json
+
+ RUN  v5.0.4 /Users/liangbai/.codex/worktrees/issue42-settlement-cover/tongzhang
+
+
+ Test Files  14 passed (14)
+      Tests  128 passed (128)
+   Start at  02:25:42
+   Duration  4.15s (tests 63%, import 28%, transform 9%)

@@ -1,0 +1,333 @@
+{
+  "ledgerId": "74e59955-693b-4333-b9ee-1ba8f0e69ce0",
+  "ownerLedger": {
+    "status": 200,
+    "body": {
+      "data": {
+        "id": "74e59955-693b-4333-b9ee-1ba8f0e69ce0",
+        "name": "Issue42-Native-120",
+        "coverKey": null,
+        "coverImageId": "04a91b24-f556-47df-b925-751320103498",
+        "status": "SETTLED",
+        "version": 5,
+        "memberCount": 2,
+        "expenseTotalCents": "12000",
+        "myRemainingNetCents": "0",
+        "archivedAt": "2026-10-27T11:11:15.058Z",
+        "createdAt": "2026-10-27T09:22:08.240Z",
+        "creatorUserId": "d068a1ac-f38c-45a8-9dd0-d5274fe88296",
+        "myMemberId": "3f24baf6-638d-4a4c-bb5d-5d3bc00b52a6",
+        "myPaidCents": "0",
+        "mySharedCents": "6000",
+        "myNetCents": "-6000",
+        "members": [
+          {
+            "id": "3f24baf6-638d-4a4c-bb5d-5d3bc00b52a6",
+            "userId": "d068a1ac-f38c-45a8-9dd0-d5274fe88296",
+            "username": "Issue42-owner",
+            "role": "CREATOR",
+            "joinedAt": "2026-10-27T09:22:08.240Z",
+            "netCents": "-6000",
+            "remainingNetCents": "0"
+          },
+          {
+            "id": "c402c896-fa74-4306-b7f2-2c5c6a22eeaa",
+            "userId": "92f8392f-76ef-4d9e-b77b-d0a3a3a94af4",
+            "username": "Issue42-member",
+            "role": "MEMBER",
+            "joinedAt": "2026-10-27T09:24:51.003Z",
+            "netCents": "6000",
+            "remainingNetCents": "0"
+          }
+        ]
+      }
+    }
+  },
+  "memberLedger": {
+    "status": 200,
+    "body": {
+      "data": {
+        "id": "74e59955-693b-4333-b9ee-1ba8f0e69ce0",
+        "name": "Issue42-Native-120",
+        "coverKey": null,
+        "coverImageId": "04a91b24-f556-47df-b925-751320103498",
+        "status": "SETTLED",
+        "version": 5,
+        "memberCount": 2,
+        "expenseTotalCents": "12000",
+        "myRemainingNetCents": "0",
+        "archivedAt": null,
+        "createdAt": "2026-10-27T09:22:08.240Z",
+        "creatorUserId": "d068a1ac-f38c-45a8-9dd0-d5274fe88296",
+        "myMemberId": "c402c896-fa74-4306-b7f2-2c5c6a22eeaa",
+        "myPaidCents": "12000",
+        "mySharedCents": "6000",
+        "myNetCents": "6000",
+        "members": [
+          {
+            "id": "3f24baf6-638d-4a4c-bb5d-5d3bc00b52a6",
+            "userId": "d068a1ac-f38c-45a8-9dd0-d5274fe88296",
+            "username": "Issue42-owner",
+            "role": "CREATOR",
+            "joinedAt": "2026-10-27T09:22:08.240Z",
+            "netCents": "-6000",
+            "remainingNetCents": "0"
+          },
+          {
+            "id": "c402c896-fa74-4306-b7f2-2c5c6a22eeaa",
+            "userId": "92f8392f-76ef-4d9e-b77b-d0a3a3a94af4",
+            "username": "Issue42-member",
+            "role": "MEMBER",
+            "joinedAt": "2026-10-27T09:24:51.003Z",
+            "netCents": "6000",
+            "remainingNetCents": "0"
+          }
+        ]
+      }
+    }
+  },
+  "settlement": {
+    "status": 200,
+    "body": {
+      "data": {
+        "id": "9f596347-f570-4031-8920-f49b4b2d461a",
+        "ledgerId": "74e59955-693b-4333-b9ee-1ba8f0e69ce0",
+        "sourceVersion": 3,
+        "expenseTotalCents": "12000",
+        "transferTotalCents": "6000",
+        "transferCount": 1,
+        "algorithmVersion": "zero-sum-dp-v1",
+        "createdAt": "2026-10-27T11:08:25.228Z",
+        "ledgerStatus": "SETTLED",
+        "transfers": [
+          {
+            "sequence": 1,
+            "payerMemberId": "3f24baf6-638d-4a4c-bb5d-5d3bc00b52a6",
+            "payeeMemberId": "c402c896-fa74-4306-b7f2-2c5c6a22eeaa",
+            "amountCents": "6000",
+            "id": "781a4e78-01b4-48a0-a21a-59d63fed6350",
+            "status": "PAID",
+            "registeredByMemberId": "3f24baf6-638d-4a4c-bb5d-5d3bc00b52a6",
+            "registeredAt": "2026-10-27T11:09:55.746Z",
+            "registrationNote": "Verified-offline"
+          }
+        ],
+        "progress": {
+          "paidCount": 1,
+          "totalCount": 1,
+          "remainingCents": "0"
+        },
+        "netSnapshot": [
+          {
+            "memberId": "3f24baf6-638d-4a4c-bb5d-5d3bc00b52a6",
+            "netCents": "-6000"
+          },
+          {
+            "memberId": "c402c896-fa74-4306-b7f2-2c5c6a22eeaa",
+            "netCents": "6000"
+          }
+        ]
+      }
+    }
+  },
+  "expense": {
+    "status": 200,
+    "body": {
+      "data": {
+        "id": "3d150380-c268-4ffa-8492-7d150aec8fe4",
+        "title": "Issue42-Lunch",
+        "amountCents": "12000",
+        "category": "DINING",
+        "occurredOn": "2026-10-27",
+        "payerMemberId": "c402c896-fa74-4306-b7f2-2c5c6a22eeaa",
+        "payerName": "Issue42-member",
+        "version": 1,
+        "ledgerId": "74e59955-693b-4333-b9ee-1ba8f0e69ce0",
+        "recorderMemberId": "c402c896-fa74-4306-b7f2-2c5c6a22eeaa",
+        "recorderName": "Issue42-member",
+        "splitMode": "EQUAL",
+        "splits": [
+          {
+            "memberId": "3f24baf6-638d-4a4c-bb5d-5d3bc00b52a6",
+            "username": "Issue42-owner",
+            "shares": null,
+            "amountCents": "6000"
+          },
+          {
+            "memberId": "c402c896-fa74-4306-b7f2-2c5c6a22eeaa",
+            "username": "Issue42-member",
+            "shares": null,
+            "amountCents": "6000"
+          }
+        ],
+        "note": null,
+        "receiptImageId": "d74958a5-073a-4f3c-98be-69040c1151e0",
+        "createdAt": "2026-10-27T09:26:07.713Z",
+        "updatedAt": "2026-10-27T09:26:07.713Z",
+        "canEdit": false
+      }
+    }
+  },
+  "lists": [
+    {
+      "role": "owner",
+      "archived": "false",
+      "status": 200,
+      "body": {
+        "data": [],
+        "page": {
+          "nextCursor": null
+        }
+      }
+    },
+    {
+      "role": "owner",
+      "archived": "true",
+      "status": 200,
+      "body": {
+        "data": [
+          {
+            "id": "74e59955-693b-4333-b9ee-1ba8f0e69ce0",
+            "name": "Issue42-Native-120",
+            "coverKey": null,
+            "coverImageId": "04a91b24-f556-47df-b925-751320103498",
+            "status": "SETTLED",
+            "version": 5,
+            "memberCount": 2,
+            "expenseTotalCents": "12000",
+            "myRemainingNetCents": "0",
+            "archivedAt": "2026-10-27T11:11:15.058Z",
+            "createdAt": "2026-10-27T09:22:08.240Z"
+          }
+        ],
+        "page": {
+          "nextCursor": null
+        }
+      }
+    },
+    {
+      "role": "member",
+      "archived": "false",
+      "status": 200,
+      "body": {
+        "data": [
+          {
+            "id": "74e59955-693b-4333-b9ee-1ba8f0e69ce0",
+            "name": "Issue42-Native-120",
+            "coverKey": null,
+            "coverImageId": "04a91b24-f556-47df-b925-751320103498",
+            "status": "SETTLED",
+            "version": 5,
+            "memberCount": 2,
+            "expenseTotalCents": "12000",
+            "myRemainingNetCents": "0",
+            "archivedAt": null,
+            "createdAt": "2026-10-27T09:22:08.240Z"
+          }
+        ],
+        "page": {
+          "nextCursor": null
+        }
+      }
+    },
+    {
+      "role": "member",
+      "archived": "true",
+      "status": 200,
+      "body": {
+        "data": [],
+        "page": {
+          "nextCursor": null
+        }
+      }
+    }
+  ],
+  "images": [
+    {
+      "id": "04a91b24-f556-47df-b925-751320103498",
+      "role": "owner",
+      "status": 200,
+      "cacheControl": "no-store",
+      "byteLength": 37140,
+      "sha256": "bc4f056aa1993bc615790edcae4985f6b3a94a6eb637462ba77571386c5ef65f"
+    },
+    {
+      "id": "04a91b24-f556-47df-b925-751320103498",
+      "role": "member",
+      "status": 200,
+      "cacheControl": "no-store",
+      "byteLength": 37140,
+      "sha256": "bc4f056aa1993bc615790edcae4985f6b3a94a6eb637462ba77571386c5ef65f"
+    },
+    {
+      "id": "04a91b24-f556-47df-b925-751320103498",
+      "role": "outsider",
+      "status": 403,
+      "cacheControl": "no-store",
+      "byteLength": 124
+    },
+    {
+      "id": "04a91b24-f556-47df-b925-751320103498",
+      "role": "unauthenticated",
+      "status": 401,
+      "cacheControl": "no-store",
+      "byteLength": 112
+    },
+    {
+      "id": "d74958a5-073a-4f3c-98be-69040c1151e0",
+      "role": "owner",
+      "status": 200,
+      "cacheControl": "no-store",
+      "byteLength": 43782,
+      "sha256": "d53608586ed6fc6f5ed3b6993d0b547a0fcc00c119a85297aff7fd7c6cef0d16"
+    },
+    {
+      "id": "d74958a5-073a-4f3c-98be-69040c1151e0",
+      "role": "member",
+      "status": 200,
+      "cacheControl": "no-store",
+      "byteLength": 43782,
+      "sha256": "d53608586ed6fc6f5ed3b6993d0b547a0fcc00c119a85297aff7fd7c6cef0d16"
+    },
+    {
+      "id": "d74958a5-073a-4f3c-98be-69040c1151e0",
+      "role": "outsider",
+      "status": 403,
+      "cacheControl": "no-store",
+      "byteLength": 124
+    },
+    {
+      "id": "d74958a5-073a-4f3c-98be-69040c1151e0",
+      "role": "unauthenticated",
+      "status": 401,
+      "cacheControl": "no-store",
+      "byteLength": 112
+    }
+  ],
+  "negativeWrites": [
+    {
+      "role": "member-payee",
+      "path": "/api/v1/ledgers/74e59955-693b-4333-b9ee-1ba8f0e69ce0/settle",
+      "status": 403,
+      "body": {
+        "error": {
+          "code": "FORBIDDEN",
+          "message": "你没有权限执行此操作"
+        },
+        "requestId": "6afe2d64-74d6-4554-a722-70c9defdb5be"
+      }
+    },
+    {
+      "role": "member-payee",
+      "path": "/api/v1/ledgers/74e59955-693b-4333-b9ee-1ba8f0e69ce0/settlement/transfers/781a4e78-01b4-48a0-a21a-59d63fed6350/paid",
+      "status": 403,
+      "body": {
+        "error": {
+          "code": "FORBIDDEN",
+          "message": "只有付款人或创建者可登记已还"
+        },
+        "requestId": "dd657dcd-d307-4c43-9f84-aa7462bb96be"
+      }
+    }
+  ]
+}

@@ -44,7 +44,7 @@ image_assets使用bytea；不加对象存储或OCR。清理仅针对超过24小�
 
 ## 7 当前移动端范围
 
-消费表单已支持相册选择、相机权限检查、转 JPEG 与压缩到 1 MiB、上传与移除；选图取消保留原收据，离页清理本次临时文件。SDK 57 的默认 fetch 使用标准 multipart 编码，上传文件项改用 `expo-file-system` 的 `File`。已绑定收据通过鉴权 API 读入内存，展示禁用图片缓存；自定义封面已接入建账事务，临时图片清理提供独立命令和生产 systemd 调度配置，见 [封面与清理验证](../cover-cleanup-validation.md)。实际原生链路与边界见 [消费与收据接入验证](../mobile-expenses-validation.md)。
+消费表单已支持相册选择、相机权限检查、转 JPEG 与压缩到 1 MiB、上传与移除；选图取消保留原收据，离页清理本次临时文件。SDK 57 的默认 fetch 使用标准 multipart 编码，上传文件项改用 `expo-file-system` 的 `File`。已绑定收据通过鉴权 API 读入内存，展示禁用图片缓存；建账表单现已通过 `useImageSelection` 复用同一选图、压缩与上传链路，自定义封面使用未绑定 COVER 上传，创建失败保留输入及成功上传的引用；列表、详情和历史使用鉴权在线读取且禁用图片缓存。自定义封面已接入建账事务，临时图片清理提供独立命令和生产 systemd 调度配置，见 [封面与清理验证](../cover-cleanup-validation.md)。实际原生链路与边界见 [消费与收据接入验证](../mobile-expenses-validation.md)。
 
 ## 8 服务端临时图片清理
 

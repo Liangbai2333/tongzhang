@@ -1,0 +1,258 @@
+{
+  "source": "209727140390a519c59f9ee287b8e7cd3e3472e7",
+  "base": "0cacf94099ca8af92872e89cbc4a3e4378d25aac",
+  "files": [
+    {
+      "path": "01-owner-login.png",
+      "width": 1080,
+      "height": 2400,
+      "sha256": "c405c19eb1301d566761425355a782b32e26302b41e5bb42466713327d48f3ec",
+      "sourceStage": "implementation working tree"
+    },
+    {
+      "path": "02-system-cover-picker.png",
+      "width": 1080,
+      "height": 2400,
+      "sha256": "138a03fa5861d3dfff901c45c373c72f797a20b2fc2e609a36d9c10c140b7f11",
+      "sourceStage": "implementation working tree"
+    },
+    {
+      "path": "03-custom-cover-form.png",
+      "width": 1080,
+      "height": 2400,
+      "sha256": "d20740defebc341cca763baadc63b0e16ae7359a444d8660639e467fdf18bb19",
+      "sourceStage": "implementation working tree"
+    },
+    {
+      "path": "04-created-invitation.png",
+      "width": 1080,
+      "height": 2400,
+      "sha256": "25d4e4c338514590bfb11174eda5dcff31da86b7756b1947d6c17b9215d4cf50",
+      "sourceStage": "implementation working tree"
+    },
+    {
+      "path": "05-owner-cover-read.png",
+      "width": 1080,
+      "height": 2400,
+      "sha256": "8086b5e76c4a132dd76849bf3040d460cbaa081773553d170b2e2c6d473c7ea6",
+      "sourceStage": "implementation working tree"
+    },
+    {
+      "path": "06-member-login.png",
+      "width": 1080,
+      "height": 2400,
+      "sha256": "4f5bf6b2e9511ff87e2646c3b2e27a2774b717d07a974e5f96c60ff5429ea91f",
+      "sourceStage": "implementation working tree"
+    },
+    {
+      "path": "07-member-join-preview.png",
+      "width": 1080,
+      "height": 2400,
+      "sha256": "c8ef52b0343a5c396dd968265da903250d51e409bf7b6610d8470bd4d819c370",
+      "sourceStage": "implementation working tree"
+    },
+    {
+      "path": "08-member-cover-read.png",
+      "width": 1080,
+      "height": 2400,
+      "sha256": "c8adc8fe119717c7802c5450b3b35759ef770a1c98b5077870d79d659539d9d8",
+      "sourceStage": "implementation working tree"
+    },
+    {
+      "path": "09-receipt-picker.png",
+      "width": 1080,
+      "height": 2400,
+      "sha256": "8eb402cb0c1905d1bd8b7b732a631644574e336886bc6ccf5884d236f1bd572e",
+      "sourceStage": "implementation working tree"
+    },
+    {
+      "path": "10-expense-receipt-form.png",
+      "width": 1080,
+      "height": 2400,
+      "sha256": "19dbd816eb5ce04ba2ac3f3212b6755f9e14e4b87f1a5b850020d083d983cbe3",
+      "sourceStage": "implementation working tree"
+    },
+    {
+      "path": "11-expense-detail.png",
+      "width": 1080,
+      "height": 2400,
+      "sha256": "bf55eebfb99d134e5e111316c3e0f9a255fca73b2e855b87314c460044700dae",
+      "sourceStage": "implementation working tree"
+    },
+    {
+      "path": "12-member-receipt.png",
+      "width": 1080,
+      "height": 2400,
+      "sha256": "197edbf27f9638d3ca934085e10b75eecfc70d84bbe5eada94d921f59cc7fe29",
+      "sourceStage": "implementation working tree"
+    },
+    {
+      "path": "13-balances.png",
+      "width": 1080,
+      "height": 2400,
+      "sha256": "6a30d5cb67df6cac2e233095583a73e8f07f6bacc403b79a61205b1335f859e5",
+      "sourceStage": "implementation working tree"
+    },
+    {
+      "path": "14-member-preview-readonly.png",
+      "width": 1080,
+      "height": 2400,
+      "sha256": "87e05e37b17b463b34a630fd902ac5c3fb88c724a385add665b8375efd029ee1",
+      "sourceStage": "implementation working tree"
+    },
+    {
+      "path": "15-owner-freeze-confirm.png",
+      "width": 1080,
+      "height": 2400,
+      "sha256": "fca152a69abe1e3c1a6d854e523029bd9b12d8a6563c6796b73b9629bb9ddd57",
+      "sourceStage": "541e2e1"
+    },
+    {
+      "path": "16-pending-cannot-settle.png",
+      "width": 1080,
+      "height": 2400,
+      "sha256": "28e928385c73be572b88e0f26c461de8dda1390db0f22527494fe5f7e9a71959",
+      "sourceStage": "541e2e1"
+    },
+    {
+      "path": "17-registration-confirm.png",
+      "width": 1080,
+      "height": 2400,
+      "sha256": "23fe750f4820fdb3a7d562f25801f75c30cb640bc7ff725b25585dc00593ebe2",
+      "sourceStage": "541e2e1"
+    },
+    {
+      "path": "18-all-paid.png",
+      "width": 1080,
+      "height": 2400,
+      "sha256": "95267e1ac4efb0056621145fd15a4b9a147fada055e2a6ec41670f9813502a27",
+      "sourceStage": "541e2e1"
+    },
+    {
+      "path": "19-settle-confirm.png",
+      "width": 1080,
+      "height": 2400,
+      "sha256": "451d5be04d5880acb282e82728d29798ce98529ef9a8068c9ee381f551aa25d7",
+      "sourceStage": "541e2e1"
+    },
+    {
+      "path": "20-settle-unknown.png",
+      "width": 1080,
+      "height": 2400,
+      "sha256": "650abbc613232833e38519f3b5d28fb9a03a9d7822f6cb1631265f428fc068c6",
+      "sourceStage": "541e2e1"
+    },
+    {
+      "path": "21-settled.png",
+      "width": 1080,
+      "height": 2400,
+      "sha256": "23e25d19f960ee4281ee73511775146d1beb9f0b586e0c9834966d44d558f2a2",
+      "sourceStage": "541e2e1"
+    },
+    {
+      "path": "22-archive-confirm.png",
+      "width": 1080,
+      "height": 2400,
+      "sha256": "4b963bef8d29bae83bb85a458d2aab9d57e01fbc479c23cea4c259933d6d14a4",
+      "sourceStage": "541e2e1"
+    },
+    {
+      "path": "23-archive-unknown.png",
+      "width": 1080,
+      "height": 2400,
+      "sha256": "6986431179eb07d141cbcdbc9babf08a51bafd37dd9bb86280b833da427a48a0",
+      "sourceStage": "541e2e1"
+    },
+    {
+      "path": "24-owner-archived-list.png",
+      "width": 1080,
+      "height": 2400,
+      "sha256": "9d9b85837aaf48f9210ea9e0c573e1e3724f519f6886dcccece019a82b093c54",
+      "sourceStage": "541e2e1"
+    },
+    {
+      "path": "25-owner-history-list.png",
+      "width": 1080,
+      "height": 2400,
+      "sha256": "6e95661759a27aab7d1d0b53b5024a8718b444eeff502bab7fd3ecbf4a926b15",
+      "sourceStage": "541e2e1"
+    },
+    {
+      "path": "26-owner-history-detail.png",
+      "width": 1080,
+      "height": 2400,
+      "sha256": "7710b757e0ed10873c2558de6924a5378c85236576e2216dbe35f19f7aabf081",
+      "sourceStage": "541e2e1"
+    },
+    {
+      "path": "27-owner-history-record.png",
+      "width": 1080,
+      "height": 2400,
+      "sha256": "15d045a58d8ae151e719aa42c4ae00a82101b4bbaa4c72f397940564fd0947f4",
+      "sourceStage": "541e2e1"
+    },
+    {
+      "path": "28-owner-history-expense-readonly.png",
+      "width": 1080,
+      "height": 2400,
+      "sha256": "c8b5907a0ff0a9715bd2ad75a2a3e91ef6895cb623c7ec96f0430a7e2e5f2753",
+      "sourceStage": "541e2e1"
+    },
+    {
+      "path": "29-owner-history-receipt.png",
+      "width": 1080,
+      "height": 2400,
+      "sha256": "fc2baa6d8f58230c1d1ed42c6bbea449e5191f3f2faa43458bb3a5200bd01526",
+      "sourceStage": "541e2e1"
+    },
+    {
+      "path": "30-member-current-list-unchanged.png",
+      "width": 1080,
+      "height": 2400,
+      "sha256": "40761984378bf07f0679d2eda4f596e58208e8d71fc9e25a1c14daca31b6584e",
+      "sourceStage": "541e2e1"
+    },
+    {
+      "path": "31-member-detail-unchanged.png",
+      "width": 1080,
+      "height": 2400,
+      "sha256": "9c56fbafdfc69261f6b659562e44568e2910ec03766cbb1832ba77fef3320ef0",
+      "sourceStage": "541e2e1"
+    },
+    {
+      "path": "32-member-settled-record.png",
+      "width": 1080,
+      "height": 2400,
+      "sha256": "869e86b83382fc397063b8f857bcc6a4327df4353e633a63e57bee5459c8b053",
+      "sourceStage": "541e2e1"
+    },
+    {
+      "path": "33-rebuilt-member-main-ledger.png",
+      "width": 1080,
+      "height": 2400,
+      "sha256": "4d9b9b1fc40e7987f35bc8dd50388ecfd289f17c2fad0836f7480ca664dfc84d",
+      "sourceStage": "e5a83ca"
+    },
+    {
+      "path": "34-final-picker-preserved.png",
+      "width": 1080,
+      "height": 2400,
+      "sha256": "5e37ea1e1095977113b97d175827f53d2c5cbd1b9d80ad50e19eed598086e587",
+      "sourceStage": "2097271"
+    },
+    {
+      "path": "35-final-create-unknown.png",
+      "width": 1080,
+      "height": 2400,
+      "sha256": "9cfb994982af59502fa1bf66af98906ebc8b8b13adb645b06868f50e0c523d18",
+      "sourceStage": "2097271"
+    },
+    {
+      "path": "36-final-explicit-retry-created.png",
+      "width": 1080,
+      "height": 2400,
+      "sha256": "a1cef5677e11236df5897664531489f04ed13be6d2e980afb539d4fcfedca2ba",
+      "sourceStage": "2097271"
+    }
+  ]
+}

@@ -91,3 +91,5 @@
 ## 7 当前操作索引与实测
 
 完整路径、请求/响应字段、错误及双账号 App 步骤见[建账与邀请操作索引](../ledger-invitation-api-guide.md)；当前主线原生实操和 CI 证据见 [Issue #19 验证](../issue19-native-environment-validation.md)。列表 archived 条件是个人归档筛选，不是 ACTIVE 状态筛选。
+
+移动端个人归档确认现已接通 A27，仅已结清且未归档的本人可操作。成功返回账本列表并提供历史入口，历史继续在线查询本人 `archived=true` 列表及只读详情；未知结果保留原键，可显式重试或查询本人 `archivedAt` 核对。完整原生证据见 [Issue #42](../issue42-mobile-completion-validation.md)。
