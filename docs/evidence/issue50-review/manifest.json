@@ -134,8 +134,8 @@
     },
     {
       "path": "regressions-before.txt",
-      "bytes": 8674,
-      "sha256": "35aeb4a5248dd3b8b3d74d628279104e755b19bf949ab4efbf03fa44886ac1cf"
+      "bytes": 5648,
+      "sha256": "fd75e12eac1b46a70729b47c70ab486dfc08557c4d0cb2221ecb90c4eab05025"
     },
     {
       "path": "unit.txt",
