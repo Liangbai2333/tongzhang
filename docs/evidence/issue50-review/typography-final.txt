@@ -1,0 +1,10 @@
+PASS iOS tests/write-recovery.test.tsx
+PASS Android tests/settlements-ui.test.tsx (8.785 s)
+PASS iOS tests/settlements-ui.test.tsx (7.603 s)
+PASS Android tests/write-recovery.test.tsx
+
+Test Suites: 4 passed, 4 total
+Tests:       50 passed, 50 total
+Snapshots:   0 total
+Time:        19.424 s
+Ran all test suites matching /settlements-ui|write-recovery/i in 2 projects.

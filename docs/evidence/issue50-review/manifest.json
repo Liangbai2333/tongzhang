@@ -1,11 +1,11 @@
 {
-  "codeSource": "75325d92fdebaa9b583a93d81e9a805402f647f2",
+  "codeSource": "f46ed0c34fb61b6c6ea95ea0d5863a6aba7345e2",
   "nativeSource": "209727140390a519c59f9ee287b8e7cd3e3472e7",
   "apk": {
     "bytes": 99547334,
     "sha256": "72504440573ae6985ad362bbd53854b03b46ac4d5a97c17513b0b53a61bbecf0"
   },
-  "note": "Native screenshots captured from this review worktree with Metro, same native APK. Final archive state/navigation fixes do not change the pictured screens. Full mobile 226 tests followed by 66 ledger tests after the final Stack.Screen relocation; final check/export include that relocation.",
+  "note": "Same native APK with this worktree Metro. Screenshots 01,02,07 refreshed after final typography commit; create screens 03–06 unchanged. Full mobile 226 passed, then 66 ledger tests after final navigation placement and 50 settlement/recovery tests after final typography; final check/export include all code changes.",
   "sourceFiles": [
     {
       "path": "apps/mobile/src/components/Field.tsx",
@@ -13,7 +13,7 @@
     },
     {
       "path": "apps/mobile/src/components/OnlineWriteSheet.tsx",
-      "sha256": "85a0008a35afb4b81749279b55b77c35884abcf00b70d7161b233d5794c1f1c0"
+      "sha256": "06461723208b1e8116de109dd0993f84f8f3cd4688a5db3db2300aabe7dacef2"
     },
     {
       "path": "apps/mobile/src/features/ledgers/screens/CreateLedgerScreen.tsx",
@@ -25,19 +25,19 @@
     },
     {
       "path": "apps/mobile/src/features/settlements/components/SettledSummary.tsx",
-      "sha256": "71dec4a63536919902117eb03a8270159152a0aea9f5a6dd0cbd3d25b8d92ccf"
+      "sha256": "aebd488de4295d14fc8759330d5c96cd17835e247b6d0d3c2584ce7220e6aa4c"
     },
     {
       "path": "apps/mobile/src/features/settlements/components/SettledTransferCard.tsx",
-      "sha256": "e282a67e764637b3dc42c6ab9a6121f09cf2ba42c080b73cb00033b981ca192a"
+      "sha256": "8ad9c3d5bacb2faccfd8fa335a1dc3671cfe9b547df6219a160ff5f5c087671c"
     },
     {
       "path": "apps/mobile/src/features/settlements/components/SettlementActionSheet.tsx",
-      "sha256": "68df8de4654fa3eb9b85bd2a3c009b0fe9ea0969bfac852ea54f890a79d4e15f"
+      "sha256": "018699e1ac59abbecd5de9d7d2f48ab74d34d69078c4c0cc150a867be4980566"
     },
     {
       "path": "apps/mobile/src/features/settlements/screens/SettlementRecordScreen.tsx",
-      "sha256": "2ac5428d59988311e5d7e352ba246aaa451728fd27295da92052a9a009cea6ee"
+      "sha256": "25a8435f3e9395a36e94501ac80baf8d7bb98ec5230c22573024e4c04b14c012"
     },
     {
       "path": "apps/mobile/src/lib/use-idempotent-write.ts",
@@ -59,13 +59,13 @@
   "evidenceFiles": [
     {
       "path": "01-settled-aligned.png",
-      "bytes": 227735,
-      "sha256": "89f1730af688132837f548a049c55272aad5c551750021940a082c4eb8edbdb8"
+      "bytes": 227062,
+      "sha256": "2d68626fe78f9bc93e35018e057b19b6c76cbea5ba0c466aa6d045e5d70bc745"
     },
     {
       "path": "02-archive-confirm.png",
-      "bytes": 226496,
-      "sha256": "a6b555eda4df51c5a7e9fb3e19b242c67f207e437cc56b705a1fff6498ef6b49"
+      "bytes": 225356,
+      "sha256": "902399a94ffac48a6a8edf8641a7ca42018018f7700f37d8557db27e731b720e"
     },
     {
       "path": "03-create-form.png",
@@ -89,13 +89,13 @@
     },
     {
       "path": "07-registration-panel-aligned.png",
-      "bytes": 201621,
-      "sha256": "52ee6fac154a57b5ed34de305a285c2f966b3a489e7a36ccfd22d85851056ce7"
+      "bytes": 200477,
+      "sha256": "98c7c3e65f16f3c0365fb080fa6f19dc8460dda9254ccf9f224367848b28b305"
     },
     {
       "path": "check.txt",
       "bytes": 652,
-      "sha256": "b369bb08ae045e36016bba329162f9ef60f9870403f049ea6b36d39ae2049d1f"
+      "sha256": "d901bfef3076b522eafa681e542f9e7030eb01c4d58115242b3db894999ae619"
     },
     {
       "path": "database.json",
@@ -109,8 +109,8 @@
     },
     {
       "path": "export.txt",
-      "bytes": 5992,
-      "sha256": "0de0939a35e79894874eccc36b1be240727b71a69d29c71b9c4d171985681026"
+      "bytes": 6665,
+      "sha256": "ed41437831506f9612bd35b4cd3adf77908567d22c0cddabf08b9b77f2b16ccd"
     },
     {
       "path": "integration.txt",
@@ -138,9 +138,15 @@
       "sha256": "fd75e12eac1b46a70729b47c70ab486dfc08557c4d0cb2221ecb90c4eab05025"
     },
     {
+      "path": "typography-final.txt",
+      "bytes": 369,
+      "sha256": "cbcc88941ba4e7a7002eb04352b7ece3aba18267ff82be008bf6abd47c6eb9b6"
+    },
+    {
       "path": "unit.txt",
       "bytes": 352,
       "sha256": "5603a5bb1d2331ad080d5e96b8bdf27f650f4c3ba3f10a62a0fb1ddd679f36bb"
     }
-  ]
+  ],
+  "logicSource": "75325d92fdebaa9b583a93d81e9a805402f647f2"
 }

@@ -6,10 +6,18 @@ $ expo export --platform android --platform ios
 Expo Autolinking module resolution enabled
 Starting Metro Bundler
 
-| (node:77625) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+| (node:87348) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
 | (Use `node --trace-warnings ...` to show where the warning was created)
-iOS Bundled 4700ms node_modules/.pnpm/expo-router@57.0.29_49fe1315e745118a97cbe5d721d8be40/node_modules/expo-router/entry.js (1708 modules)
-Android Bundled 8208ms node_modules/.pnpm/expo-router@57.0.29_49fe1315e745118a97cbe5d721d8be40/node_modules/expo-router/entry.js (1955 modules)
+| (node:87348) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+| (Use `node --trace-warnings ...` to show where the warning was created)
+| (node:87348) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+| (Use `node --trace-warnings ...` to show where the warning was created)
+| (node:87348) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+| (Use `node --trace-warnings ...` to show where the warning was created)
+| (node:87348) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+| (Use `node --trace-warnings ...` to show where the warning was created)
+iOS Bundled 7658ms node_modules/.pnpm/expo-router@57.0.29_49fe1315e745118a97cbe5d721d8be40/node_modules/expo-router/entry.js (1578 modules)
+Android Bundled 12455ms node_modules/.pnpm/expo-router@57.0.29_49fe1315e745118a97cbe5d721d8be40/node_modules/expo-router/entry.js (1955 modules)
 
 › Assets (121):
 ../../node_modules/.pnpm/@expo-google-fonts+material-symbols@0.4.50/node_modules/@expo-google-fonts/material-symbols/400Regular/MaterialSymbols_400Regular.ttf (971KB)
@@ -116,10 +124,10 @@ assets/figma/settlements/check.svg (353B)
 assets/figma/settlements/copy.svg (562B)
 
 › ios bundles (1):
-_expo/static/js/ios/entry-398c6850eb721a66a08496c6942735e1.hbc (4.5MB)
+_expo/static/js/ios/entry-29cc457c31a54a36c13fac95527cc50b.hbc (4.5MB)
 
 › android bundles (1):
-_expo/static/js/android/entry-a52604fb20cf1b2254d9c36fa47144a0.hbc (4.8MB)
+_expo/static/js/android/entry-4c087c3a786168ddd444c3ec608af56e.hbc (4.8MB)
 
 › Files (1):
 metadata.json (14KB)
