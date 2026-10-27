@@ -1,6 +1,6 @@
 {
   "sourceCommit": "7616adbff4502f1fcab1d233fa07938071004041",
-  "generatedAt": "2026-10-27T15:39:19.766894+00:00",
+  "generatedAt": "2026-10-27T15:39:43.059525+00:00",
   "screenshots": "Raw adb exec-out screencap -p from this Issue49 run; submitting states explicitly labelled. Test image contents reused; no historical screenshots reused.",
   "files": [
     {
@@ -161,9 +161,9 @@
     },
     {
       "path": "app-requests.json",
-      "bytes": 97922,
-      "sha256": "b93fc7a2a0a33ed2e0fcf0119278898dc87ea04c8fd3152bedd301cd680c50f7",
-      "capturedOrWrittenAt": "2026-10-27T15:38:04.872605+00:00"
+      "bytes": 111791,
+      "sha256": "58815d33e3c20fc9baba0640859ef09bfdb19839a1e862a40dafaaa9c0be9dab",
+      "capturedOrWrittenAt": "2026-10-27T15:39:42.898134+00:00"
     },
     {
       "path": "build-server.txt",
