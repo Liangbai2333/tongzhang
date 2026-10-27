@@ -46,6 +46,11 @@ describe('background session admission preserves native media forms', () => {
     expect(screen.getByText('在线核验门禁')).toBeOnTheScreen();
     expect(screen.queryByLabelText('未保存消费')).toBeNull();
     expect(mockUnmount).not.toHaveBeenCalled();
+    mockAuth.status = 'error';
+    await screen.rerender(<AuthNavigation />);
+    expect(screen.getByText('在线核验门禁')).toBeOnTheScreen();
+    expect(screen.queryByLabelText('未保存消费')).toBeNull();
+    expect(mockUnmount).not.toHaveBeenCalled();
     mockAuth.status = 'authenticated';
     await screen.rerender(<AuthNavigation />);
     expect(screen.getByDisplayValue('Receipt 120')).toBeOnTheScreen();

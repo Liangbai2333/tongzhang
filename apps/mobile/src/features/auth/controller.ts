@@ -102,7 +102,9 @@ export function createAuthController(api: Dependencies) {
         } catch (error) {
           if (id === intent)
             update({
-              user: null,
+              // Recoverable read failures keep form/attempt memory behind the gate.
+              // Revocation still removes identity and unmounts protected screens.
+              user: error instanceof ApiError && error.status === 401 ? null : state.user,
               error,
               status: error instanceof ApiError && error.status === 401 ? 'anonymous' : 'error',
             });
@@ -151,11 +153,14 @@ export function createAuthController(api: Dependencies) {
     },
     suspend({ preserveScreen = false }: { preserveScreen?: boolean } = {}) {
       suspended = true;
-      if (state.operation) return;
+      if (state.operation) {
+        if (!preserveScreen) update({ user: null });
+        return;
+      }
       intent++;
       if (state.user)
         update({
-          // A native permission/picker activity must not discard the in-memory form.
+          // A picker or network interruption must not discard the in-memory form.
           // Navigation blocks the retained screen until online verification succeeds.
           user: preserveScreen ? state.user : null,
           status: preserveScreen ? 'restoring' : 'error',

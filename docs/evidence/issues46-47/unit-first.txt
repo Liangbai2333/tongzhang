@@ -1,0 +1,48 @@
+$ pnpm build:shared && vitest run
+$ pnpm -r --filter "./packages/*" build
+$ tsc -p tsconfig.json
+$ tsc -p tsconfig.json
+
+ RUN  v5.0.4 /Users/liangbai/.codex/worktrees/issues46-47-acceptance/tongzhang
+
+ ❯ apps/mobile/tests/auth-controller.test.ts (17 tests | 1 failed) 14ms
+   ❯ mobile authentication and route admission state (17)
+     × does not revive a suspended response when restoration is requested again 6ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  apps/mobile/tests/auth-controller.test.ts > mobile authentication and route admission state > does not revive a suspended response when restoration is requested again
+AssertionError: expected { user: { …(4) }, …(4) } to match object { status: 'error', user: null }
+(6 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+    "status": "error",
+-   "user": null,
++   "user": {
++     "email": "real@example.test",
++     "id": "00000000-0000-4000-8000-000000000001",
++     "notificationEnabled": false,
++     "username": "真实用户",
++   },
+  }
+
+ ❯ apps/mobile/tests/auth-controller.test.ts:132:32
+    130|     request.resolve({ data: user });
+    131|     await concurrent;
+    132|     expect(auth.getSnapshot()).toMatchObject({ status: 'error', user: …
+       |                                ^
+    133|     await auth.restore();
+    134|     expect(auth.getSnapshot()).toMatchObject({ status: 'authenticated'…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 18 passed (19)
+      Tests  1 failed | 119 passed (120)
+   Start at  05:47:28
+   Duration  2.35s (tests 50%, import 25%, transform 24%, worker 1%)
+
+[ELIFECYCLE] Test failed. See above for more details.

@@ -1,0 +1,17 @@
+{
+  "mechanism": "revoked_at set only for fixture owner sessions in dedicated native database; then App resumed",
+  "response": {
+    "time": "2026-10-27T12:57:38.626Z",
+    "method": "GET",
+    "path": "/api/v1/me",
+    "status": 401,
+    "body": {
+      "error": {
+        "code": "UNAUTHENTICATED",
+        "message": "\u767b\u5f55\u5df2\u5931\u6548\uff0c\u8bf7\u91cd\u65b0\u767b\u5f55"
+      },
+      "requestId": "0a6952c0-5370-42fc-a29b-d39714d1c82c"
+    }
+  },
+  "protectedContent": "removed; welcome shows login expired"
+}

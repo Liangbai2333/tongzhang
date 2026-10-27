@@ -45,7 +45,8 @@ export function AuthProvider({ children }: PropsWithChildren) {
       else if (next !== 'active') controller.suspend({ preserveScreen: true });
     });
     const network = Network.addNetworkStateListener((next) => {
-      if (next.isConnected === false || next.isInternetReachable === false) controller.suspend();
+      if (next.isConnected === false || next.isInternetReachable === false)
+        controller.suspend({ preserveScreen: true });
       // Network recovery does not automatically retry a refresh or any write.
     });
     return () => {

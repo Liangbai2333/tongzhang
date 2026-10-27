@@ -1,0 +1,12 @@
+$ pnpm build:shared && vitest run
+$ pnpm -r --filter "./packages/*" build
+$ tsc -p tsconfig.json
+$ tsc -p tsconfig.json
+
+ RUN  v5.0.4 /Users/liangbai/.codex/worktrees/issues46-47-acceptance/tongzhang
+
+
+ Test Files  19 passed (19)
+      Tests  120 passed (120)
+   Start at  05:48:58
+   Duration  1.86s (tests 43%, import 40%, transform 16%, worker 2%)

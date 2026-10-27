@@ -1,0 +1,99 @@
+$ jest --runInBand --runTestsByPath tests/auth-provider.test.tsx '--testNamePattern=hides protected content offline'
+FAIL Android tests/auth-provider.test.tsx
+  ● AuthProvider lifecycle and memory isolation › hides protected content offline without retrying writes on reconnect
+
+    Unable to find an element with text: restoring:在线用户
+
+    <>
+      <Text>
+        error
+        :
+        无用户
+      </Text>
+      <Text />
+      <View
+        accessibilityLabel="核验"
+        accessibilityRole="button"
+        accessible={true}
+      >
+        <Text>
+          核验
+        </Text>
+      </View>
+      <View
+        accessibilityLabel="退出"
+        accessibilityRole="button"
+        accessible={true}
+      >
+        <Text>
+          退出
+        </Text>
+      </View>
+    </>
+
+      119 |       mockNetwork({ isConnected: false });
+      120 |     });
+    > 121 |     expect(screen.getByText('restoring:在线用户')).toBeOnTheScreen();
+          |                   ^
+      122 |     await act(async () => {
+      123 |       mockNetwork({ isConnected: true });
+      124 |     });
+
+      at Object.getByText (tests/auth-provider.test.tsx:121:19)
+      at asyncGeneratorStep (../../node_modules/.pnpm/@babel+runtime@7.29.10/node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (../../node_modules/.pnpm/@babel+runtime@7.29.10/node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+FAIL iOS tests/auth-provider.test.tsx
+  ● AuthProvider lifecycle and memory isolation › hides protected content offline without retrying writes on reconnect
+
+    Unable to find an element with text: restoring:在线用户
+
+    <>
+      <Text>
+        error
+        :
+        无用户
+      </Text>
+      <Text />
+      <View
+        accessibilityLabel="核验"
+        accessibilityRole="button"
+        accessible={true}
+      >
+        <Text>
+          核验
+        </Text>
+      </View>
+      <View
+        accessibilityLabel="退出"
+        accessibilityRole="button"
+        accessible={true}
+      >
+        <Text>
+          退出
+        </Text>
+      </View>
+    </>
+
+      119 |       mockNetwork({ isConnected: false });
+      120 |     });
+    > 121 |     expect(screen.getByText('restoring:在线用户')).toBeOnTheScreen();
+          |                   ^
+      122 |     await act(async () => {
+      123 |       mockNetwork({ isConnected: true });
+      124 |     });
+
+      at Object.getByText (tests/auth-provider.test.tsx:121:19)
+      at asyncGeneratorStep (../../node_modules/.pnpm/@babel+runtime@7.29.10/node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (../../node_modules/.pnpm/@babel+runtime@7.29.10/node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+Test Suites: 2 failed, 2 total
+Tests:       2 failed, 8 skipped, 10 total
+Snapshots:   0 total
+Time:        1.209 s
+Ran all test suites within paths "tests/auth-provider.test.tsx" in 2 projects.
+[ELIFECYCLE] Test failed. See above for more details.
+Error: ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL
+
+  × "pnpm recursive run" failed in /Users/liangbai/.codex/worktrees/issues46-
+  │ 47-acceptance/tongzhang/apps/mobile

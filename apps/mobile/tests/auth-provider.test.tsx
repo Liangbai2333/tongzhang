@@ -118,11 +118,14 @@ describe('AuthProvider lifecycle and memory isolation', () => {
     await act(async () => {
       mockNetwork({ isConnected: false });
     });
-    expect(screen.getByText('error:无用户')).toBeOnTheScreen();
+    expect(screen.getByText('restoring:在线用户')).toBeOnTheScreen();
     await act(async () => {
       mockNetwork({ isConnected: true });
     });
     expect(mockRestore).toHaveBeenCalledTimes(1);
+    mockRestore.mockRejectedValueOnce(new ApiError('NETWORK_UNAVAILABLE', '仍然断网'));
+    await userEvent.press(screen.getByRole('button', { name: '核验' }));
+    expect(await screen.findByText('error:在线用户')).toBeOnTheScreen();
     await userEvent.press(screen.getByRole('button', { name: '核验' }));
     expect(await screen.findByText('authenticated:在线用户')).toBeOnTheScreen();
   });
