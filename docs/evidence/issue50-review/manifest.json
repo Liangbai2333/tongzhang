@@ -1,0 +1,146 @@
+{
+  "codeSource": "75325d92fdebaa9b583a93d81e9a805402f647f2",
+  "nativeSource": "209727140390a519c59f9ee287b8e7cd3e3472e7",
+  "apk": {
+    "bytes": 99547334,
+    "sha256": "72504440573ae6985ad362bbd53854b03b46ac4d5a97c17513b0b53a61bbecf0"
+  },
+  "note": "Native screenshots captured from this review worktree with Metro, same native APK. Final archive state/navigation fixes do not change the pictured screens. Full mobile 226 tests followed by 66 ledger tests after the final Stack.Screen relocation; final check/export include that relocation.",
+  "sourceFiles": [
+    {
+      "path": "apps/mobile/src/components/Field.tsx",
+      "sha256": "a9916ea6cfcf6095387a0b0e902825385d1812c86ea955a726a702fa619180d9"
+    },
+    {
+      "path": "apps/mobile/src/components/OnlineWriteSheet.tsx",
+      "sha256": "85a0008a35afb4b81749279b55b77c35884abcf00b70d7161b233d5794c1f1c0"
+    },
+    {
+      "path": "apps/mobile/src/features/ledgers/screens/CreateLedgerScreen.tsx",
+      "sha256": "82963ea744e5b52f9374f6170dbe76edc4d609744f69676bb2f79d7703c83c0a"
+    },
+    {
+      "path": "apps/mobile/src/features/ledgers/screens/LedgerDetailScreen.tsx",
+      "sha256": "ac5da1a1dc1b57a102b95de1feb13300bdb73f13b222d1a04de1b05ef8977a65"
+    },
+    {
+      "path": "apps/mobile/src/features/settlements/components/SettledSummary.tsx",
+      "sha256": "71dec4a63536919902117eb03a8270159152a0aea9f5a6dd0cbd3d25b8d92ccf"
+    },
+    {
+      "path": "apps/mobile/src/features/settlements/components/SettledTransferCard.tsx",
+      "sha256": "e282a67e764637b3dc42c6ab9a6121f09cf2ba42c080b73cb00033b981ca192a"
+    },
+    {
+      "path": "apps/mobile/src/features/settlements/components/SettlementActionSheet.tsx",
+      "sha256": "68df8de4654fa3eb9b85bd2a3c009b0fe9ea0969bfac852ea54f890a79d4e15f"
+    },
+    {
+      "path": "apps/mobile/src/features/settlements/screens/SettlementRecordScreen.tsx",
+      "sha256": "2ac5428d59988311e5d7e352ba246aaa451728fd27295da92052a9a009cea6ee"
+    },
+    {
+      "path": "apps/mobile/src/lib/use-idempotent-write.ts",
+      "sha256": "f0ce17ef29f15d59dac0c82997e2ca69d11973b34dbacf83e3b35da11a3b7c58"
+    },
+    {
+      "path": "apps/mobile/tests/ledgers-ui.test.tsx",
+      "sha256": "39b086cadca129a76060384ee1c341e97d041c408c5810da43b8f59697ab3b12"
+    },
+    {
+      "path": "apps/mobile/tests/settlements-ui.test.tsx",
+      "sha256": "65fa9315313f3096ff44af81d8848e5cbc41ba6660a725c3868e05a2a0dc0cd9"
+    },
+    {
+      "path": "apps/mobile/tests/write-recovery.test.tsx",
+      "sha256": "0fc5c22ada99bca4fd1506f7aa43a73f71802756f85b04de5cdb315f11fd1d8e"
+    }
+  ],
+  "evidenceFiles": [
+    {
+      "path": "01-settled-aligned.png",
+      "bytes": 227735,
+      "sha256": "89f1730af688132837f548a049c55272aad5c551750021940a082c4eb8edbdb8"
+    },
+    {
+      "path": "02-archive-confirm.png",
+      "bytes": 226496,
+      "sha256": "a6b555eda4df51c5a7e9fb3e19b242c67f207e437cc56b705a1fff6498ef6b49"
+    },
+    {
+      "path": "03-create-form.png",
+      "bytes": 152988,
+      "sha256": "7766c59bfef961063978a71b55833ae556b61dd3d95e44ba902db2dc21ac761e"
+    },
+    {
+      "path": "04-unknown-locked.png",
+      "bytes": 198001,
+      "sha256": "571f2573f2c61fa123d57fc34ec726e70e559c024eb1da34759af8c1406a8849"
+    },
+    {
+      "path": "05-rejected-retry-still-locked.png",
+      "bytes": 204572,
+      "sha256": "f214944d4b8b7f6acb71775d9a97f4917e13f187bda97f1bf4c36f50c4e87c0f"
+    },
+    {
+      "path": "06-original-key-recovered.png",
+      "bytes": 176676,
+      "sha256": "e4851f9e5f789d3c0f3ba5014a23ed1b0df7654cc2e9ad21aa97586db2e7ffe3"
+    },
+    {
+      "path": "07-registration-panel-aligned.png",
+      "bytes": 201621,
+      "sha256": "52ee6fac154a57b5ed34de305a285c2f966b3a489e7a36ccfd22d85851056ce7"
+    },
+    {
+      "path": "check.txt",
+      "bytes": 652,
+      "sha256": "b369bb08ae045e36016bba329162f9ef60f9870403f049ea6b36d39ae2049d1f"
+    },
+    {
+      "path": "database.json",
+      "bytes": 1086,
+      "sha256": "5b07ca2b25cf2e48f767f6e69e3552e4e3ea8337e858e3b18b451a31c64d7a69"
+    },
+    {
+      "path": "doctor.txt",
+      "bytes": 153,
+      "sha256": "8813052b837cb94f73b9115d2d195e0a0ab8701acffce30c8dd51c7bb7ce751d"
+    },
+    {
+      "path": "export.txt",
+      "bytes": 5992,
+      "sha256": "0de0939a35e79894874eccc36b1be240727b71a69d29c71b9c4d171985681026"
+    },
+    {
+      "path": "integration.txt",
+      "bytes": 379,
+      "sha256": "f9d7e0d04d15e7a6b7ced7049a067bb3692c789f363c55fde0ae07f49bffb7bd"
+    },
+    {
+      "path": "ledgers-final.txt",
+      "bytes": 262,
+      "sha256": "9eda218eabc0e41bae7fe58da0d54bb49965a0615af175c3235e362a91b8b7f6"
+    },
+    {
+      "path": "mobile.txt",
+      "bytes": 1313,
+      "sha256": "1e9295ae1b55f6c8f6322baf833fbbc86b52ee3bcbfe4269636d8a1a02cba241"
+    },
+    {
+      "path": "native-retry.json",
+      "bytes": 3028,
+      "sha256": "885de9ed64b560588cdac69ccf890139c5db32b1658c0590c6f99ffd41686074"
+    },
+    {
+      "path": "regressions-before.txt",
+      "bytes": 8674,
+      "sha256": "35aeb4a5248dd3b8b3d74d628279104e755b19bf949ab4efbf03fa44886ac1cf"
+    },
+    {
+      "path": "unit.txt",
+      "bytes": 352,
+      "sha256": "5603a5bb1d2331ad080d5e96b8bdf27f650f4c3ba3f10a62a0fb1ddd679f36bb"
+    }
+  ]
+}
