@@ -1,0 +1,18 @@
+{
+  "time": "2026-10-27T14:57:27.788Z",
+  "stage": "revoke",
+  "database": "tongzhang_48_native",
+  "tables": {},
+  "revoked": [
+    {
+      "id": "ba19f90a-7849-4094-9078-82ecab12036e",
+      "user_id": "4edc8dc3-3616-451b-b11d-70a26536df90",
+      "revoked_at": "2026-10-27T14:57:27.804Z"
+    },
+    {
+      "id": "3963b685-89c3-479e-accd-090be3b2205d",
+      "user_id": "4edc8dc3-3616-451b-b11d-70a26536df90",
+      "revoked_at": "2026-10-27T14:57:27.804Z"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "database": "tongzhang_48_test",
+  "time": "2026-10-27T14:56:50.987Z",
+  "counts": {
+    "users": 0,
+    "expenses": 0,
+    "expense_images": 0,
+    "image_assets": 0,
+    "expense_splits": 0,
+    "ledger_members": 0,
+    "ledgers": 0,
+    "invitations": 0,
+    "operation_logs": 0,
+    "settlement_batches": 0,
+    "settlement_transfers": 0,
+    "idempotency_keys": 0,
+    "auth_sessions": 0,
+    "auth_refresh_tokens": 0
+  }
+}

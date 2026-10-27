@@ -1,0 +1,1 @@
+Native fixture: 12000/6000/6000, one 6000 transfer, batch/receipt/cover, archive isolation and 7 audits verified.

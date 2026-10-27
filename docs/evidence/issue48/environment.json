@@ -1,0 +1,85 @@
+{
+  "sourceCommit": "af03672fb929caa26db1b407039a436e9cbf4e4e",
+  "branch": "test/48-native-acceptance",
+  "host": {
+    "os": "27.0.1",
+    "arch": "arm64",
+    "node": "v24.22.0",
+    "pnpm": "12.6.0"
+  },
+  "device": {
+    "release": "17",
+    "api": "37",
+    "fingerprint": "google/sdk_gphone64_arm64/emu64a:17/CE2A.260420.019/15611780:user/release-keys",
+    "abi": "arm64-v8a",
+    "avd": "Medium_Phone_API_37.0",
+    "physicalSize": "Physical size: 1080x2400",
+    "density": "Physical density: 420"
+  },
+  "app": {
+    "package": "com.tongzhang.app",
+    "version": "0.1.0",
+    "versionCode": 1,
+    "minSdk": 24,
+    "targetSdk": 36,
+    "expo": "57.0.31",
+    "reactNative": "0.86.3",
+    "react": "19.2.3",
+    "devClient": "57.0.20",
+    "imagePicker": "57.0.20",
+    "packageInstallMetadata": [
+      "versionCode=1 minSdk=24 targetSdk=36",
+      "versionName=0.1.0",
+      "lastUpdateTime=2026-10-27 04:19:45",
+      "firstInstallTime=2026-10-26 07:13:29"
+    ]
+  },
+  "apk": {
+    "reused": true,
+    "newNativeBuildThisRun": false,
+    "source": "209727140390a519c59f9ee287b8e7cd3e3472e7",
+    "bytes": 99547334,
+    "sha256": "72504440573ae6985ad362bbd53854b03b46ac4d5a97c17513b0b53a61bbecf0",
+    "pulledFrom": "adb shell pm path com.tongzhang.app; adb pull returned base.apk path"
+  },
+  "nativeCompatibility": {
+    "variant": "development",
+    "changedNativeInputs": [],
+    "command": "git diff 2097271 af03672 -- apps/mobile/package.json pnpm-lock.yaml apps/mobile/app.config.ts apps/mobile/plugins apps/mobile/assets",
+    "sha256": {
+      "apps/mobile/package.json": "1e589bda08956b6e954a28c8ae4623beceb65c4c18dd3dcae1b496ca4574479f",
+      "pnpm-lock.yaml": "66d4044e701f328cbbcb794ab14302133b37c65799cd3ba34e138e15979be3d2",
+      "apps/mobile/app.config.ts": "6d5c4ebe5a37c0587a1f318886de24c28cf1d906a2cdc0a56cc0e214a3fc3e37",
+      "apps/mobile/plugins/with-explicit-network-retries.cjs": "cb2b1cc3cf82286186aa0aa6d9f5fa32c55a87b2087830bd18f353fdce9ed8ec"
+    },
+    "assetsTree": "22de8f09e0e7a1c8f9ff2802410e394b7e8c6b9c"
+  },
+  "services": {
+    "api": "127.0.0.1:3348",
+    "metro": "127.0.0.1:8048",
+    "apiSource": "this worktree apps/server/dist from pnpm build:server",
+    "environment": "NODE_ENV=test; LOG_LEVEL=silent; PG*/AUTH_JWT_SECRET from uncommitted 0600 /tmp/tz48-runtime.json",
+    "mobileEnvironment": "APP_VARIANT=development; EXPO_PUBLIC_API_BASE_URL=http://127.0.0.1:3348",
+    "transport": "adb reverse tcp:3348 tcp:3348; tcp:8048 tcp:8048",
+    "database": {
+      "container": "tongzhang-48-postgres",
+      "image": "postgres:17-alpine",
+      "host": "127.0.0.1",
+      "port": 51653,
+      "native": "tongzhang_48_native",
+      "integration": "tongzhang_48_test",
+      "version": "PostgreSQL 17.11 on aarch64-unknown-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit",
+      "imageDigest": [
+        "postgres@sha256:b0f9560a2de083e2cc7382e75f808c7381a32852a7ec49117deedb300e552b24"
+      ]
+    },
+    "production": false
+  },
+  "limits": [
+    "Android emulator only",
+    "No physical device",
+    "No iOS native install",
+    "No camera capture success",
+    "No signed release build or production deployment"
+  ]
+}

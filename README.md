@@ -80,6 +80,7 @@ pnpm export:mobile
 - [Issue #32 主线覆盖核对与清理竞争回归](docs/issue32-regression-validation.md)
 - [Issue #19 建账、加入原生联调与 CI](docs/issue19-native-environment-validation.md)
 - [Issue #33 Android 原生安装、图片权限与真实联调](docs/issue33-android-native-validation.md)
+- [Issue #48 固定候选、Android 双账号闭环与在线认证门禁](docs/issue48-native-candidate-validation.md)
 - [建账与邀请接口索引、双账号操作说明（#20）](docs/ledger-invitation-api-guide.md)
 - [消费、收据与正式冻结原生验收（#31）](docs/issue31-native-acceptance.md)
 - [消费、图片、正式结算与个人归档操作说明（#34）](docs/expense-settlement-api-guide.md)
