@@ -72,6 +72,7 @@ pnpm export:mobile
 - [正式结算与账本冻结验证](docs/settlement-freeze-validation.md)
 - [正式结算进度、已还登记与结清验证](docs/settlement-progress-validation.md)
 - [移动端正式结算确认、记录与原生验证（#27）](docs/mobile-settlement-validation.md)
+- [Issue #42 已还、结清、归档与自定义封面完整原生验收](docs/issue42-mobile-completion-validation.md)
 - [双令牌认证变更与验证](docs/auth-token-validation.md)
 - [登录、权限与幂等回归](docs/auth-regression-validation.md)
 - [Issue #18 建账、邀请码与加入自动化测试](docs/issue18-ledger-invitation-tests.md)
@@ -92,6 +93,6 @@ pnpm export:mobile
 - [macOS、Linux 与 Windows 成员环境配置](docs/environment-setup.md)
 - [本次工程验收记录](docs/engineering-status.md)
 
-账号、账本、邀请、消费新增/查询、收据、余额和只读结算预览的移动端页面已接通真实接口；正式冻结确认与记录查询已接通；还款登记、确认结清和个人归档的完整移动端流程仍待后续实现。
+账号、账本、邀请、消费新增/查询、收据、余额和只读结算预览的移动端页面已接通真实接口；正式冻结、记录查询、整笔已还登记、创建者结清、个人归档及历史只读查看均已接通；建账支持从相册选择自定义封面。
 
 移动端建账、账本列表/详情、成员面板和邀请码预览/加入已按真实接口契约接线，登录后进入账本列表。对应服务端 [PR #21](https://github.com/Liangbai2333/tongzhang/pull/21) 与移动端 [PR #25](https://github.com/Liangbai2333/tongzhang/pull/25) 均已合入主线；当前版本的接口与双账号操作见 [接口索引](docs/ledger-invitation-api-guide.md)，主线 `3cb6e0b` 的本轮复测见 [原生联调记录](docs/issue19-native-environment-validation.md)。原生截图、历史隔离联调及本次主线回归结果见 [建账与邀请界面验证](docs/ledger-invitation-ui-validation.md)。本轮已接通消费与收据的移动端流程、成员余额和只读结算预览，见 [实际验证](docs/mobile-expenses-validation.md)；正式结算进度、登记已还和创建者结清服务端已完成，见 [接口与验证](docs/settlement-progress-validation.md)。个人归档服务端已随主线接通；消费改删服务端仍未实现。

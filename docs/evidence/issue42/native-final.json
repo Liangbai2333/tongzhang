@@ -1,0 +1,93 @@
+{
+  "source": "209727140390a519c59f9ee287b8e7cd3e3472e7",
+  "platform": "Android 17 / API 37",
+  "device": "Medium_Phone_API_37.0",
+  "resolution": "1080x2400",
+  "nativeBuild": "pnpm build:android (Prebuild + compile + install), BUILD SUCCESSFUL in 30s",
+  "apk": {
+    "bytes": 99547334,
+    "sha256": "72504440573ae6985ad362bbd53854b03b46ac4d5a97c17513b0b53a61bbecf0"
+  },
+  "generatedApplicationSha256": "1f88d8c26c954120f3f40e34e0191dfc4b5278d2cbf80b965c5ce1bc5cb81bc5",
+  "retry": {
+    "keyDigest": "69c337470f9b",
+    "beforeExplicitRetryCount": 1,
+    "time": "2026-10-27T11:21:01.109Z",
+    "ledgerId": "208efc44-27e3-448d-842b-6f684733989c",
+    "afterExplicitRetryCount": 2,
+    "attempts": [
+      {
+        "keyDigest": "69c337470f9b",
+        "time": "2026-10-27T11:21:01.109Z",
+        "method": "POST",
+        "path": "/api/v1/ledgers",
+        "status": 201,
+        "body": {
+          "data": {
+            "ledger": {
+              "id": "208efc44-27e3-448d-842b-6f684733989c",
+              "name": "Issue42-Native-Retry",
+              "coverKey": null,
+              "coverImageId": "5ff34118-9cd1-4d3b-9930-1aa4ea669805",
+              "status": "ACTIVE",
+              "version": 1,
+              "memberCount": 1,
+              "expenseTotalCents": "0",
+              "myRemainingNetCents": "0",
+              "archivedAt": null,
+              "createdAt": "2026-10-27T11:21:01.089Z"
+            },
+            "invitation": {
+              "id": "786ba7e9-f9d5-4355-a5be-0b1d91b81b63",
+              "code": "KVN23H",
+              "expiresAt": "2026-11-03T11:21:01.098Z",
+              "expired": false,
+              "qrPayload": "tongzhang:invite:v1:KVN23H"
+            }
+          }
+        },
+        "droppedAfterCommit": true
+      },
+      {
+        "keyDigest": "69c337470f9b",
+        "time": "2026-10-27T11:21:18.211Z",
+        "method": "POST",
+        "path": "/api/v1/ledgers",
+        "status": 201,
+        "body": {
+          "data": {
+            "ledger": {
+              "id": "208efc44-27e3-448d-842b-6f684733989c",
+              "name": "Issue42-Native-Retry",
+              "coverKey": null,
+              "coverImageId": "5ff34118-9cd1-4d3b-9930-1aa4ea669805",
+              "status": "ACTIVE",
+              "version": 1,
+              "memberCount": 1,
+              "expenseTotalCents": "0",
+              "myRemainingNetCents": "0",
+              "archivedAt": null,
+              "createdAt": "2026-10-27T11:21:01.089Z"
+            },
+            "invitation": {
+              "id": "786ba7e9-f9d5-4355-a5be-0b1d91b81b63",
+              "code": "KVN23H",
+              "expiresAt": "2026-11-03T11:21:01.098Z",
+              "expired": false,
+              "qrPayload": "tongzhang:invite:v1:KVN23H"
+            }
+          }
+        }
+      }
+    ],
+    "counts": {
+      "ledgers": 1,
+      "members": 1,
+      "invitations": 1,
+      "bound_images": 1,
+      "creation_audits": 1
+    },
+    "imageUploadsBetweenAttempts": 0
+  },
+  "note": "Only App actions performed the two creation requests; first response connection was deliberately dropped after real commit. No native transport retry occurred. Upload reference was reused; no second image upload."
+}
