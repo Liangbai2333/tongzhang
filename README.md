@@ -73,6 +73,7 @@ pnpm export:mobile
 - [正式结算进度、已还登记与结清验证](docs/settlement-progress-validation.md)
 - [移动端正式结算确认、记录与原生验证（#27）](docs/mobile-settlement-validation.md)
 - [Issue #42 已还、结清、归档与自定义封面完整原生验收](docs/issue42-mobile-completion-validation.md)
+- [Issue #43–#45 归档、图片与结算联合验收](docs/issues43-45-integration-validation.md)
 - [双令牌认证变更与验证](docs/auth-token-validation.md)
 - [登录、权限与幂等回归](docs/auth-regression-validation.md)
 - [Issue #18 建账、邀请码与加入自动化测试](docs/issue18-ledger-invitation-tests.md)

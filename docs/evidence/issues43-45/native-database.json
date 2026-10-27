@@ -1,0 +1,183 @@
+{
+  "database": "tongzhang_issue42",
+  "checkedAt": "2026-10-27T12:10:30.179Z",
+  "ledgers": [
+    {
+      "ledger": {
+        "id": "2ff58a02-bb5c-4912-9a37-eaaa52017aae",
+        "name": "Issue45-Zero-Transfer",
+        "status": "SETTLED",
+        "version": 3,
+        "settled_at": "2026-10-27T12:04:25.211Z",
+        "cover_image_id": null
+      },
+      "members": [
+        {
+          "id": "30886229-f548-4ab8-be9f-7222237a6638",
+          "user_id": "92f8392f-76ef-4d9e-b77b-d0a3a3a94af4",
+          "archived_at": "2026-10-27T12:05:53.577Z"
+        }
+      ],
+      "expenses": [
+        {
+          "id": "85f357e6-48d7-4552-a5bf-c65dc0480b30",
+          "amount_cents": "100"
+        }
+      ],
+      "splits": [
+        {
+          "member_id": "30886229-f548-4ab8-be9f-7222237a6638",
+          "amount_cents": "100"
+        }
+      ],
+      "batches": [
+        {
+          "id": "93a00b41-d275-4868-9f22-aa86a2096911",
+          "source_version": 2,
+          "expense_total_cents": "100",
+          "transfer_total_cents": "0",
+          "transfer_count": 0,
+          "net_snapshot": [
+            {
+              "memberId": "30886229-f548-4ab8-be9f-7222237a6638",
+              "netCents": "0"
+            }
+          ]
+        }
+      ],
+      "transfers": [],
+      "audits": [
+        {
+          "action": "EXPENSE_CREATED",
+          "n": 1
+        },
+        {
+          "action": "LEDGER_ARCHIVED",
+          "n": 1
+        },
+        {
+          "action": "LEDGER_CREATED",
+          "n": 1
+        },
+        {
+          "action": "SETTLEMENT_STARTED",
+          "n": 1
+        }
+      ]
+    },
+    {
+      "ledger": {
+        "id": "74e59955-693b-4333-b9ee-1ba8f0e69ce0",
+        "name": "Issue42-Native-120",
+        "status": "SETTLED",
+        "version": 5,
+        "settled_at": "2026-10-27T11:10:43.250Z",
+        "cover_image_id": "04a91b24-f556-47df-b925-751320103498"
+      },
+      "members": [
+        {
+          "id": "3f24baf6-638d-4a4c-bb5d-5d3bc00b52a6",
+          "user_id": "d068a1ac-f38c-45a8-9dd0-d5274fe88296",
+          "archived_at": "2026-10-27T11:11:15.058Z"
+        },
+        {
+          "id": "c402c896-fa74-4306-b7f2-2c5c6a22eeaa",
+          "user_id": "92f8392f-76ef-4d9e-b77b-d0a3a3a94af4",
+          "archived_at": null
+        }
+      ],
+      "expenses": [
+        {
+          "id": "3d150380-c268-4ffa-8492-7d150aec8fe4",
+          "amount_cents": "12000"
+        }
+      ],
+      "splits": [
+        {
+          "member_id": "3f24baf6-638d-4a4c-bb5d-5d3bc00b52a6",
+          "amount_cents": "6000"
+        },
+        {
+          "member_id": "c402c896-fa74-4306-b7f2-2c5c6a22eeaa",
+          "amount_cents": "6000"
+        }
+      ],
+      "batches": [
+        {
+          "id": "9f596347-f570-4031-8920-f49b4b2d461a",
+          "source_version": 3,
+          "expense_total_cents": "12000",
+          "transfer_total_cents": "6000",
+          "transfer_count": 1,
+          "net_snapshot": [
+            {
+              "memberId": "3f24baf6-638d-4a4c-bb5d-5d3bc00b52a6",
+              "netCents": "-6000"
+            },
+            {
+              "memberId": "c402c896-fa74-4306-b7f2-2c5c6a22eeaa",
+              "netCents": "6000"
+            }
+          ]
+        }
+      ],
+      "transfers": [
+        {
+          "id": "781a4e78-01b4-48a0-a21a-59d63fed6350",
+          "amount_cents": "6000",
+          "status": "PAID",
+          "registered_at": "2026-10-27T11:09:55.746Z",
+          "registered_by_member_id": "3f24baf6-638d-4a4c-bb5d-5d3bc00b52a6"
+        }
+      ],
+      "audits": [
+        {
+          "action": "EXPENSE_CREATED",
+          "n": 1
+        },
+        {
+          "action": "LEDGER_ARCHIVED",
+          "n": 1
+        },
+        {
+          "action": "LEDGER_CREATED",
+          "n": 1
+        },
+        {
+          "action": "LEDGER_SETTLED",
+          "n": 1
+        },
+        {
+          "action": "MEMBER_JOINED",
+          "n": 1
+        },
+        {
+          "action": "SETTLEMENT_STARTED",
+          "n": 1
+        },
+        {
+          "action": "TRANSFER_PAID",
+          "n": 1
+        }
+      ]
+    }
+  ],
+  "images": [
+    {
+      "id": "04a91b24-f556-47df-b925-751320103498",
+      "kind": "COVER",
+      "byte_size": 37140,
+      "sha256": "bc4f056aa1993bc615790edcae4985f6b3a94a6eb637462ba77571386c5ef65f",
+      "actualBytes": 37140,
+      "actualSha256": "bc4f056aa1993bc615790edcae4985f6b3a94a6eb637462ba77571386c5ef65f"
+    },
+    {
+      "id": "d74958a5-073a-4f3c-98be-69040c1151e0",
+      "kind": "RECEIPT",
+      "byte_size": 43782,
+      "sha256": "d53608586ed6fc6f5ed3b6993d0b547a0fcc00c119a85297aff7fd7c6cef0d16",
+      "actualBytes": 43782,
+      "actualSha256": "d53608586ed6fc6f5ed3b6993d0b547a0fcc00c119a85297aff7fd7c6cef0d16"
+    }
+  ]
+}

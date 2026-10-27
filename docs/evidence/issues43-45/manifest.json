@@ -1,0 +1,99 @@
+{
+  "businessSource": "f46ed0c34fb61b6c6ea95ea0d5863a6aba7345e2",
+  "testSource": "f8cc89ebb5dc6ffa853c3b87019da8f11c8f4d7a",
+  "nativeSource": "209727140390a519c59f9ee287b8e7cd3e3472e7",
+  "apkSha256": "72504440573ae6985ad362bbd53854b03b46ac4d5a97c17513b0b53a61bbecf0",
+  "sourceFiles": [
+    {
+      "path": "apps/mobile/tests/ledgers-ui.test.tsx",
+      "sha256": "57b097e4cb24e60e5a6a9525e89a80f0f9c239b318f870dca3fddc77ab2a12a6"
+    },
+    {
+      "path": "apps/server/tests/archive.integration.test.ts",
+      "sha256": "b1cd3ad182633f1bcff288c1fa84f6a9532802cfef357440d415b4fdaf59016c"
+    }
+  ],
+  "evidenceFiles": [
+    {
+      "path": "01-zero-expense.png",
+      "bytes": 143166,
+      "sha256": "961941ca966039af538e8d164bb4c8e743c29d0dfedde3611711e98e00b3415b"
+    },
+    {
+      "path": "02-zero-preview.png",
+      "bytes": 199467,
+      "sha256": "06428463b9dbfe65c31030aa85497bfb2cc2c5a58d5ab15474e8614818675f5e"
+    },
+    {
+      "path": "03-zero-freeze-confirm.png",
+      "bytes": 257101,
+      "sha256": "c2a479a87a823c0dfc1d51d0eb5952539331859bba426c0ee5ec9ec163514072"
+    },
+    {
+      "path": "04-zero-directly-settled.png",
+      "bytes": 202447,
+      "sha256": "17c4cf72e8b3a82162f42166f7cf40b2a845e868ec210a249a676720af24e527"
+    },
+    {
+      "path": "05-history-empty.png",
+      "bytes": 106498,
+      "sha256": "c18f392d319bb156f575c5167d84812b0d20c47d8e64e3f1b2c0da7d7d2dbfec"
+    },
+    {
+      "path": "06-history-populated.png",
+      "bytes": 107371,
+      "sha256": "ddd0670c8a2fd38d9b212f206388535ee2b9f37eb559804665dbdf70cc28a9cd"
+    },
+    {
+      "path": "07-archived-zero-record.png",
+      "bytes": 206687,
+      "sha256": "fcf00c9c8d4e51e5f63042f819e50ba964d4ba657859e75aea5d9442ee7d2975"
+    },
+    {
+      "path": "08-reopened-zero-record.png",
+      "bytes": 205951,
+      "sha256": "9455c747453c3faf4733ae31836a24c007a7ae56d7629a8c60168f5a90c1c388"
+    },
+    {
+      "path": "check.txt",
+      "bytes": 652,
+      "sha256": "b369bb08ae045e36016bba329162f9ef60f9870403f049ea6b36d39ae2049d1f"
+    },
+    {
+      "path": "http-verification.json",
+      "bytes": 8478,
+      "sha256": "faec5c7b541b3084aa544e51bdb2429c8fd2f2504e8177662cb540110a9f51ab"
+    },
+    {
+      "path": "integration.txt",
+      "bytes": 381,
+      "sha256": "3946a037fe376c706c0b6727a115afb464bca0d5480ff40040c14a79549e081f"
+    },
+    {
+      "path": "mobile.txt",
+      "bytes": 1314,
+      "sha256": "13b3b0701262f3123a0e945070b7d141732cb32f30fd147b2accc757f1c6ce8c"
+    },
+    {
+      "path": "native-database.json",
+      "bytes": 4768,
+      "sha256": "0aff5f684891a95da6a98b5d17186c7ef33f7398b099c6bad71b4de7a5391414"
+    },
+    {
+      "path": "native-requests.json",
+      "bytes": 42946,
+      "sha256": "d198f4767772d156093908779dfd4732b496442be9e1a105f43f858a462ee7d2"
+    },
+    {
+      "path": "test-database-cleanup.json",
+      "bytes": 560,
+      "sha256": "2adcd5eabb416188a570e31f314dcc2121f1327fffd9a0ff8198f0c4e99a7dd7"
+    },
+    {
+      "path": "unit.txt",
+      "bytes": 353,
+      "sha256": "eb9d88e7b6733bac2ef1cdaa39d5a8fc0306b66cde24040f2e6bc9ccb1b504ca"
+    }
+  ],
+  "note": "Native App source unchanged from the reviewed PR candidate; this issue group adds tests/documentation only. All new screenshots captured directly from Android emulator, not a Web UI or Figma. PostgreSQL integration uses a different _test database from native acceptance."
+}
