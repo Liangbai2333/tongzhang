@@ -110,7 +110,9 @@ export function createAuthSession(deps: SessionDependencies) {
       const token = await this.read();
       check(version);
       try {
-        return await request(token);
+        const result = await request(token);
+        check(version);
+        return result;
       } catch (error) {
         if (error instanceof ApiError && error.status === 401 && version === generation)
           await clear(undefined, error);

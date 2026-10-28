@@ -11,6 +11,7 @@ const mockAuth = {
   login: mockLogin,
   register: mockRegister,
   logout: mockLogout,
+  clearLocal: jest.fn<() => Promise<void>>(),
   restore: jest.fn(),
   operation: null,
   notice: null,
@@ -39,6 +40,18 @@ beforeEach(() => {
   mockLogout.mockResolvedValue();
 });
 describe('real auth page interactions with isolated API callbacks', () => {
+  it('offers explicit reauthentication and abandonment without navigating away from the retained form', async () => {
+    await render(<AuthScreen recovery />);
+    expect(screen.getByLabelText('账号')).toHaveDisplayValue('test@example.test');
+    expect(screen.queryByLabelText('返回')).toBeNull();
+    expect(screen.queryByText('注册同账 →')).toBeNull();
+    expect(screen.getByText(/登录其他账号会丢弃原表单/)).toBeOnTheScreen();
+    await userEvent.type(screen.getByLabelText('密码'), 'correct-password');
+    await userEvent.press(screen.getByRole('button', { name: '登录并继续' }));
+    expect(mockLogin).toHaveBeenCalledTimes(1);
+    await userEvent.press(screen.getByRole('button', { name: '放弃表单并返回登录' }));
+    expect(mockAuth.clearLocal).toHaveBeenCalledTimes(1);
+  });
   it('validates empty credentials without sending a request', async () => {
     await render(<AuthScreen />);
     await userEvent.press(screen.getByRole('button', { name: '登录' }));

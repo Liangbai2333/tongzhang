@@ -21,7 +21,7 @@ export function Field({
   trailingIcon?: DesignAsset;
   error?: string;
   passwordHiddenIcon?: DesignAsset;
-  variant?: 'default' | 'inset' | 'compact' | 'panel';
+  variant?: 'default' | 'inset' | 'compact' | 'panel' | 'auth';
 }) {
   const [focused, setFocused] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -68,6 +68,7 @@ export function Field({
           variant === 'inset' && styles.inset,
           variant === 'compact' && styles.compactField,
           variant === 'panel' && styles.panelField,
+          variant === 'auth' && styles.authField,
           focused && styles.focused,
           error && { borderColor: colors.danger },
         ]}
@@ -122,6 +123,7 @@ const styles = StyleSheet.create({
     minHeight: 56,
   },
   panelField: { minHeight: 50, borderRadius: 10, borderWidth: 1, paddingHorizontal: 14 },
+  authField: { minHeight: 52, borderWidth: 1 },
   panelInput: { paddingVertical: 14, fontSize: 14, lineHeight: 20 },
   panelLabel: { fontSize: 13, lineHeight: 19 },
   compactField: { minHeight: 44 },

@@ -111,6 +111,20 @@ describe('mobile online auth session', () => {
     expect(saved()).toBe('other-refresh');
     expect(deps.refresh).not.toHaveBeenCalled();
   });
+  it('rejects an old successful upload response after reauthentication instead of continuing its business write', async () => {
+    const { session } = fixture();
+    await session.save(pair('old-access', 'old-refresh'));
+    const response = deferred<string>();
+    const nextWrite = vi.fn();
+    const pending = session.authorized(() => response.promise).then(nextWrite);
+    await Promise.resolve();
+    await session.clear();
+    await session.save(pair('new-access', 'new-refresh'));
+    response.resolve('old-image-reference');
+    await expect(pending).rejects.toMatchObject({ status: 401 });
+    expect(nextWrite).not.toHaveBeenCalled();
+    expect(await session.read()).toBe('new-access');
+  });
   it('rejects an old refresh arriving after a different login', async () => {
     const { deps, session, saved } = fixture();
     const response = deferred<TokenPair>();

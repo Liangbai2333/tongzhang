@@ -12,13 +12,14 @@ const user = {
 };
 const mockRestore = jest.fn<() => Promise<{ data: typeof user }>>();
 const mockLogout = jest.fn<() => Promise<{ serverRevoked: boolean; localCleared: boolean }>>();
+const mockLogin = jest.fn<() => Promise<void>>();
 let mockInvalidation: (reason?: unknown) => void;
 let mockNetwork: (state: { isConnected: boolean }) => void;
 let mockVersion = 0;
 jest.mock('../src/features/auth/api', () => ({
   authApi: {
     restore: () => mockRestore(),
-    login: jest.fn(),
+    login: () => mockLogin(),
     register: jest.fn(),
     logout: () => mockLogout(),
   },
@@ -47,6 +48,19 @@ function Probe() {
         {auth.status}:{auth.user?.username ?? '无用户'}
       </Text>
       <Text>{auth.notice}</Text>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel="重新登录"
+        onPress={() => {
+          void auth.login({
+            params: {},
+            query: {},
+            body: { account: 'online@example.test', password: 'password-2026' },
+          });
+        }}
+      >
+        <Text>重新登录</Text>
+      </Pressable>
       <Pressable
         accessibilityRole="button"
         accessibilityLabel="核验"
@@ -86,6 +100,12 @@ beforeEach(() => {
   mockVersion = 0;
   mockRestore.mockReset().mockResolvedValue({ data: user });
   mockLogout.mockReset().mockResolvedValue({ serverRevoked: true, localCleared: true });
+  mockLogin.mockReset().mockImplementation(async () => {
+    mockVersion++;
+    mockInvalidation(); // authApi.clear before login
+    mockVersion++;
+    mockInvalidation(); // authApi.save after login
+  });
 });
 describe('AuthProvider lifecycle and memory isolation', () => {
   it('does not expose a user until online verification finishes', async () => {
@@ -102,15 +122,15 @@ describe('AuthProvider lifecycle and memory isolation', () => {
     });
     expect(await screen.findByText('authenticated:在线用户')).toBeOnTheScreen();
   });
-  it('removes protected data and query memory when a session is revoked', async () => {
+  it('retains process-local query memory only behind the reauthentication gate after revocation', async () => {
     const client = await mount();
     expect(await screen.findByText('authenticated:在线用户')).toBeOnTheScreen();
     await act(async () => {
       mockVersion++;
       mockInvalidation(new ApiError('UNAUTHENTICATED', 'revoked', 401));
     });
-    expect(screen.getByText('anonymous:无用户')).toBeOnTheScreen();
-    expect(client.getQueryData(['private-user-data'])).toBeUndefined();
+    expect(screen.getByText('reauthentication:在线用户')).toBeOnTheScreen();
+    expect(client.getQueryData(['private-user-data'])).toEqual({ balance: '12300' });
   });
   it('hides protected content offline without retrying writes on reconnect', async () => {
     await mount();
@@ -129,6 +149,33 @@ describe('AuthProvider lifecycle and memory isolation', () => {
     await userEvent.press(screen.getByRole('button', { name: '核验' }));
     expect(await screen.findByText('authenticated:在线用户')).toBeOnTheScreen();
   });
+  it.each([false, true])(
+    'clears retained query memory only when the verified login changes account (%s)',
+    async (differentAccount) => {
+      const client = await mount();
+      await screen.findByText('authenticated:在线用户');
+      await act(async () => {
+        mockInvalidation(new ApiError('UNAUTHENTICATED', 'revoked', 401));
+      });
+      expect(client.getQueryData(['private-user-data'])).toBeDefined();
+      let finish!: (value: { data: typeof user }) => void;
+      mockRestore.mockReturnValueOnce(
+        new Promise((resolve) => {
+          finish = resolve;
+        }),
+      );
+      await userEvent.press(screen.getByRole('button', { name: '重新登录' }));
+      expect(screen.getByText('reauthentication:在线用户')).toBeOnTheScreen();
+      expect(client.getQueryData(['private-user-data'])).toBeDefined();
+      await act(async () => {
+        finish({ data: differentAccount ? { ...user, id: 'another-account' } : user });
+      });
+      await screen.findByText('authenticated:在线用户');
+      expect(client.getQueryData(['private-user-data'])).toEqual(
+        differentAccount ? undefined : { balance: '12300' },
+      );
+    },
+  );
   it('preserves identity across a native picker but still verifies online before resuming', async () => {
     let change!: (state: 'active' | 'background') => void;
     const listener = jest.mocked(AppState.addEventListener);

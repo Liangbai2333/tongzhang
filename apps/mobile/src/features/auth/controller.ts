@@ -1,6 +1,6 @@
 import type { EndpointInput, UserSelf } from '@tongzhang/contracts';
 import { ApiError } from '../../lib/api-error';
-export type AuthStatus = 'restoring' | 'authenticated' | 'anonymous' | 'error';
+export type AuthStatus = 'restoring' | 'authenticated' | 'anonymous' | 'error' | 'reauthentication';
 export interface LogoutResult {
   serverRevoked: boolean;
   localCleared: boolean;
@@ -19,6 +19,8 @@ interface Dependencies {
   logout: () => Promise<LogoutResult>;
   sessionVersion: () => number;
   clearLocal: () => Promise<void>;
+  clearMemory: () => void;
+  setAdmission: (admitted: boolean) => void;
 }
 export function createAuthController(api: Dependencies) {
   let state: AuthState = {
@@ -34,6 +36,7 @@ export function createAuthController(api: Dependencies) {
   const listeners = new Set<() => void>();
   function update(patch: Partial<AuthState>) {
     state = { ...state, ...patch };
+    api.setAdmission(state.status === 'authenticated');
     for (const listener of listeners) listener();
   }
   async function verify(id: number) {
@@ -42,20 +45,29 @@ export function createAuthController(api: Dependencies) {
     if (suspended) throw new ApiError('NETWORK_UNAVAILABLE', '请重新在线核验登录状态');
     if (id !== intent || version !== api.sessionVersion())
       throw new ApiError('UNAUTHENTICATED', '登录状态已改变，请重新登录', 401);
+    if (state.user && state.user.id !== result.data.id) api.clearMemory();
     update({ user: result.data, status: 'authenticated', error: null, notice: null });
   }
   async function signIn<K extends 'login' | 'register'>(operation: K, input: EndpointInput<K>) {
     if (state.operation) return;
     const id = ++intent;
+    const retained = state.status === 'reauthentication' ? state.user : null;
     suspended = false;
-    update({ operation, status: 'anonymous', user: null, error: null, notice: null });
+    update({
+      operation,
+      status: retained ? 'reauthentication' : 'anonymous',
+      user: retained,
+      error: null,
+      notice: null,
+    });
     try {
       if (operation === 'login') await api.login(input as EndpointInput<'login'>);
       else await api.register(input as EndpointInput<'register'>);
       if (id !== intent) return;
       await verify(id);
     } catch (error) {
-      if (id === intent) update({ status: 'anonymous', user: null, error });
+      if (id === intent)
+        update({ status: retained ? 'reauthentication' : 'anonymous', user: retained, error });
       throw error;
     } finally {
       if (id === intent) update({ operation: null });
@@ -70,12 +82,21 @@ export function createAuthController(api: Dependencies) {
       };
     },
     invalidate(reason?: unknown) {
+      // The identity here only owns hidden, process-local form memory. Credentials
+      // have already been revoked; only a new login plus getMe can reopen it.
+      const retain =
+        state.user &&
+        !['logout', 'register'].includes(state.operation ?? '') &&
+        (state.status === 'reauthentication' ||
+          (reason instanceof ApiError &&
+            (reason.status === 401 || reason.code === 'SESSION_REFRESH_UNCERTAIN')));
       update({
-        user: null,
-        status:
-          reason &&
-          !(reason instanceof ApiError && reason.status === 401) &&
-          !['login', 'register'].includes(state.operation ?? '')
+        user: retain ? state.user : null,
+        status: retain
+          ? 'reauthentication'
+          : reason &&
+              !(reason instanceof ApiError && reason.status === 401) &&
+              !['login', 'register'].includes(state.operation ?? '')
             ? 'error'
             : 'anonymous',
         error: reason ?? null,
@@ -91,6 +112,7 @@ export function createAuthController(api: Dependencies) {
     login: (input: EndpointInput<'login'>) => signIn('login', input),
     register: (input: EndpointInput<'register'>) => signIn('register', input),
     restore(): Promise<void> {
+      if (state.status === 'reauthentication') return Promise.resolve();
       if (restorePending) return restorePending;
       if (state.operation) return Promise.resolve();
       const id = ++intent;
@@ -102,11 +124,15 @@ export function createAuthController(api: Dependencies) {
         } catch (error) {
           if (id === intent)
             update({
-              // Recoverable read failures keep form/attempt memory behind the gate.
-              // Revocation still removes identity and unmounts protected screens.
-              user: error instanceof ApiError && error.status === 401 ? null : state.user,
+              user: state.user,
               error,
-              status: error instanceof ApiError && error.status === 401 ? 'anonymous' : 'error',
+              status:
+                state.status === 'reauthentication' ||
+                (state.user && error instanceof ApiError && error.status === 401)
+                  ? 'reauthentication'
+                  : error instanceof ApiError && error.status === 401
+                    ? 'anonymous'
+                    : 'error',
             });
         } finally {
           if (id === intent) update({ operation: null });
@@ -152,6 +178,7 @@ export function createAuthController(api: Dependencies) {
       }
     },
     suspend({ preserveScreen = false }: { preserveScreen?: boolean } = {}) {
+      if (state.status === 'reauthentication') return;
       suspended = true;
       if (state.operation) {
         if (!preserveScreen) update({ user: null });
