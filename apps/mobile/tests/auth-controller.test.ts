@@ -111,6 +111,22 @@ describe('mobile authentication and route admission state', () => {
       user: { id: 'another-account' },
     });
   });
+  it('keeps reauthentication gated when its successful verification arrives after a network loss', async () => {
+    const { api, auth } = fixture();
+    await auth.restore();
+    auth.invalidate(new ApiError('UNAUTHENTICATED', 'revoked', 401));
+    const response = deferred<{ data: typeof user }>();
+    api.getMe.mockReturnValueOnce(response.promise);
+    const pending = auth.login(input);
+    await Promise.resolve();
+    auth.suspend({ preserveScreen: true });
+    response.resolve({ data: user });
+    await expect(pending).rejects.toMatchObject({ code: 'NETWORK_UNAVAILABLE' });
+    expect(auth.getSnapshot()).toMatchObject({ status: 'reauthentication', user });
+    expect(api.setAdmission).toHaveBeenLastCalledWith(false);
+    await auth.login(input);
+    expect(auth.getSnapshot()).toMatchObject({ status: 'authenticated', user });
+  });
   it('keeps the recovery gate after failed credentials and abandons memory on explicit logout', async () => {
     const { api, auth } = fixture();
     await auth.restore();
