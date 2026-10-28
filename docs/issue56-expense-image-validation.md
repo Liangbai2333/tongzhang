@@ -1,0 +1,49 @@
+# Issue 56 消费分摊与图片候选回归
+
+2026-10-28，关联 [Issue #56](https://github.com/Liangbai2333/tongzhang/issues/56)。从最新远程 main `4f2aaf9c6c8141b0837f55ff27440e0c003f57dc` 创建独立 worktree，分支 `test/56-expense-image-regression`。本轮候选为 `1cea7ff01c38336ea5a503f48ea16dfb6441caa7`，其后仅补充本文和验证输出；业务实现与主线相同。
+
+主线数据库基线 130 项通过；补齐 4 项真实覆盖缺口后，134 项全部通过。没有发现需要修复的业务缺陷，没有修改业务实现、契约、路由、依赖、原生配置或界面。既有 #44、PR #50 的实现和并发测试原样复用，T09/T22 不重复认领或扣点，T15/T16/T26/T27 完成状态与剩余点数留待系统架构负责人验收。
+
+## 验收核对
+
+| 验收项                                   | 本次核对结果与可复查入口                                                                                                                                                                                                                                                                                                                                                                                                              |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 人均、按份、按金额，整数分重算与稳定余数 | [消费集成测试](../apps/server/tests/expenses.integration.test.ts)保留 12000→6000+6000、人均禁止传自算金额、按份 10000→3333+6667 用例；新增 EQUAL/SHARES 各 1 项，在 1 分和上限 999999999 分分别正序/逆序提交成员，同余数均由较小稳定成员 ID 得到多余 1 分，并核对真实 `expense_splits` 的 bigint 值和总和。SHARES 使用合法上限 10000 份。                                                                                             |
+| 按金额成功、合法成员及非法金额拒绝       | 新增 AMOUNT 成功用例：记录人、付款人、分摊角色分别核对；付款人不参与分摊，两个分摊人为 0 和 999999999 分。同键重放响应完全相同，只存在 1 笔消费、2 条分摊、1 条审计和 1 条幂等记录，账本版本只加 1。既有用例核对错误付款人、错误分摊成员、UUID 大小写和重复成员。新增 10 组非法输入经 HTTP 返回 400，包括零/负总额、小数、前导零、超业务上限、超 BIGINT、JSON 数字及非法手工分摊；逐次查询消费/分摊/审计/幂等均无写入，账本版本不变。 |
+| 消费及收据同事务、重放和失败无部分记录   | [图片集成测试](../apps/server/tests/images.integration.test.ts)复跑真实收据绑定、重复/竞争绑定、绑定后注入失败和实际审计 INSERT 失败；消费、分摊、图片绑定、账本版本、审计和幂等共同回滚。原上传资产仍在，绑定失败后以原图片 ID/原幂等键显式提交成功。封面对应的建账/成员/邀请/审计/幂等回滚见 [cover-cleanup](../apps/server/tests/cover-cleanup.integration.test.ts)。                                                              |
+| COVER/RECEIPT、归属、绑定、大小和解码    | [图片集成测试](../apps/server/tests/images.integration.test.ts)与[图片校验单测](../apps/server/tests/images.test.ts)复跑 JPEG/PNG、错误 kind、他人/不存在/已绑定资产、重复字段/未知字段、伪造 MIME、损坏/空文件、边长与像素限制，以及恰好 1 MiB 接受、超限 413。COVER 与 RECEIPT 不能互换或挪用。                                                                                                                                     |
+| 图片鉴权、内容摘要及上传和绑定的区别     | 上传成功仅生成私有、未绑定 `image_assets` 行；未绑定图片非上传者 403。JPEG/PNG 上传后的 sha256、长度和 bytea 与原内容一致，鉴权读取返回相同字节且 `Cache-Control: no-store`。封面建账/收据消费保存成功后，成员可读、非成员 403、匿名 401。上传成功并不代表业务绑定成功，失败时仍保留未绑定图片。详见 images 与 cover-cleanup 两套集成用例。                                                                                           |
+| 有效绑定与清理竞争                       | 原样复跑 [cover-cleanup](../apps/server/tests/cover-cleanup.integration.test.ts) 全部 14 项：只清理超过 24 小时、未绑定且无业务引用的图片；近期、23 小时 59 分钟、已绑定/仍被引用均保留。COVER/RECEIPT 绑定排队时清理跳过锁；清理先持锁时，真实 HTTP 绑定等待，清理提交则 403 且业务无残留，清理回滚则绑定 201、原字节保留。批次上限与并发清理无重复删除。仅在本轮独立测试库执行。                                                    |
+| 完整闭环后金额与引用                     | 全量复跑 [settlement-progress](../apps/server/tests/settlement-progress.integration.test.ts) 的真实消费→冻结→登记→结清→个人归档，比较原消费、分摊、批次和转账，消费总额不随已还改变；图片全生命周期与清理按前述集成用例验证。复用此前[联合原生验收](issues43-45-integration-validation.md)作历史材料，不将旧截图描述为本候选的原生复测。                                                                                              |
+
+## App 失败与显式恢复
+
+本轮运行完整 `pnpm test:mobile`，iOS/Android 共 24 套件、232 项通过。以下结论来自实际页面和 Hook 配合 API/原生替身的组件测试，不是本轮原生安装或系统相册实操；本轮没有界面修改。
+
+| 场景                             | 已有用例的实际断言                                                                                                                                                                                                                                                                                                                      |
+| -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 消费已上传收据，业务返回网络错误 | [expenses-ui](../apps/mobile/tests/expenses-ui.test.tsx) 的 `keeps an uploaded receipt ID after expense failure`：首次保存后上传 1 次，消费携带原 `receiptImageId`；按“重试原消费提交”后仍只上传 1 次，两次消费请求的 body/幂等键完全相同。                                                                                             |
+| 收据上传失败                     | 同文件 `stops before expense creation when receipt upload fails`：上传 1 次、消费 0 次、金额仍为 120.00；只有再次按保存后上传累计 2 次、消费 1 次，无自动写重试。                                                                                                                                                                       |
+| 替换选图失败或取消               | 同文件的 picker failure、replacing an already uploaded receipt fails、cancelled selection：相机权限失败和取消保留原收据，之前消费失败仍可见；重提不重新上传，原消费请求和键不变。显式移除才清理所持临时文件。                                                                                                                           |
+| 自定义封面失败                   | [ledgers-ui](../apps/mobile/tests/ledgers-ui.test.tsx) 的 `keeps name and uploaded COVER reference`：名称和原图片引用保留，显式重试不重复上传，建账请求与键相同；取消选图和上传错误保留选择。                                                                                                                                           |
+| 连续失败和图片编码               | [write-recovery](../apps/mobile/tests/write-recovery.test.tsx)复跑未知结果后离线/403/401 仍锁定原请求和键；[receipt-files](../apps/mobile/tests/receipt-files.test.tsx)复跑取消、解码失败、权限失败及临时文件清理；[images-api](../apps/mobile/tests/images-api.test.tsx)使用已安装 SDK 57 的真实 multipart 编码器核对文件字节与 MIME。 |
+
+## 命令与输出
+
+环境为 Node.js 24.22.0、pnpm 12.6.0、PostgreSQL 17.11。新建专用容器 `tongzhang-56-postgres`、数据库 `tongzhang_issue56_test`，端口只绑定 `127.0.0.1:52429`。测试显式设置 `TEST_DATABASE_URL`，由既有 global setup 应用已提交迁移；没有读取开发 `.env` 或对开发/共享业务库运行清理。
+
+| 命令                                                                                                          | 结果与输出                                                                                                                                                                                    |
+| ------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `pnpm install --frozen-lockfile`                                                                              | 成功，依赖与锁文件无变化。                                                                                                                                                                    |
+| 基线 `TEST_DATABASE_URL=… pnpm test:integration`                                                              | 15 文件 / 130 项通过，[输出](evidence/issue56/baseline-integration.txt)。                                                                                                                     |
+| `TEST_DATABASE_URL=… pnpm test:integration apps/server/tests/expenses.integration.test.ts --reporter=verbose` | 1 文件 / 20 项通过，[输出](evidence/issue56/expenses.txt)。                                                                                                                                   |
+| `pnpm check`                                                                                                  | 类型、ESLint、Prettier 通过，[输出](evidence/issue56/check.txt)。                                                                                                                             |
+| `pnpm test`                                                                                                   | 19 文件 / 120 项通过，[输出](evidence/issue56/unit.txt)。                                                                                                                                     |
+| `pnpm test:mobile`                                                                                            | iOS/Android 24 套件 / 232 项通过，[输出](evidence/issue56/mobile.txt)。                                                                                                                       |
+| `TEST_DATABASE_URL=… pnpm test:integration --reporter=verbose`                                                | 15 文件 / 134 项通过，[逐项输出](evidence/issue56/integration.txt)。                                                                                                                          |
+| 数据库只读清理审计                                                                                            | 复用 [#32 审计 SQL](evidence/issue32/cleanup-audit.sql)，public 全部 14 张表均为 0 行，测试触发器/函数/约束、夹具连接和 advisory lock 均为 0；[输出](evidence/issue56/database-cleanup.txt)。 |
+| 专用资源清理                                                                                                  | 审计后删除本轮容器及其匿名卷，[输出](evidence/issue56/resources-cleanup.txt)。                                                                                                                |
+
+日志仅移除行末空白及多余末尾空行。没有新增共享包、路由、依赖或原生配置，因此本轮不要求移动端导出、Expo Doctor 或原生重建。未扩展新功能，原有消费改删/统计等限制保持不变；本轮代码及自动化回归标准已完成，提交 PR 供系统架构负责人审核，不合并、不更新任务点数。
+
+重跑时提供名称以 `_test` 结尾的独立 PostgreSQL 测试库，显式设置 `TEST_DATABASE_URL` 后运行表中命令；清理竞争测试需允许在该测试库创建/删除触发器和函数。

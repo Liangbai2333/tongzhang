@@ -1,0 +1,4 @@
+docker rm -f -v tongzhang-56-postgres
+tongzhang-56-postgres
+Remaining matching containers: 0
+Anonymous volume 1acc57cb374530c7d6b6b1b4ae04bb185c2a5e86eed750ebc73b0cefdeb1bf79: removed (docker volume inspect reports no such volume)
