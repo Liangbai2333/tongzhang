@@ -1,0 +1,392 @@
+{
+  "checkedAtUtc": "2026-10-28T14:05:03.873Z",
+  "candidate": "bade61230ee3434d5bba443a7e258289d1cec057",
+  "executedHead": "bade61230ee3434d5bba443a7e258289d1cec057",
+  "changedRuntimeFilesSinceFinalDay6": [],
+  "unchangedServerAndContractsSince": "7616adb",
+  "lifecycleChanges": [
+    "apps/mobile/src/features/auth/controller.ts",
+    "apps/mobile/tests/auth-controller.test.ts"
+  ],
+  "unchangedNativeInputsSince": "2097271",
+  "historicalEvidenceIsNewExecution": false,
+  "endpoints": [
+    {
+      "id": "A01",
+      "operation": "register",
+      "method": "POST",
+      "path": "/api/v1/auth/register",
+      "contractStatus": 201,
+      "authenticated": false,
+      "idempotent": false,
+      "transport": "json"
+    },
+    {
+      "id": "A02",
+      "operation": "login",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "contractStatus": 200,
+      "authenticated": false,
+      "idempotent": false,
+      "transport": "json"
+    },
+    {
+      "id": "A03",
+      "operation": "logout",
+      "method": "POST",
+      "path": "/api/v1/auth/logout",
+      "contractStatus": 200,
+      "authenticated": true,
+      "idempotent": false,
+      "transport": "json"
+    },
+    {
+      "id": "A04",
+      "operation": "getMe",
+      "method": "GET",
+      "path": "/api/v1/me",
+      "contractStatus": 200,
+      "authenticated": true,
+      "idempotent": false,
+      "transport": "json"
+    },
+    {
+      "id": "A05",
+      "operation": "createLedger",
+      "method": "POST",
+      "path": "/api/v1/ledgers",
+      "contractStatus": 201,
+      "authenticated": true,
+      "idempotent": true,
+      "transport": "json"
+    },
+    {
+      "id": "A06",
+      "operation": "listLedgers",
+      "method": "GET",
+      "path": "/api/v1/ledgers",
+      "contractStatus": 200,
+      "authenticated": true,
+      "idempotent": false,
+      "transport": "json"
+    },
+    {
+      "id": "A07",
+      "operation": "getLedger",
+      "method": "GET",
+      "path": "/api/v1/ledgers/:ledgerId",
+      "contractStatus": 200,
+      "authenticated": true,
+      "idempotent": false,
+      "transport": "json"
+    },
+    {
+      "id": "A08",
+      "operation": "listMembers",
+      "method": "GET",
+      "path": "/api/v1/ledgers/:ledgerId/members",
+      "contractStatus": 200,
+      "authenticated": true,
+      "idempotent": false,
+      "transport": "json"
+    },
+    {
+      "id": "A09",
+      "operation": "getInvitation",
+      "method": "GET",
+      "path": "/api/v1/ledgers/:ledgerId/invitation",
+      "contractStatus": 200,
+      "authenticated": true,
+      "idempotent": false,
+      "transport": "json"
+    },
+    {
+      "id": "A10",
+      "operation": "resetInvitation",
+      "method": "POST",
+      "path": "/api/v1/ledgers/:ledgerId/invitation/reset",
+      "contractStatus": 200,
+      "authenticated": true,
+      "idempotent": true,
+      "transport": "json"
+    },
+    {
+      "id": "A11",
+      "operation": "previewJoin",
+      "method": "POST",
+      "path": "/api/v1/invitations/preview",
+      "contractStatus": 200,
+      "authenticated": true,
+      "idempotent": false,
+      "transport": "json"
+    },
+    {
+      "id": "A12",
+      "operation": "joinLedger",
+      "method": "POST",
+      "path": "/api/v1/invitations/join",
+      "contractStatus": 200,
+      "authenticated": true,
+      "idempotent": true,
+      "transport": "json"
+    },
+    {
+      "id": "A13",
+      "operation": "createExpense",
+      "method": "POST",
+      "path": "/api/v1/ledgers/:ledgerId/expenses",
+      "contractStatus": 201,
+      "authenticated": true,
+      "idempotent": true,
+      "transport": "json"
+    },
+    {
+      "id": "A14",
+      "operation": "listExpenses",
+      "method": "GET",
+      "path": "/api/v1/ledgers/:ledgerId/expenses",
+      "contractStatus": 200,
+      "authenticated": true,
+      "idempotent": false,
+      "transport": "json"
+    },
+    {
+      "id": "A15",
+      "operation": "getExpense",
+      "method": "GET",
+      "path": "/api/v1/ledgers/:ledgerId/expenses/:expenseId",
+      "contractStatus": 200,
+      "authenticated": true,
+      "idempotent": false,
+      "transport": "json"
+    },
+    {
+      "id": "A16",
+      "operation": "updateExpense",
+      "method": "PATCH",
+      "path": "/api/v1/ledgers/:ledgerId/expenses/:expenseId",
+      "contractStatus": 200,
+      "authenticated": true,
+      "idempotent": true,
+      "transport": "json"
+    },
+    {
+      "id": "A17",
+      "operation": "deleteExpense",
+      "method": "DELETE",
+      "path": "/api/v1/ledgers/:ledgerId/expenses/:expenseId",
+      "contractStatus": 200,
+      "authenticated": true,
+      "idempotent": true,
+      "transport": "json"
+    },
+    {
+      "id": "A18",
+      "operation": "uploadImage",
+      "method": "POST",
+      "path": "/api/v1/images",
+      "contractStatus": 201,
+      "authenticated": true,
+      "idempotent": false,
+      "transport": "multipart"
+    },
+    {
+      "id": "A19",
+      "operation": "getImage",
+      "method": "GET",
+      "path": "/api/v1/images/:imageId",
+      "contractStatus": 200,
+      "authenticated": true,
+      "idempotent": false,
+      "transport": "binary"
+    },
+    {
+      "id": "A20",
+      "operation": "getBalances",
+      "method": "GET",
+      "path": "/api/v1/ledgers/:ledgerId/balances",
+      "contractStatus": 200,
+      "authenticated": true,
+      "idempotent": false,
+      "transport": "json"
+    },
+    {
+      "id": "A21",
+      "operation": "getStatistics",
+      "method": "GET",
+      "path": "/api/v1/ledgers/:ledgerId/statistics",
+      "contractStatus": 200,
+      "authenticated": true,
+      "idempotent": false,
+      "transport": "json"
+    },
+    {
+      "id": "A22",
+      "operation": "previewSettlement",
+      "method": "GET",
+      "path": "/api/v1/ledgers/:ledgerId/settlement-preview",
+      "contractStatus": 200,
+      "authenticated": true,
+      "idempotent": false,
+      "transport": "json"
+    },
+    {
+      "id": "A23",
+      "operation": "startSettlement",
+      "method": "POST",
+      "path": "/api/v1/ledgers/:ledgerId/settlement",
+      "contractStatus": 201,
+      "authenticated": true,
+      "idempotent": true,
+      "transport": "json"
+    },
+    {
+      "id": "A24",
+      "operation": "getSettlement",
+      "method": "GET",
+      "path": "/api/v1/ledgers/:ledgerId/settlement",
+      "contractStatus": 200,
+      "authenticated": true,
+      "idempotent": false,
+      "transport": "json"
+    },
+    {
+      "id": "A25",
+      "operation": "markTransferPaid",
+      "method": "POST",
+      "path": "/api/v1/ledgers/:ledgerId/settlement/transfers/:transferId/paid",
+      "contractStatus": 200,
+      "authenticated": true,
+      "idempotent": true,
+      "transport": "json"
+    },
+    {
+      "id": "A26",
+      "operation": "settleLedger",
+      "method": "POST",
+      "path": "/api/v1/ledgers/:ledgerId/settle",
+      "contractStatus": 200,
+      "authenticated": true,
+      "idempotent": true,
+      "transport": "json"
+    },
+    {
+      "id": "A27",
+      "operation": "archiveLedger",
+      "method": "POST",
+      "path": "/api/v1/ledgers/:ledgerId/archive",
+      "contractStatus": 200,
+      "authenticated": true,
+      "idempotent": true,
+      "transport": "json"
+    },
+    {
+      "id": "A28",
+      "operation": "updateProfile",
+      "method": "PATCH",
+      "path": "/api/v1/me",
+      "contractStatus": 200,
+      "authenticated": true,
+      "idempotent": false,
+      "transport": "json"
+    },
+    {
+      "id": "A29",
+      "operation": "updatePreferences",
+      "method": "PATCH",
+      "path": "/api/v1/me/preferences",
+      "contractStatus": 200,
+      "authenticated": true,
+      "idempotent": false,
+      "transport": "json"
+    },
+    {
+      "id": "A30",
+      "operation": "refresh",
+      "method": "POST",
+      "path": "/api/v1/auth/refresh",
+      "contractStatus": 200,
+      "authenticated": false,
+      "idempotent": false,
+      "transport": "json"
+    }
+  ],
+  "manifestChecks": [
+    {
+      "issue": "issue49",
+      "checkedFiles": 39,
+      "sha256": "177f2003fe9927702c6c2e62c890c4c35afc63ebaaa45137240e91954ecf686d"
+    },
+    {
+      "issue": "issues58-59",
+      "checkedFiles": 42,
+      "sha256": "2fed32124bc21dbf24f58b24e28ab726cabb07b19df1f91935177de60e4ac806"
+    },
+    {
+      "issue": "issue60",
+      "checkedFiles": 55,
+      "sha256": "8c22cd60d7d51508ee596c928a165bb577009a19fa7e1c746182e115a38be711"
+    }
+  ],
+  "sourceChecks": [
+    {
+      "issue": "issues58-59",
+      "originalCandidate": "adff4d8ef36a835917d7f04713574c1031bbfe94",
+      "matchedSources": 103
+    },
+    {
+      "issue": "issue60",
+      "originalCandidate": "c954ddaca0b234949fc549e088d2d54761030031",
+      "matchedSources": 103
+    }
+  ],
+  "linkChecks": [
+    {
+      "document": "README.md",
+      "localLinks": 51,
+      "fragments": 1
+    },
+    {
+      "document": "docs/app-user-guide.md",
+      "localLinks": 16,
+      "fragments": 7
+    },
+    {
+      "document": "docs/api-reference.md",
+      "localLinks": 27,
+      "fragments": 2
+    },
+    {
+      "document": "docs/known-limitations.md",
+      "localLinks": 23,
+      "fragments": 2
+    },
+    {
+      "document": "docs/environment-setup.md",
+      "localLinks": 9,
+      "fragments": 2
+    },
+    {
+      "document": "docs/issue61-candidate-documentation-validation.md",
+      "localLinks": 19,
+      "fragments": 4
+    },
+    {
+      "document": "docs/issue49-documentation-validation.md",
+      "localLinks": 45,
+      "fragments": 0
+    },
+    {
+      "document": "docs/issues58-59-final-acceptance.md",
+      "localLinks": 74,
+      "fragments": 1
+    },
+    {
+      "document": "docs/issue60-native-candidate-validation.md",
+      "localLinks": 44,
+      "fragments": 0
+    }
+  ],
+  "checksPassed": true
+}

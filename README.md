@@ -2,7 +2,7 @@
 
 多人共享记账与结算移动端 App。React Native / Expo + Fastify + PostgreSQL，全栈 TypeScript。
 
-当前可在真实 API / PostgreSQL 上完成注册登录、在线会话核验、自定义封面建账、邀请码加入、消费与收据、余额和结算预览、正式冻结、整笔已还登记、创建者结清、个人归档与历史只读查看。当前文档基于 `7616adb`（2026-10-27，含 #48 候选验收）；#49 已用两个真实账号在 Android 模拟器重新走完这条 App 路径，见[逐项实操与版本证据](docs/issue49-documentation-validation.md)。
+当前可在真实 API / PostgreSQL 上完成注册登录、在线会话核验、自定义封面建账、邀请码加入、消费与收据、余额和结算预览、正式冻结、整笔已还登记、创建者结清、个人归档与历史只读查看。当前文档核对候选为 `bade612`（2026-10-28），见 [#61 逐项走查](docs/issue61-candidate-documentation-validation.md)。Day6 双账号 Android 模拟器主链及 401 同账号核验恢复见 [#58/#59](docs/issues58-59-final-acceptance.md)，原生兼容性、权限和冷启动增量复测见 [#60](docs/issue60-native-candidate-validation.md)；历史证据保留各自版本，不代表本次重新执行。
 
 消费修改/删除、统计、资料修改、通知偏好保存仍为 501，扫码未开放。已还只是人工登记，不改变消费；个人归档只影响本人。发布签名包、物理真机、iOS 当前完整主链及生产部署未在本轮验收。完整边界见[已知限制](docs/known-limitations.md)。
 
@@ -88,6 +88,7 @@ pnpm export:mobile
 - [Issue #57 金额守恒、冻结竞争与结清不变量回归](docs/issue57-settlement-invariants-validation.md)
 - [Issue #58/#59 最终验收、401 同账号恢复与整项核销建议](docs/issues58-59-final-acceptance.md)
 - [Issue #60 原生兼容性、权限复核与 Day7 交付准备](docs/issue60-native-candidate-validation.md)
+- [Issue #61 候选手册、30 项接口与 Day7 文档交付走查](docs/issue61-candidate-documentation-validation.md)
 - [双令牌认证变更与验证](docs/auth-token-validation.md)
 - [登录、权限与幂等回归](docs/auth-regression-validation.md)
 - [Issue #18 建账、邀请码与加入自动化测试](docs/issue18-ledger-invitation-tests.md)
