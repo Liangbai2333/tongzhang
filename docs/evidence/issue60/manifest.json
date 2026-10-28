@@ -1,0 +1,282 @@
+{
+  "candidate": "c954ddaca0b234949fc549e088d2d54761030031",
+  "method": "adb exec-out screencap -p; unmodified original pixels; capture/write times in UTC",
+  "nativeScreenshotCount": 20,
+  "files": {
+    "01-owner-online-empty.png": {
+      "bytes": 106951,
+      "sha256": "09bc22cd6ace9450bfedfaef4b7feffe18611f9fac9060aa3ac4e46c0fd6dc1e",
+      "writtenAtUtc": "2026-10-28T13:01:12.860626+00:00"
+    },
+    "02-system-cover-picker.png": {
+      "bytes": 184678,
+      "sha256": "085610a9b687ef02e1b44aa8fd927b1acbe0f9bbe6888a2532d8258a708630ed",
+      "writtenAtUtc": "2026-10-28T13:01:44.160583+00:00"
+    },
+    "03-cancel-retains-name.png": {
+      "bytes": 150741,
+      "sha256": "3b5ba5229885da945f15ddc812d486c68ee5128c96d6f6acb4addf6dca0d070c",
+      "writtenAtUtc": "2026-10-28T13:01:56.629113+00:00"
+    },
+    "04-foreground-verifying.png": {
+      "bytes": 60547,
+      "sha256": "e01d5346aab4d941a7a19d514b289190b824a21c545918e2421ec7a022589493",
+      "writtenAtUtc": "2026-10-28T13:02:20.321927+00:00"
+    },
+    "05-offline-late-200-gated.png": {
+      "bytes": 79819,
+      "sha256": "e2c1ab447ed1172e376b7f32d737435432723f141d4ff0291603d89bac7f4fdb",
+      "writtenAtUtc": "2026-10-28T13:02:32.691139+00:00"
+    },
+    "06-network-restored-still-gated.png": {
+      "bytes": 79980,
+      "sha256": "277064a0f02b0d766c5568e61289c63fb8cdff1d6337b623ea1f8aed4d46b778",
+      "writtenAtUtc": "2026-10-28T13:02:35.878338+00:00"
+    },
+    "07-explicit-verification-retains-draft.png": {
+      "bytes": 151292,
+      "sha256": "03e0385f86923f779dd0b309508ea580c4ff823d11a73f208ae23f3992fb0fc7",
+      "writtenAtUtc": "2026-10-28T13:02:54.564693+00:00"
+    },
+    "08-real-401-gate.png": {
+      "bytes": 178371,
+      "sha256": "70e93cfdccceaeb4c46ddca8a6c05ab1bb7de98f47d5c4dcb48270b28bf4c176",
+      "writtenAtUtc": "2026-10-28T13:03:26.969416+00:00"
+    },
+    "09-reauth-verifying.png": {
+      "bytes": 163356,
+      "sha256": "9c0b560d4d34ee0709d240cf510179e86b0691459c04f5767cda1938fe85119b",
+      "writtenAtUtc": "2026-10-28T13:03:58.900137+00:00"
+    },
+    "10-reauth-late-200-still-gated.png": {
+      "bytes": 161773,
+      "sha256": "5c77e16b6a8674779fc258af24e2b9aea9b8c60c849157dc8b4be44513134438",
+      "writtenAtUtc": "2026-10-28T13:04:15.052324+00:00"
+    },
+    "11-reauth-network-restored-still-gated.png": {
+      "bytes": 186203,
+      "sha256": "ae0035b421b3abc6c2d50d2f6dd32ccbe93fd74ac4082d0b7a606bb57f3af443",
+      "writtenAtUtc": "2026-10-28T13:04:19.673801+00:00"
+    },
+    "12-same-account-restores-draft.png": {
+      "bytes": 151060,
+      "sha256": "5484a768c0642a2de0af6b1326adb254968597032cee249806004f71090042c7",
+      "writtenAtUtc": "2026-10-28T13:04:43.448665+00:00"
+    },
+    "13-explicit-create-invitation.png": {
+      "bytes": 177357,
+      "sha256": "e20ec2c82fd2f5b88e6061b3c1488c6b5b6d6cf1e205b5d45c06bf5c498b2183",
+      "writtenAtUtc": "2026-10-28T13:05:28.519684+00:00"
+    },
+    "14-system-camera-permission.png": {
+      "bytes": 140210,
+      "sha256": "70b7d3604bfafa323600d3edd63bdba6bbdb4ed0839407edc25940db9c39314f",
+      "writtenAtUtc": "2026-10-28T13:06:21.924366+00:00"
+    },
+    "15-camera-denied-keeps-expense.png": {
+      "bytes": 193646,
+      "sha256": "b92bd20cab83ff1e5ca36aab97d5250bd98d83dd9305b04fd07b5e13c60d3eff",
+      "writtenAtUtc": "2026-10-28T13:07:31.944438+00:00"
+    },
+    "16-system-receipt-picker.png": {
+      "bytes": 178209,
+      "sha256": "15abad0bea7bb3b7fb753cd1436b29ef13bc70e0df67b0ee58240d02627911fb",
+      "writtenAtUtc": "2026-10-28T13:07:36.833156+00:00"
+    },
+    "17-receipt-cancel-keeps-expense.png": {
+      "bytes": 183692,
+      "sha256": "54a1939d70a670676ba08953d06649acfcaa39d9de0abd7c997e8cded11535b5",
+      "writtenAtUtc": "2026-10-28T13:07:41.173790+00:00"
+    },
+    "18-cold-start-offline-gate.png": {
+      "bytes": 85349,
+      "sha256": "3970264e1d994864f5ccd51ba43fb814cd8a34173697c15c31c42c04e6fa31c8",
+      "writtenAtUtc": "2026-10-28T13:13:17.472444+00:00"
+    },
+    "20-cold-refresh-verifying.png": {
+      "bytes": 67630,
+      "sha256": "01b140d96bafee0982f5a53d9cdb8ae52f41cab9295242f4f211bd1ff01509ea",
+      "writtenAtUtc": "2026-10-28T13:10:56.276861+00:00"
+    },
+    "21-cold-verified-online-list.png": {
+      "bytes": 110171,
+      "sha256": "f12f51838db107a436cb89d39971ae181a9379642b148b6f4f924c4ff942756b",
+      "writtenAtUtc": "2026-10-28T13:11:21.720017+00:00"
+    },
+    "baseline-ci.json": {
+      "bytes": 283,
+      "sha256": "10e45a8b871d46bfa89499ae67eccbd7b004f42ef46994e7f03f71ec7a461327",
+      "writtenAtUtc": "2026-10-28T13:13:46.217077+00:00"
+    },
+    "build-server.txt": {
+      "bytes": 170,
+      "sha256": "11c3ace6b03232969966c2cfb0e2eb4eefd2184a7b6dec309e5b0a2527b268ec",
+      "writtenAtUtc": "2026-10-28T13:08:44.494146+00:00"
+    },
+    "check-first.txt": {
+      "bytes": 857,
+      "sha256": "e93edde3ffd99bd8990b487fbf01eb15c111f0c483587a84a3932c2f1a61190b",
+      "writtenAtUtc": "2026-10-28T13:14:30.877655+00:00"
+    },
+    "check-source.txt": {
+      "bytes": 652,
+      "sha256": "b369bb08ae045e36016bba329162f9ef60f9870403f049ea6b36d39ae2049d1f",
+      "writtenAtUtc": "2026-10-28T13:08:44.494321+00:00"
+    },
+    "check.txt": {
+      "bytes": 652,
+      "sha256": "b369bb08ae045e36016bba329162f9ef60f9870403f049ea6b36d39ae2049d1f",
+      "writtenAtUtc": "2026-10-28T13:15:27.146162+00:00"
+    },
+    "cold-offline-device.json": {
+      "bytes": 130,
+      "sha256": "0593317ea4c75343a4d6490ea956a30e16871b5320245ce315b0d85a334bbcf5",
+      "writtenAtUtc": "2026-10-28T13:10:48.405979+00:00"
+    },
+    "db-after-cold-start.json": {
+      "bytes": 1789,
+      "sha256": "206f3c38c8ddd9213c4fcfc6930c59fd65d8214d8cc9a17a4b384a16c90969b6",
+      "writtenAtUtc": "2026-10-28T13:11:21.796683+00:00"
+    },
+    "db-after-permissions.json": {
+      "bytes": 1789,
+      "sha256": "ebba144fa159f296a2adcfe9fbd009086d83037178d85024f6f28473e71bb048",
+      "writtenAtUtc": "2026-10-28T13:06:58.439240+00:00"
+    },
+    "db-after-recovery.json": {
+      "bytes": 623,
+      "sha256": "3f44a07c579edfb80761b5468501ec8b93398d112fcabde57ffcb37ba8df85e9",
+      "writtenAtUtc": "2026-10-28T13:04:43.516274+00:00"
+    },
+    "db-audit.mjs": {
+      "bytes": 2628,
+      "sha256": "59a9206e7b100e74c62342274a1a854b1cf71f88cd7d3ea7666e2a368eeb7644",
+      "writtenAtUtc": "2026-10-28T13:13:46.431778+00:00"
+    },
+    "db-before-recovery.json": {
+      "bytes": 623,
+      "sha256": "5dda9b60320a3f72a664d288b27865cb9b05ca96baac24ae579e42c2e385220e",
+      "writtenAtUtc": "2026-10-28T13:03:49.981297+00:00"
+    },
+    "db-final.json": {
+      "bytes": 1722,
+      "sha256": "b2f0fd33594db595603574c3a5aae205ab20eb33c2e3640556fd1e3c213176be",
+      "writtenAtUtc": "2026-10-28T13:13:18.402858+00:00"
+    },
+    "db-revoke-foreground.json": {
+      "bytes": 388,
+      "sha256": "ac93080c4bb85b8b8d0f351792f293f2c48a0fbfac4a2daaed3cc1e02f3a540e",
+      "writtenAtUtc": "2026-10-28T13:03:22.994242+00:00"
+    },
+    "db-test-cleanup.json": {
+      "bytes": 463,
+      "sha256": "41719d4500a0dcdda3b8ce79f9bc15fd0eb35f0691dfa1645266b23f753ad027",
+      "writtenAtUtc": "2026-10-28T13:14:33.591036+00:00"
+    },
+    "dependencies.txt": {
+      "bytes": 88,
+      "sha256": "90b4b326da7e840e0b5d55a01ea23ce8dc1d6946379ad02891fbe497efd32f38",
+      "writtenAtUtc": "2026-10-28T13:08:44.495195+00:00"
+    },
+    "doctor.txt": {
+      "bytes": 390,
+      "sha256": "f2c235a32535fc5b20a8356abb69472551d300b0c9fa8311a888ee91229693b1",
+      "writtenAtUtc": "2026-10-28T13:08:44.495384+00:00"
+    },
+    "environment-check.txt": {
+      "bytes": 137,
+      "sha256": "33b02e00f1add02505c2976d928e66ef1501122d75689123d3eedbab2f775ca0",
+      "writtenAtUtc": "2026-10-28T13:08:44.495774+00:00"
+    },
+    "environment.json": {
+      "bytes": 1434,
+      "sha256": "07f786fc41abe4773cc92c8f1e423f3d876da2d3fc049661d2b834f2e7558662",
+      "writtenAtUtc": "2026-10-28T13:02:32.323059+00:00"
+    },
+    "export.txt": {
+      "bytes": 7673,
+      "sha256": "bf902baf0a3ea96e484503d7fbe1624770c0a7bc021792ddf48c1b971f9ca7f0",
+      "writtenAtUtc": "2026-10-28T13:08:44.495584+00:00"
+    },
+    "install.txt": {
+      "bytes": 1064,
+      "sha256": "8c033e463b6c6e17663fda351a92be89dd82c824cdc6395bad3e5ffdd5080237",
+      "writtenAtUtc": "2026-10-28T13:08:44.493965+00:00"
+    },
+    "integration.txt": {
+      "bytes": 25282,
+      "sha256": "77986178067461c75576333804b9cb8bc990c0b608204d8420774f3661cbdb0a",
+      "writtenAtUtc": "2026-10-28T13:08:44.494985+00:00"
+    },
+    "loaded-js.json": {
+      "bytes": 17388,
+      "sha256": "5a955b0a08d6541a43e24d1872f187b8260679d098373104a3e5fcd25291e8f4",
+      "writtenAtUtc": "2026-10-28T13:13:18.196154+00:00"
+    },
+    "mobile.txt": {
+      "bytes": 1316,
+      "sha256": "e47e65484b6d95ba5fdcd392cc5f83452766b46eaa11d3cea92fc2ecc0185742",
+      "writtenAtUtc": "2026-10-28T13:08:44.494717+00:00"
+    },
+    "native-api-runner.mjs": {
+      "bytes": 1908,
+      "sha256": "681a749161c71b4ceec1124c7d184e6150ce37a97eac8f4d61722a2f31fd3d09",
+      "writtenAtUtc": "2026-10-28T12:59:50.360903+00:00"
+    },
+    "native-migrate.txt": {
+      "bytes": 96,
+      "sha256": "d97d24ccea4abb757877c27e68631d66dfda8377b69c972ec09feee850da0bdb",
+      "writtenAtUtc": "2026-10-28T13:08:44.496125+00:00"
+    },
+    "native-requests.json": {
+      "bytes": 15770,
+      "sha256": "fad910e90b65e341d9986c87a806d005de7ab102d47478f1ca03014d7832c8d0",
+      "writtenAtUtc": "2026-10-28T13:13:46.216971+00:00"
+    },
+    "prepare-environment.mjs": {
+      "bytes": 1293,
+      "sha256": "0b698b4b90b405130597ce156c5bdf2b02c888668fc33bc0be7a9da0f2a473a5",
+      "writtenAtUtc": "2026-10-28T13:13:46.458571+00:00"
+    },
+    "register-fixtures.mjs": {
+      "bytes": 984,
+      "sha256": "a023201df5e5b5b56a0e66f2ccb7a55df3929d2d4897d4fc78d1846a22792e07",
+      "writtenAtUtc": "2026-10-28T13:13:46.460459+00:00"
+    },
+    "resources-cleanup.txt": {
+      "bytes": 405,
+      "sha256": "862ac9df2ce8a64f7328299f4c5a0278d22f47664bcbd8d702e7b16f8aff328c",
+      "writtenAtUtc": "2026-10-28T13:14:33.991579+00:00"
+    },
+    "reuse-verification.json": {
+      "bytes": 24320,
+      "sha256": "0755661ec96f2279be7278ab3e92ee954018f28bd2bb4ce78c195360cef74acf",
+      "writtenAtUtc": "2026-10-28T13:13:18.314329+00:00"
+    },
+    "run-with-env.mjs": {
+      "bytes": 406,
+      "sha256": "18a78649d23ced4f58d224c1f848b6fbecf0780f5c243ea598638795e2b61e5a",
+      "writtenAtUtc": "2026-10-28T12:59:50.360679+00:00"
+    },
+    "test-migrate.txt": {
+      "bytes": 96,
+      "sha256": "d97d24ccea4abb757877c27e68631d66dfda8377b69c972ec09feee850da0bdb",
+      "writtenAtUtc": "2026-10-28T13:08:44.495947+00:00"
+    },
+    "unit.txt": {
+      "bytes": 17451,
+      "sha256": "17f772ddfd27b4117fc6f16ac724a3b8b8bd631936c7b267eb49196f9d51d49a",
+      "writtenAtUtc": "2026-10-28T13:08:44.494538+00:00"
+    },
+    "verify-loaded-js.mjs": {
+      "bytes": 2212,
+      "sha256": "614c7b8fd266b9ff5a8446e2911bdda1d688b39d01b3a58a10f6a20bf46ffd5e",
+      "writtenAtUtc": "2026-10-28T13:14:30.851675+00:00"
+    },
+    "verify-reuse.mjs": {
+      "bytes": 3866,
+      "sha256": "934afde4370a73b52f4f1f8bd7b4734f2bd834f910fd16381c6c5e2aabc3d036",
+      "writtenAtUtc": "2026-10-28T13:13:46.475055+00:00"
+    }
+  }
+}

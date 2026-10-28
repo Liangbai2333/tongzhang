@@ -1,0 +1,32 @@
+{
+  "capturedAtUtc": "2026-10-28T13:03:49.980Z",
+  "counts": {
+    "auth_refresh_tokens": 4,
+    "auth_sessions": 4,
+    "expense_images": 0,
+    "expense_splits": 0,
+    "expenses": 0,
+    "idempotency_keys": 0,
+    "image_assets": 0,
+    "invitations": 0,
+    "ledger_members": 0,
+    "ledgers": 0,
+    "operation_logs": 0,
+    "settlement_batches": 0,
+    "settlement_transfers": 0,
+    "users": 3
+  },
+  "connections": [
+    {
+      "application_name": "",
+      "state": "idle"
+    }
+  ],
+  "triggers": [],
+  "details": {
+    "ledgers": [],
+    "ledger_members": [],
+    "expenses": [],
+    "operation_logs": []
+  }
+}

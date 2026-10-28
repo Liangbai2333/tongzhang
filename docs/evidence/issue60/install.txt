@@ -1,0 +1,27 @@
+Scope: all 5 workspace projects
+✓ Lockfile passes supply-chain policies (verified 4d ago)
+Lockfile is up to date, resolution step is skipped
+Packages are cloned from the content-addressable store to the virtual store.
+  Content-addressable store is at: /Users/liangbai/Library/pnpm/store/v11
+  Virtual store is at:             node_modules/.pnpm
+Progress: resolved 468, reused 468, downloaded 0, added 433
+Packages: +1037
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Progress: resolved 1037, reused 1037, downloaded 0, added 1037, done
+.../argon2@0.45.1/node_modules/argon2 install$ cross-env ZERO_AR_DATE=1 node-gyp-build
+Update available! 12.6.0 → 12.15.0.
+Changelog: https://pnpm.io/v/12.15.0
+To update, run: curl -fsSL https://get.pnpm.io/install.sh | sh -
+.../argon2@0.45.1/node_modules/argon2 install: Done
+
+devDependencies:
++ @eslint/js 10.0.1
++ @types/node 24.19.2
++ concurrently 10.0.6
++ eslint 10.12.0
++ prettier 3.9.10
++ typescript 6.0.3
++ typescript-eslint 8.71.2
++ vitest 5.0.4
+
+Done in 4.2s using pnpm v12.6.0

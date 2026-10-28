@@ -1,0 +1,7 @@
+Stopped task API PID 56515 and Metro PID 56549.
+Removed tongzhang-60-postgres and its anonymous volume.
+Restored Wi-Fi/mobile data: 1/1. Removed task adb reverse ports and stopped the emulator started for this task.
+Removed task private fixture/config/APK files: tz60-postgres.env, tz60-runtime.json, tz60-accounts.json, tz60-base.apk.
+Preserved containers:
+tongzhang-48-postgres
+tongzhang-dev-postgres-1

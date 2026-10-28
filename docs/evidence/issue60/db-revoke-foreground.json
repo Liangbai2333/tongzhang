@@ -1,0 +1,15 @@
+{
+  "fixtureIntervention": true,
+  "rows": [
+    {
+      "id": "06fe388b-f9c5-4cf3-8305-4149094fd22e",
+      "user_id": "c5969aa4-0d09-4b99-8c66-95bd1ef836d2",
+      "revoked_at": "2026-10-28T13:03:22.988Z"
+    },
+    {
+      "id": "5443ac13-d936-4180-8ae7-8c8411126edc",
+      "user_id": "c5969aa4-0d09-4b99-8c66-95bd1ef836d2",
+      "revoked_at": "2026-10-28T13:03:22.988Z"
+    }
+  ]
+}
