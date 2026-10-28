@@ -178,8 +178,8 @@ export function createAuthController(api: Dependencies) {
       }
     },
     suspend({ preserveScreen = false }: { preserveScreen?: boolean } = {}) {
-      if (state.status === 'reauthentication') return;
       suspended = true;
+      if (state.status === 'reauthentication') return;
       if (state.operation) {
         if (!preserveScreen) update({ user: null });
         return;
