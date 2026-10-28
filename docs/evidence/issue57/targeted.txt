@@ -1,0 +1,50 @@
+$ pnpm build:shared && vitest run --config vitest.integration.config.ts apps/server/tests/balances.integration.test.ts apps/server/tests/settlements.integration.test.ts apps/server/tests/settlement-progress.integration.test.ts apps/server/tests/full-lifecycle.integration.test.ts --reporter=verbose
+$ pnpm -r --filter "./packages/*" build
+$ tsc -p tsconfig.json
+$ tsc -p tsconfig.json
+
+ RUN  v5.0.4 /Users/liangbai/.codex/worktrees/issue57-settlement-invariants/tongzhang
+
+ ✓ apps/server/tests/balances.integration.test.ts > balances and read-only settlement preview > returns integer-string balances summing to zero and a single 6000 transfer 206ms
+ ✓ apps/server/tests/settlements.integration.test.ts > formal settlement on real PostgreSQL > keeps preview read-only, persists the server plan and freezes subsequent expense writes 250ms
+ ✓ apps/server/tests/settlement-progress.integration.test.ts > settlement progress, registration and closing on real PostgreSQL > reads the saved snapshot, registers both payments, and closes without changing expense totals 292ms
+ ✓ apps/server/tests/full-lifecycle.integration.test.ts > preserves the 12000/6000 lifecycle through cover, receipt, settlement and personal history over TCP HTTP 408ms
+ ✓ apps/server/tests/balances.integration.test.ts > balances and read-only settlement preview > rejects anonymous and nonmember access 109ms
+ ✓ apps/server/tests/settlements.integration.test.ts > formal settlement on real PostgreSQL > saves the four-member acceptance ledger as one batch with two ordered transfer snapshots 200ms
+ ✓ apps/server/tests/balances.integration.test.ts > balances and read-only settlement preview > returns all members with zero balances and no transfers for an empty ledger 108ms
+ ✓ apps/server/tests/settlement-progress.integration.test.ts > settlement progress, registration and closing on real PostgreSQL > keeps the formal settlement readable after personal archive in the real closing flow 166ms
+ ✓ apps/server/tests/balances.integration.test.ts > balances and read-only settlement preview > excludes soft-deleted expenses and their splits from balances and preview 107ms
+ ✓ apps/server/tests/settlements.integration.test.ts > formal settlement on real PostgreSQL > directly settles a zero-transfer ledger (has balanced expenses: false) 117ms
+ ✓ apps/server/tests/settlement-progress.integration.test.ts > settlement progress, registration and closing on real PostgreSQL > returns explicit missing errors and rejects anonymous, nonmembers, cross-ledger transfers and invalid writes 133ms
+ ✓ apps/server/tests/balances.integration.test.ts > balances and read-only settlement preview > counts only paid transfers toward remaining net without changing expense totals 111ms
+ ✓ apps/server/tests/settlements.integration.test.ts > formal settlement on real PostgreSQL > directly settles a zero-transfer ledger (has balanced expenses: true) 168ms
+ ✓ apps/server/tests/settlement-progress.integration.test.ts > settlement progress, registration and closing on real PostgreSQL > allows only the payer or creator and never treats payee or other members as registrars 177ms
+ ✓ apps/server/tests/balances.integration.test.ts > balances and read-only settlement preview > rejects preview for a SETTLING ledger without changing it 135ms
+ ✓ apps/server/tests/balances.integration.test.ts > balances and read-only settlement preview > rejects preview for a SETTLED ledger without changing it 112ms
+ ✓ apps/server/tests/settlements.integration.test.ts > formal settlement on real PostgreSQL > denies anonymous, outsider, noncreator, missing ledger and invalid input with no effects 122ms
+ ✓ apps/server/tests/settlement-progress.integration.test.ts > settlement progress, registration and closing on real PostgreSQL > serializes same-key and different-key duplicate registration, preserving the original registration 135ms
+ ✓ apps/server/tests/settlements.integration.test.ts > formal settlement on real PostgreSQL > rejects stale versions, recomputes the latest plan, and excludes deleted expenses 133ms
+ ✓ apps/server/tests/settlement-progress.integration.test.ts > settlement progress, registration and closing on real PostgreSQL > preserves the first registrar when payer and creator race on a pending transfer: payer-first 131ms
+ ✓ apps/server/tests/settlements.integration.test.ts > formal settlement on real PostgreSQL > serializes concurrent duplicate requests including uppercase UUIDs into one batch and exact replay 117ms
+ ✓ apps/server/tests/settlement-progress.integration.test.ts > settlement progress, registration and closing on real PostgreSQL > preserves the first registrar when payer and creator race on a pending transfer: creator-first 134ms
+ ✓ apps/server/tests/settlements.integration.test.ts > formal settlement on real PostgreSQL > allows one winner when different keys race to freeze the same ledger 110ms
+ ✓ apps/server/tests/settlement-progress.integration.test.ts > settlement progress, registration and closing on real PostgreSQL > serializes independent transfer registrations and concurrent creator confirmations 113ms
+ ✓ apps/server/tests/settlements.integration.test.ts > formal settlement on real PostgreSQL > rechecks creator permission before replaying a stored result 113ms
+ ✓ apps/server/tests/settlement-progress.integration.test.ts > settlement progress, registration and closing on real PostgreSQL > refuses closing even with every transfer paid when any member has a nonzero remaining net 112ms
+ ✓ apps/server/tests/settlements.integration.test.ts > formal settlement on real PostgreSQL > rolls back batches, transfers, state, audit and key on a late database failure, then permits manual retry 122ms
+ ✓ apps/server/tests/settlement-progress.integration.test.ts > settlement progress, registration and closing on real PostgreSQL > reads and confirms a previously directly settled zero-transfer batch without changing its timestamp 87ms
+ ✓ apps/server/tests/settlements.integration.test.ts > formal settlement on real PostgreSQL > serializes a real expense/freeze race: settlement-first 135ms
+ ✓ apps/server/tests/settlement-progress.integration.test.ts > settlement progress, registration and closing on real PostgreSQL > rolls back all effects of paid on a late idempotency failure and permits manual retry 126ms
+ ✓ apps/server/tests/settlements.integration.test.ts > formal settlement on real PostgreSQL > serializes a real expense/freeze race: expense-first 143ms
+ ✓ apps/server/tests/settlement-progress.integration.test.ts > settlement progress, registration and closing on real PostgreSQL > rolls back all effects of settle on a late idempotency failure and permits manual retry 133ms
+ ✓ apps/server/tests/settlements.integration.test.ts > formal settlement on real PostgreSQL > rechecks creator permission after waiting for the ledger lock 106ms
+ ✓ apps/server/tests/settlement-progress.integration.test.ts > settlement progress, registration and closing on real PostgreSQL > rechecks registrar role and creator permission before replaying stored results 133ms
+ ✓ apps/server/tests/settlement-progress.integration.test.ts > settlement progress, registration and closing on real PostgreSQL > orders the last registration against closing and reads only committed progress: paid-first 124ms
+ ✓ apps/server/tests/settlement-progress.integration.test.ts > settlement progress, registration and closing on real PostgreSQL > orders the last registration against closing and reads only committed progress: settle-first 140ms
+ ✓ apps/server/tests/settlement-progress.integration.test.ts > settlement progress, registration and closing on real PostgreSQL > rechecks creator permission after paid waits for the ledger lock 103ms
+ ✓ apps/server/tests/settlement-progress.integration.test.ts > settlement progress, registration and closing on real PostgreSQL > rechecks creator permission after settle waits for the ledger lock 110ms
+
+ Test Files  4 passed (4)
+      Tests  38 passed (38)
+   Start at  04:51:39
+   Duration  2.93s (tests 80%, import 16%, transform 4%)

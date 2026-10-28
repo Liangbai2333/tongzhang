@@ -1,0 +1,148 @@
+$ pnpm build:shared && vitest run --config vitest.integration.config.ts --reporter=verbose
+$ pnpm -r --filter "./packages/*" build
+$ tsc -p tsconfig.json
+$ tsc -p tsconfig.json
+
+ RUN  v5.0.4 /Users/liangbai/.codex/worktrees/issue57-settlement-invariants/tongzhang
+
+ ✓ apps/server/tests/schema.integration.test.ts > migrates all 14 tables and 112 columns and can migrate a second time 27ms
+ ✓ apps/server/tests/schema.integration.test.ts > enforces constraints and clears balances without changing expense totals 22ms
+ ✓ apps/server/tests/database.integration.test.ts > connects the API to a real PostgreSQL database 172ms
+ ✓ apps/server/tests/schema.integration.test.ts > checks real sessions and parses transformed queries exactly once 448ms
+ ✓ apps/server/tests/idempotency.integration.test.ts > real PostgreSQL idempotency through an isolated HTTP adapter > replays the exact success body without duplicating the ledger change or audit 294ms
+ ✓ apps/server/tests/ledgers.integration.test.ts > createLedger / list / detail / members > makes the creator a member, issues an invitation and reads the same data everywhere 300ms
+ ✓ apps/server/tests/images.integration.test.ts > real image HTTP and database lifecycle > uploads real jpeg bytes to bytea and restricts unbound reads to uploader 305ms
+ ✓ apps/server/tests/auth.integration.test.ts > real PostgreSQL dual-token authentication > rejects unknown accounts and ambiguous usernames with independent contract expectations 298ms
+ ✓ apps/server/tests/access.integration.test.ts > real HTTP ledger access foundations > returns contract 401/403 errors for anonymous and nonmember requests without leaking the ledger 273ms
+ ✓ apps/server/tests/expenses.integration.test.ts > createExpense > splits 12000 cents into 6000 + 6000 and commits everything together 346ms
+ ✓ apps/server/tests/access.integration.test.ts > real HTTP ledger access foundations > resolves creator/member roles and rejects archiving an active ledger 120ms
+ ✓ apps/server/tests/balances.integration.test.ts > balances and read-only settlement preview > returns integer-string balances summing to zero and a single 6000 transfer 334ms
+ ✓ apps/server/tests/idempotency.integration.test.ts > real PostgreSQL idempotency through an isolated HTTP adapter > rejects the same key with different content using a contract error and no new effects 130ms
+ ✓ apps/server/tests/ledgers.integration.test.ts > createLedger / list / detail / members > does not create a second ledger for the same idempotency key and rejects a changed body 103ms
+ ✓ apps/server/tests/images.integration.test.ts > real image HTTP and database lifecycle > uploads real png bytes to bytea and restricts unbound reads to uploader 118ms
+ ✓ apps/server/tests/archive.integration.test.ts > personal archive and history > paginates only the caller's archived memberships without mixing current or other-member history 420ms
+ ✓ apps/server/tests/ledger-invitation-regression.integration.test.ts > independent ledger and invitation HTTP/PostgreSQL regressions (issue 18) > keeps preview read-only and returns complete, consistent contracts to both accounts 426ms
+ ✓ apps/server/tests/settlements.integration.test.ts > formal settlement on real PostgreSQL > keeps preview read-only, persists the server plan and freezes subsequent expense writes 433ms
+ ✓ apps/server/tests/auth.integration.test.ts > real PostgreSQL dual-token authentication > registers, logs in, rotates without extending the session, and immediately revokes on logout 118ms
+ ✓ apps/server/tests/auth.integration.test.ts > real PostgreSQL dual-token authentication > commits revocation on refresh replay, invalidating the replacement pair 72ms
+ ✓ apps/server/tests/expenses.integration.test.ts > createExpense > ignores client-supplied split amounts for EQUAL mode (strict schema rejects them) 153ms
+ ✓ apps/server/tests/cover-cleanup.integration.test.ts > Issue #29 cover transaction and real two-account acceptance > uploads, creates, joins and reads a cover, then saves/replays/queries 12000 cents with 6000 each 479ms
+ ✓ apps/server/tests/balances.integration.test.ts > balances and read-only settlement preview > rejects anonymous and nonmember access 158ms
+ ✓ apps/server/tests/ledgers.integration.test.ts > createLedger / list / detail / members > serialises concurrent requests that share one idempotency key 105ms
+ ✓ apps/server/tests/images.integration.test.ts > real image HTTP and database lifecycle > rejects malformed, spoofed, oversized and invalid multipart images without rows 87ms
+ ✓ apps/server/tests/settlement-progress.integration.test.ts > settlement progress, registration and closing on real PostgreSQL > reads the saved snapshot, registers both payments, and closes without changing expense totals 513ms
+ ✓ apps/server/tests/idempotency.integration.test.ts > real PostgreSQL idempotency through an isolated HTTP adapter > serializes concurrent requests using differently cased UUIDs into one committed effect 149ms
+ ✓ apps/server/tests/auth.integration.test.ts > real PostgreSQL dual-token authentication > serializes duplicate refreshes and treats the duplicate as replay 67ms
+ ✓ apps/server/tests/auth.integration.test.ts > real PostgreSQL dual-token authentication > serializes refresh and logout so the final state is revoked 59ms
+ ✓ apps/server/tests/archive.integration.test.ts > personal archive and history > archives only the caller of a settled ledger and keeps history readable 195ms
+ ✓ apps/server/tests/balances.integration.test.ts > balances and read-only settlement preview > returns all members with zero balances and no transfers for an empty ledger 176ms
+ ✓ apps/server/tests/ledgers.integration.test.ts > createLedger / list / detail / members > rejects anonymous, keyless and invalid-cover creation without leaving rows 107ms
+ ✓ apps/server/tests/images.integration.test.ts > real image HTTP and database lifecycle > accepts exactly 1 MiB over multipart and rejects larger payloads 116ms
+ ✓ apps/server/tests/full-lifecycle.integration.test.ts > preserves the 12000/6000 lifecycle through cover, receipt, settlement and personal history over TCP HTTP 740ms
+ ✓ apps/server/tests/idempotency.integration.test.ts > real PostgreSQL idempotency through an isolated HTTP adapter > permits one winner for simultaneous conflicting content 118ms
+ ✓ apps/server/tests/ledger-invitation-regression.integration.test.ts > independent ledger and invitation HTTP/PostgreSQL regressions (issue 18) > rejects a reused join key with another valid code without joining the other ledger 205ms
+ ✓ apps/server/tests/expenses.integration.test.ts > createExpense > validates payer and split members separately, leaving no partial rows 197ms
+ ✓ apps/server/tests/cover-cleanup.integration.test.ts > Issue #29 cover transaction and real two-account acceptance > rejects foreign, missing, wrong-kind and already-bound images without partial creation 222ms
+ ✓ apps/server/tests/auth.integration.test.ts > real PostgreSQL dual-token authentication > keeps the session revoked when refresh queues first on the session lock 90ms
+ ✓ apps/server/tests/ledgers.integration.test.ts > createLedger / list / detail / members > refuses anonymous and non-member reads without leaking ledger data 138ms
+ ✓ apps/server/tests/archive.integration.test.ts > personal archive and history > lets the other member archive independently without moving the first timestamp 144ms
+ ✓ apps/server/tests/images.integration.test.ts > real image HTTP and database lifecycle > checks the optional ledger scope but keeps uploads private until business save 154ms
+ ✓ apps/server/tests/settlements.integration.test.ts > formal settlement on real PostgreSQL > saves the four-member acceptance ledger as one batch with two ordered transfer snapshots 333ms
+ ✓ apps/server/tests/ledger-invitation-regression.integration.test.ts > independent ledger and invitation HTTP/PostgreSQL regressions (issue 18) > serializes concurrent joins by the same user (same key=true) 138ms
+ ✓ apps/server/tests/idempotency.integration.test.ts > real PostgreSQL idempotency through an isolated HTTP adapter > rolls back the business row, audit and replay result together, then allows explicit retry 121ms
+ ✓ apps/server/tests/archive.integration.test.ts > personal archive and history > rejects active and settling ledgers without an archive time or idempotency result 140ms
+ ✓ apps/server/tests/auth.integration.test.ts > real PostgreSQL dual-token authentication > keeps the session revoked when logout queues first on the session lock 80ms
+ ✓ apps/server/tests/auth.integration.test.ts > real PostgreSQL dual-token authentication > rejects expired access but allows refresh until the absolute session expiry 64ms
+ ✓ apps/server/tests/settlement-progress.integration.test.ts > settlement progress, registration and closing on real PostgreSQL > keeps the formal settlement readable after personal archive in the real closing flow 292ms
+ ✓ apps/server/tests/cover-cleanup.integration.test.ts > Issue #29 cover transaction and real two-account acceptance > rolls back cover, ledger, member, invitation, audit and idempotency when the final audit fails 110ms
+ ✓ apps/server/tests/expenses.integration.test.ts > createExpense > replays a repeated request without recording twice and rejects key reuse 166ms
+ ✓ apps/server/tests/balances.integration.test.ts > balances and read-only settlement preview > excludes soft-deleted expenses and their splits from balances and preview 157ms
+ ✓ apps/server/tests/ledger-invitation-regression.integration.test.ts > independent ledger and invitation HTTP/PostgreSQL regressions (issue 18) > serializes concurrent joins by the same user (same key=false) 142ms
+ ✓ apps/server/tests/idempotency.integration.test.ts > real PostgreSQL idempotency through an isolated HTTP adapter > isolates the same key by user and normalized resource path 135ms
+ ✓ apps/server/tests/auth.integration.test.ts > real PostgreSQL dual-token authentication > rejects malformed, unknown and wrong-purpose credentials without revoking a valid session 52ms
+ ✓ apps/server/tests/settlements.integration.test.ts > formal settlement on real PostgreSQL > directly settles a zero-transfer ledger (has balanced expenses: false) 177ms
+ ✓ apps/server/tests/ledgers.integration.test.ts > createLedger / list / detail / members > pages the list with a stable cursor and only shows own ledgers 179ms
+ ✓ apps/server/tests/auth.integration.test.ts > real PostgreSQL dual-token authentication > preserves credential errors and registration uniqueness without creating extra sessions 96ms
+ ✓ apps/server/tests/cover-cleanup.integration.test.ts > Issue #29 cover transaction and real two-account acceptance > serializes different keys competing for one cover and leaves only the winner 96ms
+ ✓ apps/server/tests/balances.integration.test.ts > balances and read-only settlement preview > counts only paid transfers toward remaining net without changing expense totals 158ms
+ ✓ apps/server/tests/expenses.integration.test.ts > createExpense > rejects concurrent duplicates with a single record 157ms
+ ✓ apps/server/tests/ledger-invitation-regression.integration.test.ts > independent ledger and invitation HTTP/PostgreSQL regressions (issue 18) > rejects a missing or malformed join key (undefined) without side effects 111ms
+ ✓ apps/server/tests/idempotency.integration.test.ts > real PostgreSQL idempotency through an isolated HTTP adapter > rolls back when the result is not JSON-safe instead of storing a broken success 119ms
+ ✓ apps/server/tests/settlement-progress.integration.test.ts > settlement progress, registration and closing on real PostgreSQL > returns explicit missing errors and rejects anonymous, nonmembers, cross-ledger transfers and invalid writes 223ms
+ ✓ apps/server/tests/images.integration.test.ts > real image HTTP and database lifecycle > binds receipt, expense, splits, version, audit and replay result once in the same transaction 199ms
+ ✓ apps/server/tests/cover-cleanup.integration.test.ts > temporary image cleanup > deletes old unbound COVER/RECEIPT only, preserving recent, bound and referenced images 160ms
+ ✓ apps/server/tests/ledgers.integration.test.ts > createLedger / list / detail / members > derives paid, shared and net figures from real expense rows 154ms
+ ✓ apps/server/tests/ledger-invitation-regression.integration.test.ts > independent ledger and invitation HTTP/PostgreSQL regressions (issue 18) > rejects a missing or malformed join key (not-a-uuid) without side effects 115ms
+ ✓ apps/server/tests/idempotency.integration.test.ts > real PostgreSQL idempotency through an isolated HTTP adapter > checks current membership before replaying an existing success 110ms
+ ✓ apps/server/tests/balances.integration.test.ts > balances and read-only settlement preview > rejects preview for a SETTLING ledger without changing it 154ms
+ ✓ apps/server/tests/expenses.integration.test.ts > createExpense > rejects anonymous, non-member and frozen-ledger writes 144ms
+ ✓ apps/server/tests/images.integration.test.ts > real image HTTP and database lifecycle > rejects missing, other-user and cover assets without partial business data 179ms
+ ✓ apps/server/tests/cover-cleanup.integration.test.ts > temporary image cleanup > skips a locked COVER while a real business bind is queued 107ms
+ ✓ apps/server/tests/settlements.integration.test.ts > formal settlement on real PostgreSQL > directly settles a zero-transfer ledger (has balanced expenses: true) 200ms
+ ✓ apps/server/tests/balances.integration.test.ts > balances and read-only settlement preview > rejects preview for a SETTLED ledger without changing it 146ms
+ ✓ apps/server/tests/ledger-invitation-regression.integration.test.ts > independent ledger and invitation HTTP/PostgreSQL regressions (issue 18) > requires authentication on every shipped ledger and invitation endpoint 89ms
+ ✓ apps/server/tests/ledgers.integration.test.ts > invitations: preview, join and reset > lets a second user preview and join with a valid code, once 174ms
+ ✓ apps/server/tests/idempotency.integration.test.ts > real PostgreSQL idempotency through an isolated HTTP adapter > rejects replay when membership is revoked while waiting for the idempotency lock 129ms
+ ✓ apps/server/tests/cover-cleanup.integration.test.ts > temporary image cleanup > skips a locked RECEIPT while a real business bind is queued 116ms
+ ✓ apps/server/tests/cover-cleanup.integration.test.ts > temporary image cleanup > keeps lock probes isolated when another fixture joins the same blocking chain 81ms
+ ✓ apps/server/tests/expenses.integration.test.ts > createExpense > recomputes SHARES splits on the server with conserved remainder 146ms
+ ✓ apps/server/tests/settlements.integration.test.ts > formal settlement on real PostgreSQL > denies anonymous, outsider, noncreator, missing ledger and invalid input with no effects 173ms
+ ✓ apps/server/tests/images.integration.test.ts > real image HTTP and database lifecycle > rolls back an already-bound image when a later step fails and allows an explicit retry 173ms
+ ✓ apps/server/tests/settlement-progress.integration.test.ts > settlement progress, registration and closing on real PostgreSQL > allows only the payer or creator and never treats payee or other members as registrars 215ms
+ ✓ apps/server/tests/ledger-invitation-regression.integration.test.ts > independent ledger and invitation HTTP/PostgreSQL regressions (issue 18) > denies invitation management to members and outsiders without replacing codes or storing results 162ms
+ ✓ apps/server/tests/idempotency.integration.test.ts > real PostgreSQL idempotency through an isolated HTTP adapter > replaces an expired replay record without extending active replay retention 117ms
+ ✓ apps/server/tests/ledgers.integration.test.ts > invitations: preview, join and reset > rejects malformed, unknown, expired and replaced codes 159ms
+ ✓ apps/server/tests/idempotency.integration.test.ts > real PostgreSQL idempotency through an isolated HTTP adapter > rejects missing or malformed keys before creating effects 101ms
+ ✓ apps/server/tests/settlement-progress.integration.test.ts > settlement progress, registration and closing on real PostgreSQL > serializes same-key and different-key duplicate registration, preserving the original registration 189ms
+ ✓ apps/server/tests/cover-cleanup.integration.test.ts > temporary image cleanup > rejects an explicit bind after cleanup wins without partial ledger data 75ms
+ ✓ apps/server/tests/images.integration.test.ts > real image HTTP and database lifecycle > rolls back receipt and version updates when the real audit insert fails 162ms
+ ✓ apps/server/tests/ledger-invitation-regression.integration.test.ts > independent ledger and invitation HTTP/PostgreSQL regressions (issue 18) > rechecks expiry after preview and does not consume the key of a rejected join 134ms
+ ✓ apps/server/tests/settlements.integration.test.ts > formal settlement on real PostgreSQL > rejects stale versions, recomputes the latest plan, and excludes deleted expenses 206ms
+ ✓ apps/server/tests/cover-cleanup.integration.test.ts > temporary image cleanup > waits for an in-flight cleaner before COVER binding: commit 101ms
+ ✓ apps/server/tests/ledgers.integration.test.ts > invitations: preview, join and reset > protects the invitation endpoints with authentication and creator-only access 150ms
+ ✓ apps/server/tests/expenses.integration.test.ts > createExpense > persists stable EQUAL remainders at both amount boundaries regardless of request order 183ms
+ ✓ apps/server/tests/images.integration.test.ts > real image HTTP and database lifecycle > serializes competing receipt bindings across different ledgers without moving the asset 159ms
+ ✓ apps/server/tests/cover-cleanup.integration.test.ts > temporary image cleanup > waits for an in-flight cleaner before RECEIPT binding: commit 130ms
+ ✓ apps/server/tests/expenses.integration.test.ts > createExpense > persists stable SHARES remainders at both amount boundaries regardless of request order 180ms
+ ✓ apps/server/tests/settlements.integration.test.ts > formal settlement on real PostgreSQL > serializes concurrent duplicate requests including uppercase UUIDs into one batch and exact replay 184ms
+ ✓ apps/server/tests/settlement-progress.integration.test.ts > settlement progress, registration and closing on real PostgreSQL > preserves the first registrar when payer and creator race on a pending transfer: payer-first 207ms
+ ✓ apps/server/tests/ledger-invitation-regression.integration.test.ts > independent ledger and invitation HTTP/PostgreSQL regressions (issue 18) > allows exactly one of two blocked joiners to take the twelfth seat 207ms
+ ✓ apps/server/tests/ledgers.integration.test.ts > invitations: preview, join and reset > never exceeds 12 members, including concurrent joins for the last seats 185ms
+ ✓ apps/server/tests/ledgers.integration.test.ts > invitations: preview, join and reset > rejects archiving an active ledger and hides it from non-members 102ms
+ ✓ apps/server/tests/cover-cleanup.integration.test.ts > temporary image cleanup > waits for an in-flight cleaner before COVER binding: rollback 110ms
+ ✓ apps/server/tests/ledger-invitation-regression.integration.test.ts > independent ledger and invitation HTTP/PostgreSQL regressions (issue 18) > cleans API-created accounts and ledgers while preserving another fixture in the same test database 176ms
+ ✓ apps/server/tests/expenses.integration.test.ts > createExpense > persists and replays exact AMOUNT splits when the payer is outside the split 164ms
+ ✓ apps/server/tests/settlement-progress.integration.test.ts > settlement progress, registration and closing on real PostgreSQL > preserves the first registrar when payer and creator race on a pending transfer: creator-first 194ms
+ ✓ apps/server/tests/settlements.integration.test.ts > formal settlement on real PostgreSQL > allows one winner when different keys race to freeze the same ledger 145ms
+ ✓ apps/server/tests/cover-cleanup.integration.test.ts > temporary image cleanup > waits for an in-flight cleaner before RECEIPT binding: rollback 111ms
+ ✓ apps/server/tests/cover-cleanup.integration.test.ts > temporary image cleanup > limits each batch and supports repeated or concurrent cleaners without duplicate deletion 61ms
+ ✓ apps/server/tests/expenses.integration.test.ts > createExpense > rejects invalid integer-cent totals and manual splits over HTTP without any write effects 135ms
+ ✓ apps/server/tests/settlements.integration.test.ts > formal settlement on real PostgreSQL > rechecks creator permission before replaying a stored result 133ms
+ ✓ apps/server/tests/settlement-progress.integration.test.ts > settlement progress, registration and closing on real PostgreSQL > serializes independent transfer registrations and concurrent creator confirmations 150ms
+ ✓ apps/server/tests/expenses.integration.test.ts > createExpense > rejects AMOUNT splits that do not add up to the total 93ms
+ ✓ apps/server/tests/settlement-progress.integration.test.ts > settlement progress, registration and closing on real PostgreSQL > refuses closing even with every transfer paid when any member has a nonzero remaining net 125ms
+ ✓ apps/server/tests/settlements.integration.test.ts > formal settlement on real PostgreSQL > rolls back batches, transfers, state, audit and key on a late database failure, then permits manual retry 140ms
+ ✓ apps/server/tests/expenses.integration.test.ts > createExpense > accepts uppercase and mixed-case member UUIDs and stores canonical lowercase IDs 119ms
+ ✓ apps/server/tests/settlement-progress.integration.test.ts > settlement progress, registration and closing on real PostgreSQL > reads and confirms a previously directly settled zero-transfer batch without changing its timestamp 93ms
+ ✓ apps/server/tests/settlements.integration.test.ts > formal settlement on real PostgreSQL > serializes a real expense/freeze race: settlement-first 147ms
+ ✓ apps/server/tests/expenses.integration.test.ts > createExpense > rejects the same member repeated in different cases without partial rows 98ms
+ ✓ apps/server/tests/settlement-progress.integration.test.ts > settlement progress, registration and closing on real PostgreSQL > rolls back all effects of paid on a late idempotency failure and permits manual retry 122ms
+ ✓ apps/server/tests/expenses.integration.test.ts > createExpense > rejects a missing receipt without leaving a partial expense 101ms
+ ✓ apps/server/tests/settlements.integration.test.ts > formal settlement on real PostgreSQL > serializes a real expense/freeze race: expense-first 155ms
+ ✓ apps/server/tests/settlements.integration.test.ts > formal settlement on real PostgreSQL > rechecks creator permission after waiting for the ledger lock 111ms
+ ✓ apps/server/tests/settlement-progress.integration.test.ts > settlement progress, registration and closing on real PostgreSQL > rolls back all effects of settle on a late idempotency failure and permits manual retry 131ms
+ ✓ apps/server/tests/expenses.integration.test.ts > expense queries > reads the real two-person expense and server allocation from either member, with one record after replay 123ms
+ ✓ apps/server/tests/settlement-progress.integration.test.ts > settlement progress, registration and closing on real PostgreSQL > rechecks registrar role and creator permission before replaying stored results 133ms
+ ✓ apps/server/tests/expenses.integration.test.ts > expense queries > only recorder or creator can edit; payer identity alone does not grant permission 127ms
+ ✓ apps/server/tests/settlement-progress.integration.test.ts > settlement progress, registration and closing on real PostgreSQL > orders the last registration against closing and reads only committed progress: paid-first 126ms
+ ✓ apps/server/tests/expenses.integration.test.ts > expense queries > denies anonymous and nonmember list/detail reads, including missing ledgers 111ms
+ ✓ apps/server/tests/settlement-progress.integration.test.ts > settlement progress, registration and closing on real PostgreSQL > orders the last registration against closing and reads only committed progress: settle-first 143ms
+ ✓ apps/server/tests/expenses.integration.test.ts > expense queries > combines inclusive date, payer and category filters and excludes deleted rows 129ms
+ ✓ apps/server/tests/expenses.integration.test.ts > expense queries > paginates same-day ties by descending id without duplicates and rejects malformed cursors 142ms
+ ✓ apps/server/tests/settlement-progress.integration.test.ts > settlement progress, registration and closing on real PostgreSQL > rechecks creator permission after paid waits for the ledger lock 100ms
+ ✓ apps/server/tests/settlement-progress.integration.test.ts > settlement progress, registration and closing on real PostgreSQL > rechecks creator permission after settle waits for the ledger lock 113ms
+
+ Test Files  15 passed (15)
+      Tests  136 passed (136)
+   Start at  04:51:42
+   Duration  4.38s (tests 60%, import 34%, transform 7%)
