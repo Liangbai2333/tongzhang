@@ -1,6 +1,6 @@
 # 成员环境配置：macOS、Linux 与 Windows
 
-当前说明核对到 `7616adb`（2026-10-27）。安装后按 [App 操作手册](app-user-guide.md)使用两个真实账号核对业务；本轮复用兼容 Android 开发客户端的具体版本见 [#49 记录](issue49-documentation-validation.md)，不表示本轮重新构建或完成 Windows/Linux 安装验收。
+当前说明核对到 `bade612`（2026-10-28），安装/API 地址与重建规则见 [#61 走查](issue61-candidate-documentation-validation.md#安装地址与证据版本)。安装后按 [App 操作手册](app-user-guide.md)使用两个真实账号核对业务；Day6 复用兼容 Android 开发客户端的具体版本见 [#60 记录](issue60-native-candidate-validation.md)，不表示本次重新构建或完成 Windows/Linux 安装验收。
 
 按操作系统安装 Node、pnpm、JDK 和 Android SDK，配置本机环境变量，再运行项目命令。各平台的安装、检查和启动步骤如下。
 

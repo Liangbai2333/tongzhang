@@ -1,0 +1,29 @@
+{
+  "checkedAtUtc": "2026-10-28T14:05:03.866Z",
+  "candidate": "89d0166da5c528edeac80e460c689f40385e813b",
+  "ledgerId": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+  "batchId": "57e2ed3b-dce7-425b-98ba-f2f0b90bc0b4",
+  "counts": {
+    "ledgers": 1,
+    "ledger_members": 2,
+    "expenses": 1,
+    "expense_splits": 2,
+    "expense_images": 1,
+    "settlement_batches": 1,
+    "settlement_transfers": 1,
+    "operation_logs": 7
+  },
+  "imageCount": 2,
+  "expenseTotalCents": "12000",
+  "splitCents": ["6000", "6000"],
+  "transferCents": "6000",
+  "replayKeys": {
+    "/ledgers": "48e763d76eef",
+    "/expenses": "2d062b49a631"
+  },
+  "sameAccountFinancialRowsUnchanged": true,
+  "differentAccountDraftNotWritten": true,
+  "frozenRowsUnchangedAfterCompletion": true,
+  "personalArchiveIsolation": true,
+  "checksPassed": true
+}
