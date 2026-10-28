@@ -1,0 +1,99 @@
+    current_database    | current_user |                                            version                                             |       checked_at_utc
+------------------------+--------------+------------------------------------------------------------------------------------------------+----------------------------
+ tongzhang_issue56_test | tongzhang    | PostgreSQL 17.11 on aarch64-unknown-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit | 2026-10-28 11:37:50.343041
+(1 row)
+
+      relation       | remaining_rows
+---------------------+----------------
+ auth_refresh_tokens |              0
+(1 row)
+
+   relation    | remaining_rows
+---------------+----------------
+ auth_sessions |              0
+(1 row)
+
+    relation    | remaining_rows
+----------------+----------------
+ expense_images |              0
+(1 row)
+
+    relation    | remaining_rows
+----------------+----------------
+ expense_splits |              0
+(1 row)
+
+ relation | remaining_rows
+----------+----------------
+ expenses |              0
+(1 row)
+
+     relation     | remaining_rows
+------------------+----------------
+ idempotency_keys |              0
+(1 row)
+
+   relation   | remaining_rows
+--------------+----------------
+ image_assets |              0
+(1 row)
+
+  relation   | remaining_rows
+-------------+----------------
+ invitations |              0
+(1 row)
+
+    relation    | remaining_rows
+----------------+----------------
+ ledger_members |              0
+(1 row)
+
+ relation | remaining_rows
+----------+----------------
+ ledgers  |              0
+(1 row)
+
+    relation    | remaining_rows
+----------------+----------------
+ operation_logs |              0
+(1 row)
+
+      relation      | remaining_rows
+--------------------+----------------
+ settlement_batches |              0
+(1 row)
+
+       relation       | remaining_rows
+----------------------+----------------
+ settlement_transfers |              0
+(1 row)
+
+ relation | remaining_rows
+----------+----------------
+ users    |              0
+(1 row)
+
+ temporary_triggers
+--------------------
+                  0
+(1 row)
+
+ temporary_functions
+---------------------
+                   0
+(1 row)
+
+ temporary_constraints
+-----------------------
+                     0
+(1 row)
+
+ fixture_connections
+---------------------
+                   0
+(1 row)
+
+ advisory_locks
+----------------
+              0
+(1 row)

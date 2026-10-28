@@ -1,0 +1,32 @@
+$ pnpm build:shared && vitest run --config vitest.integration.config.ts apps/server/tests/expenses.integration.test.ts --reporter=verbose
+$ pnpm -r --filter "./packages/*" build
+$ tsc -p tsconfig.json
+$ tsc -p tsconfig.json
+
+ RUN  v5.0.4 /Users/liangbai/.codex/worktrees/issue56-expense-image-regression/tongzhang
+
+ ✓ apps/server/tests/expenses.integration.test.ts > createExpense > splits 12000 cents into 6000 + 6000 and commits everything together 209ms
+ ✓ apps/server/tests/expenses.integration.test.ts > createExpense > ignores client-supplied split amounts for EQUAL mode (strict schema rejects them) 86ms
+ ✓ apps/server/tests/expenses.integration.test.ts > createExpense > validates payer and split members separately, leaving no partial rows 96ms
+ ✓ apps/server/tests/expenses.integration.test.ts > createExpense > replays a repeated request without recording twice and rejects key reuse 99ms
+ ✓ apps/server/tests/expenses.integration.test.ts > createExpense > rejects concurrent duplicates with a single record 97ms
+ ✓ apps/server/tests/expenses.integration.test.ts > createExpense > rejects anonymous, non-member and frozen-ledger writes 89ms
+ ✓ apps/server/tests/expenses.integration.test.ts > createExpense > recomputes SHARES splits on the server with conserved remainder 90ms
+ ✓ apps/server/tests/expenses.integration.test.ts > createExpense > persists stable EQUAL remainders at both amount boundaries regardless of request order 111ms
+ ✓ apps/server/tests/expenses.integration.test.ts > createExpense > persists stable SHARES remainders at both amount boundaries regardless of request order 106ms
+ ✓ apps/server/tests/expenses.integration.test.ts > createExpense > persists and replays exact AMOUNT splits when the payer is outside the split 118ms
+ ✓ apps/server/tests/expenses.integration.test.ts > createExpense > rejects invalid integer-cent totals and manual splits over HTTP without any write effects 104ms
+ ✓ apps/server/tests/expenses.integration.test.ts > createExpense > rejects AMOUNT splits that do not add up to the total 80ms
+ ✓ apps/server/tests/expenses.integration.test.ts > createExpense > accepts uppercase and mixed-case member UUIDs and stores canonical lowercase IDs 101ms
+ ✓ apps/server/tests/expenses.integration.test.ts > createExpense > rejects the same member repeated in different cases without partial rows 84ms
+ ✓ apps/server/tests/expenses.integration.test.ts > createExpense > rejects a missing receipt without leaving a partial expense 87ms
+ ✓ apps/server/tests/expenses.integration.test.ts > expense queries > reads the real two-person expense and server allocation from either member, with one record after replay 106ms
+ ✓ apps/server/tests/expenses.integration.test.ts > expense queries > only recorder or creator can edit; payer identity alone does not grant permission 116ms
+ ✓ apps/server/tests/expenses.integration.test.ts > expense queries > denies anonymous and nonmember list/detail reads, including missing ledgers 102ms
+ ✓ apps/server/tests/expenses.integration.test.ts > expense queries > combines inclusive date, payer and category filters and excludes deleted rows 121ms
+ ✓ apps/server/tests/expenses.integration.test.ts > expense queries > paginates same-day ties by descending id without duplicates and rejects malformed cursors 124ms
+
+ Test Files  1 passed (1)
+      Tests  20 passed (20)
+   Start at  04:37:10
+   Duration  2.76s (tests 85%, import 11%, transform 3%)
