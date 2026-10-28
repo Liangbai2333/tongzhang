@@ -1,0 +1,138 @@
+$ pnpm build:shared && vitest run --reporter=verbose
+$ pnpm -r --filter "./packages/*" build
+$ tsc -p tsconfig.json
+$ tsc -p tsconfig.json
+
+ RUN  v5.0.4 /Users/liangbai/.codex/worktrees/issue60-native-candidate/tongzhang
+
+ ✓ apps/mobile/tests/auth-controller.test.ts > mobile authentication and route admission state > denies protected content until an online getMe has succeeded 2ms
+ ✓ apps/mobile/tests/auth-controller.test.ts > mobile authentication and route admission state > merges concurrent restoration and rejects expired sessions 2ms
+ ✓ apps/mobile/tests/auth-controller.test.ts > mobile authentication and route admission state > keeps offline startup locked and only retries after an explicit request 0ms
+ ✓ apps/mobile/tests/auth-controller.test.ts > mobile authentication and route admission state > requires user verification after login and prevents duplicate submissions 0ms
+ ✓ apps/mobile/tests/auth-controller.test.ts > mobile authentication and route admission state > retains revoked form ownership until the same account is verified again 0ms
+ ✓ apps/mobile/tests/auth-controller.test.ts > mobile authentication and route admission state > discards old query memory before admitting a different verified account 0ms
+ ✓ apps/mobile/tests/auth-controller.test.ts > mobile authentication and route admission state > keeps reauthentication gated when its successful verification arrives after a network loss 2ms
+ ✓ apps/mobile/tests/auth-controller.test.ts > mobile authentication and route admission state > keeps the recovery gate after failed credentials and abandons memory on explicit logout 0ms
+ ✓ apps/mobile/tests/auth-controller.test.ts > mobile authentication and route admission state > does not claim login success if getMe fails after issuing credentials 0ms
+ ✓ apps/mobile/tests/auth-controller.test.ts > mobile authentication and route admission state > rejects getMe results from an invalidated session 0ms
+ ✓ apps/mobile/tests/auth-controller.test.ts > mobile authentication and route admission state > retains accurate logout feedback across route changes ({"serverRevoked":false,"localCleared":true,"notice":"已清除本机登录状态，服务端撤销未确认。"}) 0ms
+ ✓ apps/mobile/tests/auth-controller.test.ts > mobile authentication and route admission state > retains accurate logout feedback across route changes ({"serverRevoked":true,"localCleared":false,"notice":"本机凭据未能完全清除，请重试退出。"}) 0ms
+ ✓ apps/mobile/tests/auth-controller.test.ts > mobile authentication and route admission state > retains accurate logout feedback across route changes ({"serverRevoked":true,"localCleared":true,"notice":"已退出登录。"}) 0ms
+ ✓ apps/mobile/tests/auth-controller.test.ts > mobile authentication and route admission state > blocks a restore response that arrives after losing connectivity 0ms
+ ✓ apps/mobile/tests/auth-controller.test.ts > mobile authentication and route admission state > does not revive a suspended response when restoration is requested again 0ms
+ ✓ apps/mobile/tests/auth-controller.test.ts > mobile authentication and route admission state > retries local credential cleanup without misrepresenting remote revocation 0ms
+ ✓ apps/mobile/tests/auth-controller.test.ts > mobile authentication and route admission state > retains a background screen only behind the online restoration gate 0ms
+ ✓ apps/mobile/tests/auth-controller.test.ts > mobile authentication and route admission state > keeps form memory behind the appropriate network or reauthentication gate (Error: revoked) 0ms
+ ✓ apps/mobile/tests/auth-controller.test.ts > mobile authentication and route admission state > keeps form memory behind the appropriate network or reauthentication gate (Error: offline) 0ms
+ ✓ apps/mobile/tests/auth-controller.test.ts > mobile authentication and route admission state > drops retained identity on a real network loss before returning from the picker 0ms
+ ✓ apps/mobile/tests/auth-controller.test.ts > mobile authentication and route admission state > unmounts protected data when suspended and re-verifies when requested 0ms
+ ✓ packages/domain/tests/split.test.ts > conserves cents and assigns equal remainders by stable ID 1ms
+ ✓ packages/domain/tests/split.test.ts > weights shares and rejects an unbalanced manual allocation 0ms
+ ✓ scripts/tests/network-policy.test.mjs > configures the shared native fetch factory before React starts, and survives repeated Prebuild 1ms
+ ✓ scripts/tests/network-policy.test.mjs > fails Prebuild rather than silently leaving automatic retries enabled on an unknown native template 1ms
+ ✓ scripts/tests/network-policy.test.mjs > updates an existing generated policy when the idle connection policy changes 0ms
+ ✓ apps/server/tests/env.test.ts > passes passwords literally to PostgreSQL without URL escaping 3ms
+ ✓ apps/server/tests/env.test.ts > fails closed on missing settings, bad ports and unrestricted proxy trust without leaking input 2ms
+ ✓ apps/server/tests/env.test.ts > does not read a local .env in production 1ms
+ ✓ apps/server/tests/env.test.ts > does not read a local .env in test 0ms
+ ✓ apps/server/tests/env.test.ts > does not load local credentials in CI and uses an explicit local path otherwise 0ms
+ ✓ apps/server/tests/env.test.ts > requires a 256-bit hex signing secret without exposing its value 1ms
+ ✓ apps/server/tests/balances.test.ts > computes paid/shared/net with bigint and sums to zero 1ms
+ ✓ apps/server/tests/balances.test.ts > previews one 6000-cent transfer from debtor to creditor 0ms
+ ✓ apps/server/tests/balances.test.ts > subtracts paid settlement transfers from remaining net and rejects inconsistent data 0ms
+ ✓ scripts/tests/setup-env.test.mjs > initializes a local signing secret without overwriting configured values (missing-file) 102ms
+ ✓ apps/server/tests/settlement.test.ts > uses three transfers for a greedy counterexample and is order independent 3ms
+ ✓ apps/server/tests/settlement.test.ts > matches an independent partition oracle and clears every balance 11ms
+ ✓ apps/server/tests/mobile-config.test.ts > rejects an invalid release API URL () 64ms
+ ✓ apps/server/tests/mobile-config.test.ts > rejects an invalid release API URL (http://localhost:3300) 59ms
+ ✓ apps/mobile/tests/auth-session.test.ts > mobile online auth session > restores online and shares one refresh across concurrent requests 8ms
+ ✓ apps/mobile/tests/auth-session.test.ts > mobile online auth session > refreshes before sending a write and never replays a failed write 1ms
+ ✓ apps/mobile/tests/auth-session.test.ts > mobile online auth session > clears credentials on 401 without replaying the business request 0ms
+ ✓ apps/mobile/tests/auth-session.test.ts > mobile online auth session > does not reuse a refresh token after uncertain REQUEST_TIMEOUT 0ms
+ ✓ apps/mobile/tests/auth-session.test.ts > mobile online auth session > does not reuse a refresh token after uncertain NETWORK_ERROR 0ms
+ ✓ apps/mobile/tests/auth-session.test.ts > mobile online auth session > does not reuse a refresh token after uncertain INVALID_RESPONSE 0ms
+ ✓ apps/mobile/tests/auth-session.test.ts > mobile online auth session > preserves credentials when the refresh was definitely not consumed (Error: offline) 0ms
+ ✓ apps/mobile/tests/auth-session.test.ts > mobile online auth session > preserves credentials when the refresh was definitely not consumed (Error: wait) 0ms
+ ✓ apps/mobile/tests/auth-session.test.ts > mobile online auth session > does not restore a refresh response arriving after logout 53ms
+ ✓ apps/mobile/tests/auth-session.test.ts > mobile online auth session > does not let an old request 401 clear a newer login 0ms
+ ✓ apps/mobile/tests/auth-session.test.ts > mobile online auth session > rejects an old successful upload response after reauthentication instead of continuing its business write 0ms
+ ✓ apps/mobile/tests/auth-session.test.ts > mobile online auth session > rejects an old refresh arriving after a different login 51ms
+ ✓ apps/mobile/tests/auth-session.test.ts > mobile online auth session > cannot restore a session from a login response arriving after logout 0ms
+ ✓ apps/mobile/tests/auth-session.test.ts > mobile online auth session > does not let a late logout clear a newer login 0ms
+ ✓ apps/mobile/tests/auth-session.test.ts > mobile online auth session > blocks restoration in memory if credential deletion fails 0ms
+ ✓ apps/mobile/tests/auth-session.test.ts > mobile online auth session > refreshes again near expiry and keeps the absolute refresh expiry 0ms
+ ✓ apps/server/tests/policy.test.ts > allows creator overrides but rejects unrelated members and frozen edits 1ms
+ ✓ apps/server/tests/policy.test.ts > hashes passwords and produces expiring, digest-only session storage material 84ms
+ ✓ packages/domain/tests/money.test.ts > integer-cent money > avoids floating-point rounding and supports signed balances 1ms
+ ✓ packages/domain/tests/money.test.ts > integer-cent money > rejects ambiguous input "1.001" 0ms
+ ✓ packages/domain/tests/money.test.ts > integer-cent money > rejects ambiguous input "1e3" 0ms
+ ✓ packages/domain/tests/money.test.ts > integer-cent money > rejects ambiguous input "" 0ms
+ ✓ packages/domain/tests/money.test.ts > integer-cent money > rejects ambiguous input "NaN" 0ms
+ ✓ packages/domain/tests/money.test.ts > integer-cent money > rejects ambiguous input "01" 0ms
+ ✓ packages/domain/tests/money.test.ts > integer-cent money > rejects ambiguous input " 1 " 0ms
+ ✓ packages/domain/tests/money.test.ts > integer-cent money > keeps bigint precision and enforces PostgreSQL bigint limits 0ms
+ ✓ scripts/tests/environment.test.mjs > runs workspace scripts from paths containing spaces and preserves a failed exit 122ms
+ ✓ packages/contracts/tests/business.test.ts > business contracts > rejects unsafe money formats and out-of-range values 1ms
+ ✓ packages/contracts/tests/business.test.ts > business contracts > checks amount conservation, duplicate participants, and mode-specific inputs 4ms
+ ✓ packages/contracts/tests/business.test.ts > business contracts > requires a version on updates and parses false without truthiness coercion 1ms
+ ✓ packages/contracts/tests/business.test.ts > business contracts > defines 30 distinct routes and operation IDs 1ms
+ ✓ scripts/tests/environment.test.mjs > rejects an unsafe API address without echoing it (https://user:private-password@example.com) 0ms
+ ✓ scripts/tests/environment.test.mjs > rejects an unsafe API address without echoing it (http://localhost:3300?secret=private-password) 0ms
+ ✓ scripts/tests/environment.test.mjs > rejects an unsafe API address without echoing it (file:///tmp/api) 0ms
+ ✓ scripts/tests/environment.test.mjs > rejects an unsafe API address without echoing it (not-a-url) 0ms
+ ✓ scripts/tests/environment.test.mjs > distinguishes a supported Node patch drift from an incompatible major 0ms
+ ✓ scripts/tests/environment.test.mjs > reports missing tools and connectivity safely without executing setup or writes 5ms
+ ✓ scripts/tests/environment.test.mjs > keeps tools-only checks independent of local credentials, API and database 0ms
+ ✓ scripts/tests/environment.test.mjs > checks Node and pnpm without Docker when the CI container job owns Compose verification 0ms
+ ✓ apps/server/tests/mobile-config.test.ts > rejects an invalid release API URL (https://user:secret@example.com) 67ms
+ ✓ apps/server/tests/mobile-config.test.ts > rejects an invalid release API URL (not-a-url) 53ms
+ ✓ apps/server/tests/auth-tokens.test.ts > access JWT validation > binds identity and session, expires in 15 minutes, and rejects tampering or expiry 8ms
+ ✓ apps/server/tests/auth-tokens.test.ts > access JWT validation > caps access lifetime at absolute session expiry 3ms
+ ✓ apps/server/tests/auth-tokens.test.ts > access JWT validation > rejects a signed JWT with invalid issuer 2ms
+ ✓ apps/server/tests/auth-tokens.test.ts > access JWT validation > rejects a signed JWT with invalid audience 1ms
+ ✓ apps/server/tests/auth-tokens.test.ts > access JWT validation > rejects a signed JWT with invalid algorithm 3ms
+ ✓ apps/server/tests/auth-tokens.test.ts > access JWT validation > rejects a signed JWT with invalid type 5ms
+ ✓ apps/server/tests/auth-tokens.test.ts > access JWT validation > rejects a signed JWT with invalid subject 2ms
+ ✓ apps/server/tests/auth-tokens.test.ts > access JWT validation > rejects a signed JWT with invalid session 4ms
+ ✓ apps/server/tests/auth-tokens.test.ts > access JWT validation > rejects a signed JWT with invalid missing-exp 2ms
+ ✓ apps/server/tests/auth-tokens.test.ts > access JWT validation > rejects a signed JWT with invalid future-iat 2ms
+ ✓ apps/server/tests/auth-tokens.test.ts > access JWT validation > rejects a signed JWT with invalid long-exp 4ms
+ ✓ scripts/tests/setup-env.test.mjs > initializes a local signing secret without overwriting configured values (missing-key) 94ms
+ ✓ scripts/tests/setup-env.test.mjs > initializes a local signing secret without overwriting configured values (empty-key) 110ms
+ ✓ scripts/tests/setup-env.test.mjs > initializes a local signing secret without overwriting configured values (configured-key) 133ms
+ ✓ apps/server/tests/mobile-config.test.ts > accepts an explicit HTTPS release address and a local development address 190ms
+ ✓ apps/server/tests/idempotency.test.ts > canonical idempotency request fingerprints > ignores object property order recursively, but preserves array order and scalar types 2ms
+ ✓ apps/server/tests/idempotency.test.ts > canonical idempotency request fingerprints > rejects non-JSON input (undefined) 1ms
+ ✓ apps/server/tests/idempotency.test.ts > canonical idempotency request fingerprints > rejects non-JSON input (1n) 0ms
+ ✓ apps/server/tests/idempotency.test.ts > canonical idempotency request fingerprints > rejects non-JSON input (NaN) 0ms
+ ✓ apps/server/tests/idempotency.test.ts > canonical idempotency request fingerprints > rejects non-JSON input (Infinity) 0ms
+ ✓ apps/server/tests/idempotency.test.ts > canonical idempotency request fingerprints > rejects non-JSON input (Wed Oct 28 2026 06:00:04 GMT-0700 (Pacific Daylight Time)) 0ms
+ ✓ apps/server/tests/idempotency.test.ts > canonical idempotency request fingerprints > rejects non-JSON input (undefined) 0ms
+ ✓ apps/server/tests/idempotency.test.ts > canonical idempotency request fingerprints > rejects circular input without rejecting shared JSON subobjects 0ms
+ ✓ apps/server/tests/idempotency.test.ts > dedicated database guard > rejects unsafe targets without exposing credentials () 0ms
+ ✓ apps/server/tests/idempotency.test.ts > dedicated database guard > rejects unsafe targets without exposing credentials (postgresql://user:private-password@localhost/tongzhang) 0ms
+ ✓ apps/server/tests/idempotency.test.ts > dedicated database guard > rejects unsafe targets without exposing credentials (postgresql://localhost/postgres) 0ms
+ ✓ apps/server/tests/idempotency.test.ts > dedicated database guard > rejects unsafe targets without exposing credentials (file:///tmp/tongzhang_test) 0ms
+ ✓ apps/server/tests/idempotency.test.ts > dedicated database guard > rejects unsafe targets without exposing credentials (not-a-url) 0ms
+ ✓ apps/server/tests/idempotency.test.ts > dedicated database guard > accepts an explicitly named PostgreSQL test database 0ms
+ ✓ apps/server/tests/images.test.ts > actual image validation > decodes jpeg and reports its actual dimensions 4ms
+ ✓ apps/server/tests/images.test.ts > actual image validation > decodes png and reports its actual dimensions 2ms
+ ✓ apps/server/tests/images.test.ts > actual image validation > rejects a spoofed MIME, SVG, empty and invalid contents 9ms
+ ✓ apps/server/tests/images.test.ts > actual image validation > rejects truncated jpeg even if the metadata header is valid 4ms
+ ✓ apps/server/tests/images.test.ts > actual image validation > rejects truncated png even if the metadata header is valid 7ms
+ ✓ apps/server/tests/images.test.ts > actual image validation > accepts exactly 1 MiB and rejects larger files before decoding 2ms
+ ✓ apps/server/tests/images.test.ts > actual image validation > rejects excessive edge lengths and pixel counts before full decoding 47ms
+ ✓ scripts/tests/deploy.test.mjs > gates service updates on migration success (failure=false) 1297ms
+ ✓ apps/server/tests/proxy.test.ts > only accepts forwarded client IPs from the configured proxy (172.30.0.3) 193ms
+ ✓ apps/server/tests/proxy.test.ts > only accepts forwarded client IPs from the configured proxy (192.0.2.1) 17ms
+ ✓ apps/server/tests/app.test.ts > HTTP skeleton > reports liveness without needing PostgreSQL and exports OpenAPI 224ms
+ ✓ apps/server/tests/app.test.ts > HTTP skeleton > reports database availability, then a safe 503 on failure 17ms
+ ✓ apps/server/tests/app.test.ts > HTTP skeleton > uses structured errors and unique request IDs 10ms
+ ✓ apps/server/tests/app.test.ts > publishes business contracts and validates auth input without a database 136ms
+ ✓ scripts/tests/deploy.test.mjs > gates service updates on migration success (failure=true) 528ms
+
+ Test Files  19 passed (19)
+      Tests  125 passed (125)
+   Start at  06:00:03
+   Duration  1.98s (tests 39%, import 32%, transform 28%)
+

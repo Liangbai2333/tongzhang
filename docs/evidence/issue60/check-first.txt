@@ -1,0 +1,22 @@
+$ pnpm build:shared && pnpm typecheck && pnpm lint && pnpm check:format
+$ pnpm -r --filter "./packages/*" build
+$ tsc -p tsconfig.json
+$ tsc -p tsconfig.json
+$ pnpm -r typecheck
+packages/domain typecheck$ tsc -p tsconfig.json --noEmit
+packages/domain typecheck: Done
+packages/contracts typecheck$ tsc -p tsconfig.json --noEmit
+packages/contracts typecheck: Done
+apps/server typecheck$ tsc -p tsconfig.json --noEmit && tsc -p tsconfig.tools.json
+apps/mobile typecheck$ tsc --noEmit
+apps/mobile typecheck: Done
+apps/server typecheck: Done
+$ eslint . --max-warnings=0
+
+/Users/liangbai/.codex/worktrees/issue60-native-candidate/tongzhang/docs/evidence/issue60/verify-loaded-js.mjs
+  30:27  error  'Buffer' is not defined  no-undef
+
+✖ 1 problem (1 error, 0 warnings)
+
+[ELIFECYCLE] Command failed with exit code 1.
+[ELIFECYCLE] Command failed with exit code 1.

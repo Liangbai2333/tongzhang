@@ -1,0 +1,47 @@
+{
+  "candidate": "c954ddaca0b234949fc549e088d2d54761030031",
+  "branch": "test/60-native-candidate",
+  "worktree": "/Users/liangbai/.codex/worktrees/issue60-native-candidate/tongzhang",
+  "host": {
+    "macOS": "27.0.1",
+    "arch": "arm64",
+    "node": "v24.22.0",
+    "pnpm": "12.6.0"
+  },
+  "app": {
+    "package": "com.tongzhang.app",
+    "installMetadata": [
+      "versionCode=1 minSdk=24 targetSdk=36",
+      "versionName=0.1.0",
+      "lastUpdateTime=2026-10-27 04:19:45",
+      "firstInstallTime=2026-10-26 07:13:29"
+    ],
+    "expo": "57.0.31",
+    "reactNative": "0.86.3"
+  },
+  "device": {
+    "ro.build.version.release": "17",
+    "ro.build.version.sdk": "37",
+    "ro.product.cpu.abi": "arm64-v8a",
+    "ro.build.fingerprint": "google/sdk_gphone64_arm64/emu64a:17/CE2A.260420.019/15611780:user/release-keys"
+  },
+  "screen": "Physical size: 1080x2400",
+  "density": "Physical density: 420",
+  "apk": {
+    "bytes": 99547334,
+    "sha256": "72504440573ae6985ad362bbd53854b03b46ac4d5a97c17513b0b53a61bbecf0",
+    "source": "209727140390a519c59f9ee287b8e7cd3e3472e7",
+    "newBuild": false,
+    "newInstall": false
+  },
+  "nativeInputsChanged": [],
+  "runtimeChangedSinceNetworkFix": [],
+  "services": {
+    "API": "127.0.0.1:3360",
+    "Metro": "127.0.0.1:8060",
+    "PostgreSQL": "127.0.0.1:61885",
+    "container": "tongzhang-60-postgres",
+    "nativeDB": "tongzhang_60_native",
+    "testDB": "tongzhang_60_test"
+  }
+}

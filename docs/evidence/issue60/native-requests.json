@@ -1,0 +1,532 @@
+{
+  "candidate": "c954ddaca0b234949fc549e088d2d54761030031",
+  "fixtureRegistrationCount": 3,
+  "successfulBusinessWriteCount": 1,
+  "noAutomaticBusinessWrites": true,
+  "recoveryBusinessRowsUnchanged": true,
+  "requests": [
+    {
+      "time": "2026-10-28T13:00:14.148Z",
+      "requestId": "721a2e7a-aa63-431b-b8af-cb685d9d7f36",
+      "method": "POST",
+      "path": "/api/v1/auth/register",
+      "status": 201
+    },
+    {
+      "time": "2026-10-28T13:00:14.177Z",
+      "requestId": "b0e16da5-06d7-44d2-88a5-842999a989b4",
+      "method": "POST",
+      "path": "/api/v1/auth/register",
+      "status": 201
+    },
+    {
+      "time": "2026-10-28T13:00:14.202Z",
+      "requestId": "1a9f18f3-c8ed-46a6-bb75-3e294927913d",
+      "method": "POST",
+      "path": "/api/v1/auth/register",
+      "status": 201
+    },
+    {
+      "time": "2026-10-28T13:00:24.549Z",
+      "requestId": "0065694c-e3a4-413b-bd2f-461875ac94e2",
+      "method": "POST",
+      "path": "/api/v1/auth/refresh",
+      "status": 401
+    },
+    {
+      "time": "2026-10-28T13:01:01.897Z",
+      "requestId": "e8f9d3f5-7149-45a0-bd6c-3cbf7438b039",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "status": 200
+    },
+    {
+      "time": "2026-10-28T13:01:02.541Z",
+      "requestId": "ea7206e9-e464-433a-86fe-21ce3080a3e1",
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "c5969aa4-0d09-4b99-8c66-95bd1ef836d2",
+          "username": "Issue60-owner",
+          "email": "issue60-owner@example.test",
+          "notificationEnabled": true
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T13:01:03.447Z",
+      "requestId": "944f617d-2baf-495d-b514-f1a147e16f2c",
+      "method": "GET",
+      "path": "/api/v1/ledgers?limit=20&archived=false",
+      "status": 200,
+      "body": {
+        "data": [],
+        "page": {
+          "nextCursor": null
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T13:01:53.963Z",
+      "requestId": "0c0166b9-0a24-42f3-9d78-9ba3d7ab77cc",
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "c5969aa4-0d09-4b99-8c66-95bd1ef836d2",
+          "username": "Issue60-owner",
+          "email": "issue60-owner@example.test",
+          "notificationEnabled": true
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T13:02:18.274Z",
+      "requestId": "d898191c-6b9e-40f8-a0c1-830cb42bb698",
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "c5969aa4-0d09-4b99-8c66-95bd1ef836d2",
+          "username": "Issue60-owner",
+          "email": "issue60-owner@example.test",
+          "notificationEnabled": true
+        }
+      },
+      "delayMs": 12000,
+      "event": "held-real-response"
+    },
+    {
+      "time": "2026-10-28T13:02:18.274Z",
+      "requestId": "d898191c-6b9e-40f8-a0c1-830cb42bb698",
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "c5969aa4-0d09-4b99-8c66-95bd1ef836d2",
+          "username": "Issue60-owner",
+          "email": "issue60-owner@example.test",
+          "notificationEnabled": true
+        }
+      },
+      "delayMs": 12000,
+      "sentAt": "2026-10-28T13:02:30.276Z"
+    },
+    {
+      "time": "2026-10-28T13:02:51.945Z",
+      "requestId": "39b5d191-b042-4f68-a79a-8b8a4124a371",
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "c5969aa4-0d09-4b99-8c66-95bd1ef836d2",
+          "username": "Issue60-owner",
+          "email": "issue60-owner@example.test",
+          "notificationEnabled": true
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T13:03:23.934Z",
+      "requestId": "5cb41a74-6ba1-4eda-939e-080f8199d6e4",
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 401,
+      "body": {
+        "error": {
+          "code": "UNAUTHENTICATED",
+          "message": "登录已失效，请重新登录"
+        },
+        "requestId": "5cb41a74-6ba1-4eda-939e-080f8199d6e4"
+      }
+    },
+    {
+      "time": "2026-10-28T13:03:58.216Z",
+      "requestId": "b6725793-976a-4a49-b690-5368c9fd9a82",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "status": 200
+    },
+    {
+      "time": "2026-10-28T13:03:58.456Z",
+      "requestId": "0c54383a-b446-4e2f-b789-78412e6527a2",
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "c5969aa4-0d09-4b99-8c66-95bd1ef836d2",
+          "username": "Issue60-owner",
+          "email": "issue60-owner@example.test",
+          "notificationEnabled": true
+        }
+      },
+      "delayMs": 12000,
+      "event": "held-real-response"
+    },
+    {
+      "time": "2026-10-28T13:03:58.456Z",
+      "requestId": "0c54383a-b446-4e2f-b789-78412e6527a2",
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "c5969aa4-0d09-4b99-8c66-95bd1ef836d2",
+          "username": "Issue60-owner",
+          "email": "issue60-owner@example.test",
+          "notificationEnabled": true
+        }
+      },
+      "delayMs": 12000,
+      "sentAt": "2026-10-28T13:04:10.458Z"
+    },
+    {
+      "time": "2026-10-28T13:04:40.594Z",
+      "requestId": "4c1a1a4d-8944-4552-b828-aac7eea995d7",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "status": 200
+    },
+    {
+      "time": "2026-10-28T13:04:40.938Z",
+      "requestId": "0942e2fe-ee5f-493a-86a5-401defe33975",
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "c5969aa4-0d09-4b99-8c66-95bd1ef836d2",
+          "username": "Issue60-owner",
+          "email": "issue60-owner@example.test",
+          "notificationEnabled": true
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T13:04:57.914Z",
+      "requestId": "cddd3ec3-ab45-4334-bad8-6a43df9c5f64",
+      "method": "POST",
+      "path": "/api/v1/ledgers",
+      "status": 201,
+      "keyDigest": "d7f705b1e087",
+      "body": {
+        "data": {
+          "ledger": {
+            "id": "f745c0f6-1e08-4704-9110-485c83047e95",
+            "name": "Issue60-Retained-Draft",
+            "coverKey": "mountain",
+            "coverImageId": null,
+            "status": "ACTIVE",
+            "version": 1,
+            "memberCount": 1,
+            "expenseTotalCents": "0",
+            "myRemainingNetCents": "0",
+            "archivedAt": null,
+            "createdAt": "2026-10-28T13:04:57.898Z"
+          },
+          "invitation": {
+            "id": "bd1f47fa-9d51-4f2d-8343-8d24a22c746b",
+            "code": "YA2LR6",
+            "expiresAt": "2026-11-04T13:04:57.905Z",
+            "expired": false,
+            "qrPayload": "tongzhang:invite:v1:YA2LR6"
+          }
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T13:04:58.337Z",
+      "requestId": "0a578682-ca18-44d8-babb-9ae8b16166f7",
+      "method": "GET",
+      "path": "/api/v1/ledgers/f745c0f6-1e08-4704-9110-485c83047e95/invitation",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "bd1f47fa-9d51-4f2d-8343-8d24a22c746b",
+          "code": "YA2LR6",
+          "expiresAt": "2026-11-04T13:04:57.905Z",
+          "expired": false,
+          "qrPayload": "tongzhang:invite:v1:YA2LR6"
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T13:04:58.380Z",
+      "requestId": "91fb4283-750e-4afe-92f2-024c8f91d0dc",
+      "method": "GET",
+      "path": "/api/v1/ledgers/f745c0f6-1e08-4704-9110-485c83047e95",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "f745c0f6-1e08-4704-9110-485c83047e95",
+          "name": "Issue60-Retained-Draft",
+          "coverKey": "mountain",
+          "coverImageId": null,
+          "status": "ACTIVE",
+          "version": 1,
+          "memberCount": 1,
+          "expenseTotalCents": "0",
+          "myRemainingNetCents": "0",
+          "archivedAt": null,
+          "createdAt": "2026-10-28T13:04:57.898Z",
+          "creatorUserId": "c5969aa4-0d09-4b99-8c66-95bd1ef836d2",
+          "myMemberId": "337e50b0-6860-4e6c-a7f7-f88d3658d6dd",
+          "myPaidCents": "0",
+          "mySharedCents": "0",
+          "myNetCents": "0",
+          "members": [
+            {
+              "id": "337e50b0-6860-4e6c-a7f7-f88d3658d6dd",
+              "userId": "c5969aa4-0d09-4b99-8c66-95bd1ef836d2",
+              "username": "Issue60-owner",
+              "role": "CREATOR",
+              "joinedAt": "2026-10-28T13:04:57.898Z",
+              "netCents": "0",
+              "remainingNetCents": "0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T13:05:31.702Z",
+      "requestId": "b26ac54a-bd4f-4b7f-92b2-f1b1923f8116",
+      "method": "GET",
+      "path": "/api/v1/ledgers/f745c0f6-1e08-4704-9110-485c83047e95",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "f745c0f6-1e08-4704-9110-485c83047e95",
+          "name": "Issue60-Retained-Draft",
+          "coverKey": "mountain",
+          "coverImageId": null,
+          "status": "ACTIVE",
+          "version": 1,
+          "memberCount": 1,
+          "expenseTotalCents": "0",
+          "myRemainingNetCents": "0",
+          "archivedAt": null,
+          "createdAt": "2026-10-28T13:04:57.898Z",
+          "creatorUserId": "c5969aa4-0d09-4b99-8c66-95bd1ef836d2",
+          "myMemberId": "337e50b0-6860-4e6c-a7f7-f88d3658d6dd",
+          "myPaidCents": "0",
+          "mySharedCents": "0",
+          "myNetCents": "0",
+          "members": [
+            {
+              "id": "337e50b0-6860-4e6c-a7f7-f88d3658d6dd",
+              "userId": "c5969aa4-0d09-4b99-8c66-95bd1ef836d2",
+              "username": "Issue60-owner",
+              "role": "CREATOR",
+              "joinedAt": "2026-10-28T13:04:57.898Z",
+              "netCents": "0",
+              "remainingNetCents": "0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T13:05:41.842Z",
+      "requestId": "e87c5775-4285-4e3f-9134-c6707eddad72",
+      "method": "GET",
+      "path": "/api/v1/ledgers/f745c0f6-1e08-4704-9110-485c83047e95",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "f745c0f6-1e08-4704-9110-485c83047e95",
+          "name": "Issue60-Retained-Draft",
+          "coverKey": "mountain",
+          "coverImageId": null,
+          "status": "ACTIVE",
+          "version": 1,
+          "memberCount": 1,
+          "expenseTotalCents": "0",
+          "myRemainingNetCents": "0",
+          "archivedAt": null,
+          "createdAt": "2026-10-28T13:04:57.898Z",
+          "creatorUserId": "c5969aa4-0d09-4b99-8c66-95bd1ef836d2",
+          "myMemberId": "337e50b0-6860-4e6c-a7f7-f88d3658d6dd",
+          "myPaidCents": "0",
+          "mySharedCents": "0",
+          "myNetCents": "0",
+          "members": [
+            {
+              "id": "337e50b0-6860-4e6c-a7f7-f88d3658d6dd",
+              "userId": "c5969aa4-0d09-4b99-8c66-95bd1ef836d2",
+              "username": "Issue60-owner",
+              "role": "CREATOR",
+              "joinedAt": "2026-10-28T13:04:57.898Z",
+              "netCents": "0",
+              "remainingNetCents": "0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T13:06:38.002Z",
+      "requestId": "bc37876c-20bb-4634-9ed5-41377cd4115a",
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "c5969aa4-0d09-4b99-8c66-95bd1ef836d2",
+          "username": "Issue60-owner",
+          "email": "issue60-owner@example.test",
+          "notificationEnabled": true
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T13:07:38.085Z",
+      "requestId": "ac1481e5-e34d-4b75-8ddd-b87856cacc00",
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "c5969aa4-0d09-4b99-8c66-95bd1ef836d2",
+          "username": "Issue60-owner",
+          "email": "issue60-owner@example.test",
+          "notificationEnabled": true
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T13:08:39.837Z",
+      "requestId": "56b52bb6-0b73-4796-85d5-f53fe66ca8ab",
+      "method": "POST",
+      "path": "/api/v1/auth/refresh",
+      "status": 200,
+      "delayMs": 12000,
+      "event": "held-real-response"
+    },
+    {
+      "time": "2026-10-28T13:08:39.837Z",
+      "requestId": "56b52bb6-0b73-4796-85d5-f53fe66ca8ab",
+      "method": "POST",
+      "path": "/api/v1/auth/refresh",
+      "status": 200,
+      "delayMs": 12000,
+      "sentAt": "2026-10-28T13:08:51.839Z"
+    },
+    {
+      "time": "2026-10-28T13:10:02.905Z",
+      "requestId": "bcf0aa83-4e29-40c5-a45a-0b9219df851b",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "status": 200
+    },
+    {
+      "time": "2026-10-28T13:10:03.010Z",
+      "requestId": "9c0babba-fc16-4db8-832b-7a92c3a8ee61",
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "c5969aa4-0d09-4b99-8c66-95bd1ef836d2",
+          "username": "Issue60-owner",
+          "email": "issue60-owner@example.test",
+          "notificationEnabled": true
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T13:10:03.338Z",
+      "requestId": "2b821935-6d50-4f9e-95cc-3dfe5fa57697",
+      "method": "GET",
+      "path": "/api/v1/ledgers?limit=20&archived=false",
+      "status": 200,
+      "body": {
+        "data": [
+          {
+            "id": "f745c0f6-1e08-4704-9110-485c83047e95",
+            "name": "Issue60-Retained-Draft",
+            "coverKey": "mountain",
+            "coverImageId": null,
+            "status": "ACTIVE",
+            "version": 1,
+            "memberCount": 1,
+            "expenseTotalCents": "0",
+            "myRemainingNetCents": "0",
+            "archivedAt": null,
+            "createdAt": "2026-10-28T13:04:57.898Z"
+          }
+        ],
+        "page": {
+          "nextCursor": null
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T13:10:55.811Z",
+      "requestId": "8f7dda84-d304-4dad-becc-adb971788afc",
+      "method": "POST",
+      "path": "/api/v1/auth/refresh",
+      "status": 200,
+      "delayMs": 8000,
+      "event": "held-real-response"
+    },
+    {
+      "time": "2026-10-28T13:10:55.811Z",
+      "requestId": "8f7dda84-d304-4dad-becc-adb971788afc",
+      "method": "POST",
+      "path": "/api/v1/auth/refresh",
+      "status": 200,
+      "delayMs": 8000,
+      "sentAt": "2026-10-28T13:11:03.813Z"
+    },
+    {
+      "time": "2026-10-28T13:11:05.502Z",
+      "requestId": "62487bbd-3546-4c32-9450-6f22e5d3a109",
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "body": {
+        "data": {
+          "id": "c5969aa4-0d09-4b99-8c66-95bd1ef836d2",
+          "username": "Issue60-owner",
+          "email": "issue60-owner@example.test",
+          "notificationEnabled": true
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T13:11:17.676Z",
+      "requestId": "ffe01263-7bda-4aab-aae8-0ebf38fd7928",
+      "method": "GET",
+      "path": "/api/v1/ledgers?limit=20&archived=false",
+      "status": 200,
+      "body": {
+        "data": [
+          {
+            "id": "f745c0f6-1e08-4704-9110-485c83047e95",
+            "name": "Issue60-Retained-Draft",
+            "coverKey": "mountain",
+            "coverImageId": null,
+            "status": "ACTIVE",
+            "version": 1,
+            "memberCount": 1,
+            "expenseTotalCents": "0",
+            "myRemainingNetCents": "0",
+            "archivedAt": null,
+            "createdAt": "2026-10-28T13:04:57.898Z"
+          }
+        ],
+        "page": {
+          "nextCursor": null
+        }
+      }
+    }
+  ]
+}

@@ -87,6 +87,7 @@ pnpm export:mobile
 - [Issue #55 账本权限、个人归档与历史分页候选回归](docs/issue55-archive-permission-validation.md)
 - [Issue #57 金额守恒、冻结竞争与结清不变量回归](docs/issue57-settlement-invariants-validation.md)
 - [Issue #58/#59 最终验收、401 同账号恢复与整项核销建议](docs/issues58-59-final-acceptance.md)
+- [Issue #60 原生兼容性、权限复核与 Day7 交付准备](docs/issue60-native-candidate-validation.md)
 - [双令牌认证变更与验证](docs/auth-token-validation.md)
 - [登录、权限与幂等回归](docs/auth-regression-validation.md)
 - [Issue #18 建账、邀请码与加入自动化测试](docs/issue18-ledger-invitation-tests.md)
