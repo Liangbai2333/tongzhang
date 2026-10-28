@@ -203,6 +203,128 @@ describe('createExpense', () => {
     expect(byMember[s.friendMember]).toBe('6667');
   });
 
+  it.each(['EQUAL', 'SHARES'] as const)(
+    'persists stable %s remainders at both amount boundaries regardless of request order',
+    async (splitMode) => {
+      const s = await seed();
+      const members = [s.ownerMember, s.friendMember].sort();
+      for (const amountCents of ['1', '999999999']) {
+        // Independent expected values, without calling the production allocation helper.
+        const amounts = amountCents === '1' ? ['1', '0'] : ['500000000', '499999999'];
+        for (const order of [members, [...members].reverse()]) {
+          const response = await post(
+            s.owner.accessToken,
+            bodyFor(s, {
+              amountCents,
+              splitMode,
+              splits: order.map((memberId) =>
+                splitMode === 'SHARES' ? { memberId, shares: 10000 } : { memberId },
+              ),
+            }),
+          );
+          expect(response.statusCode).toBe(201);
+          const expected = members.map((memberId, i) => ({ memberId, amountCents: amounts[i] }));
+          expect(response.json().data.splits).toMatchObject(expected);
+          const saved = await fixture.db.orm
+            .select({ memberId: expenseSplits.memberId, amountCents: expenseSplits.amountCents })
+            .from(expenseSplits)
+            .where(eq(expenseSplits.expenseId, response.json().data.id))
+            .orderBy(expenseSplits.memberId);
+          expect(saved).toEqual(
+            expected.map((row) => ({ ...row, amountCents: BigInt(row.amountCents!) })),
+          );
+          expect(saved.reduce((sum, row) => sum + row.amountCents, 0n)).toBe(BigInt(amountCents));
+        }
+      }
+    },
+  );
+
+  it('persists and replays exact AMOUNT splits when the payer is outside the split', async () => {
+    const s = await seed();
+    const third = await fixture.register();
+    const [member] = await fixture.db.orm
+      .insert(ledgerMembers)
+      .values({ ledgerId: ledgerId!, userId: third.user.id })
+      .returning();
+    const splits = [
+      { memberId: s.friendMember, amountCents: '0' },
+      { memberId: member!.id, amountCents: '999999999' },
+    ];
+    const body = bodyFor(s, { amountCents: '999999999', splitMode: 'AMOUNT', splits });
+    const key = randomUUID();
+    const first = await post(s.friend.accessToken, body, key);
+    expect(first.statusCode).toBe(201);
+    expect(first.json().data).toMatchObject({
+      amountCents: '999999999',
+      payerMemberId: s.ownerMember,
+      recorderMemberId: s.friendMember,
+      splitMode: 'AMOUNT',
+    });
+    const expected = [...splits].sort((a, b) => a.memberId.localeCompare(b.memberId));
+    expect(first.json().data.splits).toMatchObject(expected);
+    const replay = await post(s.friend.accessToken, body, key);
+    expect(replay.statusCode).toBe(201);
+    expect(replay.json()).toEqual(first.json());
+    const rows = await fixture.db.orm
+      .select()
+      .from(expenses)
+      .where(eq(expenses.ledgerId, ledgerId!));
+    expect(rows).toHaveLength(1);
+    expect(rows[0]!.amountCents).toBe(999999999n);
+    const saved = await fixture.db.orm
+      .select({ memberId: expenseSplits.memberId, amountCents: expenseSplits.amountCents })
+      .from(expenseSplits)
+      .where(eq(expenseSplits.expenseId, rows[0]!.id))
+      .orderBy(expenseSplits.memberId);
+    expect(saved).toEqual(
+      expected.map((row) => ({ ...row, amountCents: BigInt(row.amountCents) })),
+    );
+    expect(
+      await fixture.db.orm
+        .select()
+        .from(operationLogs)
+        .where(eq(operationLogs.ledgerId, ledgerId!)),
+    ).toHaveLength(1);
+    expect(
+      await fixture.db.orm
+        .select()
+        .from(idempotencyKeys)
+        .where(eq(idempotencyKeys.userId, s.friend.user.id)),
+    ).toHaveLength(1);
+    const [ledger] = await fixture.db.orm.select().from(ledgers).where(eq(ledgers.id, ledgerId!));
+    expect(ledger!.version).toBe(2);
+  });
+
+  it('rejects invalid integer-cent totals and manual splits over HTTP without any write effects', async () => {
+    const s = await seed();
+    const invalid = [
+      ...['0', '-1', '1.5', '01', '1000000000', '9223372036854775808', 100].map((amountCents) => ({
+        amountCents,
+      })),
+      ...['-1', '1.5', '9223372036854775808'].map((amountCents) => ({
+        splitMode: 'AMOUNT',
+        splits: [{ memberId: s.ownerMember, amountCents }],
+      })),
+    ];
+    for (const input of invalid) {
+      const response = await post(s.owner.accessToken, bodyFor(s, input));
+      expect(response.statusCode).toBe(400);
+      expect(response.json().error.code).toBe('VALIDATION_ERROR');
+      for (const table of [expenses, expenseSplits, operationLogs])
+        expect(
+          await fixture.db.orm.select().from(table).where(eq(table.ledgerId, ledgerId!)),
+        ).toHaveLength(0);
+      expect(
+        await fixture.db.orm
+          .select()
+          .from(idempotencyKeys)
+          .where(eq(idempotencyKeys.userId, s.owner.user.id)),
+      ).toHaveLength(0);
+      const [ledger] = await fixture.db.orm.select().from(ledgers).where(eq(ledgers.id, ledgerId!));
+      expect(ledger!.version).toBe(1);
+    }
+  });
+
   it('rejects AMOUNT splits that do not add up to the total', async () => {
     const s = await seed();
     const res = await post(
