@@ -1,0 +1,14 @@
+{
+  "package": "com.tongzhang.app",
+  "apkBytes": 99547334,
+  "apkSha256": "72504440573ae6985ad362bbd53854b03b46ac4d5a97c17513b0b53a61bbecf0",
+  "reusedFrom": "209727140390a519c59f9ee287b8e7cd3e3472e7",
+  "newNativeBuild": false,
+  "newNativeInstall": false,
+  "candidate": "89d0166da5c528edeac80e460c689f40385e813b",
+  "device": "Android 17 / API 37 ARM64 emulator",
+  "normalSize": "1080x2400 / density 420",
+  "smallSize": "840x1491 / density 420 = 320x568 dp",
+  "restoredPhysicalSize": true,
+  "networkFollowupCandidate": "adff4d8ef36a835917d7f04713574c1031bbfe94"
+}

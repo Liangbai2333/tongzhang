@@ -1,0 +1,9 @@
+
+ RUN  v5.0.4 /Users/liangbai/.codex/worktrees/issues-58-59-acceptance/tongzhang
+
+
+ Test Files  1 passed (1)
+      Tests  21 passed (21)
+   Start at  05:43:34
+   Duration  78ms (transform 57%, import 20%, tests 18%, worker 5%)
+

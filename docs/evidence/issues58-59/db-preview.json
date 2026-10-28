@@ -1,0 +1,141 @@
+{
+  "time": "2026-10-28T12:28:37.609Z",
+  "database": "tongzhang_58_59_native",
+  "stage": "preview",
+  "tables": {
+    "ledgers": [
+      {
+        "id": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+        "created_by_user_id": "c15e61ef-cb27-4b8d-9fc7-dffaeebe24b4",
+        "name": "Day6-Reauth-Cover",
+        "cover_key": null,
+        "cover_image_id": "b7a83421-5570-4e13-8469-b2ec02c9e640",
+        "status": "ACTIVE",
+        "version": 3,
+        "settled_at": null,
+        "created_at": "2026-10-28T12:15:12.981Z",
+        "updated_at": "2026-10-28T12:26:14.851Z"
+      }
+    ],
+    "ledger_members": [
+      {
+        "id": "255a060a-8482-45f5-a252-a974f9bc426e",
+        "ledger_id": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+        "user_id": "c15e61ef-cb27-4b8d-9fc7-dffaeebe24b4",
+        "archived_at": null,
+        "joined_at": "2026-10-28T12:15:12.981Z"
+      },
+      {
+        "id": "cded1020-b58e-49ac-b6dd-eda538e23783",
+        "ledger_id": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+        "user_id": "c23288cc-0262-4728-bfc8-a26a767e92b0",
+        "archived_at": null,
+        "joined_at": "2026-10-28T12:23:01.536Z"
+      }
+    ],
+    "expenses": [
+      {
+        "id": "012b4a25-7bfe-46b5-989f-eea1fea2af97",
+        "ledger_id": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+        "recorder_member_id": "cded1020-b58e-49ac-b6dd-eda538e23783",
+        "payer_member_id": "cded1020-b58e-49ac-b6dd-eda538e23783",
+        "title": "Day6-Receipt-120",
+        "amount_cents": "12000",
+        "category": "DINING",
+        "occurred_on": "2026-10-28T07:00:00.000Z",
+        "split_mode": "EQUAL",
+        "note": null,
+        "version": 1,
+        "deleted_at": null,
+        "created_at": "2026-10-28T12:26:14.837Z",
+        "updated_at": "2026-10-28T12:26:14.837Z"
+      }
+    ],
+    "expense_splits": [
+      {
+        "expense_id": "012b4a25-7bfe-46b5-989f-eea1fea2af97",
+        "member_id": "255a060a-8482-45f5-a252-a974f9bc426e",
+        "ledger_id": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+        "shares": null,
+        "amount_cents": "6000",
+        "created_at": "2026-10-28T12:26:14.837Z"
+      },
+      {
+        "expense_id": "012b4a25-7bfe-46b5-989f-eea1fea2af97",
+        "member_id": "cded1020-b58e-49ac-b6dd-eda538e23783",
+        "ledger_id": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+        "shares": null,
+        "amount_cents": "6000",
+        "created_at": "2026-10-28T12:26:14.837Z"
+      }
+    ],
+    "expense_images": [
+      {
+        "expense_id": "012b4a25-7bfe-46b5-989f-eea1fea2af97",
+        "ledger_id": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+        "image_id": "0912d19f-6aea-43d0-a51f-b80f2361e6f6",
+        "created_at": "2026-10-28T12:26:14.837Z"
+      }
+    ],
+    "settlement_batches": [],
+    "settlement_transfers": [],
+    "operation_logs": [
+      {
+        "id": "0eafbf4e-6aca-4b1b-a39f-930e2ccd8af0",
+        "actor_user_id": "c23288cc-0262-4728-bfc8-a26a767e92b0",
+        "ledger_id": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+        "action": "EXPENSE_CREATED",
+        "target_type": "EXPENSE",
+        "target_id": "012b4a25-7bfe-46b5-989f-eea1fea2af97",
+        "request_id": "6ac2ce48-8689-4fca-82fd-66c9b9285683",
+        "details": {
+          "splitMode": "EQUAL",
+          "amountCents": "12000"
+        },
+        "created_at": "2026-10-28T12:26:14.837Z"
+      },
+      {
+        "id": "1ffc3be7-e40c-4033-997d-d8ad77f88057",
+        "actor_user_id": "c23288cc-0262-4728-bfc8-a26a767e92b0",
+        "ledger_id": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+        "action": "MEMBER_JOINED",
+        "target_type": "LEDGER_MEMBER",
+        "target_id": "cded1020-b58e-49ac-b6dd-eda538e23783",
+        "request_id": "4b396315-badd-4b21-902e-d6d5bdf0c0bb",
+        "details": {
+          "invitationId": "33dceaf4-9d4b-4e2c-8ff4-88a90ddc65c7"
+        },
+        "created_at": "2026-10-28T12:23:01.536Z"
+      },
+      {
+        "id": "289a5b97-a617-4df2-b5e1-dea98654f6e4",
+        "actor_user_id": "c15e61ef-cb27-4b8d-9fc7-dffaeebe24b4",
+        "ledger_id": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+        "action": "LEDGER_CREATED",
+        "target_type": "LEDGER",
+        "target_id": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+        "request_id": "191a2c80-d0aa-44d9-9312-6a99326b9580",
+        "details": {},
+        "created_at": "2026-10-28T12:15:12.981Z"
+      }
+    ]
+  },
+  "images": [
+    {
+      "id": "0912d19f-6aea-43d0-a51f-b80f2361e6f6",
+      "kind": "RECEIPT",
+      "ledger_id": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+      "uploaded_by_user_id": "c23288cc-0262-4728-bfc8-a26a767e92b0",
+      "byte_size": 43782,
+      "sha256": "d53608586ed6fc6f5ed3b6993d0b547a0fcc00c119a85297aff7fd7c6cef0d16"
+    },
+    {
+      "id": "b7a83421-5570-4e13-8469-b2ec02c9e640",
+      "kind": "COVER",
+      "ledger_id": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+      "uploaded_by_user_id": "c15e61ef-cb27-4b8d-9fc7-dffaeebe24b4",
+      "byte_size": 37140,
+      "sha256": "bc4f056aa1993bc615790edcae4985f6b3a94a6eb637462ba77571386c5ef65f"
+    }
+  ]
+}

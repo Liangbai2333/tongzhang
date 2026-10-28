@@ -1,0 +1,17 @@
+{
+  "time": "2026-10-28T12:26:38.775Z",
+  "database": "tongzhang_58_59_native",
+  "stage": "revoke-receipt",
+  "revoked": [
+    {
+      "id": "2943b140-d10d-4757-a29b-f7a3a97d7dde",
+      "user_id": "c23288cc-0262-4728-bfc8-a26a767e92b0",
+      "revoked_at": "2026-10-28T12:26:38.796Z"
+    },
+    {
+      "id": "0f872b95-117f-4b8d-923d-78a05b7aeb73",
+      "user_id": "c23288cc-0262-4728-bfc8-a26a767e92b0",
+      "revoked_at": "2026-10-28T12:26:38.796Z"
+    }
+  ]
+}

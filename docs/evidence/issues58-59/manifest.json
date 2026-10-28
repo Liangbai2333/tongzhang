@@ -1,0 +1,219 @@
+{
+  "candidate": "adff4d8ef36a835917d7f04713574c1031bbfe94",
+  "lifecycleCandidate": "89d0166da5c528edeac80e460c689f40385e813b",
+  "method": "adb exec-out screencap -p; unmodified original pixels",
+  "nativeScreenshotCount": 41,
+  "referenceScreenshot": "figma-login-reference.png",
+  "files": {
+    "01-cover-before-submit.png": {
+      "bytes": 152528,
+      "sha256": "770c47725d4390be31f38c7e360a6e3f68cac446e2e2e110dfa6501bd3d8e51c",
+      "capturedOrWrittenAtUtc": "2026-10-28T12:15:10.532Z"
+    },
+    "02-cover-result-unknown.png": {
+      "bytes": 202828,
+      "sha256": "5743470c46b2dae71c152b0e9d6ea6d7fc996c3e833dbec136fc1c1f63c27b0b",
+      "capturedOrWrittenAtUtc": "2026-10-28T12:15:15.166Z"
+    },
+    "03-cover-real-401-gate.png": {
+      "bytes": 178475,
+      "sha256": "bfbb39a07476eb9b0adee423788b7a37b3233795ef5fe2360da9b653932e938b",
+      "capturedOrWrittenAtUtc": "2026-10-28T12:15:34.368Z"
+    },
+    "04-wrong-password-stays-gated.png": {
+      "bytes": 180799,
+      "sha256": "b074e30cb67a494a29e81265cb3d70afb3ad5c27d0c29dd906259aec6a0fabfb",
+      "capturedOrWrittenAtUtc": "2026-10-28T12:15:55.417Z"
+    },
+    "05-verifying-new-session.png": {
+      "bytes": 181303,
+      "sha256": "7e9f6433cf038d19d5a36ae7b732cb829cc8f463915e1a14f48cc6a48c241cea",
+      "capturedOrWrittenAtUtc": "2026-10-28T12:16:29.136Z"
+    },
+    "06-same-account-cover-retained.png": {
+      "bytes": 203344,
+      "sha256": "40c226e584a9a684ac94e69d45f1dc6a158ff03e3b4229c85e9e586216f38d6e",
+      "capturedOrWrittenAtUtc": "2026-10-28T12:16:39.712Z"
+    },
+    "07-original-create-key-replayed.png": {
+      "bytes": 175025,
+      "sha256": "cf415d884999dacfcc3ad3869e68feccc50c1c77342cff7784cfdf0f5f2b7c39",
+      "capturedOrWrittenAtUtc": "2026-10-28T12:16:54.626Z"
+    },
+    "08-member-join-preview.png": {
+      "bytes": 209237,
+      "sha256": "f10ee923d6d59a46dfc54d81e98da4539116257b4e091f496bb97177ad73f8b6",
+      "capturedOrWrittenAtUtc": "2026-10-28T12:22:59.367Z"
+    },
+    "09-member-joined.png": {
+      "bytes": 170205,
+      "sha256": "025d91d37e395e299ca48e44b230b6c461def34f2cdaa6021810e3e3de5abd9f",
+      "capturedOrWrittenAtUtc": "2026-10-28T12:23:04.972Z"
+    },
+    "10-receipt-before-submit.png": {
+      "bytes": 173443,
+      "sha256": "ff07a5ec2346de721acce4cd481813f5e2dfd70ef9975c02ed86219b382c9c36",
+      "capturedOrWrittenAtUtc": "2026-10-28T12:26:12.285Z"
+    },
+    "11-receipt-result-unknown.png": {
+      "bytes": 210611,
+      "sha256": "88c580fd81d03a036221ef3ebef973c4088e1315d30751ef8e258ee9183ec88a",
+      "capturedOrWrittenAtUtc": "2026-10-28T12:26:17.395Z"
+    },
+    "12-receipt-real-401-gate.png": {
+      "bytes": 178103,
+      "sha256": "459884811535c44401e437cb629c8400f3a2de90c68828dadaa220f8bcfc7e4c",
+      "capturedOrWrittenAtUtc": "2026-10-28T12:26:43.989Z"
+    },
+    "13-same-account-receipt-retained.png": {
+      "bytes": 249486,
+      "sha256": "d73a2b6941b93e57e57d2d833428b010c4cf3b2524d0e53fd235cd74811925b6",
+      "capturedOrWrittenAtUtc": "2026-10-28T12:27:40.890Z"
+    },
+    "14-original-expense-key-replayed.png": {
+      "bytes": 154504,
+      "sha256": "b55fbca47b64dbc44d58dfba1f4e0f8ceb7ae2ed09e42955155b25a31b615db7",
+      "capturedOrWrittenAtUtc": "2026-10-28T12:27:46.671Z"
+    },
+    "15-authorized-receipt.png": {
+      "bytes": 164553,
+      "sha256": "981573b5352640675140795ef0ad478ab5b0aed2ed85770dfa7a230274660030",
+      "capturedOrWrittenAtUtc": "2026-10-28T12:27:57.439Z"
+    },
+    "16-member-balances.png": {
+      "bytes": 170665,
+      "sha256": "9e92252df24d8e76c3bc1f3dc8eaa2357a5d23c15d3ed070e94481bec483bbe4",
+      "capturedOrWrittenAtUtc": "2026-10-28T12:28:28.647Z"
+    },
+    "17-member-readonly-preview.png": {
+      "bytes": 187107,
+      "sha256": "22dc83d38fac7b6b9f64b0eeb4110f2ea19bf03f7c8927741da06ebbc2ea8cf0",
+      "capturedOrWrittenAtUtc": "2026-10-28T12:28:37.370Z"
+    },
+    "18-member-unsaved-before-switch.png": {
+      "bytes": 183654,
+      "sha256": "02c622f79f03d0574e681117f8eb2e08f34e46c041ee0ed0afe195c43803f927",
+      "capturedOrWrittenAtUtc": "2026-10-28T12:29:49.013Z"
+    },
+    "19-small-reauth-gate.png": {
+      "bytes": 105845,
+      "sha256": "076e1299f08c2f6725df2cd192cd8db5c55cd242695e5f394efa9dfaeefd180a",
+      "capturedOrWrittenAtUtc": "2026-10-28T12:30:31.845Z"
+    },
+    "20-small-keyboard-login.png": {
+      "bytes": 106696,
+      "sha256": "90bb4dbb6d90fc63eb46a367c8a1703a9a2d2fdbecbba5486f046d86b8f594c4",
+      "capturedOrWrittenAtUtc": "2026-10-28T12:31:00.347Z"
+    },
+    "21-different-account-drops-form.png": {
+      "bytes": 112875,
+      "sha256": "ca701510dfbb5d1fa43bfc4bf5580d03d7b580258e1e677965d26fc8823d7865",
+      "capturedOrWrittenAtUtc": "2026-10-28T12:31:06.360Z"
+    },
+    "22-owner-preview.png": {
+      "bytes": 193973,
+      "sha256": "031de41fe5d6675da1086cdb9d214b1f845de699b3d40c4193289ee725e0c1ed",
+      "capturedOrWrittenAtUtc": "2026-10-28T12:34:03.380Z"
+    },
+    "23-freeze-confirm.png": {
+      "bytes": 243118,
+      "sha256": "a2e7c62cdaa07df6cdb7e88cd10b17a14d307a38b868de2492e1d3a8077d8a5f",
+      "capturedOrWrittenAtUtc": "2026-10-28T12:34:12.990Z"
+    },
+    "24-frozen-pending.png": {
+      "bytes": 226233,
+      "sha256": "108f59f7df5a8eabe2e4c0976a4c25d837f9daced914accff90f61aa21caaed3",
+      "capturedOrWrittenAtUtc": "2026-10-28T12:34:46.936Z"
+    },
+    "25-paid-confirm.png": {
+      "bytes": 219727,
+      "sha256": "8d162f1a9e2841b3651908160732ebb250ee407e70608865b9d73292ae764b7a",
+      "capturedOrWrittenAtUtc": "2026-10-28T12:35:07.760Z"
+    },
+    "26-paid-zero-remaining.png": {
+      "bytes": 191198,
+      "sha256": "ee4f5d3df95bab617479c886f25e9a8c10df10f0bd36db319188d189143bc6e5",
+      "capturedOrWrittenAtUtc": "2026-10-28T12:35:10.630Z"
+    },
+    "27-settled.png": {
+      "bytes": 226170,
+      "sha256": "1356ad6e5c8bddb072e51c553636d7281bbb0757c83c983cf59cabb32b01d0b2",
+      "capturedOrWrittenAtUtc": "2026-10-28T12:35:54.524Z"
+    },
+    "28-archive-confirm.png": {
+      "bytes": 226251,
+      "sha256": "f661f64319b0eaba66a700f7c2db1767fa0c660d3a006ea21c558c043914f031",
+      "capturedOrWrittenAtUtc": "2026-10-28T12:36:06.250Z"
+    },
+    "29-owner-current-empty.png": {
+      "bytes": 221199,
+      "sha256": "176e2c9a13b0b99863f2799b2799355e53bda4f925c42e2b15eca70a68ec86f0",
+      "capturedOrWrittenAtUtc": "2026-10-28T12:36:36.290Z"
+    },
+    "30-owner-history.png": {
+      "bytes": 107421,
+      "sha256": "41084a95b16d34481ea19f81ced826fe435260cd03ba735116df7dfcecff9203",
+      "capturedOrWrittenAtUtc": "2026-10-28T12:36:41.606Z"
+    },
+    "31-owner-history-record.png": {
+      "bytes": 107264,
+      "sha256": "e0a400fc76d6c3814b2dbca39632b742a7fa08d390dcd810fab29423bbc302d1",
+      "capturedOrWrittenAtUtc": "2026-10-28T12:37:01.012Z"
+    },
+    "32-member-current-unarchived.png": {
+      "bytes": 111618,
+      "sha256": "740f44e448557a78ba911b6b4fdc26d68ec97b54be51f22501f672529ded754c",
+      "capturedOrWrittenAtUtc": "2026-10-28T12:37:44.141Z"
+    },
+    "33-member-same-batch.png": {
+      "bytes": 111744,
+      "sha256": "7574252109e9034a19774a3dfa78edac047dba8cc46943dfbfd4d0fc5d9e1206",
+      "capturedOrWrittenAtUtc": "2026-10-28T12:37:46.496Z"
+    },
+    "34-member-history-empty.png": {
+      "bytes": 105196,
+      "sha256": "48c424e66903494cca103b1f5524732866cd4d7d4bf46f645dd93a031fa662c7",
+      "capturedOrWrittenAtUtc": "2026-10-28T12:37:54.456Z"
+    },
+    "35-network-draft-before-401.png": {
+      "bytes": 208078,
+      "sha256": "10e1c74b5ca28b1284b8dd4af22fe0d2dcb6ff55da87049a0c0ab7bb021b2136",
+      "capturedOrWrittenAtUtc": "2026-10-28T12:46:49.514Z"
+    },
+    "36-network-reauth-gate.png": {
+      "bytes": 178572,
+      "sha256": "05489ced10f3b2d83c59136800c9409161fc8249789df11dad0c53dedf334161",
+      "capturedOrWrittenAtUtc": "2026-10-28T12:46:55.423Z"
+    },
+    "37-network-login-verifying.png": {
+      "bytes": 172782,
+      "sha256": "f0994271be09d73176ab0199d95fed80b4f19f22648c394873135fc50632d37a",
+      "capturedOrWrittenAtUtc": "2026-10-28T12:47:39.762Z"
+    },
+    "38-network-disabled-during-login.png": {
+      "bytes": 162028,
+      "sha256": "7c5b1738b0e1cf88d73f80c8d037df59a4f82c595e6d0f27337d154c3e2c0fbf",
+      "capturedOrWrittenAtUtc": "2026-10-28T12:47:40.765Z"
+    },
+    "39-late-200-still-reauth-gated.png": {
+      "bytes": 186389,
+      "sha256": "ef883628a5bc3666a8649a0a91374909c02a6096747efd16054745ade54f8f47",
+      "capturedOrWrittenAtUtc": "2026-10-28T12:48:02.853Z"
+    },
+    "40-network-restored-still-gated.png": {
+      "bytes": 186142,
+      "sha256": "cc4e8d63377c3c86a3eddff52be3f49aa8b48c7910933c88547de9879b3083e1",
+      "capturedOrWrittenAtUtc": "2026-10-28T12:48:03.136Z"
+    },
+    "41-explicit-login-restores-original-form.png": {
+      "bytes": 152364,
+      "sha256": "b75db4d3fbf71e15f413e13e460c1d976c6531c191bd4e4cb2f6e68c66776c11",
+      "capturedOrWrittenAtUtc": "2026-10-28T12:48:08.165Z"
+    },
+    "figma-login-reference.png": {
+      "bytes": 36694,
+      "sha256": "8c827fefa481271ae120150e40f2eb499c640b5052fe0cb91227cc0b0db88b7a",
+      "capturedOrWrittenAtUtc": "2026-10-28T12:18:08.464Z"
+    }
+  }
+}

@@ -1,0 +1,36 @@
+
+ RUN  v5.0.4 /Users/liangbai/.codex/worktrees/issues-58-59-acceptance/tongzhang
+
+ ❯ apps/mobile/tests/auth-controller.test.ts (21 tests | 1 failed) 7ms
+   ❯ mobile authentication and route admission state (21)
+     × keeps reauthentication gated when its successful verification arrives after a network loss 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  apps/mobile/tests/auth-controller.test.ts > mobile authentication and route admission state > keeps reauthentication gated when its successful verification arrives after a network loss
+AssertionError: promise resolved "undefined" instead of rejecting
+
+- Expected:
+Error {
+  "message": "rejected promise",
+}
+
++ Received:
+undefined
+
+ ❯ apps/mobile/tests/auth-controller.test.ts:124:26
+    122|     auth.suspend({preserveScreen: true});
+    123|     response.resolve({data: user});
+    124|     await expect(pending).rejects.toMatchObject({code: 'NETWORK_UNAVAI…
+       |                          ^
+    125|     expect(auth.getSnapshot()).toMatchObject({status: 'reauthenticatio…
+    126|     expect(api.setAdmission).toHaveBeenLastCalledWith(false);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 20 passed (21)
+   Start at  05:43:26
+   Duration  88ms (transform 49%, tests 25%, import 19%, worker 7%)
+

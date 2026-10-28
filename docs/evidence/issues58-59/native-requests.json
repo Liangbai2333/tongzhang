@@ -1,0 +1,2571 @@
+{
+  "candidate": "89d0166da5c528edeac80e460c689f40385e813b",
+  "fixturePreparation": "First two auth/register calls only; every successful business write was triggered in the native App",
+  "requests": [
+    {
+      "time": "2026-10-28T12:10:08.497Z",
+      "method": "POST",
+      "path": "/api/v1/auth/register",
+      "status": 201,
+      "requestId": "33d75f91-4661-40b0-9c5b-253f3b72c3f0"
+    },
+    {
+      "time": "2026-10-28T12:10:08.526Z",
+      "method": "POST",
+      "path": "/api/v1/auth/register",
+      "status": 201,
+      "requestId": "c4b93836-0d38-4ef2-9c13-1543acefacfb"
+    },
+    {
+      "time": "2026-10-28T12:10:14.777Z",
+      "method": "POST",
+      "path": "/api/v1/auth/refresh",
+      "status": 401,
+      "requestId": "bacfdb95-399c-4c51-98e1-8c106cc07103"
+    },
+    {
+      "time": "2026-10-28T12:11:55.098Z",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "status": 200,
+      "requestId": "870cfe65-cb22-4c94-843c-f90dea69b439"
+    },
+    {
+      "time": "2026-10-28T12:11:55.333Z",
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "requestId": "66bbf00a-9fd0-4ffa-946b-f8bbf7ac4eb3",
+      "body": {
+        "data": {
+          "id": "c15e61ef-cb27-4b8d-9fc7-dffaeebe24b4",
+          "username": "Day6-owner",
+          "email": "issue5859-owner@example.test",
+          "notificationEnabled": true
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:11:55.654Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers?limit=20&archived=false",
+      "status": 200,
+      "requestId": "2e96f75f-302a-4e27-99e5-228dc8922347",
+      "body": {
+        "data": [],
+        "page": {
+          "nextCursor": null
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:14:59.929Z",
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "requestId": "817943ad-556a-4d25-9c0c-88a7d26de35e",
+      "body": {
+        "data": {
+          "id": "c15e61ef-cb27-4b8d-9fc7-dffaeebe24b4",
+          "username": "Day6-owner",
+          "email": "issue5859-owner@example.test",
+          "notificationEnabled": true
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:15:12.748Z",
+      "method": "POST",
+      "path": "/api/v1/images",
+      "status": 201,
+      "requestId": "5cae2e24-5543-4084-b422-8e58825e5902",
+      "body": {
+        "data": {
+          "imageId": "b7a83421-5570-4e13-8469-b2ec02c9e640",
+          "mimeType": "image/jpeg",
+          "byteSize": 37140,
+          "width": 1200,
+          "height": 1500
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:15:13.001Z",
+      "method": "POST",
+      "path": "/api/v1/ledgers",
+      "status": 201,
+      "requestId": "191a2c80-d0aa-44d9-9312-6a99326b9580",
+      "keyDigest": "48e763d76eef",
+      "body": {
+        "data": {
+          "ledger": {
+            "id": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+            "name": "Day6-Reauth-Cover",
+            "coverKey": null,
+            "coverImageId": "b7a83421-5570-4e13-8469-b2ec02c9e640",
+            "status": "ACTIVE",
+            "version": 1,
+            "memberCount": 1,
+            "expenseTotalCents": "0",
+            "myRemainingNetCents": "0",
+            "archivedAt": null,
+            "createdAt": "2026-10-28T12:15:12.981Z"
+          },
+          "invitation": {
+            "id": "33dceaf4-9d4b-4e2c-8ff4-88a90ddc65c7",
+            "code": "WA3LGH",
+            "expiresAt": "2026-11-04T12:15:12.991Z",
+            "expired": false,
+            "qrPayload": "tongzhang:invite:v1:WA3LGH"
+          }
+        }
+      },
+      "committedBeforeLostResponse": true,
+      "sentStatus": 503
+    },
+    {
+      "time": "2026-10-28T12:15:31.331Z",
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 401,
+      "requestId": "a9d95ff8-4a27-4538-ace2-183cbfed2e42",
+      "body": {
+        "error": {
+          "code": "UNAUTHENTICATED",
+          "message": "登录已失效，请重新登录"
+        },
+        "requestId": "a9d95ff8-4a27-4538-ace2-183cbfed2e42"
+      }
+    },
+    {
+      "time": "2026-10-28T12:15:52.963Z",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "status": 401,
+      "requestId": "d2b3f476-12e8-40b4-95ef-d418bc30341a"
+    },
+    {
+      "time": "2026-10-28T12:16:29.115Z",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "status": 200,
+      "requestId": "28d8e20e-c3f5-4101-82cd-9d4e988d7c49"
+    },
+    {
+      "time": "2026-10-28T12:16:29.788Z",
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "requestId": "e90f202b-46bd-4c27-929d-bf8f36777916",
+      "body": {
+        "data": {
+          "id": "c15e61ef-cb27-4b8d-9fc7-dffaeebe24b4",
+          "username": "Day6-owner",
+          "email": "issue5859-owner@example.test",
+          "notificationEnabled": true
+        }
+      },
+      "delayMs": 5000
+    },
+    {
+      "time": "2026-10-28T12:16:51.653Z",
+      "method": "POST",
+      "path": "/api/v1/ledgers",
+      "status": 201,
+      "requestId": "46eef3b0-58d7-4770-a047-a1858bfef51f",
+      "keyDigest": "48e763d76eef",
+      "body": {
+        "data": {
+          "ledger": {
+            "id": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+            "name": "Day6-Reauth-Cover",
+            "coverKey": null,
+            "coverImageId": "b7a83421-5570-4e13-8469-b2ec02c9e640",
+            "status": "ACTIVE",
+            "version": 1,
+            "memberCount": 1,
+            "expenseTotalCents": "0",
+            "myRemainingNetCents": "0",
+            "archivedAt": null,
+            "createdAt": "2026-10-28T12:15:12.981Z"
+          },
+          "invitation": {
+            "id": "33dceaf4-9d4b-4e2c-8ff4-88a90ddc65c7",
+            "code": "WA3LGH",
+            "expiresAt": "2026-11-04T12:15:12.991Z",
+            "expired": false,
+            "qrPayload": "tongzhang:invite:v1:WA3LGH"
+          }
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:16:51.937Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers/ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea/invitation",
+      "status": 200,
+      "requestId": "42f103db-3da1-415a-ab6c-674492a47dc9",
+      "body": {
+        "data": {
+          "id": "33dceaf4-9d4b-4e2c-8ff4-88a90ddc65c7",
+          "code": "WA3LGH",
+          "expiresAt": "2026-11-04T12:15:12.991Z",
+          "expired": false,
+          "qrPayload": "tongzhang:invite:v1:WA3LGH"
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:16:51.991Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers/ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+      "status": 200,
+      "requestId": "35e6b137-698c-4aff-ba70-eb354b7d74b0",
+      "body": {
+        "data": {
+          "id": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+          "name": "Day6-Reauth-Cover",
+          "coverKey": null,
+          "coverImageId": "b7a83421-5570-4e13-8469-b2ec02c9e640",
+          "status": "ACTIVE",
+          "version": 1,
+          "memberCount": 1,
+          "expenseTotalCents": "0",
+          "myRemainingNetCents": "0",
+          "archivedAt": null,
+          "createdAt": "2026-10-28T12:15:12.981Z",
+          "creatorUserId": "c15e61ef-cb27-4b8d-9fc7-dffaeebe24b4",
+          "myMemberId": "255a060a-8482-45f5-a252-a974f9bc426e",
+          "myPaidCents": "0",
+          "mySharedCents": "0",
+          "myNetCents": "0",
+          "members": [
+            {
+              "id": "255a060a-8482-45f5-a252-a974f9bc426e",
+              "userId": "c15e61ef-cb27-4b8d-9fc7-dffaeebe24b4",
+              "username": "Day6-owner",
+              "role": "CREATOR",
+              "joinedAt": "2026-10-28T12:15:12.981Z",
+              "netCents": "0",
+              "remainingNetCents": "0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:17:13.526Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers/ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+      "status": 200,
+      "requestId": "0c065d20-e60f-496d-9fff-eec5b692445a",
+      "body": {
+        "data": {
+          "id": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+          "name": "Day6-Reauth-Cover",
+          "coverKey": null,
+          "coverImageId": "b7a83421-5570-4e13-8469-b2ec02c9e640",
+          "status": "ACTIVE",
+          "version": 1,
+          "memberCount": 1,
+          "expenseTotalCents": "0",
+          "myRemainingNetCents": "0",
+          "archivedAt": null,
+          "createdAt": "2026-10-28T12:15:12.981Z",
+          "creatorUserId": "c15e61ef-cb27-4b8d-9fc7-dffaeebe24b4",
+          "myMemberId": "255a060a-8482-45f5-a252-a974f9bc426e",
+          "myPaidCents": "0",
+          "mySharedCents": "0",
+          "myNetCents": "0",
+          "members": [
+            {
+              "id": "255a060a-8482-45f5-a252-a974f9bc426e",
+              "userId": "c15e61ef-cb27-4b8d-9fc7-dffaeebe24b4",
+              "username": "Day6-owner",
+              "role": "CREATOR",
+              "joinedAt": "2026-10-28T12:15:12.981Z",
+              "netCents": "0",
+              "remainingNetCents": "0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:17:14.022Z",
+      "method": "GET",
+      "path": "/api/v1/images/b7a83421-5570-4e13-8469-b2ec02c9e640",
+      "status": 200,
+      "requestId": "24e30f66-b423-4952-975b-e74cac08bdb2"
+    },
+    {
+      "time": "2026-10-28T12:17:16.524Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers?limit=20&archived=false",
+      "status": 200,
+      "requestId": "9388fe60-b7d4-4fb0-aef5-1835b10eb417",
+      "body": {
+        "data": [
+          {
+            "id": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+            "name": "Day6-Reauth-Cover",
+            "coverKey": null,
+            "coverImageId": "b7a83421-5570-4e13-8469-b2ec02c9e640",
+            "status": "ACTIVE",
+            "version": 1,
+            "memberCount": 1,
+            "expenseTotalCents": "0",
+            "myRemainingNetCents": "0",
+            "archivedAt": null,
+            "createdAt": "2026-10-28T12:15:12.981Z"
+          }
+        ],
+        "page": {
+          "nextCursor": null
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:17:16.724Z",
+      "method": "GET",
+      "path": "/api/v1/images/b7a83421-5570-4e13-8469-b2ec02c9e640",
+      "status": 200,
+      "requestId": "73306e43-7fc8-413a-b68a-ab311657d628"
+    },
+    {
+      "time": "2026-10-28T12:18:23.031Z",
+      "method": "POST",
+      "path": "/api/v1/auth/logout",
+      "status": 200,
+      "requestId": "a041497a-4faf-47e0-aee2-3be2cadddab0"
+    },
+    {
+      "time": "2026-10-28T12:19:23.036Z",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "status": 200,
+      "requestId": "28be1bae-d210-4e40-961d-c22b762d7304"
+    },
+    {
+      "time": "2026-10-28T12:19:23.369Z",
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "requestId": "a0c8b7df-3d61-4d0b-b4ee-5aacad70003b",
+      "body": {
+        "data": {
+          "id": "c23288cc-0262-4728-bfc8-a26a767e92b0",
+          "username": "Day6-member",
+          "email": "issue5859-member@example.test",
+          "notificationEnabled": true
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:19:23.633Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers?limit=20&archived=false",
+      "status": 200,
+      "requestId": "993413ac-f8a6-4ad4-8b09-331c2dd44f1e",
+      "body": {
+        "data": [],
+        "page": {
+          "nextCursor": null
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:21:16.038Z",
+      "method": "POST",
+      "path": "/api/v1/auth/refresh",
+      "status": 200,
+      "requestId": "52eeef88-c388-4583-87b1-3bd0f3e003ae"
+    },
+    {
+      "time": "2026-10-28T12:21:16.084Z",
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "requestId": "e414e6b4-1261-4fde-8dfe-0ee6dbfc86bf",
+      "body": {
+        "data": {
+          "id": "c23288cc-0262-4728-bfc8-a26a767e92b0",
+          "username": "Day6-member",
+          "email": "issue5859-member@example.test",
+          "notificationEnabled": true
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:21:47.466Z",
+      "method": "POST",
+      "path": "/api/v1/auth/refresh",
+      "status": 200,
+      "requestId": "5f80c0b8-ef94-4c18-8e65-189c1f88d4a9"
+    },
+    {
+      "time": "2026-10-28T12:21:47.567Z",
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "requestId": "29a7ebaf-9b2f-4009-a14d-e4093c213634",
+      "body": {
+        "data": {
+          "id": "c23288cc-0262-4728-bfc8-a26a767e92b0",
+          "username": "Day6-member",
+          "email": "issue5859-member@example.test",
+          "notificationEnabled": true
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:21:47.970Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers?limit=20&archived=false",
+      "status": 200,
+      "requestId": "08b61667-4071-4a1d-8e6e-04fa70aa0700",
+      "body": {
+        "data": [],
+        "page": {
+          "nextCursor": null
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:22:06.203Z",
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "requestId": "56cbb73a-2f61-4935-a1fb-c48119a3a9c5",
+      "body": {
+        "data": {
+          "id": "c23288cc-0262-4728-bfc8-a26a767e92b0",
+          "username": "Day6-member",
+          "email": "issue5859-member@example.test",
+          "notificationEnabled": true
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:22:18.119Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers?limit=20&archived=false",
+      "status": 200,
+      "requestId": "641e9f15-a09e-4a1a-8da8-6160834a6a7a",
+      "body": {
+        "data": [],
+        "page": {
+          "nextCursor": null
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:22:49.019Z",
+      "method": "POST",
+      "path": "/api/v1/invitations/preview",
+      "status": 200,
+      "requestId": "3ef87e95-2b6e-471d-aae3-a8db154bf404",
+      "body": {
+        "data": {
+          "ledgerId": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+          "name": "Day6-Reauth-Cover",
+          "creatorName": "Day6-owner",
+          "memberCount": 1,
+          "alreadyMember": false,
+          "canJoin": true
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:23:01.548Z",
+      "method": "POST",
+      "path": "/api/v1/invitations/join",
+      "status": 200,
+      "requestId": "4b396315-badd-4b21-902e-d6d5bdf0c0bb",
+      "keyDigest": "c097020dfa8c",
+      "body": {
+        "data": {
+          "ledgerId": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+          "memberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+          "alreadyMember": false
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:23:02.372Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers/ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+      "status": 200,
+      "requestId": "17dcb977-21c9-44a4-bb58-1b6a902e3312",
+      "body": {
+        "data": {
+          "id": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+          "name": "Day6-Reauth-Cover",
+          "coverKey": null,
+          "coverImageId": "b7a83421-5570-4e13-8469-b2ec02c9e640",
+          "status": "ACTIVE",
+          "version": 2,
+          "memberCount": 2,
+          "expenseTotalCents": "0",
+          "myRemainingNetCents": "0",
+          "archivedAt": null,
+          "createdAt": "2026-10-28T12:15:12.981Z",
+          "creatorUserId": "c15e61ef-cb27-4b8d-9fc7-dffaeebe24b4",
+          "myMemberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+          "myPaidCents": "0",
+          "mySharedCents": "0",
+          "myNetCents": "0",
+          "members": [
+            {
+              "id": "255a060a-8482-45f5-a252-a974f9bc426e",
+              "userId": "c15e61ef-cb27-4b8d-9fc7-dffaeebe24b4",
+              "username": "Day6-owner",
+              "role": "CREATOR",
+              "joinedAt": "2026-10-28T12:15:12.981Z",
+              "netCents": "0",
+              "remainingNetCents": "0"
+            },
+            {
+              "id": "cded1020-b58e-49ac-b6dd-eda538e23783",
+              "userId": "c23288cc-0262-4728-bfc8-a26a767e92b0",
+              "username": "Day6-member",
+              "role": "MEMBER",
+              "joinedAt": "2026-10-28T12:23:01.536Z",
+              "netCents": "0",
+              "remainingNetCents": "0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:23:02.679Z",
+      "method": "GET",
+      "path": "/api/v1/images/b7a83421-5570-4e13-8469-b2ec02c9e640",
+      "status": 200,
+      "requestId": "31384b36-9f42-4758-be35-bfa56a017c34"
+    },
+    {
+      "time": "2026-10-28T12:23:29.027Z",
+      "method": "POST",
+      "path": "/api/v1/auth/refresh",
+      "status": 200,
+      "requestId": "001a1b14-45aa-4f61-af79-9607954c3904"
+    },
+    {
+      "time": "2026-10-28T12:23:29.088Z",
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "requestId": "65a83bda-7dcd-48d6-a0c3-5b1f48965fea",
+      "body": {
+        "data": {
+          "id": "c23288cc-0262-4728-bfc8-a26a767e92b0",
+          "username": "Day6-member",
+          "email": "issue5859-member@example.test",
+          "notificationEnabled": true
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:23:29.589Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers?limit=20&archived=false",
+      "status": 200,
+      "requestId": "dd87cd2c-666d-4bab-a5c8-0033477476ee",
+      "body": {
+        "data": [
+          {
+            "id": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+            "name": "Day6-Reauth-Cover",
+            "coverKey": null,
+            "coverImageId": "b7a83421-5570-4e13-8469-b2ec02c9e640",
+            "status": "ACTIVE",
+            "version": 2,
+            "memberCount": 2,
+            "expenseTotalCents": "0",
+            "myRemainingNetCents": "0",
+            "archivedAt": null,
+            "createdAt": "2026-10-28T12:15:12.981Z"
+          }
+        ],
+        "page": {
+          "nextCursor": null
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:23:29.790Z",
+      "method": "GET",
+      "path": "/api/v1/images/b7a83421-5570-4e13-8469-b2ec02c9e640",
+      "status": 200,
+      "requestId": "1bbd9811-d8c8-4657-bc72-f1027a41bec4"
+    },
+    {
+      "time": "2026-10-28T12:23:45.279Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers/ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+      "status": 200,
+      "requestId": "ba52f35d-2d9f-4397-be18-155882aed84d",
+      "body": {
+        "data": {
+          "id": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+          "name": "Day6-Reauth-Cover",
+          "coverKey": null,
+          "coverImageId": "b7a83421-5570-4e13-8469-b2ec02c9e640",
+          "status": "ACTIVE",
+          "version": 2,
+          "memberCount": 2,
+          "expenseTotalCents": "0",
+          "myRemainingNetCents": "0",
+          "archivedAt": null,
+          "createdAt": "2026-10-28T12:15:12.981Z",
+          "creatorUserId": "c15e61ef-cb27-4b8d-9fc7-dffaeebe24b4",
+          "myMemberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+          "myPaidCents": "0",
+          "mySharedCents": "0",
+          "myNetCents": "0",
+          "members": [
+            {
+              "id": "255a060a-8482-45f5-a252-a974f9bc426e",
+              "userId": "c15e61ef-cb27-4b8d-9fc7-dffaeebe24b4",
+              "username": "Day6-owner",
+              "role": "CREATOR",
+              "joinedAt": "2026-10-28T12:15:12.981Z",
+              "netCents": "0",
+              "remainingNetCents": "0"
+            },
+            {
+              "id": "cded1020-b58e-49ac-b6dd-eda538e23783",
+              "userId": "c23288cc-0262-4728-bfc8-a26a767e92b0",
+              "username": "Day6-member",
+              "role": "MEMBER",
+              "joinedAt": "2026-10-28T12:23:01.536Z",
+              "netCents": "0",
+              "remainingNetCents": "0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:23:45.740Z",
+      "method": "GET",
+      "path": "/api/v1/images/b7a83421-5570-4e13-8469-b2ec02c9e640",
+      "status": 200,
+      "requestId": "d06082d3-1272-4dcd-a994-1dc4b27cfeb7"
+    },
+    {
+      "time": "2026-10-28T12:23:48.337Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers/ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+      "status": 200,
+      "requestId": "d52e223f-832f-4540-9179-4a32f6ac9415",
+      "body": {
+        "data": {
+          "id": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+          "name": "Day6-Reauth-Cover",
+          "coverKey": null,
+          "coverImageId": "b7a83421-5570-4e13-8469-b2ec02c9e640",
+          "status": "ACTIVE",
+          "version": 2,
+          "memberCount": 2,
+          "expenseTotalCents": "0",
+          "myRemainingNetCents": "0",
+          "archivedAt": null,
+          "createdAt": "2026-10-28T12:15:12.981Z",
+          "creatorUserId": "c15e61ef-cb27-4b8d-9fc7-dffaeebe24b4",
+          "myMemberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+          "myPaidCents": "0",
+          "mySharedCents": "0",
+          "myNetCents": "0",
+          "members": [
+            {
+              "id": "255a060a-8482-45f5-a252-a974f9bc426e",
+              "userId": "c15e61ef-cb27-4b8d-9fc7-dffaeebe24b4",
+              "username": "Day6-owner",
+              "role": "CREATOR",
+              "joinedAt": "2026-10-28T12:15:12.981Z",
+              "netCents": "0",
+              "remainingNetCents": "0"
+            },
+            {
+              "id": "cded1020-b58e-49ac-b6dd-eda538e23783",
+              "userId": "c23288cc-0262-4728-bfc8-a26a767e92b0",
+              "username": "Day6-member",
+              "role": "MEMBER",
+              "joinedAt": "2026-10-28T12:23:01.536Z",
+              "netCents": "0",
+              "remainingNetCents": "0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:25:21.540Z",
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "requestId": "49114620-5c8d-4179-8983-4837363e7a84",
+      "body": {
+        "data": {
+          "id": "c23288cc-0262-4728-bfc8-a26a767e92b0",
+          "username": "Day6-member",
+          "email": "issue5859-member@example.test",
+          "notificationEnabled": true
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:26:14.725Z",
+      "method": "POST",
+      "path": "/api/v1/images",
+      "status": 201,
+      "requestId": "5b38572e-2b2e-4597-8b8c-3beb55789388",
+      "body": {
+        "data": {
+          "imageId": "0912d19f-6aea-43d0-a51f-b80f2361e6f6",
+          "mimeType": "image/jpeg",
+          "byteSize": 43782,
+          "width": 1200,
+          "height": 1500
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:26:14.856Z",
+      "method": "POST",
+      "path": "/api/v1/ledgers/ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea/expenses",
+      "status": 201,
+      "requestId": "6ac2ce48-8689-4fca-82fd-66c9b9285683",
+      "keyDigest": "2d062b49a631",
+      "body": {
+        "data": {
+          "id": "012b4a25-7bfe-46b5-989f-eea1fea2af97",
+          "title": "Day6-Receipt-120",
+          "amountCents": "12000",
+          "category": "DINING",
+          "occurredOn": "2026-10-28",
+          "payerMemberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+          "payerName": "Day6-member",
+          "version": 1,
+          "ledgerId": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+          "recorderMemberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+          "recorderName": "Day6-member",
+          "splitMode": "EQUAL",
+          "splits": [
+            {
+              "memberId": "255a060a-8482-45f5-a252-a974f9bc426e",
+              "username": "Day6-owner",
+              "shares": null,
+              "amountCents": "6000"
+            },
+            {
+              "memberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+              "username": "Day6-member",
+              "shares": null,
+              "amountCents": "6000"
+            }
+          ],
+          "note": null,
+          "receiptImageId": "0912d19f-6aea-43d0-a51f-b80f2361e6f6",
+          "createdAt": "2026-10-28T12:26:14.837Z",
+          "updatedAt": "2026-10-28T12:26:14.837Z",
+          "canEdit": true
+        }
+      },
+      "committedBeforeLostResponse": true,
+      "sentStatus": 503
+    },
+    {
+      "time": "2026-10-28T12:26:40.718Z",
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 401,
+      "requestId": "92da04b7-27f7-427f-a921-719be4492438",
+      "body": {
+        "error": {
+          "code": "UNAUTHENTICATED",
+          "message": "登录已失效，请重新登录"
+        },
+        "requestId": "92da04b7-27f7-427f-a921-719be4492438"
+      }
+    },
+    {
+      "time": "2026-10-28T12:26:52.105Z",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "status": 200,
+      "requestId": "857537cb-4c93-49fb-be7e-f91590c3d955"
+    },
+    {
+      "time": "2026-10-28T12:26:52.617Z",
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "requestId": "2bf1e3c5-9fda-46be-a325-9438e09c5cee",
+      "body": {
+        "data": {
+          "id": "c23288cc-0262-4728-bfc8-a26a767e92b0",
+          "username": "Day6-member",
+          "email": "issue5859-member@example.test",
+          "notificationEnabled": true
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:27:43.429Z",
+      "method": "POST",
+      "path": "/api/v1/ledgers/ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea/expenses",
+      "status": 201,
+      "requestId": "eb271267-f3c6-4abe-a652-778a5f262278",
+      "keyDigest": "2d062b49a631",
+      "body": {
+        "data": {
+          "id": "012b4a25-7bfe-46b5-989f-eea1fea2af97",
+          "title": "Day6-Receipt-120",
+          "amountCents": "12000",
+          "category": "DINING",
+          "occurredOn": "2026-10-28",
+          "payerMemberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+          "payerName": "Day6-member",
+          "version": 1,
+          "ledgerId": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+          "recorderMemberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+          "recorderName": "Day6-member",
+          "splitMode": "EQUAL",
+          "splits": [
+            {
+              "memberId": "255a060a-8482-45f5-a252-a974f9bc426e",
+              "username": "Day6-owner",
+              "shares": null,
+              "amountCents": "6000"
+            },
+            {
+              "memberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+              "username": "Day6-member",
+              "shares": null,
+              "amountCents": "6000"
+            }
+          ],
+          "note": null,
+          "receiptImageId": "0912d19f-6aea-43d0-a51f-b80f2361e6f6",
+          "createdAt": "2026-10-28T12:26:14.837Z",
+          "updatedAt": "2026-10-28T12:26:14.837Z",
+          "canEdit": true
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:27:44.127Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers/ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea/expenses/012b4a25-7bfe-46b5-989f-eea1fea2af97",
+      "status": 200,
+      "requestId": "baafa450-db91-430b-a393-6b2932ae0857",
+      "body": {
+        "data": {
+          "id": "012b4a25-7bfe-46b5-989f-eea1fea2af97",
+          "title": "Day6-Receipt-120",
+          "amountCents": "12000",
+          "category": "DINING",
+          "occurredOn": "2026-10-28",
+          "payerMemberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+          "payerName": "Day6-member",
+          "version": 1,
+          "ledgerId": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+          "recorderMemberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+          "recorderName": "Day6-member",
+          "splitMode": "EQUAL",
+          "splits": [
+            {
+              "memberId": "255a060a-8482-45f5-a252-a974f9bc426e",
+              "username": "Day6-owner",
+              "shares": null,
+              "amountCents": "6000"
+            },
+            {
+              "memberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+              "username": "Day6-member",
+              "shares": null,
+              "amountCents": "6000"
+            }
+          ],
+          "note": null,
+          "receiptImageId": "0912d19f-6aea-43d0-a51f-b80f2361e6f6",
+          "createdAt": "2026-10-28T12:26:14.837Z",
+          "updatedAt": "2026-10-28T12:26:14.837Z",
+          "canEdit": true
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:27:55.122Z",
+      "method": "GET",
+      "path": "/api/v1/images/0912d19f-6aea-43d0-a51f-b80f2361e6f6",
+      "status": 200,
+      "requestId": "ca151d79-d182-4427-b46a-eda82bcbfe7f"
+    },
+    {
+      "time": "2026-10-28T12:28:04.885Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers/ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+      "status": 200,
+      "requestId": "78a65ef6-6456-44c5-8cd5-a11284bad5fc",
+      "body": {
+        "data": {
+          "id": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+          "name": "Day6-Reauth-Cover",
+          "coverKey": null,
+          "coverImageId": "b7a83421-5570-4e13-8469-b2ec02c9e640",
+          "status": "ACTIVE",
+          "version": 3,
+          "memberCount": 2,
+          "expenseTotalCents": "12000",
+          "myRemainingNetCents": "6000",
+          "archivedAt": null,
+          "createdAt": "2026-10-28T12:15:12.981Z",
+          "creatorUserId": "c15e61ef-cb27-4b8d-9fc7-dffaeebe24b4",
+          "myMemberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+          "myPaidCents": "12000",
+          "mySharedCents": "6000",
+          "myNetCents": "6000",
+          "members": [
+            {
+              "id": "255a060a-8482-45f5-a252-a974f9bc426e",
+              "userId": "c15e61ef-cb27-4b8d-9fc7-dffaeebe24b4",
+              "username": "Day6-owner",
+              "role": "CREATOR",
+              "joinedAt": "2026-10-28T12:15:12.981Z",
+              "netCents": "-6000",
+              "remainingNetCents": "-6000"
+            },
+            {
+              "id": "cded1020-b58e-49ac-b6dd-eda538e23783",
+              "userId": "c23288cc-0262-4728-bfc8-a26a767e92b0",
+              "username": "Day6-member",
+              "role": "MEMBER",
+              "joinedAt": "2026-10-28T12:23:01.536Z",
+              "netCents": "6000",
+              "remainingNetCents": "6000"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:28:04.970Z",
+      "method": "GET",
+      "path": "/api/v1/images/b7a83421-5570-4e13-8469-b2ec02c9e640",
+      "status": 200,
+      "requestId": "d232441c-3de9-4186-9248-8ecc09459dac"
+    },
+    {
+      "time": "2026-10-28T12:28:05.388Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers/ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea/expenses?limit=20",
+      "status": 200,
+      "requestId": "e2fc4f18-80b2-4a4c-adc5-0d33bef736b4",
+      "body": {
+        "data": [
+          {
+            "id": "012b4a25-7bfe-46b5-989f-eea1fea2af97",
+            "title": "Day6-Receipt-120",
+            "amountCents": "12000",
+            "category": "DINING",
+            "occurredOn": "2026-10-28",
+            "payerMemberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+            "payerName": "Day6-member",
+            "version": 1
+          }
+        ],
+        "page": {
+          "nextCursor": null
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:28:05.393Z",
+      "method": "GET",
+      "path": "/api/v1/images/b7a83421-5570-4e13-8469-b2ec02c9e640",
+      "status": 200,
+      "requestId": "69f79a3b-a1cd-4c83-a7f6-133f5f6b7c49"
+    },
+    {
+      "time": "2026-10-28T12:28:28.569Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers/ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea/balances",
+      "status": 200,
+      "requestId": "8e438e5c-f029-464f-bb34-8e32f621a687",
+      "body": {
+        "data": {
+          "expenseTotalCents": "12000",
+          "members": [
+            {
+              "memberId": "255a060a-8482-45f5-a252-a974f9bc426e",
+              "username": "Day6-owner",
+              "paidCents": "0",
+              "sharedCents": "6000",
+              "netCents": "-6000",
+              "remainingNetCents": "-6000"
+            },
+            {
+              "memberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+              "username": "Day6-member",
+              "paidCents": "12000",
+              "sharedCents": "6000",
+              "netCents": "6000",
+              "remainingNetCents": "6000"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:28:28.570Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers/ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+      "status": 200,
+      "requestId": "b5ab8e2d-d039-4525-b9c5-6ffd9909037b",
+      "body": {
+        "data": {
+          "id": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+          "name": "Day6-Reauth-Cover",
+          "coverKey": null,
+          "coverImageId": "b7a83421-5570-4e13-8469-b2ec02c9e640",
+          "status": "ACTIVE",
+          "version": 3,
+          "memberCount": 2,
+          "expenseTotalCents": "12000",
+          "myRemainingNetCents": "6000",
+          "archivedAt": null,
+          "createdAt": "2026-10-28T12:15:12.981Z",
+          "creatorUserId": "c15e61ef-cb27-4b8d-9fc7-dffaeebe24b4",
+          "myMemberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+          "myPaidCents": "12000",
+          "mySharedCents": "6000",
+          "myNetCents": "6000",
+          "members": [
+            {
+              "id": "255a060a-8482-45f5-a252-a974f9bc426e",
+              "userId": "c15e61ef-cb27-4b8d-9fc7-dffaeebe24b4",
+              "username": "Day6-owner",
+              "role": "CREATOR",
+              "joinedAt": "2026-10-28T12:15:12.981Z",
+              "netCents": "-6000",
+              "remainingNetCents": "-6000"
+            },
+            {
+              "id": "cded1020-b58e-49ac-b6dd-eda538e23783",
+              "userId": "c23288cc-0262-4728-bfc8-a26a767e92b0",
+              "username": "Day6-member",
+              "role": "MEMBER",
+              "joinedAt": "2026-10-28T12:23:01.536Z",
+              "netCents": "6000",
+              "remainingNetCents": "6000"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:28:31.139Z",
+      "method": "GET",
+      "path": "/api/v1/images/b7a83421-5570-4e13-8469-b2ec02c9e640",
+      "status": 200,
+      "requestId": "a5993bdd-52f8-47ba-851c-e808666e5a12"
+    },
+    {
+      "time": "2026-10-28T12:28:31.142Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers/ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+      "status": 200,
+      "requestId": "71d55d48-43e6-46d2-ac3c-613509f8c6bf",
+      "body": {
+        "data": {
+          "id": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+          "name": "Day6-Reauth-Cover",
+          "coverKey": null,
+          "coverImageId": "b7a83421-5570-4e13-8469-b2ec02c9e640",
+          "status": "ACTIVE",
+          "version": 3,
+          "memberCount": 2,
+          "expenseTotalCents": "12000",
+          "myRemainingNetCents": "6000",
+          "archivedAt": null,
+          "createdAt": "2026-10-28T12:15:12.981Z",
+          "creatorUserId": "c15e61ef-cb27-4b8d-9fc7-dffaeebe24b4",
+          "myMemberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+          "myPaidCents": "12000",
+          "mySharedCents": "6000",
+          "myNetCents": "6000",
+          "members": [
+            {
+              "id": "255a060a-8482-45f5-a252-a974f9bc426e",
+              "userId": "c15e61ef-cb27-4b8d-9fc7-dffaeebe24b4",
+              "username": "Day6-owner",
+              "role": "CREATOR",
+              "joinedAt": "2026-10-28T12:15:12.981Z",
+              "netCents": "-6000",
+              "remainingNetCents": "-6000"
+            },
+            {
+              "id": "cded1020-b58e-49ac-b6dd-eda538e23783",
+              "userId": "c23288cc-0262-4728-bfc8-a26a767e92b0",
+              "username": "Day6-member",
+              "role": "MEMBER",
+              "joinedAt": "2026-10-28T12:23:01.536Z",
+              "netCents": "6000",
+              "remainingNetCents": "6000"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:28:31.147Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers/ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea/expenses?limit=20",
+      "status": 200,
+      "requestId": "101b29a8-f4fa-4211-9eba-9bdc001d570b",
+      "body": {
+        "data": [
+          {
+            "id": "012b4a25-7bfe-46b5-989f-eea1fea2af97",
+            "title": "Day6-Receipt-120",
+            "amountCents": "12000",
+            "category": "DINING",
+            "occurredOn": "2026-10-28",
+            "payerMemberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+            "payerName": "Day6-member",
+            "version": 1
+          }
+        ],
+        "page": {
+          "nextCursor": null
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:28:31.756Z",
+      "method": "GET",
+      "path": "/api/v1/images/b7a83421-5570-4e13-8469-b2ec02c9e640",
+      "status": 200,
+      "requestId": "ce7dd767-8fea-4bc6-9ff4-e6c3eb7ff10d"
+    },
+    {
+      "time": "2026-10-28T12:28:31.822Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers/ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea/expenses?limit=20",
+      "status": 200,
+      "requestId": "f1bae6bd-5719-43ce-bfff-6675e35e29c2",
+      "body": {
+        "data": [
+          {
+            "id": "012b4a25-7bfe-46b5-989f-eea1fea2af97",
+            "title": "Day6-Receipt-120",
+            "amountCents": "12000",
+            "category": "DINING",
+            "occurredOn": "2026-10-28",
+            "payerMemberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+            "payerName": "Day6-member",
+            "version": 1
+          }
+        ],
+        "page": {
+          "nextCursor": null
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:28:34.757Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers/ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea/settlement-preview",
+      "status": 200,
+      "requestId": "7410893d-820e-491e-b4ec-34f9ebf79a6b",
+      "body": {
+        "data": {
+          "ledgerId": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+          "ledgerVersion": 3,
+          "expenseTotalCents": "12000",
+          "transferTotalCents": "6000",
+          "transferCount": 1,
+          "members": [
+            {
+              "memberId": "255a060a-8482-45f5-a252-a974f9bc426e",
+              "username": "Day6-owner",
+              "paidCents": "0",
+              "sharedCents": "6000",
+              "netCents": "-6000",
+              "remainingNetCents": "-6000"
+            },
+            {
+              "memberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+              "username": "Day6-member",
+              "paidCents": "12000",
+              "sharedCents": "6000",
+              "netCents": "6000",
+              "remainingNetCents": "6000"
+            }
+          ],
+          "transfers": [
+            {
+              "sequence": 1,
+              "payerMemberId": "255a060a-8482-45f5-a252-a974f9bc426e",
+              "payeeMemberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+              "amountCents": "6000"
+            }
+          ],
+          "algorithmVersion": "zero-sum-dp-v1"
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:28:34.760Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers/ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+      "status": 200,
+      "requestId": "9ac188b7-e22f-4bad-b38b-ce2f15c18b15",
+      "body": {
+        "data": {
+          "id": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+          "name": "Day6-Reauth-Cover",
+          "coverKey": null,
+          "coverImageId": "b7a83421-5570-4e13-8469-b2ec02c9e640",
+          "status": "ACTIVE",
+          "version": 3,
+          "memberCount": 2,
+          "expenseTotalCents": "12000",
+          "myRemainingNetCents": "6000",
+          "archivedAt": null,
+          "createdAt": "2026-10-28T12:15:12.981Z",
+          "creatorUserId": "c15e61ef-cb27-4b8d-9fc7-dffaeebe24b4",
+          "myMemberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+          "myPaidCents": "12000",
+          "mySharedCents": "6000",
+          "myNetCents": "6000",
+          "members": [
+            {
+              "id": "255a060a-8482-45f5-a252-a974f9bc426e",
+              "userId": "c15e61ef-cb27-4b8d-9fc7-dffaeebe24b4",
+              "username": "Day6-owner",
+              "role": "CREATOR",
+              "joinedAt": "2026-10-28T12:15:12.981Z",
+              "netCents": "-6000",
+              "remainingNetCents": "-6000"
+            },
+            {
+              "id": "cded1020-b58e-49ac-b6dd-eda538e23783",
+              "userId": "c23288cc-0262-4728-bfc8-a26a767e92b0",
+              "username": "Day6-member",
+              "role": "MEMBER",
+              "joinedAt": "2026-10-28T12:23:01.536Z",
+              "netCents": "6000",
+              "remainingNetCents": "6000"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:28:35.092Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers/ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea/settlement-preview",
+      "status": 200,
+      "requestId": "6cc3cfa6-7cae-40c2-ad56-51e5792aba24",
+      "body": {
+        "data": {
+          "ledgerId": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+          "ledgerVersion": 3,
+          "expenseTotalCents": "12000",
+          "transferTotalCents": "6000",
+          "transferCount": 1,
+          "members": [
+            {
+              "memberId": "255a060a-8482-45f5-a252-a974f9bc426e",
+              "username": "Day6-owner",
+              "paidCents": "0",
+              "sharedCents": "6000",
+              "netCents": "-6000",
+              "remainingNetCents": "-6000"
+            },
+            {
+              "memberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+              "username": "Day6-member",
+              "paidCents": "12000",
+              "sharedCents": "6000",
+              "netCents": "6000",
+              "remainingNetCents": "6000"
+            }
+          ],
+          "transfers": [
+            {
+              "sequence": 1,
+              "payerMemberId": "255a060a-8482-45f5-a252-a974f9bc426e",
+              "payeeMemberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+              "amountCents": "6000"
+            }
+          ],
+          "algorithmVersion": "zero-sum-dp-v1"
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:29:40.067Z",
+      "method": "GET",
+      "path": "/api/v1/images/b7a83421-5570-4e13-8469-b2ec02c9e640",
+      "status": 200,
+      "requestId": "0e11129d-6357-4606-b0c7-ff3d7776e811"
+    },
+    {
+      "time": "2026-10-28T12:29:40.074Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers/ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+      "status": 200,
+      "requestId": "c28aa8d9-eb6a-4c7e-b790-31214fbbe9fd",
+      "body": {
+        "data": {
+          "id": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+          "name": "Day6-Reauth-Cover",
+          "coverKey": null,
+          "coverImageId": "b7a83421-5570-4e13-8469-b2ec02c9e640",
+          "status": "ACTIVE",
+          "version": 3,
+          "memberCount": 2,
+          "expenseTotalCents": "12000",
+          "myRemainingNetCents": "6000",
+          "archivedAt": null,
+          "createdAt": "2026-10-28T12:15:12.981Z",
+          "creatorUserId": "c15e61ef-cb27-4b8d-9fc7-dffaeebe24b4",
+          "myMemberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+          "myPaidCents": "12000",
+          "mySharedCents": "6000",
+          "myNetCents": "6000",
+          "members": [
+            {
+              "id": "255a060a-8482-45f5-a252-a974f9bc426e",
+              "userId": "c15e61ef-cb27-4b8d-9fc7-dffaeebe24b4",
+              "username": "Day6-owner",
+              "role": "CREATOR",
+              "joinedAt": "2026-10-28T12:15:12.981Z",
+              "netCents": "-6000",
+              "remainingNetCents": "-6000"
+            },
+            {
+              "id": "cded1020-b58e-49ac-b6dd-eda538e23783",
+              "userId": "c23288cc-0262-4728-bfc8-a26a767e92b0",
+              "username": "Day6-member",
+              "role": "MEMBER",
+              "joinedAt": "2026-10-28T12:23:01.536Z",
+              "netCents": "6000",
+              "remainingNetCents": "6000"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:29:40.075Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers/ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea/expenses?limit=20",
+      "status": 200,
+      "requestId": "833b688f-54d7-47bf-9373-fa5e0caf7e46",
+      "body": {
+        "data": [
+          {
+            "id": "012b4a25-7bfe-46b5-989f-eea1fea2af97",
+            "title": "Day6-Receipt-120",
+            "amountCents": "12000",
+            "category": "DINING",
+            "occurredOn": "2026-10-28",
+            "payerMemberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+            "payerName": "Day6-member",
+            "version": 1
+          }
+        ],
+        "page": {
+          "nextCursor": null
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:29:40.318Z",
+      "method": "GET",
+      "path": "/api/v1/images/b7a83421-5570-4e13-8469-b2ec02c9e640",
+      "status": 200,
+      "requestId": "2c8fed65-5149-45e3-afee-e0dd4e5994a6"
+    },
+    {
+      "time": "2026-10-28T12:29:40.320Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers/ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea/expenses?limit=20",
+      "status": 200,
+      "requestId": "12546b56-5a55-4b81-a20d-7ba5659bb65c",
+      "body": {
+        "data": [
+          {
+            "id": "012b4a25-7bfe-46b5-989f-eea1fea2af97",
+            "title": "Day6-Receipt-120",
+            "amountCents": "12000",
+            "category": "DINING",
+            "occurredOn": "2026-10-28",
+            "payerMemberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+            "payerName": "Day6-member",
+            "version": 1
+          }
+        ],
+        "page": {
+          "nextCursor": null
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:29:42.936Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers/ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+      "status": 200,
+      "requestId": "253ad7d7-c368-49e6-ac1c-e7e22c41c826",
+      "body": {
+        "data": {
+          "id": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+          "name": "Day6-Reauth-Cover",
+          "coverKey": null,
+          "coverImageId": "b7a83421-5570-4e13-8469-b2ec02c9e640",
+          "status": "ACTIVE",
+          "version": 3,
+          "memberCount": 2,
+          "expenseTotalCents": "12000",
+          "myRemainingNetCents": "6000",
+          "archivedAt": null,
+          "createdAt": "2026-10-28T12:15:12.981Z",
+          "creatorUserId": "c15e61ef-cb27-4b8d-9fc7-dffaeebe24b4",
+          "myMemberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+          "myPaidCents": "12000",
+          "mySharedCents": "6000",
+          "myNetCents": "6000",
+          "members": [
+            {
+              "id": "255a060a-8482-45f5-a252-a974f9bc426e",
+              "userId": "c15e61ef-cb27-4b8d-9fc7-dffaeebe24b4",
+              "username": "Day6-owner",
+              "role": "CREATOR",
+              "joinedAt": "2026-10-28T12:15:12.981Z",
+              "netCents": "-6000",
+              "remainingNetCents": "-6000"
+            },
+            {
+              "id": "cded1020-b58e-49ac-b6dd-eda538e23783",
+              "userId": "c23288cc-0262-4728-bfc8-a26a767e92b0",
+              "username": "Day6-member",
+              "role": "MEMBER",
+              "joinedAt": "2026-10-28T12:23:01.536Z",
+              "netCents": "6000",
+              "remainingNetCents": "6000"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:29:51.468Z",
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 401,
+      "requestId": "0633069a-8292-46a4-aadb-1baf5e0abd20",
+      "body": {
+        "error": {
+          "code": "UNAUTHENTICATED",
+          "message": "登录已失效，请重新登录"
+        },
+        "requestId": "0633069a-8292-46a4-aadb-1baf5e0abd20"
+      }
+    },
+    {
+      "time": "2026-10-28T12:31:02.732Z",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "status": 200,
+      "requestId": "fbc2adf8-f490-449d-bdac-fd27e425cd3c"
+    },
+    {
+      "time": "2026-10-28T12:31:03.301Z",
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "requestId": "d6f6cfef-dcd8-4ed8-b1aa-0a24b8f3347c",
+      "body": {
+        "data": {
+          "id": "c15e61ef-cb27-4b8d-9fc7-dffaeebe24b4",
+          "username": "Day6-owner",
+          "email": "issue5859-owner@example.test",
+          "notificationEnabled": true
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:31:03.843Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers/ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+      "status": 200,
+      "requestId": "f58f045d-b1ac-4ef6-9b74-de2e4cb1f588",
+      "body": {
+        "data": {
+          "id": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+          "name": "Day6-Reauth-Cover",
+          "coverKey": null,
+          "coverImageId": "b7a83421-5570-4e13-8469-b2ec02c9e640",
+          "status": "ACTIVE",
+          "version": 3,
+          "memberCount": 2,
+          "expenseTotalCents": "12000",
+          "myRemainingNetCents": "-6000",
+          "archivedAt": null,
+          "createdAt": "2026-10-28T12:15:12.981Z",
+          "creatorUserId": "c15e61ef-cb27-4b8d-9fc7-dffaeebe24b4",
+          "myMemberId": "255a060a-8482-45f5-a252-a974f9bc426e",
+          "myPaidCents": "0",
+          "mySharedCents": "6000",
+          "myNetCents": "-6000",
+          "members": [
+            {
+              "id": "255a060a-8482-45f5-a252-a974f9bc426e",
+              "userId": "c15e61ef-cb27-4b8d-9fc7-dffaeebe24b4",
+              "username": "Day6-owner",
+              "role": "CREATOR",
+              "joinedAt": "2026-10-28T12:15:12.981Z",
+              "netCents": "-6000",
+              "remainingNetCents": "-6000"
+            },
+            {
+              "id": "cded1020-b58e-49ac-b6dd-eda538e23783",
+              "userId": "c23288cc-0262-4728-bfc8-a26a767e92b0",
+              "username": "Day6-member",
+              "role": "MEMBER",
+              "joinedAt": "2026-10-28T12:23:01.536Z",
+              "netCents": "6000",
+              "remainingNetCents": "6000"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:33:57.577Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers/ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea/expenses?limit=20",
+      "status": 200,
+      "requestId": "33c3b866-ac2e-427c-973a-66e96f89f460",
+      "body": {
+        "data": [
+          {
+            "id": "012b4a25-7bfe-46b5-989f-eea1fea2af97",
+            "title": "Day6-Receipt-120",
+            "amountCents": "12000",
+            "category": "DINING",
+            "occurredOn": "2026-10-28",
+            "payerMemberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+            "payerName": "Day6-member",
+            "version": 1
+          }
+        ],
+        "page": {
+          "nextCursor": null
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:33:57.584Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers/ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+      "status": 200,
+      "requestId": "a7072538-5d15-4fa9-9e3e-7f029660b705",
+      "body": {
+        "data": {
+          "id": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+          "name": "Day6-Reauth-Cover",
+          "coverKey": null,
+          "coverImageId": "b7a83421-5570-4e13-8469-b2ec02c9e640",
+          "status": "ACTIVE",
+          "version": 3,
+          "memberCount": 2,
+          "expenseTotalCents": "12000",
+          "myRemainingNetCents": "-6000",
+          "archivedAt": null,
+          "createdAt": "2026-10-28T12:15:12.981Z",
+          "creatorUserId": "c15e61ef-cb27-4b8d-9fc7-dffaeebe24b4",
+          "myMemberId": "255a060a-8482-45f5-a252-a974f9bc426e",
+          "myPaidCents": "0",
+          "mySharedCents": "6000",
+          "myNetCents": "-6000",
+          "members": [
+            {
+              "id": "255a060a-8482-45f5-a252-a974f9bc426e",
+              "userId": "c15e61ef-cb27-4b8d-9fc7-dffaeebe24b4",
+              "username": "Day6-owner",
+              "role": "CREATOR",
+              "joinedAt": "2026-10-28T12:15:12.981Z",
+              "netCents": "-6000",
+              "remainingNetCents": "-6000"
+            },
+            {
+              "id": "cded1020-b58e-49ac-b6dd-eda538e23783",
+              "userId": "c23288cc-0262-4728-bfc8-a26a767e92b0",
+              "username": "Day6-member",
+              "role": "MEMBER",
+              "joinedAt": "2026-10-28T12:23:01.536Z",
+              "netCents": "6000",
+              "remainingNetCents": "6000"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:33:57.587Z",
+      "method": "GET",
+      "path": "/api/v1/images/b7a83421-5570-4e13-8469-b2ec02c9e640",
+      "status": 200,
+      "requestId": "fc659b35-01f3-4103-80b3-fd911ff53656"
+    },
+    {
+      "time": "2026-10-28T12:33:57.768Z",
+      "method": "GET",
+      "path": "/api/v1/images/b7a83421-5570-4e13-8469-b2ec02c9e640",
+      "status": 200,
+      "requestId": "9d56330d-d5a2-493c-9dd3-a7c0824f683e"
+    },
+    {
+      "time": "2026-10-28T12:33:57.801Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers/ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea/expenses?limit=20",
+      "status": 200,
+      "requestId": "f2e8dc93-7ae6-416f-be7b-af2948fb0e73",
+      "body": {
+        "data": [
+          {
+            "id": "012b4a25-7bfe-46b5-989f-eea1fea2af97",
+            "title": "Day6-Receipt-120",
+            "amountCents": "12000",
+            "category": "DINING",
+            "occurredOn": "2026-10-28",
+            "payerMemberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+            "payerName": "Day6-member",
+            "version": 1
+          }
+        ],
+        "page": {
+          "nextCursor": null
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:34:00.356Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers/ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea/settlement-preview",
+      "status": 200,
+      "requestId": "65ef7d80-4321-470a-b7e8-506a5464f787",
+      "body": {
+        "data": {
+          "ledgerId": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+          "ledgerVersion": 3,
+          "expenseTotalCents": "12000",
+          "transferTotalCents": "6000",
+          "transferCount": 1,
+          "members": [
+            {
+              "memberId": "255a060a-8482-45f5-a252-a974f9bc426e",
+              "username": "Day6-owner",
+              "paidCents": "0",
+              "sharedCents": "6000",
+              "netCents": "-6000",
+              "remainingNetCents": "-6000"
+            },
+            {
+              "memberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+              "username": "Day6-member",
+              "paidCents": "12000",
+              "sharedCents": "6000",
+              "netCents": "6000",
+              "remainingNetCents": "6000"
+            }
+          ],
+          "transfers": [
+            {
+              "sequence": 1,
+              "payerMemberId": "255a060a-8482-45f5-a252-a974f9bc426e",
+              "payeeMemberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+              "amountCents": "6000"
+            }
+          ],
+          "algorithmVersion": "zero-sum-dp-v1"
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:34:00.359Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers/ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+      "status": 200,
+      "requestId": "dc316c0b-e226-43d6-98b9-887d18c93ff3",
+      "body": {
+        "data": {
+          "id": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+          "name": "Day6-Reauth-Cover",
+          "coverKey": null,
+          "coverImageId": "b7a83421-5570-4e13-8469-b2ec02c9e640",
+          "status": "ACTIVE",
+          "version": 3,
+          "memberCount": 2,
+          "expenseTotalCents": "12000",
+          "myRemainingNetCents": "-6000",
+          "archivedAt": null,
+          "createdAt": "2026-10-28T12:15:12.981Z",
+          "creatorUserId": "c15e61ef-cb27-4b8d-9fc7-dffaeebe24b4",
+          "myMemberId": "255a060a-8482-45f5-a252-a974f9bc426e",
+          "myPaidCents": "0",
+          "mySharedCents": "6000",
+          "myNetCents": "-6000",
+          "members": [
+            {
+              "id": "255a060a-8482-45f5-a252-a974f9bc426e",
+              "userId": "c15e61ef-cb27-4b8d-9fc7-dffaeebe24b4",
+              "username": "Day6-owner",
+              "role": "CREATOR",
+              "joinedAt": "2026-10-28T12:15:12.981Z",
+              "netCents": "-6000",
+              "remainingNetCents": "-6000"
+            },
+            {
+              "id": "cded1020-b58e-49ac-b6dd-eda538e23783",
+              "userId": "c23288cc-0262-4728-bfc8-a26a767e92b0",
+              "username": "Day6-member",
+              "role": "MEMBER",
+              "joinedAt": "2026-10-28T12:23:01.536Z",
+              "netCents": "6000",
+              "remainingNetCents": "6000"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:34:00.989Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers/ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea/settlement-preview",
+      "status": 200,
+      "requestId": "8e799d17-1876-4825-aa85-eb8e676fcc33",
+      "body": {
+        "data": {
+          "ledgerId": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+          "ledgerVersion": 3,
+          "expenseTotalCents": "12000",
+          "transferTotalCents": "6000",
+          "transferCount": 1,
+          "members": [
+            {
+              "memberId": "255a060a-8482-45f5-a252-a974f9bc426e",
+              "username": "Day6-owner",
+              "paidCents": "0",
+              "sharedCents": "6000",
+              "netCents": "-6000",
+              "remainingNetCents": "-6000"
+            },
+            {
+              "memberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+              "username": "Day6-member",
+              "paidCents": "12000",
+              "sharedCents": "6000",
+              "netCents": "6000",
+              "remainingNetCents": "6000"
+            }
+          ],
+          "transfers": [
+            {
+              "sequence": 1,
+              "payerMemberId": "255a060a-8482-45f5-a252-a974f9bc426e",
+              "payeeMemberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+              "amountCents": "6000"
+            }
+          ],
+          "algorithmVersion": "zero-sum-dp-v1"
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:34:43.850Z",
+      "method": "POST",
+      "path": "/api/v1/ledgers/ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea/settlement",
+      "status": 201,
+      "requestId": "3a9c902a-8131-4e3f-8124-ffed995b99aa",
+      "keyDigest": "06f6f8581872",
+      "body": {
+        "data": {
+          "batch": {
+            "id": "57e2ed3b-dce7-425b-98ba-f2f0b90bc0b4",
+            "ledgerId": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+            "sourceVersion": 3,
+            "expenseTotalCents": "12000",
+            "transferTotalCents": "6000",
+            "transferCount": 1,
+            "algorithmVersion": "zero-sum-dp-v1",
+            "createdAt": "2026-10-28T12:34:43.827Z",
+            "ledgerStatus": "SETTLING",
+            "transfers": [
+              {
+                "sequence": 1,
+                "payerMemberId": "255a060a-8482-45f5-a252-a974f9bc426e",
+                "payeeMemberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+                "amountCents": "6000",
+                "id": "0fbff2f7-ff49-4a70-8b79-8fc4777aba9b",
+                "status": "PENDING",
+                "registeredByMemberId": null,
+                "registeredAt": null,
+                "registrationNote": null
+              }
+            ],
+            "progress": {
+              "paidCount": 0,
+              "totalCount": 1,
+              "remainingCents": "6000"
+            }
+          },
+          "ledgerStatus": "SETTLING"
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:34:44.696Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers/ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea/settlement",
+      "status": 200,
+      "requestId": "133a0f48-55bb-4d1b-a099-18f5661dfebd",
+      "body": {
+        "data": {
+          "id": "57e2ed3b-dce7-425b-98ba-f2f0b90bc0b4",
+          "ledgerId": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+          "sourceVersion": 3,
+          "expenseTotalCents": "12000",
+          "transferTotalCents": "6000",
+          "transferCount": 1,
+          "algorithmVersion": "zero-sum-dp-v1",
+          "createdAt": "2026-10-28T12:34:43.827Z",
+          "ledgerStatus": "SETTLING",
+          "transfers": [
+            {
+              "sequence": 1,
+              "payerMemberId": "255a060a-8482-45f5-a252-a974f9bc426e",
+              "payeeMemberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+              "amountCents": "6000",
+              "id": "0fbff2f7-ff49-4a70-8b79-8fc4777aba9b",
+              "status": "PENDING",
+              "registeredByMemberId": null,
+              "registeredAt": null,
+              "registrationNote": null
+            }
+          ],
+          "progress": {
+            "paidCount": 0,
+            "totalCount": 1,
+            "remainingCents": "6000"
+          },
+          "netSnapshot": [
+            {
+              "memberId": "255a060a-8482-45f5-a252-a974f9bc426e",
+              "netCents": "-6000"
+            },
+            {
+              "memberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+              "netCents": "6000"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:34:44.708Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers/ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+      "status": 200,
+      "requestId": "5b77bd07-2229-40d1-80ca-336e22158e50",
+      "body": {
+        "data": {
+          "id": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+          "name": "Day6-Reauth-Cover",
+          "coverKey": null,
+          "coverImageId": "b7a83421-5570-4e13-8469-b2ec02c9e640",
+          "status": "SETTLING",
+          "version": 4,
+          "memberCount": 2,
+          "expenseTotalCents": "12000",
+          "myRemainingNetCents": "-6000",
+          "archivedAt": null,
+          "createdAt": "2026-10-28T12:15:12.981Z",
+          "creatorUserId": "c15e61ef-cb27-4b8d-9fc7-dffaeebe24b4",
+          "myMemberId": "255a060a-8482-45f5-a252-a974f9bc426e",
+          "myPaidCents": "0",
+          "mySharedCents": "6000",
+          "myNetCents": "-6000",
+          "members": [
+            {
+              "id": "255a060a-8482-45f5-a252-a974f9bc426e",
+              "userId": "c15e61ef-cb27-4b8d-9fc7-dffaeebe24b4",
+              "username": "Day6-owner",
+              "role": "CREATOR",
+              "joinedAt": "2026-10-28T12:15:12.981Z",
+              "netCents": "-6000",
+              "remainingNetCents": "-6000"
+            },
+            {
+              "id": "cded1020-b58e-49ac-b6dd-eda538e23783",
+              "userId": "c23288cc-0262-4728-bfc8-a26a767e92b0",
+              "username": "Day6-member",
+              "role": "MEMBER",
+              "joinedAt": "2026-10-28T12:23:01.536Z",
+              "netCents": "6000",
+              "remainingNetCents": "6000"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:35:10.199Z",
+      "method": "POST",
+      "path": "/api/v1/ledgers/ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea/settlement/transfers/0fbff2f7-ff49-4a70-8b79-8fc4777aba9b/paid",
+      "status": 200,
+      "requestId": "f93e8711-93bc-4e6a-aaff-f85a5a4567b0",
+      "keyDigest": "fe0a892b1ae7",
+      "body": {
+        "data": {
+          "transfer": {
+            "sequence": 1,
+            "payerMemberId": "255a060a-8482-45f5-a252-a974f9bc426e",
+            "payeeMemberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+            "amountCents": "6000",
+            "id": "0fbff2f7-ff49-4a70-8b79-8fc4777aba9b",
+            "status": "PAID",
+            "registeredByMemberId": "255a060a-8482-45f5-a252-a974f9bc426e",
+            "registeredAt": "2026-10-28T12:35:10.194Z",
+            "registrationNote": "Day6-6000"
+          },
+          "progress": {
+            "paidCount": 1,
+            "totalCount": 1,
+            "remainingCents": "0"
+          }
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:35:10.637Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers/ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea/settlement",
+      "status": 200,
+      "requestId": "a3c95f11-4055-4c5f-b027-eb7e98fdd82c",
+      "body": {
+        "data": {
+          "id": "57e2ed3b-dce7-425b-98ba-f2f0b90bc0b4",
+          "ledgerId": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+          "sourceVersion": 3,
+          "expenseTotalCents": "12000",
+          "transferTotalCents": "6000",
+          "transferCount": 1,
+          "algorithmVersion": "zero-sum-dp-v1",
+          "createdAt": "2026-10-28T12:34:43.827Z",
+          "ledgerStatus": "SETTLING",
+          "transfers": [
+            {
+              "sequence": 1,
+              "payerMemberId": "255a060a-8482-45f5-a252-a974f9bc426e",
+              "payeeMemberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+              "amountCents": "6000",
+              "id": "0fbff2f7-ff49-4a70-8b79-8fc4777aba9b",
+              "status": "PAID",
+              "registeredByMemberId": "255a060a-8482-45f5-a252-a974f9bc426e",
+              "registeredAt": "2026-10-28T12:35:10.194Z",
+              "registrationNote": "Day6-6000"
+            }
+          ],
+          "progress": {
+            "paidCount": 1,
+            "totalCount": 1,
+            "remainingCents": "0"
+          },
+          "netSnapshot": [
+            {
+              "memberId": "255a060a-8482-45f5-a252-a974f9bc426e",
+              "netCents": "-6000"
+            },
+            {
+              "memberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+              "netCents": "6000"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:35:10.641Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers/ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+      "status": 200,
+      "requestId": "f122292e-846f-4f7e-8a77-8d56fee3d812",
+      "body": {
+        "data": {
+          "id": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+          "name": "Day6-Reauth-Cover",
+          "coverKey": null,
+          "coverImageId": "b7a83421-5570-4e13-8469-b2ec02c9e640",
+          "status": "SETTLING",
+          "version": 4,
+          "memberCount": 2,
+          "expenseTotalCents": "12000",
+          "myRemainingNetCents": "0",
+          "archivedAt": null,
+          "createdAt": "2026-10-28T12:15:12.981Z",
+          "creatorUserId": "c15e61ef-cb27-4b8d-9fc7-dffaeebe24b4",
+          "myMemberId": "255a060a-8482-45f5-a252-a974f9bc426e",
+          "myPaidCents": "0",
+          "mySharedCents": "6000",
+          "myNetCents": "-6000",
+          "members": [
+            {
+              "id": "255a060a-8482-45f5-a252-a974f9bc426e",
+              "userId": "c15e61ef-cb27-4b8d-9fc7-dffaeebe24b4",
+              "username": "Day6-owner",
+              "role": "CREATOR",
+              "joinedAt": "2026-10-28T12:15:12.981Z",
+              "netCents": "-6000",
+              "remainingNetCents": "0"
+            },
+            {
+              "id": "cded1020-b58e-49ac-b6dd-eda538e23783",
+              "userId": "c23288cc-0262-4728-bfc8-a26a767e92b0",
+              "username": "Day6-member",
+              "role": "MEMBER",
+              "joinedAt": "2026-10-28T12:23:01.536Z",
+              "netCents": "6000",
+              "remainingNetCents": "0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:35:51.654Z",
+      "method": "POST",
+      "path": "/api/v1/ledgers/ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea/settle",
+      "status": 200,
+      "requestId": "20ef7ecb-0658-46e7-8a74-1ca8dd895235",
+      "keyDigest": "bdfc7aba3927",
+      "body": {
+        "data": {
+          "ledgerId": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+          "status": "SETTLED",
+          "settledAt": "2026-10-28T12:35:51.651Z"
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:35:51.779Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers/ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea/settlement",
+      "status": 200,
+      "requestId": "04823e1d-8925-4a51-b935-857404a9e1c0",
+      "body": {
+        "data": {
+          "id": "57e2ed3b-dce7-425b-98ba-f2f0b90bc0b4",
+          "ledgerId": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+          "sourceVersion": 3,
+          "expenseTotalCents": "12000",
+          "transferTotalCents": "6000",
+          "transferCount": 1,
+          "algorithmVersion": "zero-sum-dp-v1",
+          "createdAt": "2026-10-28T12:34:43.827Z",
+          "ledgerStatus": "SETTLED",
+          "transfers": [
+            {
+              "sequence": 1,
+              "payerMemberId": "255a060a-8482-45f5-a252-a974f9bc426e",
+              "payeeMemberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+              "amountCents": "6000",
+              "id": "0fbff2f7-ff49-4a70-8b79-8fc4777aba9b",
+              "status": "PAID",
+              "registeredByMemberId": "255a060a-8482-45f5-a252-a974f9bc426e",
+              "registeredAt": "2026-10-28T12:35:10.194Z",
+              "registrationNote": "Day6-6000"
+            }
+          ],
+          "progress": {
+            "paidCount": 1,
+            "totalCount": 1,
+            "remainingCents": "0"
+          },
+          "netSnapshot": [
+            {
+              "memberId": "255a060a-8482-45f5-a252-a974f9bc426e",
+              "netCents": "-6000"
+            },
+            {
+              "memberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+              "netCents": "6000"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:35:52.128Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers/ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+      "status": 200,
+      "requestId": "497846a6-0ed7-4124-a707-916b2cfa6f93",
+      "body": {
+        "data": {
+          "id": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+          "name": "Day6-Reauth-Cover",
+          "coverKey": null,
+          "coverImageId": "b7a83421-5570-4e13-8469-b2ec02c9e640",
+          "status": "SETTLED",
+          "version": 5,
+          "memberCount": 2,
+          "expenseTotalCents": "12000",
+          "myRemainingNetCents": "0",
+          "archivedAt": null,
+          "createdAt": "2026-10-28T12:15:12.981Z",
+          "creatorUserId": "c15e61ef-cb27-4b8d-9fc7-dffaeebe24b4",
+          "myMemberId": "255a060a-8482-45f5-a252-a974f9bc426e",
+          "myPaidCents": "0",
+          "mySharedCents": "6000",
+          "myNetCents": "-6000",
+          "members": [
+            {
+              "id": "255a060a-8482-45f5-a252-a974f9bc426e",
+              "userId": "c15e61ef-cb27-4b8d-9fc7-dffaeebe24b4",
+              "username": "Day6-owner",
+              "role": "CREATOR",
+              "joinedAt": "2026-10-28T12:15:12.981Z",
+              "netCents": "-6000",
+              "remainingNetCents": "0"
+            },
+            {
+              "id": "cded1020-b58e-49ac-b6dd-eda538e23783",
+              "userId": "c23288cc-0262-4728-bfc8-a26a767e92b0",
+              "username": "Day6-member",
+              "role": "MEMBER",
+              "joinedAt": "2026-10-28T12:23:01.536Z",
+              "netCents": "6000",
+              "remainingNetCents": "0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:36:35.828Z",
+      "method": "POST",
+      "path": "/api/v1/ledgers/ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea/archive",
+      "status": 200,
+      "requestId": "b942038d-637e-4a45-8e18-abefafa50ade",
+      "keyDigest": "08dee2ccc9f7",
+      "body": {
+        "data": {
+          "ledgerId": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+          "archivedAt": "2026-10-28T12:36:35.824Z"
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:36:36.709Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers?limit=20&archived=false",
+      "status": 200,
+      "requestId": "afd0ffc1-cd2a-4d56-970d-c6b2c42cc806",
+      "body": {
+        "data": [],
+        "page": {
+          "nextCursor": null
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:36:39.180Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers?limit=20&archived=true",
+      "status": 200,
+      "requestId": "b5125b22-fc1e-4e46-9996-1866d75f1f2b",
+      "body": {
+        "data": [
+          {
+            "id": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+            "name": "Day6-Reauth-Cover",
+            "coverKey": null,
+            "coverImageId": "b7a83421-5570-4e13-8469-b2ec02c9e640",
+            "status": "SETTLED",
+            "version": 5,
+            "memberCount": 2,
+            "expenseTotalCents": "12000",
+            "myRemainingNetCents": "0",
+            "archivedAt": "2026-10-28T12:36:35.824Z",
+            "createdAt": "2026-10-28T12:15:12.981Z"
+          }
+        ],
+        "page": {
+          "nextCursor": null
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:36:39.327Z",
+      "method": "GET",
+      "path": "/api/v1/images/b7a83421-5570-4e13-8469-b2ec02c9e640",
+      "status": 200,
+      "requestId": "2a164290-4756-4a46-8ab3-fcab50eb6c52"
+    },
+    {
+      "time": "2026-10-28T12:37:01.063Z",
+      "method": "GET",
+      "path": "/api/v1/images/b7a83421-5570-4e13-8469-b2ec02c9e640",
+      "status": 200,
+      "requestId": "bd3c0df0-fdf0-4d39-96fc-0854a2de36e7"
+    },
+    {
+      "time": "2026-10-28T12:37:01.069Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers/ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea/expenses?limit=20",
+      "status": 200,
+      "requestId": "73d1be54-e432-4e9d-9539-2fff24af9ea9",
+      "body": {
+        "data": [
+          {
+            "id": "012b4a25-7bfe-46b5-989f-eea1fea2af97",
+            "title": "Day6-Receipt-120",
+            "amountCents": "12000",
+            "category": "DINING",
+            "occurredOn": "2026-10-28",
+            "payerMemberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+            "payerName": "Day6-member",
+            "version": 1
+          }
+        ],
+        "page": {
+          "nextCursor": null
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:37:01.099Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers/ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+      "status": 200,
+      "requestId": "5895690c-14f0-4252-8242-691f7aeb91ae",
+      "body": {
+        "data": {
+          "id": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+          "name": "Day6-Reauth-Cover",
+          "coverKey": null,
+          "coverImageId": "b7a83421-5570-4e13-8469-b2ec02c9e640",
+          "status": "SETTLED",
+          "version": 5,
+          "memberCount": 2,
+          "expenseTotalCents": "12000",
+          "myRemainingNetCents": "0",
+          "archivedAt": "2026-10-28T12:36:35.824Z",
+          "createdAt": "2026-10-28T12:15:12.981Z",
+          "creatorUserId": "c15e61ef-cb27-4b8d-9fc7-dffaeebe24b4",
+          "myMemberId": "255a060a-8482-45f5-a252-a974f9bc426e",
+          "myPaidCents": "0",
+          "mySharedCents": "6000",
+          "myNetCents": "-6000",
+          "members": [
+            {
+              "id": "255a060a-8482-45f5-a252-a974f9bc426e",
+              "userId": "c15e61ef-cb27-4b8d-9fc7-dffaeebe24b4",
+              "username": "Day6-owner",
+              "role": "CREATOR",
+              "joinedAt": "2026-10-28T12:15:12.981Z",
+              "netCents": "-6000",
+              "remainingNetCents": "0"
+            },
+            {
+              "id": "cded1020-b58e-49ac-b6dd-eda538e23783",
+              "userId": "c23288cc-0262-4728-bfc8-a26a767e92b0",
+              "username": "Day6-member",
+              "role": "MEMBER",
+              "joinedAt": "2026-10-28T12:23:01.536Z",
+              "netCents": "6000",
+              "remainingNetCents": "0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:37:01.992Z",
+      "method": "GET",
+      "path": "/api/v1/images/b7a83421-5570-4e13-8469-b2ec02c9e640",
+      "status": 200,
+      "requestId": "1946e6eb-eaba-47b9-9417-87716222035f"
+    },
+    {
+      "time": "2026-10-28T12:37:02.000Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers/ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea/expenses?limit=20",
+      "status": 200,
+      "requestId": "142e122e-dea3-479a-ab1d-9d0f831c30e2",
+      "body": {
+        "data": [
+          {
+            "id": "012b4a25-7bfe-46b5-989f-eea1fea2af97",
+            "title": "Day6-Receipt-120",
+            "amountCents": "12000",
+            "category": "DINING",
+            "occurredOn": "2026-10-28",
+            "payerMemberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+            "payerName": "Day6-member",
+            "version": 1
+          }
+        ],
+        "page": {
+          "nextCursor": null
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:37:04.675Z",
+      "method": "GET",
+      "path": "/api/v1/images/b7a83421-5570-4e13-8469-b2ec02c9e640",
+      "status": 200,
+      "requestId": "12d7f0f1-a743-48a4-87a5-4f7b7cead83c"
+    },
+    {
+      "time": "2026-10-28T12:37:04.679Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers?limit=20&archived=true",
+      "status": 200,
+      "requestId": "04e9ab05-46c0-413a-9011-607184257be1",
+      "body": {
+        "data": [
+          {
+            "id": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+            "name": "Day6-Reauth-Cover",
+            "coverKey": null,
+            "coverImageId": "b7a83421-5570-4e13-8469-b2ec02c9e640",
+            "status": "SETTLED",
+            "version": 5,
+            "memberCount": 2,
+            "expenseTotalCents": "12000",
+            "myRemainingNetCents": "0",
+            "archivedAt": "2026-10-28T12:36:35.824Z",
+            "createdAt": "2026-10-28T12:15:12.981Z"
+          }
+        ],
+        "page": {
+          "nextCursor": null
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:37:04.995Z",
+      "method": "GET",
+      "path": "/api/v1/images/b7a83421-5570-4e13-8469-b2ec02c9e640",
+      "status": 200,
+      "requestId": "86152a76-8707-404b-b9c3-64608d85aaa5"
+    },
+    {
+      "time": "2026-10-28T12:37:12.294Z",
+      "method": "POST",
+      "path": "/api/v1/auth/logout",
+      "status": 200,
+      "requestId": "61ace3ef-7805-4127-9954-485426b8c307"
+    },
+    {
+      "time": "2026-10-28T12:37:30.709Z",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "status": 200,
+      "requestId": "bf57b067-5aeb-4937-a50d-52cbea678d10"
+    },
+    {
+      "time": "2026-10-28T12:37:30.925Z",
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "requestId": "910802c6-c3b5-4002-b8ce-107be22dcab7",
+      "body": {
+        "data": {
+          "id": "c23288cc-0262-4728-bfc8-a26a767e92b0",
+          "username": "Day6-member",
+          "email": "issue5859-member@example.test",
+          "notificationEnabled": true
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:37:31.163Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers?limit=20&archived=false",
+      "status": 200,
+      "requestId": "ec18966e-c477-414f-ad21-726f9d87ee1e",
+      "body": {
+        "data": [
+          {
+            "id": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+            "name": "Day6-Reauth-Cover",
+            "coverKey": null,
+            "coverImageId": "b7a83421-5570-4e13-8469-b2ec02c9e640",
+            "status": "SETTLED",
+            "version": 5,
+            "memberCount": 2,
+            "expenseTotalCents": "12000",
+            "myRemainingNetCents": "0",
+            "archivedAt": null,
+            "createdAt": "2026-10-28T12:15:12.981Z"
+          }
+        ],
+        "page": {
+          "nextCursor": null
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:37:31.293Z",
+      "method": "GET",
+      "path": "/api/v1/images/b7a83421-5570-4e13-8469-b2ec02c9e640",
+      "status": 200,
+      "requestId": "7f0a807a-83bb-4eef-a58b-84fbd13ee9a3"
+    },
+    {
+      "time": "2026-10-28T12:37:46.678Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers/ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+      "status": 200,
+      "requestId": "5c9de649-62e0-4584-9293-ffab8744a89d",
+      "body": {
+        "data": {
+          "id": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+          "name": "Day6-Reauth-Cover",
+          "coverKey": null,
+          "coverImageId": "b7a83421-5570-4e13-8469-b2ec02c9e640",
+          "status": "SETTLED",
+          "version": 5,
+          "memberCount": 2,
+          "expenseTotalCents": "12000",
+          "myRemainingNetCents": "0",
+          "archivedAt": null,
+          "createdAt": "2026-10-28T12:15:12.981Z",
+          "creatorUserId": "c15e61ef-cb27-4b8d-9fc7-dffaeebe24b4",
+          "myMemberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+          "myPaidCents": "12000",
+          "mySharedCents": "6000",
+          "myNetCents": "6000",
+          "members": [
+            {
+              "id": "255a060a-8482-45f5-a252-a974f9bc426e",
+              "userId": "c15e61ef-cb27-4b8d-9fc7-dffaeebe24b4",
+              "username": "Day6-owner",
+              "role": "CREATOR",
+              "joinedAt": "2026-10-28T12:15:12.981Z",
+              "netCents": "-6000",
+              "remainingNetCents": "0"
+            },
+            {
+              "id": "cded1020-b58e-49ac-b6dd-eda538e23783",
+              "userId": "c23288cc-0262-4728-bfc8-a26a767e92b0",
+              "username": "Day6-member",
+              "role": "MEMBER",
+              "joinedAt": "2026-10-28T12:23:01.536Z",
+              "netCents": "6000",
+              "remainingNetCents": "0"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:37:46.994Z",
+      "method": "GET",
+      "path": "/api/v1/images/b7a83421-5570-4e13-8469-b2ec02c9e640",
+      "status": 200,
+      "requestId": "8b94e6f7-80a8-4ec3-95ee-cc6394c407a7"
+    },
+    {
+      "time": "2026-10-28T12:37:47.089Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers/ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea/expenses?limit=20",
+      "status": 200,
+      "requestId": "f2edc972-c6dc-461f-b6cc-2b02df029d91",
+      "body": {
+        "data": [
+          {
+            "id": "012b4a25-7bfe-46b5-989f-eea1fea2af97",
+            "title": "Day6-Receipt-120",
+            "amountCents": "12000",
+            "category": "DINING",
+            "occurredOn": "2026-10-28",
+            "payerMemberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+            "payerName": "Day6-member",
+            "version": 1
+          }
+        ],
+        "page": {
+          "nextCursor": null
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:37:49.679Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers?limit=20&archived=false",
+      "status": 200,
+      "requestId": "386a981a-a6b5-46e5-8443-dfc9439daf04",
+      "body": {
+        "data": [
+          {
+            "id": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+            "name": "Day6-Reauth-Cover",
+            "coverKey": null,
+            "coverImageId": "b7a83421-5570-4e13-8469-b2ec02c9e640",
+            "status": "SETTLED",
+            "version": 5,
+            "memberCount": 2,
+            "expenseTotalCents": "12000",
+            "myRemainingNetCents": "0",
+            "archivedAt": null,
+            "createdAt": "2026-10-28T12:15:12.981Z"
+          }
+        ],
+        "page": {
+          "nextCursor": null
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:37:49.703Z",
+      "method": "GET",
+      "path": "/api/v1/images/b7a83421-5570-4e13-8469-b2ec02c9e640",
+      "status": 200,
+      "requestId": "a35f92bd-417d-446b-a14a-a9ac7f66aca7"
+    },
+    {
+      "time": "2026-10-28T12:37:49.926Z",
+      "method": "GET",
+      "path": "/api/v1/images/b7a83421-5570-4e13-8469-b2ec02c9e640",
+      "status": 200,
+      "requestId": "ba002353-7f6e-4d89-a467-bbe9797b8977"
+    },
+    {
+      "time": "2026-10-28T12:37:52.161Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers?limit=20&archived=true",
+      "status": 200,
+      "requestId": "ec956984-dcfa-4bdc-94c2-b757d7cfad8e",
+      "body": {
+        "data": [],
+        "page": {
+          "nextCursor": null
+        }
+      }
+    }
+  ]
+}

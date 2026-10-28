@@ -1,0 +1,226 @@
+{
+  "verifiedAtUtc": "2026-10-28T12:38:53.920Z",
+  "purpose": "Read-only HTTP after native App writes; login is verifier setup only",
+  "roles": [
+    {
+      "role": "owner",
+      "detail": {
+        "id": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+        "name": "Day6-Reauth-Cover",
+        "coverKey": null,
+        "coverImageId": "b7a83421-5570-4e13-8469-b2ec02c9e640",
+        "status": "SETTLED",
+        "version": 5,
+        "memberCount": 2,
+        "expenseTotalCents": "12000",
+        "myRemainingNetCents": "0",
+        "archivedAt": "2026-10-28T12:36:35.824Z",
+        "createdAt": "2026-10-28T12:15:12.981Z",
+        "creatorUserId": "c15e61ef-cb27-4b8d-9fc7-dffaeebe24b4",
+        "myMemberId": "255a060a-8482-45f5-a252-a974f9bc426e",
+        "myPaidCents": "0",
+        "mySharedCents": "6000",
+        "myNetCents": "-6000",
+        "members": [
+          {
+            "id": "255a060a-8482-45f5-a252-a974f9bc426e",
+            "userId": "c15e61ef-cb27-4b8d-9fc7-dffaeebe24b4",
+            "username": "Day6-owner",
+            "role": "CREATOR",
+            "joinedAt": "2026-10-28T12:15:12.981Z",
+            "netCents": "-6000",
+            "remainingNetCents": "0"
+          },
+          {
+            "id": "cded1020-b58e-49ac-b6dd-eda538e23783",
+            "userId": "c23288cc-0262-4728-bfc8-a26a767e92b0",
+            "username": "Day6-member",
+            "role": "MEMBER",
+            "joinedAt": "2026-10-28T12:23:01.536Z",
+            "netCents": "6000",
+            "remainingNetCents": "0"
+          }
+        ]
+      },
+      "batch": {
+        "id": "57e2ed3b-dce7-425b-98ba-f2f0b90bc0b4",
+        "ledgerId": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+        "sourceVersion": 3,
+        "expenseTotalCents": "12000",
+        "transferTotalCents": "6000",
+        "transferCount": 1,
+        "algorithmVersion": "zero-sum-dp-v1",
+        "createdAt": "2026-10-28T12:34:43.827Z",
+        "ledgerStatus": "SETTLED",
+        "transfers": [
+          {
+            "sequence": 1,
+            "payerMemberId": "255a060a-8482-45f5-a252-a974f9bc426e",
+            "payeeMemberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+            "amountCents": "6000",
+            "id": "0fbff2f7-ff49-4a70-8b79-8fc4777aba9b",
+            "status": "PAID",
+            "registeredByMemberId": "255a060a-8482-45f5-a252-a974f9bc426e",
+            "registeredAt": "2026-10-28T12:35:10.194Z",
+            "registrationNote": "Day6-6000"
+          }
+        ],
+        "progress": {
+          "paidCount": 1,
+          "totalCount": 1,
+          "remainingCents": "0"
+        },
+        "netSnapshot": [
+          {
+            "memberId": "255a060a-8482-45f5-a252-a974f9bc426e",
+            "netCents": "-6000"
+          },
+          {
+            "memberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+            "netCents": "6000"
+          }
+        ]
+      },
+      "current": [],
+      "history": [
+        {
+          "id": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+          "name": "Day6-Reauth-Cover",
+          "coverKey": null,
+          "coverImageId": "b7a83421-5570-4e13-8469-b2ec02c9e640",
+          "status": "SETTLED",
+          "version": 5,
+          "memberCount": 2,
+          "expenseTotalCents": "12000",
+          "myRemainingNetCents": "0",
+          "archivedAt": "2026-10-28T12:36:35.824Z",
+          "createdAt": "2026-10-28T12:15:12.981Z"
+        }
+      ],
+      "images": [
+        {
+          "id": "0912d19f-6aea-43d0-a51f-b80f2361e6f6",
+          "bytes": 43782,
+          "sha256": "d53608586ed6fc6f5ed3b6993d0b547a0fcc00c119a85297aff7fd7c6cef0d16",
+          "cacheControl": "no-store"
+        },
+        {
+          "id": "b7a83421-5570-4e13-8469-b2ec02c9e640",
+          "bytes": 37140,
+          "sha256": "bc4f056aa1993bc615790edcae4985f6b3a94a6eb637462ba77571386c5ef65f",
+          "cacheControl": "no-store"
+        }
+      ]
+    },
+    {
+      "role": "member",
+      "detail": {
+        "id": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+        "name": "Day6-Reauth-Cover",
+        "coverKey": null,
+        "coverImageId": "b7a83421-5570-4e13-8469-b2ec02c9e640",
+        "status": "SETTLED",
+        "version": 5,
+        "memberCount": 2,
+        "expenseTotalCents": "12000",
+        "myRemainingNetCents": "0",
+        "archivedAt": null,
+        "createdAt": "2026-10-28T12:15:12.981Z",
+        "creatorUserId": "c15e61ef-cb27-4b8d-9fc7-dffaeebe24b4",
+        "myMemberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+        "myPaidCents": "12000",
+        "mySharedCents": "6000",
+        "myNetCents": "6000",
+        "members": [
+          {
+            "id": "255a060a-8482-45f5-a252-a974f9bc426e",
+            "userId": "c15e61ef-cb27-4b8d-9fc7-dffaeebe24b4",
+            "username": "Day6-owner",
+            "role": "CREATOR",
+            "joinedAt": "2026-10-28T12:15:12.981Z",
+            "netCents": "-6000",
+            "remainingNetCents": "0"
+          },
+          {
+            "id": "cded1020-b58e-49ac-b6dd-eda538e23783",
+            "userId": "c23288cc-0262-4728-bfc8-a26a767e92b0",
+            "username": "Day6-member",
+            "role": "MEMBER",
+            "joinedAt": "2026-10-28T12:23:01.536Z",
+            "netCents": "6000",
+            "remainingNetCents": "0"
+          }
+        ]
+      },
+      "batch": {
+        "id": "57e2ed3b-dce7-425b-98ba-f2f0b90bc0b4",
+        "ledgerId": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+        "sourceVersion": 3,
+        "expenseTotalCents": "12000",
+        "transferTotalCents": "6000",
+        "transferCount": 1,
+        "algorithmVersion": "zero-sum-dp-v1",
+        "createdAt": "2026-10-28T12:34:43.827Z",
+        "ledgerStatus": "SETTLED",
+        "transfers": [
+          {
+            "sequence": 1,
+            "payerMemberId": "255a060a-8482-45f5-a252-a974f9bc426e",
+            "payeeMemberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+            "amountCents": "6000",
+            "id": "0fbff2f7-ff49-4a70-8b79-8fc4777aba9b",
+            "status": "PAID",
+            "registeredByMemberId": "255a060a-8482-45f5-a252-a974f9bc426e",
+            "registeredAt": "2026-10-28T12:35:10.194Z",
+            "registrationNote": "Day6-6000"
+          }
+        ],
+        "progress": {
+          "paidCount": 1,
+          "totalCount": 1,
+          "remainingCents": "0"
+        },
+        "netSnapshot": [
+          {
+            "memberId": "255a060a-8482-45f5-a252-a974f9bc426e",
+            "netCents": "-6000"
+          },
+          {
+            "memberId": "cded1020-b58e-49ac-b6dd-eda538e23783",
+            "netCents": "6000"
+          }
+        ]
+      },
+      "current": [
+        {
+          "id": "ff9ad3c4-0e0b-4edc-89f5-92be34bbbeea",
+          "name": "Day6-Reauth-Cover",
+          "coverKey": null,
+          "coverImageId": "b7a83421-5570-4e13-8469-b2ec02c9e640",
+          "status": "SETTLED",
+          "version": 5,
+          "memberCount": 2,
+          "expenseTotalCents": "12000",
+          "myRemainingNetCents": "0",
+          "archivedAt": null,
+          "createdAt": "2026-10-28T12:15:12.981Z"
+        }
+      ],
+      "history": [],
+      "images": [
+        {
+          "id": "0912d19f-6aea-43d0-a51f-b80f2361e6f6",
+          "bytes": 43782,
+          "sha256": "d53608586ed6fc6f5ed3b6993d0b547a0fcc00c119a85297aff7fd7c6cef0d16",
+          "cacheControl": "no-store"
+        },
+        {
+          "id": "b7a83421-5570-4e13-8469-b2ec02c9e640",
+          "bytes": 37140,
+          "sha256": "bc4f056aa1993bc615790edcae4985f6b3a94a6eb637462ba77571386c5ef65f",
+          "cacheControl": "no-store"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+RUN  v5.0.4 /Users/liangbai/.codex/worktrees/issues-58-59-acceptance/tongzhang
+
+ ❯ apps/mobile/tests/auth-controller.test.ts (20 tests | 3 failed) 9ms
+   ❯ mobile authentication and route admission state (20)
+     × retains revoked form ownership until the same account is verified again 3ms
+     × discards old query memory before admitting a different verified account 1ms
+     × keeps the recovery gate after failed credentials and abandons memory on explicit logout 1ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  apps/mobile/tests/auth-controller.test.ts > mobile authentication and route admission state > retains revoked form ownership until the same account is verified again
+AssertionError: expected { user: null, …(4) } to match object { status: 'reauthentication', …(1) }
+(6 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "status": "reauthentication",
+-   "user": {
+-     "email": "real@example.test",
+-     "id": "00000000-0000-4000-8000-000000000001",
+-     "notificationEnabled": false,
+-     "username": "真实用户",
+-   },
++   "status": "anonymous",
++   "user": null,
+  }
+
+ ❯ apps/mobile/tests/auth-controller.test.ts:83:32
+     81|     await auth.restore();
+     82|     auth.invalidate(new ApiError('UNAUTHENTICATED', 'revoked', 401));
+     83|     expect(auth.getSnapshot()).toMatchObject({ status: 'reauthenticati…
+       |                                ^
+     84|     await auth.restore();
+     85|     expect(api.getMe).toHaveBeenCalledTimes(1);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  apps/mobile/tests/auth-controller.test.ts > mobile authentication and route admission state > discards old query memory before admitting a different verified account
+AssertionError: expected "vi.fn()" to be called 1 times, but got 0 times
+ ❯ apps/mobile/tests/auth-controller.test.ts:103:29
+    101|     api.getMe.mockResolvedValueOnce({ data: { ...user, id: 'another-ac…
+    102|     await auth.login(input);
+    103|     expect(api.clearMemory).toHaveBeenCalledTimes(1);
+       |                             ^
+    104|     expect(auth.getSnapshot()).toMatchObject({ status: 'authenticated'…
+    105|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  apps/mobile/tests/auth-controller.test.ts > mobile authentication and route admission state > keeps the recovery gate after failed credentials and abandons memory on explicit logout
+AssertionError: expected { user: null, …(4) } to match object { status: 'reauthentication', …(1) }
+(6 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+-   "status": "reauthentication",
+-   "user": {
+-     "email": "real@example.test",
+-     "id": "00000000-0000-4000-8000-000000000001",
+-     "notificationEnabled": false,
+-     "username": "真实用户",
+-   },
++   "status": "anonymous",
++   "user": null,
+  }
+
+ ❯ apps/mobile/tests/auth-controller.test.ts:112:32
+    110|     api.login.mockRejectedValueOnce(new ApiError('INVALID_CREDENTIALS'…
+    111|     await expect(auth.login(input)).rejects.toMatchObject({ code: 'INV…
+    112|     expect(auth.getSnapshot()).toMatchObject({ status: 'reauthenticati…
+       |                                ^
+    113|     await auth.clearLocal();
+    114|     expect(auth.getSnapshot()).toMatchObject({ status: 'anonymous', us…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  3 failed | 17 passed (20)
+   Start at  05:07:35
+   Duration  104ms (transform 47%, tests 28%, import 19%, worker 6%)

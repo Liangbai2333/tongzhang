@@ -1,0 +1,117 @@
+{
+  "candidate": "adff4d8ef36a835917d7f04713574c1031bbfe94",
+  "databasePort": 57575,
+  "real401ThenDelayed200": true,
+  "businessPostCount": 0,
+  "unsubmittedDraftNotWritten": true,
+  "requests": [
+    {
+      "time": "2026-10-28T12:45:04.566Z",
+      "method": "POST",
+      "path": "/api/v1/auth/register",
+      "status": 201,
+      "requestId": "70c355f1-7f8b-455b-ba77-3e251cbdbc29"
+    },
+    {
+      "time": "2026-10-28T12:45:17.091Z",
+      "method": "POST",
+      "path": "/api/v1/auth/refresh",
+      "status": 401,
+      "requestId": "666072f4-8973-4cec-a50f-c946ed0ddf17"
+    },
+    {
+      "time": "2026-10-28T12:46:21.050Z",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "status": 200,
+      "requestId": "f481928d-b0af-41a6-a29c-608cb91f2a42"
+    },
+    {
+      "time": "2026-10-28T12:46:21.208Z",
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "requestId": "3471f8aa-7ec3-4cf1-a77b-aac873dcd0ec",
+      "body": {
+        "data": {
+          "id": "602f6059-7717-4518-bbea-98655c633b24",
+          "username": "Day6-network",
+          "email": "day6-network@example.test",
+          "notificationEnabled": true
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:46:21.627Z",
+      "method": "GET",
+      "path": "/api/v1/ledgers?limit=20&archived=false",
+      "status": 200,
+      "requestId": "87ffef25-37b4-410f-b34f-ba90b81972c7",
+      "body": {
+        "data": [],
+        "page": {
+          "nextCursor": null
+        }
+      }
+    },
+    {
+      "time": "2026-10-28T12:46:51.590Z",
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 401,
+      "requestId": "e583f8b5-fa8c-4608-a8bd-ddb03885b1bd",
+      "body": {
+        "error": {
+          "code": "UNAUTHENTICATED",
+          "message": "登录已失效，请重新登录"
+        },
+        "requestId": "e583f8b5-fa8c-4608-a8bd-ddb03885b1bd"
+      }
+    },
+    {
+      "time": "2026-10-28T12:47:39.904Z",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "status": 200,
+      "requestId": "104ea81c-31a5-4a50-8cd4-861c9223de2f"
+    },
+    {
+      "time": "2026-10-28T12:47:40.985Z",
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "requestId": "4dd01430-7bb8-471a-9b36-60f2fbb448b5",
+      "body": {
+        "data": {
+          "id": "602f6059-7717-4518-bbea-98655c633b24",
+          "username": "Day6-network",
+          "email": "day6-network@example.test",
+          "notificationEnabled": true
+        }
+      },
+      "delayMs": 8000
+    },
+    {
+      "time": "2026-10-28T12:48:05.440Z",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "status": 200,
+      "requestId": "0792de0a-9707-478e-bf54-2b52519ede48"
+    },
+    {
+      "time": "2026-10-28T12:48:05.722Z",
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "requestId": "e9df6b48-6a78-4d57-9e49-c9434f506b63",
+      "body": {
+        "data": {
+          "id": "602f6059-7717-4518-bbea-98655c633b24",
+          "username": "Day6-network",
+          "email": "day6-network@example.test",
+          "notificationEnabled": true
+        }
+      }
+    }
+  ]
+}

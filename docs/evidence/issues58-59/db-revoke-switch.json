@@ -1,0 +1,12 @@
+{
+  "time": "2026-10-28T12:29:49.297Z",
+  "database": "tongzhang_58_59_native",
+  "stage": "revoke-switch",
+  "revoked": [
+    {
+      "id": "dbbf5bec-50a1-4a4b-9f73-d9688f6e8c15",
+      "user_id": "c23288cc-0262-4728-bfc8-a26a767e92b0",
+      "revoked_at": "2026-10-28T12:29:49.318Z"
+    }
+  ]
+}
