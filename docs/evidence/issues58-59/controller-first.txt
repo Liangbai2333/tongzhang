@@ -1,0 +1,43 @@
+RUN  v5.0.4 /Users/liangbai/.codex/worktrees/issues-58-59-acceptance/tongzhang
+
+ ❯ apps/mobile/tests/auth-controller.test.ts (20 tests | 1 failed) 8ms
+   ❯ mobile authentication and route admission state (20)
+     × keeps recoverable form memory gated and discards revoked identity (Error: revoked) 3ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  apps/mobile/tests/auth-controller.test.ts > mobile authentication and route admission state > keeps recoverable form memory gated and discards revoked identity (Error: revoked)
+AssertionError: expected { user: { …(4) }, …(4) } to match object { status: 'anonymous', …(2) }
+(5 matching properties omitted from actual)
+
+- Expected
++ Received
+
+  {
+    "operation": null,
+-   "status": "anonymous",
+-   "user": null,
++   "status": "reauthentication",
++   "user": {
++     "email": "real@example.test",
++     "id": "00000000-0000-4000-8000-000000000001",
++     "notificationEnabled": false,
++     "username": "真实用户",
++   },
+  }
+
+ ❯ apps/mobile/tests/auth-controller.test.ts:215:34
+    213|       api.getMe.mockRejectedValueOnce(error);
+    214|       await auth.restore();
+    215|       expect(auth.getSnapshot()).toMatchObject({ status, user: identit…
+       |                                  ^
+    216|     },
+    217|   );
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 19 passed (20)
+   Start at  05:07:55
+   Duration  97ms (transform 52%, tests 25%, import 18%, worker 6%)

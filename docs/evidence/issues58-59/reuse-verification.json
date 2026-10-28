@@ -1,0 +1,1586 @@
+{
+  "verifiedAtUtc": "2026-10-28T12:49:34.691Z",
+  "base": "cf6058a3452cb7bf886dbdeae2d2c2a0489882b1",
+  "verificationHead": "adff4d8ef36a835917d7f04713574c1031bbfe94",
+  "reusedDay5Candidate": "af03672fb929caa26db1b407039a436e9cbf4e4e",
+  "retestedPaths": [
+    "apps/mobile/app/_layout.tsx",
+    "apps/mobile/src/components/Field.tsx",
+    "apps/mobile/src/components/Screen.tsx",
+    "apps/mobile/src/features/auth/controller.ts",
+    "apps/mobile/src/features/auth/screens/AuthScreen.tsx",
+    "apps/mobile/src/features/images/api.ts",
+    "apps/mobile/src/lib/api.ts",
+    "apps/mobile/src/lib/auth-session.ts",
+    "apps/mobile/src/lib/session-admission.ts",
+    "apps/mobile/src/providers/AuthProvider.tsx"
+  ],
+  "changedRuntimeFiles": [
+    "apps/mobile/app/_layout.tsx",
+    "apps/mobile/src/components/Field.tsx",
+    "apps/mobile/src/components/Screen.tsx",
+    "apps/mobile/src/features/auth/controller.ts",
+    "apps/mobile/src/features/auth/screens/AuthScreen.tsx",
+    "apps/mobile/src/features/images/api.ts",
+    "apps/mobile/src/lib/api.ts",
+    "apps/mobile/src/lib/auth-session.ts",
+    "apps/mobile/src/lib/session-admission.ts",
+    "apps/mobile/src/providers/AuthProvider.tsx"
+  ],
+  "newNativeExecution": true,
+  "freshDeviceBundleSha256": "1b762632423fac1ab9589f9ede7e8b68f5569700b9d810136e0bea19fbb4f6df",
+  "old401EvidenceSuperseded": true,
+  "sourceChecks": [
+    {
+      "path": "apps/mobile/app/(app)/_layout.tsx",
+      "expected": "b167ccb60014d4d9d934a37e8d4f5dac3071c3977c540c6df33b357aabc1d8e1",
+      "actual": "b167ccb60014d4d9d934a37e8d4f5dac3071c3977c540c6df33b357aabc1d8e1",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/app/(app)/account.tsx",
+      "expected": "46d1c3927a24a38c1337754170aac8fbd30a6c6caeeedecee0fb8a75da08dd38",
+      "actual": "46d1c3927a24a38c1337754170aac8fbd30a6c6caeeedecee0fb8a75da08dd38",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/profile/screens/AccountScreen.tsx",
+      "expected": "44db89d24ec752fcf48258aa830d60191f3f27f0e71f3b10e91a6538cf2d7feb",
+      "actual": "44db89d24ec752fcf48258aa830d60191f3f27f0e71f3b10e91a6538cf2d7feb",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/components/Screen.tsx",
+      "expected": "c444ef78321e2e8234b7d02cedcca264b01a3be01dc211fb83b8ce1769135260",
+      "actual": "10f7281be552b2024746d2003b5e0d35e65bd226eab3eb26a4aea50b36d5e33d",
+      "retested": true
+    },
+    {
+      "path": "apps/mobile/src/icons/FigmaAsset.tsx",
+      "expected": "92100c8aefa6e0dd7030760e5b1be1c9565f90c93f7ab9b34bcc95ee61d512b6",
+      "actual": "92100c8aefa6e0dd7030760e5b1be1c9565f90c93f7ab9b34bcc95ee61d512b6",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/icons/figma-assets.ts",
+      "expected": "b2f0112dd16026d08a0cd48acea20efbe793842bc2f95482cf0b8f4c9ae98214",
+      "actual": "b2f0112dd16026d08a0cd48acea20efbe793842bc2f95482cf0b8f4c9ae98214",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/theme/tokens.ts",
+      "expected": "a210f91d8596bc4afd9fe43f993c3ae55553d2e3eedefdbd5539f0066747f12a",
+      "actual": "a210f91d8596bc4afd9fe43f993c3ae55553d2e3eedefdbd5539f0066747f12a",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/components/Touch.tsx",
+      "expected": "af94553554dc45e76fe923d6c0fa44d99fe235779054abbeae48a533dbb33888",
+      "actual": "af94553554dc45e76fe923d6c0fa44d99fe235779054abbeae48a533dbb33888",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/components/motion.ts",
+      "expected": "11c3fe04cb0baecf9cc26f18e8dba11d237126316d7959b53606d3547ee3bcc8",
+      "actual": "11c3fe04cb0baecf9cc26f18e8dba11d237126316d7959b53606d3547ee3bcc8",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/components/MainTabs.tsx",
+      "expected": "062a965795e1c17bfd109054b337299539fb2848df3782495435eab7a7ea4c5e",
+      "actual": "062a965795e1c17bfd109054b337299539fb2848df3782495435eab7a7ea4c5e",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/icons/ledger-assets.ts",
+      "expected": "c5f6f9c3d006e5a429e3baec5c05a3d748eaf01b05524edbd575abdbbedc39e4",
+      "actual": "c5f6f9c3d006e5a429e3baec5c05a3d748eaf01b05524edbd575abdbbedc39e4",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/components/Button.tsx",
+      "expected": "bf0728836b4b7b41906fd8e716f115e0ef3766a108a53729516374e117734267",
+      "actual": "bf0728836b4b7b41906fd8e716f115e0ef3766a108a53729516374e117734267",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/components/Sheet.tsx",
+      "expected": "68d4f9565c895547aea46bb3e48195b6894b3bd73a6d84dc08d2ed8f502eb305",
+      "actual": "68d4f9565c895547aea46bb3e48195b6894b3bd73a6d84dc08d2ed8f502eb305",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/providers/AuthProvider.tsx",
+      "expected": "620f7cc61edc966b69a31accd10a0da5e588fcef3812f402f9679144bed5975e",
+      "actual": "682e3ab2b3a3ddf6b03591842d3a6d42f0db57fc0ef184d1cac1f4f0ee0d9f5d",
+      "retested": true
+    },
+    {
+      "path": "apps/mobile/src/features/auth/api.ts",
+      "expected": "d4e8857b2eda7313d6a0ea7fbe6468c0aba98606181c6b9056197f6c3ecdc83c",
+      "actual": "d4e8857b2eda7313d6a0ea7fbe6468c0aba98606181c6b9056197f6c3ecdc83c",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/lib/api.ts",
+      "expected": "2eea6bbc553e13dd4ad94b628d333c3aaf820648b55769f6b9abebb877f897cf",
+      "actual": "802e1d48077dc35b43f59f2c1c60687f5bb35ea5c01ae03ba913e1f681e6bbeb",
+      "retested": true
+    },
+    {
+      "path": "apps/mobile/src/lib/http.ts",
+      "expected": "9f851ff8d0af7c1002ec7e612c6e70fee832a22a9eb8d7c97884f3ddafb20763",
+      "actual": "9f851ff8d0af7c1002ec7e612c6e70fee832a22a9eb8d7c97884f3ddafb20763",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/lib/api-error.ts",
+      "expected": "8e22510bfae33c8af457059d3c98956fb66308f2a6971c21d6f8305618892245",
+      "actual": "8e22510bfae33c8af457059d3c98956fb66308f2a6971c21d6f8305618892245",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/lib/session-token.ts",
+      "expected": "d0ceb1cee17b4eef5491f696c22cdfc43a9dd713bb886a4abace409bcd3ca6d0",
+      "actual": "d0ceb1cee17b4eef5491f696c22cdfc43a9dd713bb886a4abace409bcd3ca6d0",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/lib/auth-session.ts",
+      "expected": "a4fb61d9ba01aecdc5cfc6e6d0b6d89d8940abbedcd6a82e43e16e293f1c158a",
+      "actual": "2ec89119957d449985c5bf2c24384a25cfb59aaeaddf20ed582bff043bccdb96",
+      "retested": true
+    },
+    {
+      "path": "apps/mobile/src/features/auth/controller.ts",
+      "expected": "027df9ed5a1af0f0d2e34c9bf4247461704b9e91e3418810f90e916cf6f14e7d",
+      "actual": "38a6cabc1665edcc8228a5f16557abc2154c4cb21748b1074b13bc4172a8c7be",
+      "retested": true
+    },
+    {
+      "path": "apps/mobile/src/features/profile/components/DocumentSheet.tsx",
+      "expected": "630c164ebcdcfd2bcfc04a6a7e15a9669fa82eb0c16a4eef5d23626e4ea4f1a0",
+      "actual": "630c164ebcdcfd2bcfc04a6a7e15a9669fa82eb0c16a4eef5d23626e4ea4f1a0",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/profile/documents.ts",
+      "expected": "8aa026741bfd8c7c4e4e8578ac0ea5372a233e5585c2424d5708827b4460f894",
+      "actual": "8aa026741bfd8c7c4e4e8578ac0ea5372a233e5585c2424d5708827b4460f894",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/app/(app)/invitations/join.tsx",
+      "expected": "d7b3287b4f1c9ae2388c494772d7e791d35c13a1f86512d7c1ee85af9195566f",
+      "actual": "d7b3287b4f1c9ae2388c494772d7e791d35c13a1f86512d7c1ee85af9195566f",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/invitations/screens/JoinLedgerScreen.tsx",
+      "expected": "dd1b64ff654a80d2f8e3bd8710fbcac32e95e6204a5dcf0a242351c6f7b5254b",
+      "actual": "dd1b64ff654a80d2f8e3bd8710fbcac32e95e6204a5dcf0a242351c6f7b5254b",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/icons/invitation-assets.ts",
+      "expected": "a6ebe83a32de78a3dfdfb66c79fe407e07ae6cf0bf0023a26c90b78b0bbeca54",
+      "actual": "a6ebe83a32de78a3dfdfb66c79fe407e07ae6cf0bf0023a26c90b78b0bbeca54",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/invitations/components/InviteCodeField.tsx",
+      "expected": "582a85a60589ee4f9274d2ffb8a6399e6166416543c9739e056be015209aaf51",
+      "actual": "582a85a60589ee4f9274d2ffb8a6399e6166416543c9739e056be015209aaf51",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/components/Feedback.tsx",
+      "expected": "aa44a1310e7919e7ce7a52b7b36a8456eef99ea608910e3aec0e91e36f78cb45",
+      "actual": "aa44a1310e7919e7ce7a52b7b36a8456eef99ea608910e3aec0e91e36f78cb45",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/invitations/components/JoinInvitationHero.tsx",
+      "expected": "9b4045ccff010947682ef73f798f10489d493d8fc000e3e76c453ae58f1eb5df",
+      "actual": "9b4045ccff010947682ef73f798f10489d493d8fc000e3e76c453ae58f1eb5df",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/lib/use-idempotent-write.ts",
+      "expected": "f0ce17ef29f15d59dac0c82997e2ca69d11973b34dbacf83e3b35da11a3b7c58",
+      "actual": "f0ce17ef29f15d59dac0c82997e2ca69d11973b34dbacf83e3b35da11a3b7c58",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/ledgers/query-keys.ts",
+      "expected": "bbe9e0340c8ed0f21cdad38c2abdd6ac10f00abe75b4e91b2c6d25d4d2634ac8",
+      "actual": "bbe9e0340c8ed0f21cdad38c2abdd6ac10f00abe75b4e91b2c6d25d4d2634ac8",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/invitations/api.ts",
+      "expected": "48e5b9042dd74b0ba8761eb0c491144df2f86dd855879b63d10b950d9d9cde76",
+      "actual": "48e5b9042dd74b0ba8761eb0c491144df2f86dd855879b63d10b950d9d9cde76",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/app/(app)/ledgers/[ledgerId]/balances.tsx",
+      "expected": "8dbc70c270c11779ab1daf1c6c24a4ab3b62ef3aa4695ed532bcedf3064f36a8",
+      "actual": "8dbc70c270c11779ab1daf1c6c24a4ab3b62ef3aa4695ed532bcedf3064f36a8",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/balances/screens/BalancesScreen.tsx",
+      "expected": "106e380ff7a59479cd5f186944fd41efbbac93b1c83c32a02612784f85d5fcc7",
+      "actual": "106e380ff7a59479cd5f186944fd41efbbac93b1c83c32a02612784f85d5fcc7",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/lib/use-online-query.ts",
+      "expected": "860fc98e529e442cb05e89fd66ba6c3e96952b6ffe1e193056d061e0194b9d87",
+      "actual": "860fc98e529e442cb05e89fd66ba6c3e96952b6ffe1e193056d061e0194b9d87",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/ledgers/api.ts",
+      "expected": "aeb535873db7539554701f637bbd9ecc77bb1afa21d24520d421b28797424083",
+      "actual": "aeb535873db7539554701f637bbd9ecc77bb1afa21d24520d421b28797424083",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/ledgers/presentation.ts",
+      "expected": "04d9d894356174eac3358fa337a5b6cfaa5dede79fa02648413fe5c7123be746",
+      "actual": "04d9d894356174eac3358fa337a5b6cfaa5dede79fa02648413fe5c7123be746",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/expenses/components/ExpenseUI.tsx",
+      "expected": "6d55eb9fc514ecbc2cbbfd0f41ca8400e335f07e25ae22ca899868cbd34a15af",
+      "actual": "6d55eb9fc514ecbc2cbbfd0f41ca8400e335f07e25ae22ca899868cbd34a15af",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/icons/expense-assets.ts",
+      "expected": "6ab131276713bf790fe266f4f026297f050617f580fc8c36088770b0858a4728",
+      "actual": "6ab131276713bf790fe266f4f026297f050617f580fc8c36088770b0858a4728",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/balances/api.ts",
+      "expected": "484021924c66e26bdc1b41d350d69623461131dea700b8654541a161e25ef8d8",
+      "actual": "484021924c66e26bdc1b41d350d69623461131dea700b8654541a161e25ef8d8",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/balances/query-keys.ts",
+      "expected": "8311287c3856d2c9e6d11b82ee59488940ee565900644c77f1149a31b649d3b1",
+      "actual": "8311287c3856d2c9e6d11b82ee59488940ee565900644c77f1149a31b649d3b1",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/app/(app)/ledgers/[ledgerId]/expenses/[expenseId].tsx",
+      "expected": "a6e1c02bad522a111348a5f54981f24b8732b1e135a884b58359f3ad13d5679f",
+      "actual": "a6e1c02bad522a111348a5f54981f24b8732b1e135a884b58359f3ad13d5679f",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/expenses/screens/ExpenseDetailScreen.tsx",
+      "expected": "a680fdb95f594cedf15a28b4ed080106a85d88fd815f8b2d79b9fd6463052f84",
+      "actual": "a680fdb95f594cedf15a28b4ed080106a85d88fd815f8b2d79b9fd6463052f84",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/images/components/ReceiptImage.tsx",
+      "expected": "f76543faec65f92f5276a697843221527bdb74c1a4fa6ebd7728249e1cc1f34f",
+      "actual": "f76543faec65f92f5276a697843221527bdb74c1a4fa6ebd7728249e1cc1f34f",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/images/api.ts",
+      "expected": "5836e8acf230ed7207aa14fd0764b79cf52e389762d1ff52fe11fb30cdb48585",
+      "actual": "4ede073d00f76c0dc8867836889026f63eec8b193f8608cb084569d241aa1424",
+      "retested": true
+    },
+    {
+      "path": "apps/mobile/src/features/expenses/api.ts",
+      "expected": "be31ced31770f4d5a1ea715d9e888ed189f4444430e58cfa8bf65f70353ce949",
+      "actual": "be31ced31770f4d5a1ea715d9e888ed189f4444430e58cfa8bf65f70353ce949",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/expenses/query-keys.ts",
+      "expected": "e03ed38e38fd8eca00c0ee51756abc481b98c668e81c4d4c41d553fd96a706a3",
+      "actual": "e03ed38e38fd8eca00c0ee51756abc481b98c668e81c4d4c41d553fd96a706a3",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/expenses/presentation.ts",
+      "expected": "0fdd1ea081cbf82b246b3a93102783c5a14db8dc6d3529a44a7709fbff50d3f4",
+      "actual": "0fdd1ea081cbf82b246b3a93102783c5a14db8dc6d3529a44a7709fbff50d3f4",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/expenses/components/ExpenseList.tsx",
+      "expected": "b7ccae42688e63a249dafc73e6b87988c8673ce8aaa9b93c20cef74be039073a",
+      "actual": "b7ccae42688e63a249dafc73e6b87988c8673ce8aaa9b93c20cef74be039073a",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/components/Field.tsx",
+      "expected": "a9916ea6cfcf6095387a0b0e902825385d1812c86ea955a726a702fa619180d9",
+      "actual": "b1ff6c0d7fe1cd67fdc8f8c224bf5b3d5897c52c663a30a35ed24f70ca94930a",
+      "retested": true
+    },
+    {
+      "path": "apps/mobile/app/(app)/ledgers/[ledgerId]/expenses/create.tsx",
+      "expected": "85e1155dbabf2f65262529b6694bf0d0e4943fe7503c593f00e4f0e74fef9bfe",
+      "actual": "85e1155dbabf2f65262529b6694bf0d0e4943fe7503c593f00e4f0e74fef9bfe",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/expenses/screens/CreateExpenseScreen.tsx",
+      "expected": "4ecda73e4846c53d3311867f555a581e93ade252d0ead7962bb87860cd91ec53",
+      "actual": "4ecda73e4846c53d3311867f555a581e93ade252d0ead7962bb87860cd91ec53",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/images/use-receipt.ts",
+      "expected": "8aba17618425984685f9bfe647753e3ec5b4140d0c0245d6ce44b5314910cd8c",
+      "actual": "8aba17618425984685f9bfe647753e3ec5b4140d0c0245d6ce44b5314910cd8c",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/images/receipt-files.ts",
+      "expected": "787d15bc3c158a6b58b703c0fbfbc8a58328b1f07ece8f9ddbc2459ae873aff6",
+      "actual": "787d15bc3c158a6b58b703c0fbfbc8a58328b1f07ece8f9ddbc2459ae873aff6",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/expenses/components/ChoiceSheet.tsx",
+      "expected": "a731231b516f0e2c4d7ed8cef126fe2cd4bec829fef23710da562f96b64243a4",
+      "actual": "a731231b516f0e2c4d7ed8cef126fe2cd4bec829fef23710da562f96b64243a4",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/expenses/components/DateSheet.tsx",
+      "expected": "d495bb9be086523ee4bf406b9b7ecf23bb5711aa93305881dde9e7c9376c7cc8",
+      "actual": "d495bb9be086523ee4bf406b9b7ecf23bb5711aa93305881dde9e7c9376c7cc8",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/expenses/components/SplitEditorSheet.tsx",
+      "expected": "ed0f7a2fa5a95644a646cc9a22b4d925ad35c62b22705f8c9b570d3a80f81917",
+      "actual": "ed0f7a2fa5a95644a646cc9a22b4d925ad35c62b22705f8c9b570d3a80f81917",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/app/(app)/ledgers/[ledgerId]/index.tsx",
+      "expected": "667d334e583253f8f84d21df1c98a6b76f7ede1a1c8b0d28e77e8947e1f8de8d",
+      "actual": "667d334e583253f8f84d21df1c98a6b76f7ede1a1c8b0d28e77e8947e1f8de8d",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/ledgers/screens/LedgerDetailScreen.tsx",
+      "expected": "ac5da1a1dc1b57a102b95de1feb13300bdb73f13b222d1a04de1b05ef8977a65",
+      "actual": "ac5da1a1dc1b57a102b95de1feb13300bdb73f13b222d1a04de1b05ef8977a65",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/ledgers/components/ArchiveLedgerSheet.tsx",
+      "expected": "43715d6a5c1490211bf7e356941f6c4de8ec0141762dfcd6c7dc1ea835de1456",
+      "actual": "43715d6a5c1490211bf7e356941f6c4de8ec0141762dfcd6c7dc1ea835de1456",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/components/OnlineWriteSheet.tsx",
+      "expected": "06461723208b1e8116de109dd0993f84f8f3cd4688a5db3db2300aabe7dacef2",
+      "actual": "06461723208b1e8116de109dd0993f84f8f3cd4688a5db3db2300aabe7dacef2",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/ledgers/components/LedgerCover.tsx",
+      "expected": "368e9133fbef1a5a031a46be583246b900bbd2a84ec302c91e17d05e1472d9c9",
+      "actual": "368e9133fbef1a5a031a46be583246b900bbd2a84ec302c91e17d05e1472d9c9",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/ledgers/components/LedgerMembersSheet.tsx",
+      "expected": "3dff9f6f1eb703fb9d6f5420a69e548ba15011897e402fa488d20ea8275dd6c5",
+      "actual": "3dff9f6f1eb703fb9d6f5420a69e548ba15011897e402fa488d20ea8275dd6c5",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/invitations/use-invitation-reset.ts",
+      "expected": "21f1c16608d5114aeb5e450d44b5da6b18b54674acc83021e7ad4cedf70c46fa",
+      "actual": "21f1c16608d5114aeb5e450d44b5da6b18b54674acc83021e7ad4cedf70c46fa",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/invitations/components/ResetInvitationContent.tsx",
+      "expected": "66649a40556da6debe386a9f7a0861942a52fea54bca363013529ce7a4619f03",
+      "actual": "66649a40556da6debe386a9f7a0861942a52fea54bca363013529ce7a4619f03",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/ledgers/components/EmptyLedger.tsx",
+      "expected": "c98113d788210a97718518f0501c268300ba377ef2fd575a73376ca6297cd23b",
+      "actual": "c98113d788210a97718518f0501c268300ba377ef2fd575a73376ca6297cd23b",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/app/(app)/ledgers/[ledgerId]/invitation.tsx",
+      "expected": "64d6b7ff3932da1e64f9a6b6a53922f5d17d4b24f3a6e2319ab1b01054997a02",
+      "actual": "64d6b7ff3932da1e64f9a6b6a53922f5d17d4b24f3a6e2319ab1b01054997a02",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/invitations/screens/InvitationScreen.tsx",
+      "expected": "2f9cf277da278b43548794a039300f1d5746da29d23e84b97010d9064026611d",
+      "actual": "2f9cf277da278b43548794a039300f1d5746da29d23e84b97010d9064026611d",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/invitations/query-keys.ts",
+      "expected": "e88e910f97f85a649e6670147bdcb2df3e57a1ea71f295cf2f3a74b4153f8f1b",
+      "actual": "e88e910f97f85a649e6670147bdcb2df3e57a1ea71f295cf2f3a74b4153f8f1b",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/app/(app)/ledgers/[ledgerId]/settlement-preview.tsx",
+      "expected": "3b204f7484c381d7d41946ea485b2d588c25614395814b015125b07e13a9a80f",
+      "actual": "3b204f7484c381d7d41946ea485b2d588c25614395814b015125b07e13a9a80f",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/settlements/screens/SettlementPreviewScreen.tsx",
+      "expected": "37aba363415e29db4bf1ee8378c663b157ef4f9b1393c55e41f6d0b70e25a8fc",
+      "actual": "37aba363415e29db4bf1ee8378c663b157ef4f9b1393c55e41f6d0b70e25a8fc",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/settlements/screens/SettlementRecordScreen.tsx",
+      "expected": "25a8435f3e9395a36e94501ac80baf8d7bb98ec5230c22573024e4c04b14c012",
+      "actual": "25a8435f3e9395a36e94501ac80baf8d7bb98ec5230c22573024e4c04b14c012",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/settlements/components/SettledTransferCard.tsx",
+      "expected": "8ad9c3d5bacb2faccfd8fa335a1dc3671cfe9b547df6219a160ff5f5c087671c",
+      "actual": "8ad9c3d5bacb2faccfd8fa335a1dc3671cfe9b547df6219a160ff5f5c087671c",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/settlements/completion-assets.ts",
+      "expected": "c561378d706d98ebcefb90c9ce229abe56c4d814fbf77b45fd992ebe70fc8f1f",
+      "actual": "c561378d706d98ebcefb90c9ce229abe56c4d814fbf77b45fd992ebe70fc8f1f",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/settlements/components/SettledSummary.tsx",
+      "expected": "aebd488de4295d14fc8759330d5c96cd17835e247b6d0d3c2584ce7220e6aa4c",
+      "actual": "aebd488de4295d14fc8759330d5c96cd17835e247b6d0d3c2584ce7220e6aa4c",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/settlements/components/SettlementActionSheet.tsx",
+      "expected": "018699e1ac59abbecd5de9d7d2f48ab74d34d69078c4c0cc150a867be4980566",
+      "actual": "018699e1ac59abbecd5de9d7d2f48ab74d34d69078c4c0cc150a867be4980566",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/settlements/api.ts",
+      "expected": "65d4c2365b4509baeba56fe28fef07f350416d8f1d9d355af8789dbd12a6ee59",
+      "actual": "65d4c2365b4509baeba56fe28fef07f350416d8f1d9d355af8789dbd12a6ee59",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/settlements/query-keys.ts",
+      "expected": "c9311ac84a46a3c346b88743ae17efb10635cd7c178cfa8574478149e2ef1064",
+      "actual": "c9311ac84a46a3c346b88743ae17efb10635cd7c178cfa8574478149e2ef1064",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/settlements/assets.ts",
+      "expected": "d84488d9e35e0fac5c2f047eabeb5379c305569ab24089ef99fc6c3cbcfdc69f",
+      "actual": "d84488d9e35e0fac5c2f047eabeb5379c305569ab24089ef99fc6c3cbcfdc69f",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/app/(app)/ledgers/[ledgerId]/settlement.tsx",
+      "expected": "3b204f7484c381d7d41946ea485b2d588c25614395814b015125b07e13a9a80f",
+      "actual": "3b204f7484c381d7d41946ea485b2d588c25614395814b015125b07e13a9a80f",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/app/(app)/ledgers/create.tsx",
+      "expected": "c840749244262430e89a8795388a53f04685419f7ea96b700c29c8843f399a02",
+      "actual": "c840749244262430e89a8795388a53f04685419f7ea96b700c29c8843f399a02",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/ledgers/screens/CreateLedgerScreen.tsx",
+      "expected": "82963ea744e5b52f9374f6170dbe76edc4d609744f69676bb2f79d7703c83c0a",
+      "actual": "82963ea744e5b52f9374f6170dbe76edc4d609744f69676bb2f79d7703c83c0a",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/app/(app)/ledgers/index.tsx",
+      "expected": "ee0556ed37602161215db0211fc9f22bfbce72fb0732066fb6a366988caaeb1a",
+      "actual": "ee0556ed37602161215db0211fc9f22bfbce72fb0732066fb6a366988caaeb1a",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/ledgers/screens/LedgerListScreen.tsx",
+      "expected": "89e0c51894dba504fcacd533d6dfdcb5acb57051706b80584e231c80d6c0ea88",
+      "actual": "89e0c51894dba504fcacd533d6dfdcb5acb57051706b80584e231c80d6c0ea88",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/ledgers/components/LedgerActionsMenu.tsx",
+      "expected": "385db1abf4b3817182353319facf95af1cbb9823cdc29565b629510d927d3610",
+      "actual": "385db1abf4b3817182353319facf95af1cbb9823cdc29565b629510d927d3610",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/app/(auth)/_layout.tsx",
+      "expected": "28c097ff379e66fc745167c675ff05a3f6a5f56f0c8c99a44299167417ca7134",
+      "actual": "28c097ff379e66fc745167c675ff05a3f6a5f56f0c8c99a44299167417ca7134",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/app/(auth)/login.tsx",
+      "expected": "92796dfaa432c55c674da41ce061507818a4cde4e8accc6d764db6bd63b2f84a",
+      "actual": "92796dfaa432c55c674da41ce061507818a4cde4e8accc6d764db6bd63b2f84a",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/auth/screens/AuthScreen.tsx",
+      "expected": "86c11bbe5ad04385f1e72e7f6af9f1781e800fa161cee258b5015d2d3c6c015c",
+      "actual": "09204c22ced5a9a82af3d57c3d8b8e0726053ff42988d38e39dfc27b2305aaab",
+      "retested": true
+    },
+    {
+      "path": "apps/mobile/src/features/auth/form.ts",
+      "expected": "38ccb885cdbc37da155eb98a5a2e330382af6f4f3cf25720fca69893d50e41de",
+      "actual": "38ccb885cdbc37da155eb98a5a2e330382af6f4f3cf25720fca69893d50e41de",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/auth/components.tsx",
+      "expected": "279ba87fb6ec9eada61de9e4dccd4cb9acaede8d7052ae93d1c5ecdd2fabe495",
+      "actual": "279ba87fb6ec9eada61de9e4dccd4cb9acaede8d7052ae93d1c5ecdd2fabe495",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/profile/index.ts",
+      "expected": "4a9dba428b99ccc02aed58f8be32cbaa84a02c0a1201a57cca3bf673fc1ed9e8",
+      "actual": "4a9dba428b99ccc02aed58f8be32cbaa84a02c0a1201a57cca3bf673fc1ed9e8",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/profile/api.ts",
+      "expected": "90087da4458b1b11cb2567fdb1a51511e60bf8b350d6867fb21e3a050b8b90e3",
+      "actual": "90087da4458b1b11cb2567fdb1a51511e60bf8b350d6867fb21e3a050b8b90e3",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/profile/model.ts",
+      "expected": "770e7fc68147e160a6b749d9f73fb70302406df0852c9a50fc3eafbff4152498",
+      "actual": "770e7fc68147e160a6b749d9f73fb70302406df0852c9a50fc3eafbff4152498",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/profile/query-keys.ts",
+      "expected": "f6240401514e51dd9e50c25f8138737a54a98579d2325679d5cfb76b7d7a296f",
+      "actual": "f6240401514e51dd9e50c25f8138737a54a98579d2325679d5cfb76b7d7a296f",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/app/(auth)/register.tsx",
+      "expected": "5b98daeb1c33794771fa5bd08a01ea2e5678e8229f53af5b691407fc7c2890ee",
+      "actual": "5b98daeb1c33794771fa5bd08a01ea2e5678e8229f53af5b691407fc7c2890ee",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/app/(auth)/welcome.tsx",
+      "expected": "0233581e87e124f4bda3d1b376f832485f4a958f4e0a8657ad82da9144ddaa79",
+      "actual": "0233581e87e124f4bda3d1b376f832485f4a958f4e0a8657ad82da9144ddaa79",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/auth/screens/WelcomeScreen.tsx",
+      "expected": "c9b8e8b87bc364885ebb7c900028edaa4266b71d893cd7a94d50034906bf7910",
+      "actual": "c9b8e8b87bc364885ebb7c900028edaa4266b71d893cd7a94d50034906bf7910",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/app/_layout.tsx",
+      "expected": "69f53898046b6122057620ab5ba2e1fb8a7bfbf12952e28ff1752cf4505b965d",
+      "actual": "0c706a1f472d4974d37ffe19de2b0bef565511ea7353e456e3095faa8b23a7db",
+      "retested": true
+    },
+    {
+      "path": "apps/mobile/src/providers/AppProviders.tsx",
+      "expected": "802f2c59ba912a2584995b713d2b2a2bc8f5dead0fceeeb3de468e15d6ed0c48",
+      "actual": "802f2c59ba912a2584995b713d2b2a2bc8f5dead0fceeeb3de468e15d6ed0c48",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/lib/query-client.ts",
+      "expected": "a69bff49c32af14c276c67479e7dbd8e5c4adfac7bffe7e968aeb53640dc14a2",
+      "actual": "a69bff49c32af14c276c67479e7dbd8e5c4adfac7bffe7e968aeb53640dc14a2",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/auth/screens/SessionRecovery.tsx",
+      "expected": "e7459b2b9c1dcc8c28b5de5f8262a40381819cb8d05383b2e21288aff91c1e90",
+      "actual": "e7459b2b9c1dcc8c28b5de5f8262a40381819cb8d05383b2e21288aff91c1e90",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/app/index.tsx",
+      "expected": "2ce439d29adda542cfa4dfe479067758fd5f7d88fca3355025388adb29023a44",
+      "actual": "2ce439d29adda542cfa4dfe479067758fd5f7d88fca3355025388adb29023a44",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/providers/AppProviders.tsx",
+      "expected": "802f2c59ba912a2584995b713d2b2a2bc8f5dead0fceeeb3de468e15d6ed0c48",
+      "actual": "802f2c59ba912a2584995b713d2b2a2bc8f5dead0fceeeb3de468e15d6ed0c48",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/providers/AuthProvider.tsx",
+      "expected": "620f7cc61edc966b69a31accd10a0da5e588fcef3812f402f9679144bed5975e",
+      "actual": "682e3ab2b3a3ddf6b03591842d3a6d42f0db57fc0ef184d1cac1f4f0ee0d9f5d",
+      "retested": true
+    },
+    {
+      "path": "apps/mobile/src/components/Touch.tsx",
+      "expected": "af94553554dc45e76fe923d6c0fa44d99fe235779054abbeae48a533dbb33888",
+      "actual": "af94553554dc45e76fe923d6c0fa44d99fe235779054abbeae48a533dbb33888",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/components/Sheet.tsx",
+      "expected": "68d4f9565c895547aea46bb3e48195b6894b3bd73a6d84dc08d2ed8f502eb305",
+      "actual": "68d4f9565c895547aea46bb3e48195b6894b3bd73a6d84dc08d2ed8f502eb305",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/components/Field.tsx",
+      "expected": "a9916ea6cfcf6095387a0b0e902825385d1812c86ea955a726a702fa619180d9",
+      "actual": "b1ff6c0d7fe1cd67fdc8f8c224bf5b3d5897c52c663a30a35ed24f70ca94930a",
+      "retested": true
+    },
+    {
+      "path": "apps/mobile/src/components/MainTabs.tsx",
+      "expected": "062a965795e1c17bfd109054b337299539fb2848df3782495435eab7a7ea4c5e",
+      "actual": "062a965795e1c17bfd109054b337299539fb2848df3782495435eab7a7ea4c5e",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/components/OnlineWriteSheet.tsx",
+      "expected": "06461723208b1e8116de109dd0993f84f8f3cd4688a5db3db2300aabe7dacef2",
+      "actual": "06461723208b1e8116de109dd0993f84f8f3cd4688a5db3db2300aabe7dacef2",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/components/Screen.tsx",
+      "expected": "c444ef78321e2e8234b7d02cedcca264b01a3be01dc211fb83b8ce1769135260",
+      "actual": "10f7281be552b2024746d2003b5e0d35e65bd226eab3eb26a4aea50b36d5e33d",
+      "retested": true
+    },
+    {
+      "path": "apps/mobile/src/components/Feedback.tsx",
+      "expected": "aa44a1310e7919e7ce7a52b7b36a8456eef99ea608910e3aec0e91e36f78cb45",
+      "actual": "aa44a1310e7919e7ce7a52b7b36a8456eef99ea608910e3aec0e91e36f78cb45",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/components/Button.tsx",
+      "expected": "bf0728836b4b7b41906fd8e716f115e0ef3766a108a53729516374e117734267",
+      "actual": "bf0728836b4b7b41906fd8e716f115e0ef3766a108a53729516374e117734267",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/icons/FigmaAsset.tsx",
+      "expected": "92100c8aefa6e0dd7030760e5b1be1c9565f90c93f7ab9b34bcc95ee61d512b6",
+      "actual": "92100c8aefa6e0dd7030760e5b1be1c9565f90c93f7ab9b34bcc95ee61d512b6",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/auth/components.tsx",
+      "expected": "279ba87fb6ec9eada61de9e4dccd4cb9acaede8d7052ae93d1c5ecdd2fabe495",
+      "actual": "279ba87fb6ec9eada61de9e4dccd4cb9acaede8d7052ae93d1c5ecdd2fabe495",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/invitations/screens/JoinLedgerScreen.tsx",
+      "expected": "dd1b64ff654a80d2f8e3bd8710fbcac32e95e6204a5dcf0a242351c6f7b5254b",
+      "actual": "dd1b64ff654a80d2f8e3bd8710fbcac32e95e6204a5dcf0a242351c6f7b5254b",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/invitations/screens/InvitationScreen.tsx",
+      "expected": "2f9cf277da278b43548794a039300f1d5746da29d23e84b97010d9064026611d",
+      "actual": "2f9cf277da278b43548794a039300f1d5746da29d23e84b97010d9064026611d",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/invitations/components/InviteCodeField.tsx",
+      "expected": "582a85a60589ee4f9274d2ffb8a6399e6166416543c9739e056be015209aaf51",
+      "actual": "582a85a60589ee4f9274d2ffb8a6399e6166416543c9739e056be015209aaf51",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/invitations/components/ResetInvitationContent.tsx",
+      "expected": "66649a40556da6debe386a9f7a0861942a52fea54bca363013529ce7a4619f03",
+      "actual": "66649a40556da6debe386a9f7a0861942a52fea54bca363013529ce7a4619f03",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/invitations/components/JoinInvitationHero.tsx",
+      "expected": "9b4045ccff010947682ef73f798f10489d493d8fc000e3e76c453ae58f1eb5df",
+      "actual": "9b4045ccff010947682ef73f798f10489d493d8fc000e3e76c453ae58f1eb5df",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/balances/screens/BalancesScreen.tsx",
+      "expected": "106e380ff7a59479cd5f186944fd41efbbac93b1c83c32a02612784f85d5fcc7",
+      "actual": "106e380ff7a59479cd5f186944fd41efbbac93b1c83c32a02612784f85d5fcc7",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/profile/screens/AccountScreen.tsx",
+      "expected": "44db89d24ec752fcf48258aa830d60191f3f27f0e71f3b10e91a6538cf2d7feb",
+      "actual": "44db89d24ec752fcf48258aa830d60191f3f27f0e71f3b10e91a6538cf2d7feb",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/profile/components/DocumentSheet.tsx",
+      "expected": "630c164ebcdcfd2bcfc04a6a7e15a9669fa82eb0c16a4eef5d23626e4ea4f1a0",
+      "actual": "630c164ebcdcfd2bcfc04a6a7e15a9669fa82eb0c16a4eef5d23626e4ea4f1a0",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/system/screens/ConnectionScreen.tsx",
+      "expected": "9fe7e080107619497baa74436aa5b00d9810e5d32a929f9e607e2e9d54227eca",
+      "actual": "9fe7e080107619497baa74436aa5b00d9810e5d32a929f9e607e2e9d54227eca",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/ledgers/screens/LedgerListScreen.tsx",
+      "expected": "89e0c51894dba504fcacd533d6dfdcb5acb57051706b80584e231c80d6c0ea88",
+      "actual": "89e0c51894dba504fcacd533d6dfdcb5acb57051706b80584e231c80d6c0ea88",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/ledgers/screens/LedgerDetailScreen.tsx",
+      "expected": "ac5da1a1dc1b57a102b95de1feb13300bdb73f13b222d1a04de1b05ef8977a65",
+      "actual": "ac5da1a1dc1b57a102b95de1feb13300bdb73f13b222d1a04de1b05ef8977a65",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/ledgers/screens/CreateLedgerScreen.tsx",
+      "expected": "82963ea744e5b52f9374f6170dbe76edc4d609744f69676bb2f79d7703c83c0a",
+      "actual": "82963ea744e5b52f9374f6170dbe76edc4d609744f69676bb2f79d7703c83c0a",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/ledgers/components/LedgerActionsMenu.tsx",
+      "expected": "385db1abf4b3817182353319facf95af1cbb9823cdc29565b629510d927d3610",
+      "actual": "385db1abf4b3817182353319facf95af1cbb9823cdc29565b629510d927d3610",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/ledgers/components/LedgerMembersSheet.tsx",
+      "expected": "3dff9f6f1eb703fb9d6f5420a69e548ba15011897e402fa488d20ea8275dd6c5",
+      "actual": "3dff9f6f1eb703fb9d6f5420a69e548ba15011897e402fa488d20ea8275dd6c5",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/ledgers/components/LedgerCover.tsx",
+      "expected": "368e9133fbef1a5a031a46be583246b900bbd2a84ec302c91e17d05e1472d9c9",
+      "actual": "368e9133fbef1a5a031a46be583246b900bbd2a84ec302c91e17d05e1472d9c9",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/ledgers/components/ArchiveLedgerSheet.tsx",
+      "expected": "43715d6a5c1490211bf7e356941f6c4de8ec0141762dfcd6c7dc1ea835de1456",
+      "actual": "43715d6a5c1490211bf7e356941f6c4de8ec0141762dfcd6c7dc1ea835de1456",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/ledgers/components/EmptyLedger.tsx",
+      "expected": "c98113d788210a97718518f0501c268300ba377ef2fd575a73376ca6297cd23b",
+      "actual": "c98113d788210a97718518f0501c268300ba377ef2fd575a73376ca6297cd23b",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/expenses/screens/CreateExpenseScreen.tsx",
+      "expected": "4ecda73e4846c53d3311867f555a581e93ade252d0ead7962bb87860cd91ec53",
+      "actual": "4ecda73e4846c53d3311867f555a581e93ade252d0ead7962bb87860cd91ec53",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/expenses/screens/ExpenseDetailScreen.tsx",
+      "expected": "a680fdb95f594cedf15a28b4ed080106a85d88fd815f8b2d79b9fd6463052f84",
+      "actual": "a680fdb95f594cedf15a28b4ed080106a85d88fd815f8b2d79b9fd6463052f84",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/expenses/components/ExpenseList.tsx",
+      "expected": "b7ccae42688e63a249dafc73e6b87988c8673ce8aaa9b93c20cef74be039073a",
+      "actual": "b7ccae42688e63a249dafc73e6b87988c8673ce8aaa9b93c20cef74be039073a",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/expenses/components/SplitEditorSheet.tsx",
+      "expected": "ed0f7a2fa5a95644a646cc9a22b4d925ad35c62b22705f8c9b570d3a80f81917",
+      "actual": "ed0f7a2fa5a95644a646cc9a22b4d925ad35c62b22705f8c9b570d3a80f81917",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/expenses/components/ExpenseUI.tsx",
+      "expected": "6d55eb9fc514ecbc2cbbfd0f41ca8400e335f07e25ae22ca899868cbd34a15af",
+      "actual": "6d55eb9fc514ecbc2cbbfd0f41ca8400e335f07e25ae22ca899868cbd34a15af",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/expenses/components/ChoiceSheet.tsx",
+      "expected": "a731231b516f0e2c4d7ed8cef126fe2cd4bec829fef23710da562f96b64243a4",
+      "actual": "a731231b516f0e2c4d7ed8cef126fe2cd4bec829fef23710da562f96b64243a4",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/expenses/components/DateSheet.tsx",
+      "expected": "d495bb9be086523ee4bf406b9b7ecf23bb5711aa93305881dde9e7c9376c7cc8",
+      "actual": "d495bb9be086523ee4bf406b9b7ecf23bb5711aa93305881dde9e7c9376c7cc8",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/settlements/screens/SettlementPreviewScreen.tsx",
+      "expected": "37aba363415e29db4bf1ee8378c663b157ef4f9b1393c55e41f6d0b70e25a8fc",
+      "actual": "37aba363415e29db4bf1ee8378c663b157ef4f9b1393c55e41f6d0b70e25a8fc",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/settlements/screens/SettlementRecordScreen.tsx",
+      "expected": "25a8435f3e9395a36e94501ac80baf8d7bb98ec5230c22573024e4c04b14c012",
+      "actual": "25a8435f3e9395a36e94501ac80baf8d7bb98ec5230c22573024e4c04b14c012",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/settlements/components/SettlementActionSheet.tsx",
+      "expected": "018699e1ac59abbecd5de9d7d2f48ab74d34d69078c4c0cc150a867be4980566",
+      "actual": "018699e1ac59abbecd5de9d7d2f48ab74d34d69078c4c0cc150a867be4980566",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/settlements/components/SettledTransferCard.tsx",
+      "expected": "8ad9c3d5bacb2faccfd8fa335a1dc3671cfe9b547df6219a160ff5f5c087671c",
+      "actual": "8ad9c3d5bacb2faccfd8fa335a1dc3671cfe9b547df6219a160ff5f5c087671c",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/settlements/components/SettledSummary.tsx",
+      "expected": "aebd488de4295d14fc8759330d5c96cd17835e247b6d0d3c2584ce7220e6aa4c",
+      "actual": "aebd488de4295d14fc8759330d5c96cd17835e247b6d0d3c2584ce7220e6aa4c",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/images/components/ReceiptImage.tsx",
+      "expected": "f76543faec65f92f5276a697843221527bdb74c1a4fa6ebd7728249e1cc1f34f",
+      "actual": "f76543faec65f92f5276a697843221527bdb74c1a4fa6ebd7728249e1cc1f34f",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/auth/screens/AuthScreen.tsx",
+      "expected": "86c11bbe5ad04385f1e72e7f6af9f1781e800fa161cee258b5015d2d3c6c015c",
+      "actual": "09204c22ced5a9a82af3d57c3d8b8e0726053ff42988d38e39dfc27b2305aaab",
+      "retested": true
+    },
+    {
+      "path": "apps/mobile/src/features/auth/screens/WelcomeScreen.tsx",
+      "expected": "c9b8e8b87bc364885ebb7c900028edaa4266b71d893cd7a94d50034906bf7910",
+      "actual": "c9b8e8b87bc364885ebb7c900028edaa4266b71d893cd7a94d50034906bf7910",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/auth/screens/SessionRecovery.tsx",
+      "expected": "e7459b2b9c1dcc8c28b5de5f8262a40381819cb8d05383b2e21288aff91c1e90",
+      "actual": "e7459b2b9c1dcc8c28b5de5f8262a40381819cb8d05383b2e21288aff91c1e90",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/types/assets.d.ts",
+      "expected": "c276d59eae1b9c4f90fb7487aa28e4cfd158560be8688977e79e3b5054c57a4d",
+      "actual": "c276d59eae1b9c4f90fb7487aa28e4cfd158560be8688977e79e3b5054c57a4d",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/components/motion.ts",
+      "expected": "11c3fe04cb0baecf9cc26f18e8dba11d237126316d7959b53606d3547ee3bcc8",
+      "actual": "11c3fe04cb0baecf9cc26f18e8dba11d237126316d7959b53606d3547ee3bcc8",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/theme/tokens.ts",
+      "expected": "a210f91d8596bc4afd9fe43f993c3ae55553d2e3eedefdbd5539f0066747f12a",
+      "actual": "a210f91d8596bc4afd9fe43f993c3ae55553d2e3eedefdbd5539f0066747f12a",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/icons/expense-assets.ts",
+      "expected": "6ab131276713bf790fe266f4f026297f050617f580fc8c36088770b0858a4728",
+      "actual": "6ab131276713bf790fe266f4f026297f050617f580fc8c36088770b0858a4728",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/icons/figma-assets.ts",
+      "expected": "b2f0112dd16026d08a0cd48acea20efbe793842bc2f95482cf0b8f4c9ae98214",
+      "actual": "b2f0112dd16026d08a0cd48acea20efbe793842bc2f95482cf0b8f4c9ae98214",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/icons/ledger-assets.ts",
+      "expected": "c5f6f9c3d006e5a429e3baec5c05a3d748eaf01b05524edbd575abdbbedc39e4",
+      "actual": "c5f6f9c3d006e5a429e3baec5c05a3d748eaf01b05524edbd575abdbbedc39e4",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/icons/invitation-assets.ts",
+      "expected": "a6ebe83a32de78a3dfdfb66c79fe407e07ae6cf0bf0023a26c90b78b0bbeca54",
+      "actual": "a6ebe83a32de78a3dfdfb66c79fe407e07ae6cf0bf0023a26c90b78b0bbeca54",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/lib/query-client.ts",
+      "expected": "a69bff49c32af14c276c67479e7dbd8e5c4adfac7bffe7e968aeb53640dc14a2",
+      "actual": "a69bff49c32af14c276c67479e7dbd8e5c4adfac7bffe7e968aeb53640dc14a2",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/lib/use-online-query.ts",
+      "expected": "860fc98e529e442cb05e89fd66ba6c3e96952b6ffe1e193056d061e0194b9d87",
+      "actual": "860fc98e529e442cb05e89fd66ba6c3e96952b6ffe1e193056d061e0194b9d87",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/lib/api-error.ts",
+      "expected": "8e22510bfae33c8af457059d3c98956fb66308f2a6971c21d6f8305618892245",
+      "actual": "8e22510bfae33c8af457059d3c98956fb66308f2a6971c21d6f8305618892245",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/lib/http.ts",
+      "expected": "9f851ff8d0af7c1002ec7e612c6e70fee832a22a9eb8d7c97884f3ddafb20763",
+      "actual": "9f851ff8d0af7c1002ec7e612c6e70fee832a22a9eb8d7c97884f3ddafb20763",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/lib/api.ts",
+      "expected": "2eea6bbc553e13dd4ad94b628d333c3aaf820648b55769f6b9abebb877f897cf",
+      "actual": "802e1d48077dc35b43f59f2c1c60687f5bb35ea5c01ae03ba913e1f681e6bbeb",
+      "retested": true
+    },
+    {
+      "path": "apps/mobile/src/lib/auth-session.ts",
+      "expected": "a4fb61d9ba01aecdc5cfc6e6d0b6d89d8940abbedcd6a82e43e16e293f1c158a",
+      "actual": "2ec89119957d449985c5bf2c24384a25cfb59aaeaddf20ed582bff043bccdb96",
+      "retested": true
+    },
+    {
+      "path": "apps/mobile/src/lib/session-token.ts",
+      "expected": "d0ceb1cee17b4eef5491f696c22cdfc43a9dd713bb886a4abace409bcd3ca6d0",
+      "actual": "d0ceb1cee17b4eef5491f696c22cdfc43a9dd713bb886a4abace409bcd3ca6d0",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/lib/use-idempotent-write.ts",
+      "expected": "f0ce17ef29f15d59dac0c82997e2ca69d11973b34dbacf83e3b35da11a3b7c58",
+      "actual": "f0ce17ef29f15d59dac0c82997e2ca69d11973b34dbacf83e3b35da11a3b7c58",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/auth/form.ts",
+      "expected": "38ccb885cdbc37da155eb98a5a2e330382af6f4f3cf25720fca69893d50e41de",
+      "actual": "38ccb885cdbc37da155eb98a5a2e330382af6f4f3cf25720fca69893d50e41de",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/auth/api.ts",
+      "expected": "d4e8857b2eda7313d6a0ea7fbe6468c0aba98606181c6b9056197f6c3ecdc83c",
+      "actual": "d4e8857b2eda7313d6a0ea7fbe6468c0aba98606181c6b9056197f6c3ecdc83c",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/auth/model.ts",
+      "expected": "a974f89272e8ffd47101756c7e32d457e0f0826b974b4add324a9a6147cf68c6",
+      "actual": "a974f89272e8ffd47101756c7e32d457e0f0826b974b4add324a9a6147cf68c6",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/auth/index.ts",
+      "expected": "c962d29e3518e644bb9b4b675613b05eb9fe98375a5aac84c76f273e4dd54d63",
+      "actual": "c962d29e3518e644bb9b4b675613b05eb9fe98375a5aac84c76f273e4dd54d63",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/auth/controller.ts",
+      "expected": "027df9ed5a1af0f0d2e34c9bf4247461704b9e91e3418810f90e916cf6f14e7d",
+      "actual": "38a6cabc1665edcc8228a5f16557abc2154c4cb21748b1074b13bc4172a8c7be",
+      "retested": true
+    },
+    {
+      "path": "apps/mobile/src/features/images/api.ts",
+      "expected": "5836e8acf230ed7207aa14fd0764b79cf52e389762d1ff52fe11fb30cdb48585",
+      "actual": "4ede073d00f76c0dc8867836889026f63eec8b193f8608cb084569d241aa1424",
+      "retested": true
+    },
+    {
+      "path": "apps/mobile/src/features/images/receipt-files.ts",
+      "expected": "787d15bc3c158a6b58b703c0fbfbc8a58328b1f07ece8f9ddbc2459ae873aff6",
+      "actual": "787d15bc3c158a6b58b703c0fbfbc8a58328b1f07ece8f9ddbc2459ae873aff6",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/images/index.ts",
+      "expected": "dcc390f6690437e874bc53640815938dbc46246123087a515b7d3906559d89cf",
+      "actual": "dcc390f6690437e874bc53640815938dbc46246123087a515b7d3906559d89cf",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/images/use-receipt.ts",
+      "expected": "8aba17618425984685f9bfe647753e3ec5b4140d0c0245d6ce44b5314910cd8c",
+      "actual": "8aba17618425984685f9bfe647753e3ec5b4140d0c0245d6ce44b5314910cd8c",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/settlements/assets.ts",
+      "expected": "d84488d9e35e0fac5c2f047eabeb5379c305569ab24089ef99fc6c3cbcfdc69f",
+      "actual": "d84488d9e35e0fac5c2f047eabeb5379c305569ab24089ef99fc6c3cbcfdc69f",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/settlements/completion-assets.ts",
+      "expected": "c561378d706d98ebcefb90c9ce229abe56c4d814fbf77b45fd992ebe70fc8f1f",
+      "actual": "c561378d706d98ebcefb90c9ce229abe56c4d814fbf77b45fd992ebe70fc8f1f",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/settlements/api.ts",
+      "expected": "65d4c2365b4509baeba56fe28fef07f350416d8f1d9d355af8789dbd12a6ee59",
+      "actual": "65d4c2365b4509baeba56fe28fef07f350416d8f1d9d355af8789dbd12a6ee59",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/settlements/model.ts",
+      "expected": "f08314bbf7282bca4f48044010b8a385cfc45eddd2ca21d0a0dfc33d51c4ca6f",
+      "actual": "f08314bbf7282bca4f48044010b8a385cfc45eddd2ca21d0a0dfc33d51c4ca6f",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/settlements/query-keys.ts",
+      "expected": "c9311ac84a46a3c346b88743ae17efb10635cd7c178cfa8574478149e2ef1064",
+      "actual": "c9311ac84a46a3c346b88743ae17efb10635cd7c178cfa8574478149e2ef1064",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/settlements/index.ts",
+      "expected": "176fa4c8d43b16ea6eeeb7556b211fb28ca0978b2b9cfbdff86ac66ae5a26aa7",
+      "actual": "176fa4c8d43b16ea6eeeb7556b211fb28ca0978b2b9cfbdff86ac66ae5a26aa7",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/expenses/form.ts",
+      "expected": "ce2f7f02e514d9a83994c01e201def8dd1795f06f235df8dbd69a8a67a8351fc",
+      "actual": "ce2f7f02e514d9a83994c01e201def8dd1795f06f235df8dbd69a8a67a8351fc",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/expenses/api.ts",
+      "expected": "be31ced31770f4d5a1ea715d9e888ed189f4444430e58cfa8bf65f70353ce949",
+      "actual": "be31ced31770f4d5a1ea715d9e888ed189f4444430e58cfa8bf65f70353ce949",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/expenses/presentation.ts",
+      "expected": "0fdd1ea081cbf82b246b3a93102783c5a14db8dc6d3529a44a7709fbff50d3f4",
+      "actual": "0fdd1ea081cbf82b246b3a93102783c5a14db8dc6d3529a44a7709fbff50d3f4",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/expenses/model.ts",
+      "expected": "95674766e3b0bf819d4d0a5a46d8bbce88053955f4051b01a415022e56a63eda",
+      "actual": "95674766e3b0bf819d4d0a5a46d8bbce88053955f4051b01a415022e56a63eda",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/expenses/query-keys.ts",
+      "expected": "e03ed38e38fd8eca00c0ee51756abc481b98c668e81c4d4c41d553fd96a706a3",
+      "actual": "e03ed38e38fd8eca00c0ee51756abc481b98c668e81c4d4c41d553fd96a706a3",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/expenses/index.ts",
+      "expected": "176fa4c8d43b16ea6eeeb7556b211fb28ca0978b2b9cfbdff86ac66ae5a26aa7",
+      "actual": "176fa4c8d43b16ea6eeeb7556b211fb28ca0978b2b9cfbdff86ac66ae5a26aa7",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/ledgers/api.ts",
+      "expected": "aeb535873db7539554701f637bbd9ecc77bb1afa21d24520d421b28797424083",
+      "actual": "aeb535873db7539554701f637bbd9ecc77bb1afa21d24520d421b28797424083",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/ledgers/presentation.ts",
+      "expected": "04d9d894356174eac3358fa337a5b6cfaa5dede79fa02648413fe5c7123be746",
+      "actual": "04d9d894356174eac3358fa337a5b6cfaa5dede79fa02648413fe5c7123be746",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/ledgers/model.ts",
+      "expected": "10cd01658ee733e636ed1b6eabbd50ede6dbf5d6ea4a6d294857e335276020dd",
+      "actual": "10cd01658ee733e636ed1b6eabbd50ede6dbf5d6ea4a6d294857e335276020dd",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/ledgers/query-keys.ts",
+      "expected": "bbe9e0340c8ed0f21cdad38c2abdd6ac10f00abe75b4e91b2c6d25d4d2634ac8",
+      "actual": "bbe9e0340c8ed0f21cdad38c2abdd6ac10f00abe75b4e91b2c6d25d4d2634ac8",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/ledgers/index.ts",
+      "expected": "176fa4c8d43b16ea6eeeb7556b211fb28ca0978b2b9cfbdff86ac66ae5a26aa7",
+      "actual": "176fa4c8d43b16ea6eeeb7556b211fb28ca0978b2b9cfbdff86ac66ae5a26aa7",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/profile/api.ts",
+      "expected": "90087da4458b1b11cb2567fdb1a51511e60bf8b350d6867fb21e3a050b8b90e3",
+      "actual": "90087da4458b1b11cb2567fdb1a51511e60bf8b350d6867fb21e3a050b8b90e3",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/profile/model.ts",
+      "expected": "770e7fc68147e160a6b749d9f73fb70302406df0852c9a50fc3eafbff4152498",
+      "actual": "770e7fc68147e160a6b749d9f73fb70302406df0852c9a50fc3eafbff4152498",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/profile/documents.ts",
+      "expected": "8aa026741bfd8c7c4e4e8578ac0ea5372a233e5585c2424d5708827b4460f894",
+      "actual": "8aa026741bfd8c7c4e4e8578ac0ea5372a233e5585c2424d5708827b4460f894",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/profile/query-keys.ts",
+      "expected": "f6240401514e51dd9e50c25f8138737a54a98579d2325679d5cfb76b7d7a296f",
+      "actual": "f6240401514e51dd9e50c25f8138737a54a98579d2325679d5cfb76b7d7a296f",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/profile/index.ts",
+      "expected": "4a9dba428b99ccc02aed58f8be32cbaa84a02c0a1201a57cca3bf673fc1ed9e8",
+      "actual": "4a9dba428b99ccc02aed58f8be32cbaa84a02c0a1201a57cca3bf673fc1ed9e8",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/balances/api.ts",
+      "expected": "484021924c66e26bdc1b41d350d69623461131dea700b8654541a161e25ef8d8",
+      "actual": "484021924c66e26bdc1b41d350d69623461131dea700b8654541a161e25ef8d8",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/balances/model.ts",
+      "expected": "5c3fa50915a95484fb5cf729bc4ff3d174c6f6b9caa557f584ed760eb547b3d3",
+      "actual": "5c3fa50915a95484fb5cf729bc4ff3d174c6f6b9caa557f584ed760eb547b3d3",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/balances/query-keys.ts",
+      "expected": "8311287c3856d2c9e6d11b82ee59488940ee565900644c77f1149a31b649d3b1",
+      "actual": "8311287c3856d2c9e6d11b82ee59488940ee565900644c77f1149a31b649d3b1",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/balances/index.ts",
+      "expected": "176fa4c8d43b16ea6eeeb7556b211fb28ca0978b2b9cfbdff86ac66ae5a26aa7",
+      "actual": "176fa4c8d43b16ea6eeeb7556b211fb28ca0978b2b9cfbdff86ac66ae5a26aa7",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/invitations/qr.ts",
+      "expected": "e8fb34393afa4d400d397860ac8f4bc38eb80700b7bad6fd339184b79c61ebd4",
+      "actual": "e8fb34393afa4d400d397860ac8f4bc38eb80700b7bad6fd339184b79c61ebd4",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/invitations/api.ts",
+      "expected": "48e5b9042dd74b0ba8761eb0c491144df2f86dd855879b63d10b950d9d9cde76",
+      "actual": "48e5b9042dd74b0ba8761eb0c491144df2f86dd855879b63d10b950d9d9cde76",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/invitations/model.ts",
+      "expected": "fc5985b060573d896cf35f63a2fdb6e13cf8fb3ad5daa1434ba968f7365c5a77",
+      "actual": "fc5985b060573d896cf35f63a2fdb6e13cf8fb3ad5daa1434ba968f7365c5a77",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/invitations/use-invitation-reset.ts",
+      "expected": "21f1c16608d5114aeb5e450d44b5da6b18b54674acc83021e7ad4cedf70c46fa",
+      "actual": "21f1c16608d5114aeb5e450d44b5da6b18b54674acc83021e7ad4cedf70c46fa",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/invitations/query-keys.ts",
+      "expected": "e88e910f97f85a649e6670147bdcb2df3e57a1ea71f295cf2f3a74b4153f8f1b",
+      "actual": "e88e910f97f85a649e6670147bdcb2df3e57a1ea71f295cf2f3a74b4153f8f1b",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/src/features/invitations/index.ts",
+      "expected": "176fa4c8d43b16ea6eeeb7556b211fb28ca0978b2b9cfbdff86ac66ae5a26aa7",
+      "actual": "176fa4c8d43b16ea6eeeb7556b211fb28ca0978b2b9cfbdff86ac66ae5a26aa7",
+      "retested": false
+    },
+    {
+      "path": "apps/mobile/app/_layout.tsx",
+      "expected": "69f53898046b6122057620ab5ba2e1fb8a7bfbf12952e28ff1752cf4505b965d",
+      "actual": "0c706a1f472d4974d37ffe19de2b0bef565511ea7353e456e3095faa8b23a7db",
+      "retested": true
+    }
+  ],
+  "screenshotChecks": [
+    {
+      "path": "docs/evidence/issue48/01-owner-empty.png",
+      "expected": "f5b22ec50ee4cef88fdd45f73b38f9eacba4d19712cba0a0ff76f175848e2f7a",
+      "actual": "f5b22ec50ee4cef88fdd45f73b38f9eacba4d19712cba0a0ff76f175848e2f7a"
+    },
+    {
+      "path": "docs/evidence/issue48/02-system-cover-picker.png",
+      "expected": "996e149f4e599402acd6adfa7ec4ecc9b363ff7cd33b89ad6448d3c8de6bebd2",
+      "actual": "996e149f4e599402acd6adfa7ec4ecc9b363ff7cd33b89ad6448d3c8de6bebd2"
+    },
+    {
+      "path": "docs/evidence/issue48/03-cover-cancel-keeps-name.png",
+      "expected": "345982c350112b687577c7fd8b3f21743da9b8a581d3d3b752ead51058e678fb",
+      "actual": "345982c350112b687577c7fd8b3f21743da9b8a581d3d3b752ead51058e678fb"
+    },
+    {
+      "path": "docs/evidence/issue48/04-cover-selected.png",
+      "expected": "242591d43c869934db8169abde987f6057001a0e95fd512960d8e722f9983207",
+      "actual": "242591d43c869934db8169abde987f6057001a0e95fd512960d8e722f9983207"
+    },
+    {
+      "path": "docs/evidence/issue48/05-foreground-verification-gate.png",
+      "expected": "b2239bad641c1e93c3e607c0f3819e749daa4853ad0fb37d2757dda0e92d5a6d",
+      "actual": "b2239bad641c1e93c3e607c0f3819e749daa4853ad0fb37d2757dda0e92d5a6d"
+    },
+    {
+      "path": "docs/evidence/issue48/06-foreground-form-retained.png",
+      "expected": "1e8b7cc87b91b75b6c0c3ec0def9798fd4f5dbb9b3d401789b61a14e0fc95738",
+      "actual": "1e8b7cc87b91b75b6c0c3ec0def9798fd4f5dbb9b3d401789b61a14e0fc95738"
+    },
+    {
+      "path": "docs/evidence/issue48/07-offline-pending-response-gate.png",
+      "expected": "bdcfaf24a3640929fa4d6b9d1b336c12193e83ab0172fb4af97e2859206b4439",
+      "actual": "bdcfaf24a3640929fa4d6b9d1b336c12193e83ab0172fb4af97e2859206b4439"
+    },
+    {
+      "path": "docs/evidence/issue48/08-late-200-stays-locked.png",
+      "expected": "858a30940b1babc889e8de34c403d124c897c0d00f90a0cb41af53d60013eb8b",
+      "actual": "858a30940b1babc889e8de34c403d124c897c0d00f90a0cb41af53d60013eb8b"
+    },
+    {
+      "path": "docs/evidence/issue48/09-offline-explicit-verification.png",
+      "expected": "225866f63604a724adc499f57ac4402325b39f2cce4986f9abc580137db2eca4",
+      "actual": "225866f63604a724adc499f57ac4402325b39f2cce4986f9abc580137db2eca4"
+    },
+    {
+      "path": "docs/evidence/issue48/10-online-still-needs-verification.png",
+      "expected": "66ceddb4094b82f6ca41cef0d02a8a978ce1e841daf5a8455afa99943df9829d",
+      "actual": "66ceddb4094b82f6ca41cef0d02a8a978ce1e841daf5a8455afa99943df9829d"
+    },
+    {
+      "path": "docs/evidence/issue48/11-online-verification-restores-form.png",
+      "expected": "74f7092ac05c9e53e7b31d7488727ab7d696b56433748120d321df1c57475404",
+      "actual": "74f7092ac05c9e53e7b31d7488727ab7d696b56433748120d321df1c57475404"
+    },
+    {
+      "path": "docs/evidence/issue48/12-created-invitation.png",
+      "expected": "1d39ebc3c64474247b8e98badac07f753c6de3b47a89dc9a076fcdf21fa38ef6",
+      "actual": "1d39ebc3c64474247b8e98badac07f753c6de3b47a89dc9a076fcdf21fa38ef6"
+    },
+    {
+      "path": "docs/evidence/issue48/13-member-join-preview.png",
+      "expected": "71bd5615735bd638c2de3a01f6d8abf275a454d5318109dd04c501e8201f8d02",
+      "actual": "71bd5615735bd638c2de3a01f6d8abf275a454d5318109dd04c501e8201f8d02"
+    },
+    {
+      "path": "docs/evidence/issue48/14-member-joined.png",
+      "expected": "d3ea25d343a876cfe00f5b0e089ba4405e168cb028c282e3c7be8c65bf4c1957",
+      "actual": "d3ea25d343a876cfe00f5b0e089ba4405e168cb028c282e3c7be8c65bf4c1957"
+    },
+    {
+      "path": "docs/evidence/issue48/15-camera-system-permission.png",
+      "expected": "ec45c3eec1a2fe3896eb325d14bcf26cdd21ecea70de10daec461b50893a8caf",
+      "actual": "ec45c3eec1a2fe3896eb325d14bcf26cdd21ecea70de10daec461b50893a8caf"
+    },
+    {
+      "path": "docs/evidence/issue48/16-denied-keeps-expense.png",
+      "expected": "b59570ee28a3bcd1e3e5c641f9354d487e2e88f07b1d190a95d16705c8d8a92d",
+      "actual": "b59570ee28a3bcd1e3e5c641f9354d487e2e88f07b1d190a95d16705c8d8a92d"
+    },
+    {
+      "path": "docs/evidence/issue48/17-receipt-reselect-system.png",
+      "expected": "1a40ab1f879d50dd7ca7ea11cc10da21fb024d27964736984e63adf853cf4a47",
+      "actual": "1a40ab1f879d50dd7ca7ea11cc10da21fb024d27964736984e63adf853cf4a47"
+    },
+    {
+      "path": "docs/evidence/issue48/18-cancel-keeps-selected-receipt.png",
+      "expected": "7d67ae65e9eec187de97829b9221e41cbee9ef58574b2f5768ee1217c863df84",
+      "actual": "7d67ae65e9eec187de97829b9221e41cbee9ef58574b2f5768ee1217c863df84"
+    },
+    {
+      "path": "docs/evidence/issue48/19-denied-keeps-selected-receipt.png",
+      "expected": "aec487e5449545bb6970ac641159e1bcdc35fe5adf6239c40a34e42a1b3808a7",
+      "actual": "aec487e5449545bb6970ac641159e1bcdc35fe5adf6239c40a34e42a1b3808a7"
+    },
+    {
+      "path": "docs/evidence/issue48/20-member-expense-splits.png",
+      "expected": "e2ca995c5bd099aa7b4e263b60723687f2b714763a95f8d5b06c2572ade245c0",
+      "actual": "e2ca995c5bd099aa7b4e263b60723687f2b714763a95f8d5b06c2572ade245c0"
+    },
+    {
+      "path": "docs/evidence/issue48/21-member-receipt.png",
+      "expected": "9a786926fea1be480842a40676bed34f6fd4c1fa6273c557de459dad3ee0d93a",
+      "actual": "9a786926fea1be480842a40676bed34f6fd4c1fa6273c557de459dad3ee0d93a"
+    },
+    {
+      "path": "docs/evidence/issue48/22-member-preview-no-freeze.png",
+      "expected": "4a8eaa499fb312d3fe76f18c4b0b7e23934740463512f38bb246d133b6f25e21",
+      "actual": "4a8eaa499fb312d3fe76f18c4b0b7e23934740463512f38bb246d133b6f25e21"
+    },
+    {
+      "path": "docs/evidence/issue48/23-owner-authorized-receipt.png",
+      "expected": "f5de8aaa383991e2fc36814046bb3be6c86c94b0112f94fd2ed9b692c81ba42d",
+      "actual": "f5de8aaa383991e2fc36814046bb3be6c86c94b0112f94fd2ed9b692c81ba42d"
+    },
+    {
+      "path": "docs/evidence/issue48/24-owner-preview.png",
+      "expected": "2a27db8096a9ad0e43db3fb31e9e7c35f4ccbd1817a97f036af34c60287f834a",
+      "actual": "2a27db8096a9ad0e43db3fb31e9e7c35f4ccbd1817a97f036af34c60287f834a"
+    },
+    {
+      "path": "docs/evidence/issue48/25-freeze-version3.png",
+      "expected": "f33562ac867d34023f91fa4ea49d6719953d4d8a6bd68f488cc23741f6d34603",
+      "actual": "f33562ac867d34023f91fa4ea49d6719953d4d8a6bd68f488cc23741f6d34603"
+    },
+    {
+      "path": "docs/evidence/issue48/26-frozen-pending.png",
+      "expected": "fcff9bd611a4fd1baaa7bc28727c70684d32fdd7b16e0a4f0988233b317f2944",
+      "actual": "fcff9bd611a4fd1baaa7bc28727c70684d32fdd7b16e0a4f0988233b317f2944"
+    },
+    {
+      "path": "docs/evidence/issue48/27-register-6000.png",
+      "expected": "5fd38f77e51ee7d062814e9cd3148327a213d9d754471bdf2b6a57cf61705397",
+      "actual": "5fd38f77e51ee7d062814e9cd3148327a213d9d754471bdf2b6a57cf61705397"
+    },
+    {
+      "path": "docs/evidence/issue48/28-paid-zero-remaining.png",
+      "expected": "34773fbc783a1c4a40a0be4330b1bbe68893d7b3d406aee3406e6c48ee335d71",
+      "actual": "34773fbc783a1c4a40a0be4330b1bbe68893d7b3d406aee3406e6c48ee335d71"
+    },
+    {
+      "path": "docs/evidence/issue48/29-settled.png",
+      "expected": "7b86d952c77389ff2fe1e4f3bdae890b3f89be683e5a05cb4ceae509d7220a2a",
+      "actual": "7b86d952c77389ff2fe1e4f3bdae890b3f89be683e5a05cb4ceae509d7220a2a"
+    },
+    {
+      "path": "docs/evidence/issue48/30-personal-archive-confirm.png",
+      "expected": "ac0f2f023354eea37514c76000eca4f1900a463a9fd03f3a5f11b4da8d3eb05f",
+      "actual": "ac0f2f023354eea37514c76000eca4f1900a463a9fd03f3a5f11b4da8d3eb05f"
+    },
+    {
+      "path": "docs/evidence/issue48/31-owner-current-empty.png",
+      "expected": "7410816a2290e97700e917b72c2ca3cdb17063f876a967d2bb6da970ddce1185",
+      "actual": "7410816a2290e97700e917b72c2ca3cdb17063f876a967d2bb6da970ddce1185"
+    },
+    {
+      "path": "docs/evidence/issue48/32-owner-history.png",
+      "expected": "1fbde48cc33205b9d3e608893a7bb1fd3bd3f3d824e8379ef780b47f4dd7e6f0",
+      "actual": "1fbde48cc33205b9d3e608893a7bb1fd3bd3f3d824e8379ef780b47f4dd7e6f0"
+    },
+    {
+      "path": "docs/evidence/issue48/33-owner-history-detail.png",
+      "expected": "7aed70fc3e9a7b45ac5d7d5db18d7cc2d41d31deed38d0624f7ec95d8333f074",
+      "actual": "7aed70fc3e9a7b45ac5d7d5db18d7cc2d41d31deed38d0624f7ec95d8333f074"
+    },
+    {
+      "path": "docs/evidence/issue48/34-owner-history-batch.png",
+      "expected": "e35d1d9408a5f6e86aa653d8ea8bd8789a130909667bb9074df2979ea2e355f8",
+      "actual": "e35d1d9408a5f6e86aa653d8ea8bd8789a130909667bb9074df2979ea2e355f8"
+    },
+    {
+      "path": "docs/evidence/issue48/35-cold-offline-gate.png",
+      "expected": "9b0fc04f67f60db9cddeff565c3e073607bad5e1dcf762519137544fff7c00b2",
+      "actual": "9b0fc04f67f60db9cddeff565c3e073607bad5e1dcf762519137544fff7c00b2"
+    },
+    {
+      "path": "docs/evidence/issue48/36-cold-online-not-auto-unlocked.png",
+      "expected": "ce1c865dbd3ff06054f969a3f63e31cff2224fdd90198e04cf78ed099d5b3d49",
+      "actual": "ce1c865dbd3ff06054f969a3f63e31cff2224fdd90198e04cf78ed099d5b3d49"
+    },
+    {
+      "path": "docs/evidence/issue48/37-cold-refresh-verification-gate.png",
+      "expected": "a4a99005066bd95bc3fb74a7e2a6be440ed1246a707655e118934805d94810b9",
+      "actual": "a4a99005066bd95bc3fb74a7e2a6be440ed1246a707655e118934805d94810b9"
+    },
+    {
+      "path": "docs/evidence/issue48/38-cold-verified-list.png",
+      "expected": "da1072484cc39f974d582fbdb3d6aee2ddd06997a6ddd2e7c612c94389619bf4",
+      "actual": "da1072484cc39f974d582fbdb3d6aee2ddd06997a6ddd2e7c612c94389619bf4"
+    },
+    {
+      "path": "docs/evidence/issue48/39-form-before-real-revocation.png",
+      "expected": "9fcd22b7c3269aff4d42f88237b2c14cff22abeb5f0e23db95e45ed0661ffd42",
+      "actual": "9fcd22b7c3269aff4d42f88237b2c14cff22abeb5f0e23db95e45ed0661ffd42"
+    },
+    {
+      "path": "docs/evidence/issue48/40-real-401-removes-form.png",
+      "expected": "e9929a569d7f6920a2bafb782b7ee024cb44a920a5522712f22e89a4d484c607",
+      "actual": "e9929a569d7f6920a2bafb782b7ee024cb44a920a5522712f22e89a4d484c607"
+    },
+    {
+      "path": "docs/evidence/issue48/41-protected-deeplink-rejected.png",
+      "expected": "e9929a569d7f6920a2bafb782b7ee024cb44a920a5522712f22e89a4d484c607",
+      "actual": "e9929a569d7f6920a2bafb782b7ee024cb44a920a5522712f22e89a4d484c607"
+    },
+    {
+      "path": "docs/evidence/issue48/42-member-current-unarchived.png",
+      "expected": "892981382a4bddf029631268a9d843fae0fb7808c68def941af3983d124ea95f",
+      "actual": "892981382a4bddf029631268a9d843fae0fb7808c68def941af3983d124ea95f"
+    },
+    {
+      "path": "docs/evidence/issue48/43-member-same-settled-batch.png",
+      "expected": "7b538cbf7f617e338d7b416ad74565333f8d2f451e43a5df2aa765795cf63d80",
+      "actual": "7b538cbf7f617e338d7b416ad74565333f8d2f451e43a5df2aa765795cf63d80"
+    },
+    {
+      "path": "docs/evidence/issue48/44-member-history-empty.png",
+      "expected": "593044059b9ea49b58498cf521a08555d427b56c92a77f507dd1fc492485dc47",
+      "actual": "593044059b9ea49b58498cf521a08555d427b56c92a77f507dd1fc492485dc47"
+    },
+    {
+      "path": "docs/evidence/issue48/45-cold-revoked-refresh-401.png",
+      "expected": "9c91098d2ee40bff1733a6404ffe6f97f8888fe2e7270ff4bdc6abb752d5aa9e",
+      "actual": "9c91098d2ee40bff1733a6404ffe6f97f8888fe2e7270ff4bdc6abb752d5aa9e"
+    },
+    {
+      "path": "docs/evidence/issue48/46-repro-runner-same-batch.png",
+      "expected": "231f349b2c01887dc6de1cf31becd212cb21c5ece2a1d4c18c1da2c7e1c7e57e",
+      "actual": "231f349b2c01887dc6de1cf31becd212cb21c5ece2a1d4c18c1da2c7e1c7e57e"
+    },
+    {
+      "path": "docs/evidence/issues46-47/01-create-keyboard.png",
+      "expected": "284ccfc31e69f80218c586fa9612268bdcff38293f824c20c878d79bf9fc4dfa",
+      "actual": "284ccfc31e69f80218c586fa9612268bdcff38293f824c20c878d79bf9fc4dfa"
+    },
+    {
+      "path": "docs/evidence/issues46-47/02-cover-unknown.png",
+      "expected": "cf1f1281c2e3bf24f17fc9337596fee33f716ff1a259be391c6c515cb5c390a2",
+      "actual": "cf1f1281c2e3bf24f17fc9337596fee33f716ff1a259be391c6c515cb5c390a2"
+    },
+    {
+      "path": "docs/evidence/issues46-47/03-offline-gate.png",
+      "expected": "0be9dd1912771bd07c4c90ee2ebc252bb648c011d231e24376b9457696e573c7",
+      "actual": "0be9dd1912771bd07c4c90ee2ebc252bb648c011d231e24376b9457696e573c7"
+    },
+    {
+      "path": "docs/evidence/issues46-47/04-cover-attempt-retained.png",
+      "expected": "c0ea128e31532bcd754caefcf9ada8730cdc29fe1b1c6427160a1c86ace4133b",
+      "actual": "c0ea128e31532bcd754caefcf9ada8730cdc29fe1b1c6427160a1c86ace4133b"
+    },
+    {
+      "path": "docs/evidence/issues46-47/05-original-key-recovered.png",
+      "expected": "67e1e49cbda6b30a9ad205442aae6b3c523398a737dcbe127b80b1a76d5f99c1",
+      "actual": "67e1e49cbda6b30a9ad205442aae6b3c523398a737dcbe127b80b1a76d5f99c1"
+    },
+    {
+      "path": "docs/evidence/issues46-47/06-three-errors.png",
+      "expected": "fe70f096a71a17ee7e96c1b2d2d12e29bac452d497fe4c4569b2d2755d7fd9bf",
+      "actual": "fe70f096a71a17ee7e96c1b2d2d12e29bac452d497fe4c4569b2d2755d7fd9bf"
+    },
+    {
+      "path": "docs/evidence/issues46-47/07-three-errors-keyboard.png",
+      "expected": "ca974c57fe6ab3e981f314e437c5a30c8f4d9c24e75aace223033fb7615345af",
+      "actual": "ca974c57fe6ab3e981f314e437c5a30c8f4d9c24e75aace223033fb7615345af"
+    },
+    {
+      "path": "docs/evidence/issues46-47/08-correct-amount-keyboard.png",
+      "expected": "bdb15b90ee2c707d8a62d9f8cef742db262ff3eba5931bc59e26f6a3a8d9ef11",
+      "actual": "bdb15b90ee2c707d8a62d9f8cef742db262ff3eba5931bc59e26f6a3a8d9ef11"
+    },
+    {
+      "path": "docs/evidence/issues46-47/09-expense-splits.png",
+      "expected": "708b599fd68beb691b1f89e75444094338a43b2a646c91141b660a0975a46b39",
+      "actual": "708b599fd68beb691b1f89e75444094338a43b2a646c91141b660a0975a46b39"
+    },
+    {
+      "path": "docs/evidence/issues46-47/10-freeze-small.png",
+      "expected": "acd6874323125f332f04ea3d6429c8549212598191640c45a36793017ae4d2ab",
+      "actual": "acd6874323125f332f04ea3d6429c8549212598191640c45a36793017ae4d2ab"
+    },
+    {
+      "path": "docs/evidence/issues46-47/11-registration-keyboard.png",
+      "expected": "9d00e1553bb05a5b867cc97568ff5321c0c6362eca6890abe24824fa393fe9f2",
+      "actual": "9d00e1553bb05a5b867cc97568ff5321c0c6362eca6890abe24824fa393fe9f2"
+    },
+    {
+      "path": "docs/evidence/issues46-47/12-registration-keyboard-actions.png",
+      "expected": "82f1d7c0be58cb794ecbcebcf01ca639476e0979ca08e5c80b2cb9ae80996a5c",
+      "actual": "82f1d7c0be58cb794ecbcebcf01ca639476e0979ca08e5c80b2cb9ae80996a5c"
+    },
+    {
+      "path": "docs/evidence/issues46-47/13-settle-small.png",
+      "expected": "f30f56fb7fcb0d7547a48a4070b5bc1b0950e0bb2fde68701424d65aeba71ad5",
+      "actual": "f30f56fb7fcb0d7547a48a4070b5bc1b0950e0bb2fde68701424d65aeba71ad5"
+    },
+    {
+      "path": "docs/evidence/issues46-47/14-settle-unknown.png",
+      "expected": "a86558250da51740fd290ebe0d2b82e4bef8c6c70622644c5cda84c20503e509",
+      "actual": "a86558250da51740fd290ebe0d2b82e4bef8c6c70622644c5cda84c20503e509"
+    },
+    {
+      "path": "docs/evidence/issues46-47/15-archive-small.png",
+      "expected": "f15207d77b0b4dd817a309417ff7f82de5c3bc7f4f22830862bfc6b90e8aa274",
+      "actual": "f15207d77b0b4dd817a309417ff7f82de5c3bc7f4f22830862bfc6b90e8aa274"
+    },
+    {
+      "path": "docs/evidence/issues46-47/16-archive-unknown.png",
+      "expected": "d7f45be149254cf23c3db79c9e8b23636d2811d6b5d1e662e269fe79fdbeb9a2",
+      "actual": "d7f45be149254cf23c3db79c9e8b23636d2811d6b5d1e662e269fe79fdbeb9a2"
+    },
+    {
+      "path": "docs/evidence/issues46-47/17-archived-list.png",
+      "expected": "5f7893776c84256556df80bf2c48053a841753ba3227bb10d9932334c759ec63",
+      "actual": "5f7893776c84256556df80bf2c48053a841753ba3227bb10d9932334c759ec63"
+    },
+    {
+      "path": "docs/evidence/issues46-47/18-history.png",
+      "expected": "8b0c08e5b39dcd2c2b62deba0bd172140b3ced970bdcc6f3265ead78d67f8b16",
+      "actual": "8b0c08e5b39dcd2c2b62deba0bd172140b3ced970bdcc6f3265ead78d67f8b16"
+    },
+    {
+      "path": "docs/evidence/issues46-47/19-auth-revoked.png",
+      "expected": "0ccc1ca5dce54be2eb8fc31d42acb641bd23b3c446c1682548bff378bb444a65",
+      "actual": "0ccc1ca5dce54be2eb8fc31d42acb641bd23b3c446c1682548bff378bb444a65"
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+ datname | application_name | state 
+---------+------------------+-------
+(0 rows)
+
+ locktype | mode | granted 
+----------+------+---------
+(0 rows)
+
+tongzhang-58-59-postgres
+tongzhang-48-postgres 127.0.0.1:51653->5432/tcp
+tongzhang-dev-postgres-1 127.0.0.1:35432->5432/tcp
+                 stage                 
+---------------------------------------
+ Final network follow-up on port 57575
+(1 row)
+
+ datname | application_name | state 
+---------+------------------+-------
+(0 rows)
+
+ locktype | mode | granted 
+----------+------+---------
+(0 rows)
+
+tongzhang-58-59-postgres
+tongzhang-48-postgres 127.0.0.1:51653->5432/tcp
+tongzhang-dev-postgres-1 127.0.0.1:35432->5432/tcp
