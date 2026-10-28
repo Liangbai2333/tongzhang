@@ -12,6 +12,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { authApi } from '@/features/auth/api';
 import { createAuthController } from '@/features/auth/controller';
 import { sessionToken } from '@/lib/session-token';
+import { sessionAdmission } from '@/lib/session-admission';
 
 type Controller = ReturnType<typeof createAuthController>;
 type Value = ReturnType<Controller['getSnapshot']> &
@@ -24,6 +25,8 @@ export function AuthProvider({ children }: PropsWithChildren) {
       ...authApi,
       getMe: authApi.restore,
       sessionVersion: sessionToken.version,
+      clearMemory: () => client.clear(),
+      setAdmission: sessionAdmission.set,
       clearLocal: async () => {
         await sessionToken.clear();
       },
@@ -32,8 +35,8 @@ export function AuthProvider({ children }: PropsWithChildren) {
   const state = useSyncExternalStore(controller.subscribe, controller.getSnapshot);
   useEffect(() => {
     const unsubscribe = sessionToken.subscribe((reason) => {
-      client.clear();
       controller.invalidate(reason);
+      if (controller.getSnapshot().status !== 'reauthentication') client.clear();
     });
     void controller.restore();
     const focus = AppState.addEventListener('change', (next) => {
@@ -50,6 +53,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
       // Network recovery does not automatically retry a refresh or any write.
     });
     return () => {
+      sessionAdmission.set(false);
       unsubscribe();
       focus.remove();
       network.remove();

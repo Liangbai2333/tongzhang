@@ -8,6 +8,7 @@ import {
 import { randomUUID } from 'expo-crypto';
 import { ApiError, requestJson } from './http';
 import { sessionToken } from './session-token';
+import { sessionAdmission } from './session-admission';
 export type JsonOperation = Exclude<Operation, 'uploadImage' | 'getImage'>;
 export interface CallOptions {
   idempotencyKey?: string;
@@ -24,6 +25,7 @@ export async function callOperation<K extends JsonOperation>(
   if (!parsed.success) throw new ApiError('VALIDATION_ERROR', '请检查填写内容');
   if (endpoint.idempotent && !uuidSchema.safeParse(options.idempotencyKey).success)
     throw new ApiError('VALIDATION_ERROR', '提交需要稳定的请求标识');
+  if (endpoint.authenticated && operation !== 'getMe') sessionAdmission.require();
   let path: string = endpoint.path;
   for (const [key, value] of Object.entries(parsed.data.params))
     path = path.replace(`:${key}`, encodeURIComponent(String(value)));
@@ -31,13 +33,15 @@ export async function callOperation<K extends JsonOperation>(
   for (const [key, value] of Object.entries(parsed.data.query))
     if (value !== undefined) query.set(key, String(value));
   if (query.size) path += `?${query}`;
-  const send = (token: string | null) =>
-    requestJson<unknown>(path, endpoint.response, {
+  const send = (token: string | null) => {
+    if (endpoint.authenticated && operation !== 'getMe') sessionAdmission.require();
+    return requestJson<unknown>(path, endpoint.response, {
       method: endpoint.method,
       token,
       body: parsed.data.body,
       idempotencyKey: options.idempotencyKey,
     });
+  };
   return (await (endpoint.authenticated
     ? sessionToken.authorized(send)
     : send(null))) as EndpointOutput<K>;

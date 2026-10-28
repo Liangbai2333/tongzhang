@@ -29,6 +29,8 @@ function fixture() {
     getMe: vi.fn(async () => ({ data: user })),
     logout: vi.fn(async () => ({ serverRevoked: true, localCleared: true })),
     clearLocal: vi.fn(async (): Promise<void> => undefined),
+    clearMemory: vi.fn(),
+    setAdmission: vi.fn(),
     sessionVersion: () => version,
   };
   return { api, auth: createAuthController(api), changeSession: () => version++ };
@@ -74,6 +76,50 @@ describe('mobile authentication and route admission state', () => {
     await first;
     expect(auth.getSnapshot()).toMatchObject({ status: 'authenticated', operation: null });
     expect(api.getMe).toHaveBeenCalledTimes(2);
+  });
+  it('retains revoked form ownership until the same account is verified again', async () => {
+    const { api, auth } = fixture();
+    await auth.restore();
+    auth.invalidate(new ApiError('UNAUTHENTICATED', 'revoked', 401));
+    expect(auth.getSnapshot()).toMatchObject({ status: 'reauthentication', user });
+    expect(api.setAdmission).toHaveBeenLastCalledWith(false);
+    await auth.restore();
+    expect(api.getMe).toHaveBeenCalledTimes(1);
+    const verified = deferred<{ data: typeof user }>();
+    api.login.mockImplementationOnce(async () => {
+      auth.invalidate();
+    });
+    api.getMe.mockReturnValueOnce(verified.promise);
+    const pending = auth.login(input);
+    await Promise.resolve();
+    expect(auth.getSnapshot()).toMatchObject({ status: 'reauthentication', user });
+    verified.resolve({ data: user });
+    await pending;
+    expect(auth.getSnapshot()).toMatchObject({ status: 'authenticated', user });
+    expect(api.clearMemory).not.toHaveBeenCalled();
+    expect(api.setAdmission).toHaveBeenLastCalledWith(true);
+  });
+  it('discards old query memory before admitting a different verified account', async () => {
+    const { api, auth } = fixture();
+    await auth.restore();
+    auth.invalidate(new ApiError('UNAUTHENTICATED', 'revoked', 401));
+    api.getMe.mockResolvedValueOnce({ data: { ...user, id: 'another-account' } });
+    await auth.login(input);
+    expect(api.clearMemory).toHaveBeenCalledTimes(1);
+    expect(auth.getSnapshot()).toMatchObject({
+      status: 'authenticated',
+      user: { id: 'another-account' },
+    });
+  });
+  it('keeps the recovery gate after failed credentials and abandons memory on explicit logout', async () => {
+    const { api, auth } = fixture();
+    await auth.restore();
+    auth.invalidate(new ApiError('UNAUTHENTICATED', 'revoked', 401));
+    api.login.mockRejectedValueOnce(new ApiError('INVALID_CREDENTIALS', 'wrong', 401));
+    await expect(auth.login(input)).rejects.toMatchObject({ code: 'INVALID_CREDENTIALS' });
+    expect(auth.getSnapshot()).toMatchObject({ status: 'reauthentication', user });
+    await auth.clearLocal();
+    expect(auth.getSnapshot()).toMatchObject({ status: 'anonymous', user: null });
   });
   it('does not claim login success if getMe fails after issuing credentials', async () => {
     const { api, auth } = fixture();
@@ -159,10 +205,10 @@ describe('mobile authentication and route admission state', () => {
     expect(api.getMe).toHaveBeenCalledTimes(2);
   });
   it.each([
-    [new ApiError('UNAUTHENTICATED', 'revoked', 401), 'anonymous', null],
+    [new ApiError('UNAUTHENTICATED', 'revoked', 401), 'reauthentication', user],
     [new ApiError('NETWORK_UNAVAILABLE', 'offline'), 'error', user],
   ])(
-    'keeps recoverable form memory gated and discards revoked identity (%s)',
+    'keeps form memory behind the appropriate network or reauthentication gate (%s)',
     async (error, status, identity) => {
       const { api, auth } = fixture();
       await auth.restore();

@@ -14,7 +14,13 @@ import { createAuthResolver, emptyAuthForm, type AuthFormValues } from '../form'
 import { AuthNotice, FormError } from '../components';
 import { DocumentSheet } from '@/features/profile';
 
-export default function AuthScreen({ register = false }: { register?: boolean }) {
+export default function AuthScreen({
+  register = false,
+  recovery = false,
+}: {
+  register?: boolean;
+  recovery?: boolean;
+}) {
   const auth = useAuth();
   const [legal, setLegal] = useState<'terms' | 'privacy' | null>(null);
   const [requestError, setRequestError] = useState<string | null>(null);
@@ -24,7 +30,7 @@ export default function AuthScreen({ register = false }: { register?: boolean })
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<AuthFormValues>({
-    defaultValues: emptyAuthForm,
+    defaultValues: { ...emptyAuthForm, account: recovery ? (auth.user?.email ?? '') : '' },
     resolver: createAuthResolver(register),
   });
   const busy = isSubmitting || auth.operation !== null;
@@ -71,19 +77,35 @@ export default function AuthScreen({ register = false }: { register?: boolean })
   const icons = figmaAssets['5-30'];
   return (
     <>
-      <Stack.Screen options={{ gestureEnabled: !busy }} />
+      {!recovery && <Stack.Screen options={{ gestureEnabled: !busy }} />}
       <Screen
-        title={register ? '创建账号' : '欢迎回来'}
+        title={recovery ? '重新登录' : register ? '创建账号' : '欢迎回来'}
+        variant={register ? 'default' : 'auth'}
+        back={!recovery}
         backDisabled={busy}
         footer={
           <>
             <FormError message={requestError} />
             <View style={ui.divider} />
-            <Button title={register ? '注册并开始' : '登录'} loading={busy} onPress={send} />
+            <Button
+              title={recovery ? '登录并继续' : register ? '注册并开始' : '登录'}
+              loading={busy}
+              onPress={send}
+            />
+            {recovery && (
+              <Button
+                title="放弃表单并返回登录"
+                variant="quiet"
+                disabled={busy}
+                onPress={() => {
+                  void auth.clearLocal();
+                }}
+              />
+            )}
           </>
         }
       >
-        <AuthNotice />
+        {!recovery && <AuthNotice />}
         {!register && (
           <View style={styles.brand}>
             <View style={styles.logo}>
@@ -91,12 +113,20 @@ export default function AuthScreen({ register = false }: { register?: boolean })
             </View>
           </View>
         )}
-        <View style={{ gap: 8 }}>
+        <View style={{ gap: 8, marginBottom: register ? 0 : 8 }}>
           <Text accessibilityRole="header" style={styles.headline}>
-            {register ? '从这里，一起算清。' : '继续你们的共同账本'}
+            {recovery
+              ? '登录后继续本次操作'
+              : register
+                ? '从这里，一起算清。'
+                : '继续你们的共同账本'}
           </Text>
           <Text style={ui.muted}>
-            {register ? '创建你的同账账号，开始共享记账之旅' : '使用账号与密码登录'}
+            {recovery
+              ? '登录已失效，请重新验证账号'
+              : register
+                ? '创建你的同账账号，开始共享记账之旅'
+                : '使用账号与密码登录'}
           </Text>
         </View>
         <View style={{ gap: register ? 12 : 16 }}>
@@ -106,6 +136,7 @@ export default function AuthScreen({ register = false }: { register?: boolean })
             render={({ field }) => (
               <Field
                 label={register ? '用户名' : '账号'}
+                variant={register ? 'default' : 'auth'}
                 placeholder={register ? '你的名字' : '请输入邮箱 / 用户名'}
                 icon={icons.imgIconUser}
                 value={field.value}
@@ -148,6 +179,7 @@ export default function AuthScreen({ register = false }: { register?: boolean })
             render={({ field }) => (
               <Field
                 label="密码"
+                variant={register ? 'default' : 'auth'}
                 passwordHiddenIcon={register ? undefined : icons.imgIconEye}
                 placeholder={register ? '至少 8 位字符' : '请输入密码'}
                 icon={icons.imgIconLock}
@@ -190,25 +222,29 @@ export default function AuthScreen({ register = false }: { register?: boolean })
             />
           )}
         </View>
-        <View style={ui.between}>
-          <Text style={ui.muted}>{register ? '已有账号？' : '还没有账号？'}</Text>
-          <Touch
-            disabled={busy}
-            onPress={() => router.replace(register ? '/login' : '/register')}
-            style={styles.link}
-          >
-            <Text style={ui.strong}>{register ? '登录同账 →' : '注册同账 →'}</Text>
-          </Touch>
-        </View>
+        {!recovery && (
+          <View style={ui.between}>
+            <Text style={ui.muted}>{register ? '已有账号？' : '还没有账号？'}</Text>
+            <Touch
+              disabled={busy}
+              onPress={() => router.replace(register ? '/login' : '/register')}
+              style={styles.link}
+            >
+              <Text style={ui.strong}>{register ? '登录同账 →' : '注册同账 →'}</Text>
+            </Touch>
+          </View>
+        )}
         <View style={styles.legal}>
           <View style={[ui.row, { alignItems: 'flex-start' }]}>
             <View style={!register && { backgroundColor: colors.primary, borderRadius: 10 }}>
               <FigmaAsset asset={register ? figmaAssets['5-62'].imgIconInfo : icons.imgIconInfo} />
             </View>
-            <Text style={[ui.muted, ui.grow]}>
-              {register
-                ? '请阅读并同意用户协议与隐私说明。'
-                : '登录即表示你已阅读并同意用户协议与隐私说明。'}
+            <Text style={[ui.muted, ui.grow, !register && styles.loginHint]}>
+              {recovery
+                ? '表单仅在本次运行中保留。使用原账号登录后可继续；登录其他账号会丢弃原表单，不会自动提交。'
+                : register
+                  ? '请阅读并同意用户协议与隐私说明。'
+                  : '登录即表示你已阅读并同意用户协议与隐私说明。'}
             </Text>
           </View>
           {register && (
@@ -266,6 +302,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   headline: { color: colors.text, fontWeight: '700', fontSize: 28, lineHeight: 40 },
+  loginHint: { fontSize: 13, lineHeight: 19 },
   link: { minHeight: 44, justifyContent: 'center' },
   legal: { gap: 4, backgroundColor: colors.primarySoft, padding: 16, borderRadius: 20 },
   legalLink: { color: colors.text, fontSize: 13, textDecorationLine: 'underline' },

@@ -35,7 +35,7 @@ export function Screen({
   back?: boolean;
   backDisabled?: boolean;
   contentStyle?: StyleProp<ViewStyle>;
-  variant?: 'default' | 'ledger';
+  variant?: 'default' | 'ledger' | 'auth';
   refreshing?: boolean;
   onRefresh?: () => void;
   onBack?: () => void;
@@ -53,12 +53,12 @@ export function Screen({
                 accessibilityLabel="返回"
                 hitSlop={4}
                 disabled={backDisabled}
-                style={[styles.back, variant === 'ledger' && styles.designBackTarget]}
+                style={[styles.back, variant !== 'default' && styles.designBackTarget]}
                 onPress={
                   onBack ?? (() => (router.canGoBack() ? router.back() : router.replace('/')))
                 }
               >
-                <View style={variant === 'ledger' ? styles.designBack : undefined}>
+                <View style={variant !== 'default' ? styles.designBack : undefined}>
                   <FigmaAsset asset={figmaAssets['5-30'].imgIconBack} />
                 </View>
               </Touch>

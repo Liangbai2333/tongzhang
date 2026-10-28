@@ -4,10 +4,12 @@ import { StatusBar } from 'expo-status-bar';
 import { AppProviders } from '@/providers/AppProviders';
 import { useAuth } from '@/providers/AuthProvider';
 import SessionRecovery from '@/features/auth/screens/SessionRecovery';
+import AuthScreen from '@/features/auth/screens/AuthScreen';
 
 export function AuthNavigation() {
   const { status, user } = useAuth();
-  const locked = status === 'restoring' || status === 'error';
+  const reauthentication = status === 'reauthentication';
+  const locked = status === 'restoring' || status === 'error' || reauthentication;
   if (locked && !user) return <SessionRecovery />;
   const authenticated = user !== null && status !== 'anonymous';
   return (
@@ -18,7 +20,7 @@ export function AuthNavigation() {
         accessibilityElementsHidden={locked}
         importantForAccessibility={locked ? 'no-hide-descendants' : 'auto'}
       >
-        <Stack screenOptions={{ headerShown: false }}>
+        <Stack key={user?.id ?? 'anonymous'} screenOptions={{ headerShown: false }}>
           <Stack.Screen name="index" />
           <Stack.Protected guard={!authenticated}>
             <Stack.Screen name="(auth)" />
@@ -30,7 +32,7 @@ export function AuthNavigation() {
       </View>
       {locked && (
         <Modal visible animationType="none" onRequestClose={() => {}}>
-          <SessionRecovery />
+          {reauthentication ? <AuthScreen recovery /> : <SessionRecovery />}
         </Modal>
       )}
     </View>
