@@ -1,0 +1,13 @@
+$ pnpm build:shared && vitest run --config vitest.integration.config.ts
+$ pnpm -r --filter "./packages/*" build
+$ tsc -p tsconfig.json
+$ tsc -p tsconfig.json
+
+ RUN  v5.0.4 /Users/liangbai/.codex/worktrees/issue-55-archive-permissions/tongzhang
+
+
+ Test Files  15 passed (15)
+      Tests  130 passed (130)
+   Start at  04:26:42
+   Duration  4.74s (tests 65%, import 27%, transform 7%)
+

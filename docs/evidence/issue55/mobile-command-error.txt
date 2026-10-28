@@ -1,0 +1,17 @@
+$ pnpm build:shared && pnpm --filter @tongzhang/mobile test -- --watch=false
+$ pnpm -r --filter "./packages/*" build
+$ tsc -p tsconfig.json
+$ tsc -p tsconfig.json
+$ jest --runInBand -- --watch=false
+No tests found, exiting with code 1
+Run with `--passWithNoTests` to exit with code 0
+In /Users/liangbai/.codex/worktrees/issue-55-archive-permissions/tongzhang/apps/mobile
+  274 files checked across 2 projects. Run with `--verbose` for more details.
+Pattern: --watch=false - 0 matches
+[ELIFECYCLE] Test failed. See above for more details.
+Error: ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL
+
+  × "pnpm recursive run" failed in /Users/liangbai/.codex/worktrees/issue-55-
+  │ archive-permissions/tongzhang/apps/mobile
+
+[ELIFECYCLE] Command failed with exit code 1.
