@@ -204,6 +204,10 @@ it('preserves the 12000/6000 lifecycle through cover, receipt, settlement and pe
     amountCents: '6000',
     status: 'PENDING',
   });
+  const pendingTransfers = await fixture.db.orm
+    .select()
+    .from(settlementTransfers)
+    .where(eq(settlementTransfers.ledgerId, id));
   await repeat(
     member,
     `${path}/settlement/transfers/${transfer.id}/paid`,
@@ -224,11 +228,28 @@ it('preserves the 12000/6000 lifecycle through cover, receipt, settlement and pe
     registrationNote: '线下整笔核对',
     registeredAt: expect.any(String),
   });
+  const paidTransfers = await fixture.db.orm
+    .select()
+    .from(settlementTransfers)
+    .where(eq(settlementTransfers.ledgerId, id));
+  // Registration may change only status and registration metadata, never the frozen plan.
+  expect(paidTransfers).toEqual([
+    {
+      ...pendingTransfers[0]!,
+      status: 'PAID',
+      registeredByMemberId: memberId,
+      registeredAt: new Date(paid.transfers[0]!.registeredAt!),
+      registrationNote: '线下整笔核对',
+    },
+  ]);
   await repeat(owner, `${path}/settle`, undefined, 200);
+  expect(await immutableRows()).toEqual(frozen);
   const settledTransfers = await fixture.db.orm
     .select()
     .from(settlementTransfers)
     .where(eq(settlementTransfers.ledgerId, id));
+  expect(settledTransfers).toEqual(paidTransfers);
+  const settledLedger = await fixture.db.orm.select().from(ledgers).where(eq(ledgers.id, id));
   const archived = await repeat(owner, `${path}/archive`, undefined, 200);
   expect(await immutableRows()).toEqual(frozen);
   expect(
@@ -238,6 +259,7 @@ it('preserves the 12000/6000 lifecycle through cover, receipt, settlement and pe
       .where(eq(settlementTransfers.ledgerId, id)),
   ).toEqual(settledTransfers);
   const [ledger] = await fixture.db.orm.select().from(ledgers).where(eq(ledgers.id, id));
+  expect([ledger]).toEqual(settledLedger);
   expect(ledger).toMatchObject({
     status: 'SETTLED',
     version: 5,

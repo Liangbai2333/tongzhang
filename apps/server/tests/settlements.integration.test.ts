@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { eq } from 'drizzle-orm';
-import { endpoints, settlementPreviewSchema } from '@tongzhang/contracts';
+import { endpoints, settlementPreviewSchema, type EndpointOutput } from '@tongzhang/contracts';
 import {
   expenseSplits,
   expenses,
@@ -87,6 +87,37 @@ const preview = (token: string) =>
     url: `/api/v1/ledgers/${ledgerId}/settlement-preview`,
     headers: headers(token),
   });
+async function conservedPreview(token: string) {
+  const balanceResponse = await fixture.app.inject({
+    url: `/api/v1/ledgers/${ledgerId}/balances`,
+    headers: headers(token),
+  });
+  expect(balanceResponse.statusCode).toBe(200);
+  const balances = endpoints.getBalances.response.parse(balanceResponse.json()).data;
+  const response = await preview(token);
+  expect(response.statusCode).toBe(200);
+  const plan: EndpointOutput<'previewSettlement'>['data'] = settlementPreviewSchema.parse(
+    response.json().data,
+  );
+  expect(plan.members).toEqual(balances.members);
+  expect(plan.expenseTotalCents).toBe(balances.expenseTotalCents);
+  expect(plan.members.reduce((sum, m) => sum + BigInt(m.netCents), 0n)).toBe(0n);
+  expect(plan.transfers).toHaveLength(plan.transferCount);
+  expect(plan.transfers.reduce((sum, t) => sum + BigInt(t.amountCents), 0n)).toBe(
+    BigInt(plan.transferTotalCents),
+  );
+  const remaining = new Map(plan.members.map((m) => [m.memberId, BigInt(m.netCents)]));
+  for (const transfer of plan.transfers) {
+    const amount = BigInt(transfer.amountCents);
+    expect(amount).toBeGreaterThan(0n);
+    expect(remaining.has(transfer.payerMemberId)).toBe(true);
+    expect(remaining.has(transfer.payeeMemberId)).toBe(true);
+    remaining.set(transfer.payerMemberId, remaining.get(transfer.payerMemberId)! + amount);
+    remaining.set(transfer.payeeMemberId, remaining.get(transfer.payeeMemberId)! - amount);
+  }
+  expect([...remaining.values()]).toEqual(plan.members.map(() => 0n));
+  return plan;
+}
 async function state() {
   const db = fixture.db.orm;
   const [ledger] = await db.select().from(ledgers).where(eq(ledgers.id, ledgerId));
@@ -114,9 +145,28 @@ describe('formal settlement on real PostgreSQL', () => {
   it('keeps preview read-only, persists the server plan and freezes subsequent expense writes', async () => {
     const s = await seed();
     const before = await state();
-    const p = await preview(s.friend.accessToken);
-    expect(p.statusCode).toBe(200);
-    const plan = settlementPreviewSchema.parse(p.json().data);
+    const plan = await conservedPreview(s.friend.accessToken);
+    expect(plan).toMatchObject({
+      expenseTotalCents: '12000',
+      transferTotalCents: '6000',
+      transferCount: 1,
+    });
+    expect(plan.members).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          memberId: s.ownerMember,
+          paidCents: '12000',
+          sharedCents: '6000',
+          netCents: '6000',
+        }),
+        expect.objectContaining({
+          memberId: s.friendMember,
+          paidCents: '0',
+          sharedCents: '6000',
+          netCents: '-6000',
+        }),
+      ]),
+    );
     expect(await state()).toEqual(before);
     const response = await start(s.owner.accessToken, plan.ledgerVersion);
     expect(response.statusCode).toBe(201);
@@ -199,7 +249,25 @@ describe('formal settlement on real PostgreSQL', () => {
         })
       ).statusCode,
     ).toBe(201);
-    const response = await start(s.owner.accessToken, 4);
+    const before = await state();
+    const plan = await conservedPreview(s.friend.accessToken);
+    expect(plan).toMatchObject({
+      ledgerVersion: 4,
+      expenseTotalCents: '30000',
+      transferTotalCents: '9000',
+      transferCount: 2,
+    });
+    expect(plan.members.map(({ memberId, netCents }) => ({ memberId, netCents }))).toEqual(
+      [
+        { memberId: s.ownerMember, netCents: '3000' },
+        { memberId: s.friendMember, netCents: '6000' },
+        { memberId: thirdMember, netCents: '-3000' },
+        { memberId: fourthMember, netCents: '-6000' },
+      ].sort((a, b) => a.memberId.localeCompare(b.memberId)),
+    );
+    expect(await state()).toEqual(before);
+    expect(before.ledger).toMatchObject({ status: 'ACTIVE', version: 4, settledAt: null });
+    const response = await start(s.owner.accessToken, plan.ledgerVersion);
     expect(response.statusCode).toBe(201);
     const batch = endpoints.startSettlement.response.parse(response.json()).data.batch;
     expect(batch).toMatchObject({
@@ -209,6 +277,14 @@ describe('formal settlement on real PostgreSQL', () => {
       transferCount: 2,
     });
     expect(batch.transfers.map((t) => t.sequence)).toEqual([1, 2]);
+    expect(
+      batch.transfers.map(({ sequence, payerMemberId, payeeMemberId, amountCents }) => ({
+        sequence,
+        payerMemberId,
+        payeeMemberId,
+        amountCents,
+      })),
+    ).toEqual(plan.transfers);
     expect(batch.transfers).toEqual(
       expect.arrayContaining([
         expect.objectContaining({

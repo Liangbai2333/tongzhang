@@ -416,6 +416,66 @@ describe('settlement progress, registration and closing on real PostgreSQL', () 
     ).toBe(original.data.transfer.registeredAt);
   });
 
+  it.each(['payer-first', 'creator-first'] as const)(
+    'preserves the first registrar when payer and creator race on a pending transfer: %s',
+    async (order) => {
+      const s = await seed();
+      const batch = await freeze(s);
+      const transfer = batch.transfers.find((t) => t.payerMemberId === s.ids[2])!;
+      const frozen = await state();
+      const blocker = await fixture.db.pool.connect();
+      const pending: Array<Promise<Awaited<ReturnType<typeof paid>>>> = [];
+      const first = order === 'payer-first' ? s.third : s.owner;
+      const second = order === 'payer-first' ? s.owner : s.third;
+      const firstMember = order === 'payer-first' ? s.ids[2] : s.ids[0];
+      try {
+        await blocker.query('begin');
+        const pid = await blocker.query<{ pid: number }>('select pg_backend_pid() as pid');
+        await blocker.query('select id from ledgers where id=$1 for update', [ledgerId]);
+        pending.push(paid(first.accessToken, transfer.id, randomUUID(), '首次登记').then((r) => r));
+        await waitForBlockedQueries(fixture.db.pool, pid.rows[0]!.pid, 1);
+        pending.push(
+          paid(second.accessToken, transfer.id, randomUUID(), '竞争登记').then((r) => r),
+        );
+        await waitForBlockedQueries(fixture.db.pool, pid.rows[0]!.pid, 2);
+        expect((await get(s.friend.accessToken)).json().data).toEqual(batch);
+        await blocker.query('commit');
+        const responses = await Promise.all(pending);
+        for (const response of responses) expect(response.statusCode).toBe(200);
+        const original = endpoints.markTransferPaid.response.parse(responses[0]!.json()).data;
+        expect(original.transfer).toMatchObject({
+          id: transfer.id,
+          status: 'PAID',
+          registeredByMemberId: firstMember,
+          registeredAt: expect.any(String),
+          registrationNote: '首次登记',
+        });
+        expect(responses[1]!.json().data).toEqual(original);
+        const replay = await paid(second.accessToken, transfer.id, randomUUID(), '后续重试');
+        expect(replay.statusCode).toBe(200);
+        expect(replay.json().data).toEqual(original);
+        const saved = await state();
+        const registered = saved.transfers.find((t) => t.id === transfer.id)!;
+        expect(registered).toEqual({
+          ...frozen.transfers.find((t) => t.id === transfer.id)!,
+          status: 'PAID',
+          registeredByMemberId: firstMember,
+          registeredAt: new Date(original.transfer.registeredAt!),
+          registrationNote: '首次登记',
+        });
+        expect(saved.audits.filter((a) => a.action === 'TRANSFER_PAID')).toHaveLength(1);
+        expect(saved.ledger).toMatchObject({ status: 'SETTLING', version: frozen.ledger!.version });
+        expect(saved.expenses).toEqual(frozen.expenses);
+        expect(saved.splits).toEqual(frozen.splits);
+        expect(saved.batches).toEqual(frozen.batches);
+      } finally {
+        await blocker.query('rollback');
+        blocker.release();
+        await Promise.allSettled(pending);
+      }
+    },
+  );
+
   it('serializes independent transfer registrations and concurrent creator confirmations', async () => {
     const s = await seed();
     const batch = await freeze(s);
