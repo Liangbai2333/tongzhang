@@ -1,0 +1,13 @@
+$ pnpm build:shared && vitest run
+$ pnpm -r --filter "./packages/*" build
+$ tsc -p tsconfig.json
+$ tsc -p tsconfig.json
+
+ RUN  v5.0.4 /Users/liangbai/.codex/worktrees/issue-55-archive-permissions/tongzhang
+
+
+ Test Files  19 passed (19)
+      Tests  120 passed (120)
+   Start at  04:26:44
+   Duration  1.61s (tests 41%, transform 32%, import 25%, worker 1%)
+

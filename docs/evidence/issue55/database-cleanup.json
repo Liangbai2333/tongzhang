@@ -1,0 +1,23 @@
+{
+  "rows": {
+    "users": 0,
+    "ledgers": 0,
+    "expenses": 0,
+    "invitations": 0,
+    "image_assets": 0,
+    "auth_sessions": 0,
+    "expense_images": 0,
+    "expense_splits": 0,
+    "ledger_members": 0,
+    "operation_logs": 0,
+    "idempotency_keys": 0,
+    "settlement_batches": 0,
+    "auth_refresh_tokens": 0,
+    "settlement_transfers": 0
+  },
+  "database": "tongzhang_issue55_test",
+  "waitingLocks": 0,
+  "postgresVersion": "17.11",
+  "preparedTransactions": 0,
+  "otherDatabaseConnections": 0
+}

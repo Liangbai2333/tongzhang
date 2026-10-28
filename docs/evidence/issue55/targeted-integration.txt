@@ -1,0 +1,58 @@
+$ pnpm build:shared && vitest run --config vitest.integration.config.ts --reporter=verbose apps/server/tests/ledgers.integration.test.ts apps/server/tests/ledger-invitation-regression.integration.test.ts apps/server/tests/access.integration.test.ts apps/server/tests/archive.integration.test.ts apps/server/tests/settlement-progress.integration.test.ts apps/server/tests/full-lifecycle.integration.test.ts
+$ pnpm -r --filter "./packages/*" build
+$ tsc -p tsconfig.json
+$ tsc -p tsconfig.json
+
+ RUN  v5.0.4 /Users/liangbai/.codex/worktrees/issue-55-archive-permissions/tongzhang
+
+ ✓ apps/server/tests/ledgers.integration.test.ts > createLedger / list / detail / members > makes the creator a member, issues an invitation and reads the same data everywhere 329ms
+ ✓ apps/server/tests/access.integration.test.ts > real HTTP ledger access foundations > returns contract 401/403 errors for anonymous and nonmember requests without leaking the ledger 279ms
+ ✓ apps/server/tests/access.integration.test.ts > real HTTP ledger access foundations > resolves creator/member roles and rejects archiving an active ledger 119ms
+ ✓ apps/server/tests/ledger-invitation-regression.integration.test.ts > independent ledger and invitation HTTP/PostgreSQL regressions (issue 18) > keeps preview read-only and returns complete, consistent contracts to both accounts 413ms
+ ✓ apps/server/tests/ledgers.integration.test.ts > createLedger / list / detail / members > does not create a second ledger for the same idempotency key and rejects a changed body 109ms
+ ✓ apps/server/tests/archive.integration.test.ts > personal archive and history > paginates only the caller's archived memberships without mixing current or other-member history 455ms
+ ✓ apps/server/tests/ledgers.integration.test.ts > createLedger / list / detail / members > serialises concurrent requests that share one idempotency key 102ms
+ ✓ apps/server/tests/ledgers.integration.test.ts > createLedger / list / detail / members > rejects anonymous, keyless and invalid-cover creation without leaving rows 77ms
+ ✓ apps/server/tests/settlement-progress.integration.test.ts > settlement progress, registration and closing on real PostgreSQL > reads the saved snapshot, registers both payments, and closes without changing expense totals 529ms
+ ✓ apps/server/tests/ledger-invitation-regression.integration.test.ts > independent ledger and invitation HTTP/PostgreSQL regressions (issue 18) > rejects a reused join key with another valid code without joining the other ledger 179ms
+ ✓ apps/server/tests/full-lifecycle.integration.test.ts > preserves the 12000/6000 lifecycle through cover, receipt, settlement and personal history over TCP HTTP 693ms
+ ✓ apps/server/tests/archive.integration.test.ts > personal archive and history > archives only the caller of a settled ledger and keeps history readable 177ms
+ ✓ apps/server/tests/ledger-invitation-regression.integration.test.ts > independent ledger and invitation HTTP/PostgreSQL regressions (issue 18) > serializes concurrent joins by the same user (same key=true) 128ms
+ ✓ apps/server/tests/archive.integration.test.ts > personal archive and history > lets the other member archive independently without moving the first timestamp 131ms
+ ✓ apps/server/tests/ledgers.integration.test.ts > createLedger / list / detail / members > refuses anonymous and non-member reads without leaking ledger data 128ms
+ ✓ apps/server/tests/archive.integration.test.ts > personal archive and history > rejects active and settling ledgers without an archive time or idempotency result 125ms
+ ✓ apps/server/tests/settlement-progress.integration.test.ts > settlement progress, registration and closing on real PostgreSQL > keeps the formal settlement readable after personal archive in the real closing flow 263ms
+ ✓ apps/server/tests/ledger-invitation-regression.integration.test.ts > independent ledger and invitation HTTP/PostgreSQL regressions (issue 18) > serializes concurrent joins by the same user (same key=false) 129ms
+ ✓ apps/server/tests/ledgers.integration.test.ts > createLedger / list / detail / members > pages the list with a stable cursor and only shows own ledgers 163ms
+ ✓ apps/server/tests/ledger-invitation-regression.integration.test.ts > independent ledger and invitation HTTP/PostgreSQL regressions (issue 18) > rejects a missing or malformed join key (undefined) without side effects 94ms
+ ✓ apps/server/tests/settlement-progress.integration.test.ts > settlement progress, registration and closing on real PostgreSQL > returns explicit missing errors and rejects anonymous, nonmembers, cross-ledger transfers and invalid writes 188ms
+ ✓ apps/server/tests/ledgers.integration.test.ts > createLedger / list / detail / members > derives paid, shared and net figures from real expense rows 123ms
+ ✓ apps/server/tests/ledger-invitation-regression.integration.test.ts > independent ledger and invitation HTTP/PostgreSQL regressions (issue 18) > rejects a missing or malformed join key (not-a-uuid) without side effects 93ms
+ ✓ apps/server/tests/ledger-invitation-regression.integration.test.ts > independent ledger and invitation HTTP/PostgreSQL regressions (issue 18) > requires authentication on every shipped ledger and invitation endpoint 63ms
+ ✓ apps/server/tests/settlement-progress.integration.test.ts > settlement progress, registration and closing on real PostgreSQL > allows only the payer or creator and never treats payee or other members as registrars 168ms
+ ✓ apps/server/tests/ledgers.integration.test.ts > invitations: preview, join and reset > lets a second user preview and join with a valid code, once 136ms
+ ✓ apps/server/tests/ledger-invitation-regression.integration.test.ts > independent ledger and invitation HTTP/PostgreSQL regressions (issue 18) > denies invitation management to members and outsiders without replacing codes or storing results 136ms
+ ✓ apps/server/tests/ledgers.integration.test.ts > invitations: preview, join and reset > rejects malformed, unknown, expired and replaced codes 131ms
+ ✓ apps/server/tests/settlement-progress.integration.test.ts > settlement progress, registration and closing on real PostgreSQL > serializes same-key and different-key duplicate registration, preserving the original registration 153ms
+ ✓ apps/server/tests/ledger-invitation-regression.integration.test.ts > independent ledger and invitation HTTP/PostgreSQL regressions (issue 18) > rechecks expiry after preview and does not consume the key of a rejected join 113ms
+ ✓ apps/server/tests/ledgers.integration.test.ts > invitations: preview, join and reset > protects the invitation endpoints with authentication and creator-only access 122ms
+ ✓ apps/server/tests/settlement-progress.integration.test.ts > settlement progress, registration and closing on real PostgreSQL > serializes independent transfer registrations and concurrent creator confirmations 159ms
+ ✓ apps/server/tests/ledger-invitation-regression.integration.test.ts > independent ledger and invitation HTTP/PostgreSQL regressions (issue 18) > allows exactly one of two blocked joiners to take the twelfth seat 187ms
+ ✓ apps/server/tests/ledgers.integration.test.ts > invitations: preview, join and reset > never exceeds 12 members, including concurrent joins for the last seats 163ms
+ ✓ apps/server/tests/ledgers.integration.test.ts > invitations: preview, join and reset > rejects archiving an active ledger and hides it from non-members 88ms
+ ✓ apps/server/tests/ledger-invitation-regression.integration.test.ts > independent ledger and invitation HTTP/PostgreSQL regressions (issue 18) > cleans API-created accounts and ledgers while preserving another fixture in the same test database 149ms
+ ✓ apps/server/tests/settlement-progress.integration.test.ts > settlement progress, registration and closing on real PostgreSQL > refuses closing even with every transfer paid when any member has a nonzero remaining net 156ms
+ ✓ apps/server/tests/settlement-progress.integration.test.ts > settlement progress, registration and closing on real PostgreSQL > reads and confirms a previously directly settled zero-transfer batch without changing its timestamp 90ms
+ ✓ apps/server/tests/settlement-progress.integration.test.ts > settlement progress, registration and closing on real PostgreSQL > rolls back all effects of paid on a late idempotency failure and permits manual retry 107ms
+ ✓ apps/server/tests/settlement-progress.integration.test.ts > settlement progress, registration and closing on real PostgreSQL > rolls back all effects of settle on a late idempotency failure and permits manual retry 124ms
+ ✓ apps/server/tests/settlement-progress.integration.test.ts > settlement progress, registration and closing on real PostgreSQL > rechecks registrar role and creator permission before replaying stored results 135ms
+ ✓ apps/server/tests/settlement-progress.integration.test.ts > settlement progress, registration and closing on real PostgreSQL > orders the last registration against closing and reads only committed progress: paid-first 132ms
+ ✓ apps/server/tests/settlement-progress.integration.test.ts > settlement progress, registration and closing on real PostgreSQL > orders the last registration against closing and reads only committed progress: settle-first 156ms
+ ✓ apps/server/tests/settlement-progress.integration.test.ts > settlement progress, registration and closing on real PostgreSQL > rechecks creator permission after paid waits for the ledger lock 110ms
+ ✓ apps/server/tests/settlement-progress.integration.test.ts > settlement progress, registration and closing on real PostgreSQL > rechecks creator permission after settle waits for the ledger lock 123ms
+
+ Test Files  6 passed (6)
+      Tests  45 passed (45)
+   Start at  04:26:20
+   Duration  4.47s (tests 50%, import 40%, transform 10%)
+

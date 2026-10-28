@@ -1,0 +1,137 @@
+{
+  "issue": 55,
+  "recordedAt": "2026-10-28T11:29:19.318996+00:00",
+  "acceptanceDate": "2026-10-28",
+  "acceptanceTimezone": "America/Los_Angeles",
+  "testedSourceCommit": "bbf267b91aae7a4cd4cd282991d7bd59049a9c52",
+  "priorNativeSourceCommit": "7616adbff4502f1fcab1d233fa07938071004041",
+  "branch": "test/55-archive-permission-regression",
+  "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+  "node": "v24.22.0",
+  "pnpm": "12.6.0",
+  "database": {
+    "container": "tongzhang-55-postgres",
+    "name": "tongzhang_issue55_test",
+    "version": "17.11",
+    "host": "127.0.0.1",
+    "port": 49703,
+    "dedicated": true,
+    "containerAndAnonymousVolumesRemoved": true
+  },
+  "sourceComparison": {
+    "command": "git diff --exit-code 7616adb bbf267b -- apps packages pnpm-lock.yaml",
+    "exitCode": 0,
+    "trees": [
+      {
+        "path": "apps/mobile/src",
+        "priorNativeSourceTree": "af07eea7ca81bda19326213f8bc86ad2f8e3e064",
+        "candidateSourceTree": "af07eea7ca81bda19326213f8bc86ad2f8e3e064",
+        "equal": true
+      },
+      {
+        "path": "apps/server/src",
+        "priorNativeSourceTree": "882d3dc7e1404597783bcdda2849221c3e6bbba8",
+        "candidateSourceTree": "882d3dc7e1404597783bcdda2849221c3e6bbba8",
+        "equal": true
+      },
+      {
+        "path": "packages",
+        "priorNativeSourceTree": "221727449715f6ccfbcf32001e2703da875b04ce",
+        "candidateSourceTree": "221727449715f6ccfbcf32001e2703da875b04ce",
+        "equal": true
+      }
+    ]
+  },
+  "commands": [
+    {
+      "command": "pnpm check",
+      "exitCode": 0,
+      "output": "check.txt"
+    },
+    {
+      "command": "pnpm test",
+      "exitCode": 0,
+      "files": 19,
+      "tests": 120,
+      "output": "unit.txt"
+    },
+    {
+      "command": "pnpm test:mobile",
+      "exitCode": 0,
+      "suites": 24,
+      "tests": 232,
+      "output": "mobile.txt"
+    },
+    {
+      "command": "pnpm test:integration --reporter=verbose apps/server/tests/{ledgers,ledger-invitation-regression,access,archive,settlement-progress,full-lifecycle}.integration.test.ts",
+      "environment": "TEST_DATABASE_URL explicitly set to the dedicated database",
+      "exitCode": 0,
+      "files": 6,
+      "tests": 45,
+      "output": "targeted-integration.txt"
+    },
+    {
+      "command": "pnpm test:integration",
+      "environment": "TEST_DATABASE_URL explicitly set to the dedicated database",
+      "exitCode": 0,
+      "files": 15,
+      "tests": 130,
+      "output": "integration.txt"
+    },
+    {
+      "command": "pnpm test:mobile -- --watch=false",
+      "exitCode": 1,
+      "testsExecuted": 0,
+      "reason": "Extra argument interpreted as a Jest file pattern. Corrected by the standard pnpm test:mobile command.",
+      "output": "mobile-command-error.txt"
+    }
+  ],
+  "evidenceFiles": [
+    {
+      "path": "check.txt",
+      "bytes": 652,
+      "sha256": "b369bb08ae045e36016bba329162f9ef60f9870403f049ea6b36d39ae2049d1f"
+    },
+    {
+      "path": "database-cleanup.json",
+      "bytes": 511,
+      "sha256": "633f68d32d1316acdd7decbdb04a661b66951b8f1e69d7f57414a99e6136f8e6"
+    },
+    {
+      "path": "document-checks.json",
+      "bytes": 164,
+      "sha256": "d59d1fbd52389d184499f5a1ae91c3af8df83d6e5c90ff56db41be7ed105acd7"
+    },
+    {
+      "path": "integration.txt",
+      "bytes": 384,
+      "sha256": "5b0a26169bf4c5a9f67192683392b191fd4288cce11c6b4960928f32c72fe9a1"
+    },
+    {
+      "path": "mobile-command-error.txt",
+      "bytes": 754,
+      "sha256": "83928b68f854f8fecfd96cf858a7cc83878d475a0fdde56e66099b01305c025d"
+    },
+    {
+      "path": "mobile.txt",
+      "bytes": 1316,
+      "sha256": "9c51e19ae0d0d2149abc0bc697f49efd38b4dc1d6876ffab9e1a0d2c36c22edf"
+    },
+    {
+      "path": "resource-cleanup.txt",
+      "bytes": 44,
+      "sha256": "832967c365ce7385783e014cc3b67a18239c8da6594246016d711999aba13c7b"
+    },
+    {
+      "path": "targeted-integration.txt",
+      "bytes": 9886,
+      "sha256": "a4c18a7381b03351560624703509706c5f0c50f978b92cc27eb114f7d4de4e0f"
+    },
+    {
+      "path": "unit.txt",
+      "bytes": 358,
+      "sha256": "f6642933b60f813dfec8109c941cc42c25fd77b86d5cc0dabfbc640cae2264df"
+    }
+  ],
+  "scope": "Existing tests rerun; no business/test/contract/dependency/native configuration edits. Prior native evidence retains its original source and capture date. No new native acceptance run."
+}
