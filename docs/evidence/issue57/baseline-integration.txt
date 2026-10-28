@@ -1,0 +1,12 @@
+$ pnpm build:shared && vitest run --config vitest.integration.config.ts
+$ pnpm -r --filter "./packages/*" build
+$ tsc -p tsconfig.json
+$ tsc -p tsconfig.json
+
+ RUN  v5.0.4 /Users/liangbai/.codex/worktrees/issue57-settlement-invariants/tongzhang
+
+
+ Test Files  15 passed (15)
+      Tests  134 passed (134)
+   Start at  04:49:26
+   Duration  5.02s (tests 51%, import 41%, transform 8%)

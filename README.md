@@ -85,6 +85,7 @@ pnpm export:mobile
 - [Issue #42 已还、结清、归档与自定义封面完整原生验收](docs/issue42-mobile-completion-validation.md)
 - [Issue #43–#45 归档、图片与结算联合验收](docs/issues43-45-integration-validation.md)
 - [Issue #55 账本权限、个人归档与历史分页候选回归](docs/issue55-archive-permission-validation.md)
+- [Issue #57 金额守恒、冻结竞争与结清不变量回归](docs/issue57-settlement-invariants-validation.md)
 - [双令牌认证变更与验证](docs/auth-token-validation.md)
 - [登录、权限与幂等回归](docs/auth-regression-validation.md)
 - [Issue #18 建账、邀请码与加入自动化测试](docs/issue18-ledger-invitation-tests.md)
