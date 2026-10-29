@@ -5,6 +5,7 @@ import { OnlineWriteSheet } from '../src/components/OnlineWriteSheet';
 import { ApiError } from '../src/lib/api-error';
 
 jest.mock('expo-router', () => ({
+  useIsFocused: () => true,
   router: { canGoBack: () => true, back: jest.fn(), replace: jest.fn() },
 }));
 jest.mock('../src/lib/api', () => ({ createIdempotencyKey: () => 'recovery-key' }));

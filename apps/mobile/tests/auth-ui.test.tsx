@@ -30,6 +30,7 @@ const mockAuth = {
 jest.mock('../src/providers/AuthProvider', () => ({ useAuth: () => mockAuth }));
 jest.mock('../src/features/ledgers/api', () => ({ ledgersApi: { listLedgers: jest.fn() } }));
 jest.mock('expo-router', () => ({
+  useIsFocused: () => true,
   router: { canGoBack: () => false, replace: jest.fn(), push: jest.fn(), navigate: jest.fn() },
   Stack: { Screen: () => null },
   useFocusEffect: (callback: () => void) =>

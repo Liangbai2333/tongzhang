@@ -3,10 +3,36 @@ import { act, render, screen, userEvent } from '@testing-library/react-native';
 import { useState } from 'react';
 import { InlineError, RequestState, EmptyState } from '../src/components/Feedback';
 import { Button } from '../src/components/Button';
+import { Screen } from '../src/components/Screen';
 import { ApiError } from '../src/lib/api-error';
 jest.mock('../src/icons/FigmaAsset', () => ({ FigmaAsset: () => null, figmaAssets: {} }));
-jest.mock('expo-router', () => ({ router: {} }));
+jest.mock('expo-router', () => ({
+  useIsFocused: () => true,
+  router: {},
+}));
 describe('shared in-page feedback and submission controls', () => {
+  it('shows the pull spinner only for a refresh the user pulled for', async () => {
+    const onRefresh = jest.fn();
+    const page = (refreshing: boolean) => (
+      <Screen refreshing={refreshing} onRefresh={onRefresh}>
+        {null}
+      </Screen>
+    );
+    const spinner = () => screen.getByTestId('screen-scroll').props.refreshControl.props.refreshing;
+    await render(page(true));
+    // A focus or tab refetch updates quietly.
+    expect(spinner()).toBe(false);
+    await screen.rerender(page(false));
+    await act(async () =>
+      screen.getByTestId('screen-scroll').props.refreshControl.props.onRefresh(),
+    );
+    expect(onRefresh).toHaveBeenCalledTimes(1);
+    await screen.rerender(page(true));
+    expect(spinner()).toBe(true);
+    await screen.rerender(page(false));
+    await screen.rerender(page(true));
+    expect(spinner()).toBe(false);
+  });
   it('renders optional field errors as accessible alerts', async () => {
     await render(<InlineError />);
     expect(screen.queryByRole('alert')).toBeNull();

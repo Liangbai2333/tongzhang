@@ -1,4 +1,4 @@
-import type { PropsWithChildren, ReactNode } from 'react';
+import { useEffect, useRef, useState, type PropsWithChildren, type ReactNode } from 'react';
 import {
   KeyboardAvoidingView,
   Platform,
@@ -7,11 +7,12 @@ import {
   StyleSheet,
   Text,
   View,
+  type RefreshControlProps,
   type StyleProp,
   type ViewStyle,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { router } from 'expo-router';
+import { router, useIsFocused } from 'expo-router';
 import { FigmaAsset, figmaAssets } from '@/icons/FigmaAsset';
 import { colors } from '@/theme/tokens';
 import { Touch } from './Touch';
@@ -43,6 +44,7 @@ export function Screen({
   /** A (tabs) screen: the persistent tab bar owns the bottom safe area. */
   tabRoot?: boolean;
 }>) {
+  const pull = usePullIndicator(refreshing);
   return (
     <SafeAreaView style={styles.root} edges={tabRoot ? ['top'] : ['top', 'bottom']}>
       <KeyboardAvoidingView
@@ -80,9 +82,12 @@ export function Screen({
           contentContainerStyle={[styles.content, contentStyle]}
           refreshControl={
             onRefresh ? (
-              <RefreshControl
-                refreshing={refreshing}
-                onRefresh={onRefresh}
+              <FocusedRefreshControl
+                refreshing={pull.visible}
+                onRefresh={() => {
+                  pull.start();
+                  onRefresh();
+                }}
                 tintColor={colors.text}
               />
             ) : undefined
@@ -96,6 +101,37 @@ export function Screen({
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
+}
+/**
+ * A spinner whose refresh ends while its page is off screen can stay stuck on iOS, so the
+ * control only reports refreshing while its page is focused. ScrollView renders this element
+ * itself (wrapping its content on Android), so every prop is forwarded.
+ */
+function FocusedRefreshControl({ refreshing, ...props }: RefreshControlProps) {
+  const focused = useIsFocused();
+  return <RefreshControl {...props} refreshing={refreshing && focused} />;
+}
+/**
+ * Pages refetch whenever they gain focus. Only a refresh the user pulled for shows the spinner;
+ * focus and tab refetches update the content quietly.
+ */
+function usePullIndicator(refreshing: boolean) {
+  const [pulled, setPulled] = useState(false);
+  const wasRefreshing = useRef(refreshing);
+  useEffect(() => {
+    if (wasRefreshing.current && !refreshing) setPulled(false);
+    wasRefreshing.current = refreshing;
+  }, [refreshing]);
+  return {
+    visible: pulled && refreshing,
+    start: () => {
+      setPulled(true);
+      // A pull that starts no fetch must not leave a pending spinner for the next focus refetch.
+      setTimeout(() => {
+        if (!wasRefreshing.current) setPulled(false);
+      }, 1000);
+    },
+  };
 }
 export const ui = StyleSheet.create({
   row: { flexDirection: 'row', alignItems: 'center', gap: 12 },

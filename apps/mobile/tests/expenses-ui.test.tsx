@@ -46,6 +46,7 @@ jest.mock('../src/lib/api', () => ({
 }));
 jest.mock('expo-clipboard', () => ({ setStringAsync: jest.fn() }));
 jest.mock('expo-router', () => ({
+  useIsFocused: () => true,
   router: { canGoBack: () => true, back: jest.fn(), replace: jest.fn(), push: jest.fn() },
   Stack: { Screen: () => null },
   useLocalSearchParams: () => ({ ledgerId, expenseId }),

@@ -53,6 +53,7 @@ jest.mock('../src/lib/api', () => ({ createIdempotencyKey: () => `key-${++mockKe
 jest.mock('expo-clipboard', () => ({ setStringAsync: jest.fn() }));
 jest.mock('react-native-qrcode-svg', () => () => null);
 jest.mock('expo-router', () => ({
+  useIsFocused: () => true,
   router: {
     canGoBack: () => true,
     back: jest.fn(),
