@@ -62,7 +62,7 @@ export default function AuthScreen({
       setRequestError(
         requestErrorMessage(
           error,
-          register ? '暂时无法创建账号，请稍后手动重试' : '暂时无法完成登录，请稍后手动重试',
+          register ? '暂时无法创建账号，请稍后重试' : '暂时无法完成登录，请稍后重试',
         ),
       );
     }

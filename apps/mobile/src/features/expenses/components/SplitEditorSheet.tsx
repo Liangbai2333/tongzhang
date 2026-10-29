@@ -50,7 +50,6 @@ export function SplitEditorSheet({
           <Text style={[ui.strong, ui.grow]}>{title || '本次消费'}</Text>
           <Text style={ui.heading}>¥{formatYuan(total)}</Text>
         </View>
-        <Text style={ui.caption}>预览仅供核对，保存时由服务端重新计算</Text>
       </View>
       <View style={s.modes}>
         {(Object.keys(splitLabels) as SplitSettings['mode'][]).map((mode) => (

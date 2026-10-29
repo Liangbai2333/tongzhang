@@ -1,4 +1,5 @@
 import { formatYuan } from '@tongzhang/domain';
+import { colors } from '@/theme/tokens';
 
 export const covers = {
   mountain: { label: '山野出游', color: '#DDF3E8' },
@@ -15,3 +16,13 @@ export function remaining(cents: string) {
     ? '已平衡'
     : `${value > 0n ? '待收' : '待付'} ${yuan((value < 0n ? -value : value).toString())}`;
 }
+
+/** Remaining net from the viewer's side: positive is owed to them, negative is what they owe. */
+export const netLabel = (cents: string) =>
+  BigInt(cents) > 0n ? '待收回' : BigInt(cents) < 0n ? '待支付' : '收支';
+export const netAmount = (cents: string) => {
+  const value = BigInt(cents);
+  return value === 0n ? '已平衡' : yuan((value < 0n ? -value : value).toString());
+};
+export const netColor = (cents: string) =>
+  BigInt(cents) > 0n ? colors.success : BigInt(cents) < 0n ? colors.danger : colors.muted;

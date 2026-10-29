@@ -66,7 +66,7 @@ export function OnlineWriteSheet({
       const confirmed = await check();
       if (!mounted.current) return;
       if (confirmed) finish();
-      else setCheckError('暂未确认操作完成；原提交已保留，请显式重试或再次在线核对。');
+      else setCheckError('还没有查到结果，可以重试。');
     } catch (cause) {
       if (mounted.current) setCheckError(requestErrorMessage(cause));
     } finally {
@@ -88,15 +88,13 @@ export function OnlineWriteSheet({
       <InlineError message={write.error ? requestErrorMessage(write.error) : null} />
       <InlineError message={checkError} />
       {write.uncertain && (
-        <Text style={ui.body}>
-          提交结果尚未确认，原内容和请求标识已保留，请显式重试或在线核对。
-        </Text>
+        <Text style={ui.body}>网络中断，结果未确认。重试不会重复提交，也可以先查询结果。</Text>
       )}
       <Button
         compact
         style={{ borderRadius: plain ? 16 : 12 }}
         labelStyle={{ fontSize: 15, lineHeight: 22, fontWeight: '700' }}
-        title={write.uncertain ? '重试原提交' : confirmTitle}
+        title={write.uncertain ? '重试' : confirmTitle}
         loading={write.busy}
         disabled={checking}
         onPress={() => {
@@ -105,7 +103,7 @@ export function OnlineWriteSheet({
       />
       {write.uncertain && (
         <Button
-          title="在线核对结果"
+          title="查询结果"
           variant="secondary"
           loading={checking}
           disabled={write.busy}

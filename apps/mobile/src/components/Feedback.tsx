@@ -14,7 +14,7 @@ export function InlineError({ message }: { message?: string | null }) {
 }
 
 /** Unknown exceptions use a safe fallback; API errors carry a user-facing server message. */
-export function requestErrorMessage(error: unknown, fallback = '请求暂时失败，请稍后手动重试') {
+export function requestErrorMessage(error: unknown, fallback = '请求暂时失败，请稍后重试') {
   return error instanceof ApiError ? error.message : fallback;
 }
 

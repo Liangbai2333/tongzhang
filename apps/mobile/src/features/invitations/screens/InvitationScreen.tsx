@@ -67,7 +67,7 @@ export default function InvitationScreen() {
         setNotice('邀请码已复制');
       }
     } catch {
-      setActionError(share ? '分享失败，请稍后手动重试' : '复制失败，请稍后手动重试');
+      setActionError(share ? '分享失败，请稍后重试' : '复制失败，请稍后重试');
     } finally {
       setActing(false);
     }

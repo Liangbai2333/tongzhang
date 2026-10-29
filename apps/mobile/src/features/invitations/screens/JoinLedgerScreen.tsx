@@ -101,25 +101,12 @@ export default function JoinLedgerScreen() {
           }}
           error={error}
         />
-        <View style={styles.separator}>
-          <View style={styles.line} />
-          <Text style={styles.or}>或</Text>
-          <View style={styles.line} />
-        </View>
-        <Button
-          title="在 App 内扫码（暂未开放）"
-          variant="secondary"
-          disabled
-          onPress={() => {}}
-          icon={<FigmaAsset asset={invitationAssets.scan} />}
-          labelStyle={styles.scanLabel}
-        />
         <View style={styles.notice}>
           <FigmaAsset asset={invitationAssets.joinInfo} />
           <View style={ui.grow}>
             <Text style={styles.noticeTitle}>如何获取邀请码？</Text>
             <Text style={styles.noticeText}>
-              请联系账本创建者，在账本中选择「邀请成员」获取邀请码或二维码。
+              请账本创建者在账本中点「邀请成员」，把邀请码发给你。
             </Text>
           </View>
         </View>
@@ -140,14 +127,14 @@ export default function JoinLedgerScreen() {
                 {preview.alreadyMember
                   ? '你已是成员，可直接进入账本。'
                   : preview.canJoin
-                    ? '加入后可以查看账本中的记录。已有消费的分摊不会因加入改变。'
+                    ? '加入后可以一起记账，已有消费的分摊不变。'
                     : preview.memberCount >= 12
                       ? '成员已满，暂时无法加入。'
                       : '账本已不接受加入，请联系创建者。'}
               </Text>
               <InlineError message={write.error ? requestErrorMessage(write.error) : null} />
               {write.uncertain && (
-                <Text style={ui.muted}>结果尚未确认，重试会核对原提交。也可返回列表在线核对。</Text>
+                <Text style={ui.muted}>网络中断，结果未确认。重试不会重复加入。</Text>
               )}
               <Button
                 compact
@@ -155,7 +142,7 @@ export default function JoinLedgerScreen() {
                   preview.alreadyMember
                     ? '进入账本'
                     : write.uncertain
-                      ? '重试原提交'
+                      ? '重试加入'
                       : `加入${preview.name}`
                 }
                 disabled={!preview.canJoin && !preview.alreadyMember}
@@ -166,7 +153,7 @@ export default function JoinLedgerScreen() {
               />
               <Button
                 compact
-                title={write.uncertain ? '返回列表核对' : '暂不加入'}
+                title={write.uncertain ? '回到账本列表' : '暂不加入'}
                 variant="outlined"
                 disabled={write.busy}
                 onPress={() => {
@@ -184,10 +171,6 @@ export default function JoinLedgerScreen() {
 
 const styles = StyleSheet.create({
   content: { paddingTop: 8, gap: 16 },
-  separator: { flexDirection: 'row', alignItems: 'center', gap: 10 },
-  line: { flex: 1, height: 1, backgroundColor: colors.border },
-  or: { fontSize: 12, lineHeight: 18, color: colors.muted },
-  scanLabel: { fontSize: 14, lineHeight: 20, fontWeight: '700' },
   notice: {
     flexDirection: 'row',
     alignItems: 'flex-start',

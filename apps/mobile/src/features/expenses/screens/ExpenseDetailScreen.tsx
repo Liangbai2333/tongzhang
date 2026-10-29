@@ -48,7 +48,7 @@ export default function ExpenseDetailScreen() {
         <RequestState
           loading={loading}
           title={valid ? '暂时无法读取消费' : '消费地址无效'}
-          description="请在线核对账本权限和消费记录。"
+          description="请检查网络后重试。"
           error={query.error}
           onRetry={
             valid
@@ -73,18 +73,25 @@ export default function ExpenseDetailScreen() {
           </View>
           <View style={expenseStyles.infoCard}>
             <View style={s.info}>
-              <Text style={ui.muted}>付款人 / 记录人</Text>
-              <Text style={[ui.strong, ui.grow, s.right]}>
-                {expense.payerName} / {expense.recorderName}
-              </Text>
+              <Text style={ui.muted}>付款人</Text>
+              <Text style={[ui.strong, ui.grow, s.right]}>{expense.payerName}</Text>
             </View>
             <View style={ui.divider} />
             <View style={s.info}>
-              <Text style={ui.muted}>消费日期</Text>
+              <Text style={ui.muted}>日期</Text>
               <Text style={ui.strong}>{expense.occurredOn}</Text>
             </View>
+            {expense.recorderName !== expense.payerName && (
+              <>
+                <View style={ui.divider} />
+                <View style={s.info}>
+                  <Text style={ui.muted}>记录人</Text>
+                  <Text style={[ui.body, ui.grow, s.right]}>{expense.recorderName}</Text>
+                </View>
+              </>
+            )}
           </View>
-          <Text style={ui.strong}>分摊明细 · 共 {expense.splits.length} 人</Text>
+          <Text style={ui.strong}>分摊明细（{expense.splits.length} 人）</Text>
           {expense.splits.map((split, i) => (
             <View key={split.memberId} style={s.member}>
               <MemberAvatar name={split.username} index={i} />
@@ -95,24 +102,28 @@ export default function ExpenseDetailScreen() {
               <Text style={ui.strong}>{yuan(split.amountCents)}</Text>
             </View>
           ))}
-          <View style={expenseStyles.infoCard}>
-            <View style={s.info}>
-              <Text style={ui.muted}>备注</Text>
-              <Text style={[ui.body, ui.grow, s.right]}>{expense.note || '未填写'}</Text>
-            </View>
-            <View style={ui.divider} />
-            <View style={s.info}>
-              <Text style={ui.muted}>收据</Text>
-              {expense.receiptImageId ? (
-                <Button compact title="查看收据" variant="quiet" onPress={() => setReceipt(true)} />
-              ) : (
-                <Text style={ui.caption}>未添加</Text>
+          {(!!expense.note || !!expense.receiptImageId) && (
+            <View style={expenseStyles.infoCard}>
+              {!!expense.note && (
+                <View style={s.info}>
+                  <Text style={ui.muted}>备注</Text>
+                  <Text style={[ui.body, ui.grow, s.right]}>{expense.note}</Text>
+                </View>
+              )}
+              {!!expense.note && !!expense.receiptImageId && <View style={ui.divider} />}
+              {!!expense.receiptImageId && (
+                <View style={s.info}>
+                  <Text style={ui.muted}>收据</Text>
+                  <Button
+                    compact
+                    title="查看收据"
+                    variant="quiet"
+                    onPress={() => setReceipt(true)}
+                  />
+                </View>
               )}
             </View>
-          </View>
-          <Text style={ui.caption}>
-            {expense.canEdit ? '编辑、删除消费暂未开放。' : '当前消费只读。'}
-          </Text>
+          )}
           <Sheet
             visible={receipt}
             title="收据图片"

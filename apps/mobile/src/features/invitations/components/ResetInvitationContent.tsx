@@ -20,10 +20,10 @@ export function ResetInvitationContent({
     <>
       <Text style={ui.body}>旧邀请码和二维码将立即失效。已加入的成员不受影响。</Text>
       <InlineError message={error ? requestErrorMessage(error) : null} />
-      {uncertain && <Text style={ui.muted}>结果尚未确认，请重试原重置，或返回账本在线核对。</Text>}
+      {uncertain && <Text style={ui.muted}>网络中断，结果未确认，请重试。</Text>}
       <Button
         compact
-        title={uncertain ? '重试原重置' : '确认重置'}
+        title={uncertain ? '重试重置' : '确认重置'}
         loading={busy}
         onPress={onSubmit}
       />

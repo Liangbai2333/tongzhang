@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { router, useFocusEffect } from 'expo-router';
 import { useInfiniteQuery } from '@tanstack/react-query';
@@ -40,7 +40,16 @@ export function CategoryIcon({ category, detail = false }: { category: string; d
     </View>
   );
 }
-export function ExpenseList({ ledger, userId }: { ledger: Ledger; userId: string }) {
+export function ExpenseList({
+  ledger,
+  userId,
+  refreshSignal = 0,
+}: {
+  ledger: Ledger;
+  userId: string;
+  /** Bumped by the owning page's pull-to-refresh. */
+  refreshSignal?: number;
+}) {
   const [filter, setFilter] = useState<Filter>({});
   const [draft, setDraft] = useState<Filter>({});
   const [filterOpen, setFilterOpen] = useState(false);
@@ -67,6 +76,12 @@ export function ExpenseList({ ledger, userId }: { ledger: Ledger; userId: string
       void refetch();
     }, [refetch, identity]),
   );
+  const lastSignal = useRef(refreshSignal);
+  useEffect(() => {
+    if (lastSignal.current === refreshSignal) return;
+    lastSignal.current = refreshSignal;
+    void refetch();
+  }, [refreshSignal, refetch]);
   const loading = query.isPending || query.isRefetching;
   const failed = query.isError && !query.isFetchNextPageError;
   const rows = [
@@ -78,36 +93,24 @@ export function ExpenseList({ ledger, userId }: { ledger: Ledger; userId: string
   return (
     <View style={{ gap: 12 }}>
       <View style={ui.between}>
-        <Text style={ui.heading}>消费流水{filtered ? ' · 已筛选' : ''}</Text>
-        <View style={[ui.row, { gap: 8 }]}>
-          <Touch
-            accessibilityLabel="刷新流水"
-            disabled={query.isFetching}
-            style={{ minHeight: 44, justifyContent: 'center', paddingHorizontal: 4 }}
-            onPress={() => {
-              void refetch();
-            }}
-          >
-            <Text style={ui.caption}>刷新</Text>
-          </Touch>
-          <Button
-            compact
-            title="筛选"
-            variant="secondary"
-            onPress={() => {
-              setDraft(filter);
-              setRange(Boolean(filter.from || filter.to));
-              setError(null);
-              setFilterOpen(true);
-            }}
-          />
-        </View>
+        <Text style={ui.heading}>消费流水</Text>
+        <Button
+          compact
+          title={filtered ? '已筛选' : '筛选'}
+          variant="secondary"
+          onPress={() => {
+            setDraft(filter);
+            setRange(Boolean(filter.from || filter.to));
+            setError(null);
+            setFilterOpen(true);
+          }}
+        />
       </View>
       {loading || failed ? (
         <RequestState
           loading={loading}
           title="暂时无法读取消费"
-          description="请联网后手动重试。"
+          description="请检查网络后重试。"
           error={query.error}
           onRetry={() => {
             void refetch();

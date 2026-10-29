@@ -119,6 +119,9 @@ const join = jest.mocked(invitationsApi.joinLedger);
 const readInvitation = jest.mocked(invitationsApi.getInvitation);
 const reset = jest.mocked(invitationsApi.resetInvitation);
 
+async function pullToRefresh() {
+  await act(async () => screen.getByTestId('screen-scroll').props.refreshControl.props.onRefresh());
+}
 async function show(node: React.ReactElement) {
   const client = createQueryClient();
   await render(<QueryClientProvider client={client}>{node}</QueryClientProvider>);
@@ -262,7 +265,7 @@ describe('ledger pages with isolated API callbacks (no database/native claim)', 
     expect(screen.getByLabelText('账本名称')).toHaveDisplayValue('鼓山一日');
     expect(screen.getByLabelText('账本名称')).toBeDisabled();
     expect(create).toHaveBeenCalledTimes(1);
-    await userEvent.press(screen.getByRole('button', { name: '重试原提交' }));
+    await userEvent.press(screen.getByRole('button', { name: '重试创建' }));
     expect(create).toHaveBeenCalledTimes(2);
     expect(create.mock.calls[0]?.[1]).toEqual(create.mock.calls[1]?.[1]);
   });
@@ -275,10 +278,8 @@ describe('ledger pages with isolated API callbacks (no database/native claim)', 
     await userEvent.press(screen.getByRole('button', { name: '创建并邀请成员' }));
     await screen.findByText('结果未知');
     now.mockReturnValue(1_000_000 + 24 * 60 * 60 * 1000);
-    await userEvent.press(screen.getByRole('button', { name: '重试原提交' }));
-    expect(
-      screen.getByText('本次提交已超过 24 小时，请返回账本列表在线核对结果后再操作'),
-    ).toBeOnTheScreen();
+    await userEvent.press(screen.getByRole('button', { name: '重试创建' }));
+    expect(screen.getByText('这次提交已超过 24 小时，请回到账本列表查看结果')).toBeOnTheScreen();
     expect(create).toHaveBeenCalledTimes(1);
     now.mockRestore();
   });
@@ -286,7 +287,7 @@ describe('ledger pages with isolated API callbacks (no database/native claim)', 
     await show(<LedgerListScreen />);
     await screen.findByText('还没有账本');
     list.mockResolvedValueOnce({ data: [summary], page: { nextCursor: 'server-cursor' } });
-    await userEvent.press(screen.getByRole('button', { name: '刷新列表' }));
+    await pullToRefresh();
     await screen.findByText('鼓山一日');
     list.mockResolvedValueOnce({
       data: [{ ...summary, id: userId, name: '第二本' }],
@@ -296,7 +297,7 @@ describe('ledger pages with isolated API callbacks (no database/native claim)', 
     await screen.findByText('第二本');
     expect(list.mock.calls.at(-1)?.[0].query.cursor).toBe('server-cursor');
     list.mockRejectedValueOnce(new ApiError('NETWORK_UNAVAILABLE', '网络未连接，请联网后重试'));
-    await userEvent.press(screen.getByRole('button', { name: '刷新列表' }));
+    await pullToRefresh();
     await screen.findByText('网络未连接，请联网后重试');
     expect(screen.queryByText('鼓山一日')).toBeNull();
     expect(screen.queryByText('还没有账本')).toBeNull();
@@ -312,7 +313,7 @@ describe('ledger pages with isolated API callbacks (no database/native claim)', 
     expect(screen.getByText('小安（我）')).toBeOnTheScreen();
     await userEvent.press(screen.getByRole('button', { name: '关闭面板' }));
     get.mockRejectedValueOnce(new ApiError('FORBIDDEN', '无权访问该账本', 403));
-    await userEvent.press(screen.getByRole('button', { name: '刷新账本' }));
+    await pullToRefresh();
     await screen.findByText('无权访问该账本');
     expect(screen.queryByText('¥120.00')).toBeNull();
     expect(screen.queryByText('小安（我）')).toBeNull();
@@ -358,7 +359,7 @@ describe('ledger pages with isolated API callbacks (no database/native claim)', 
     await fireEvent.press(screen.getByLabelText('关闭面板遮罩', { includeHiddenElements: true }));
     expect(screen.getByRole('header', { name: '重置邀请码？' })).toBeOnTheScreen();
     expect(reset).toHaveBeenCalledTimes(1);
-    await userEvent.press(screen.getByRole('button', { name: '重试原重置' }));
+    await userEvent.press(screen.getByRole('button', { name: '重试重置' }));
     expect(reset.mock.calls[0]?.[1]).toEqual(reset.mock.calls[1]?.[1]);
     expect(reset.mock.calls[0]?.[0].params.ledgerId).toBe(ledgerId);
     expect(router.push).toHaveBeenCalledWith({
@@ -448,7 +449,7 @@ describe('ledger pages with isolated API callbacks (no database/native claim)', 
     await fireEvent.press(screen.getByRole('button', { name: '关闭面板' }));
     expect(screen.getByRole('header', { name: '确认加入这个账本？' })).toBeOnTheScreen();
     expect(join).toHaveBeenCalledTimes(1);
-    await userEvent.press(screen.getByRole('button', { name: '重试原提交' }));
+    await userEvent.press(screen.getByRole('button', { name: '重试加入' }));
     expect(join.mock.calls[0]).toEqual(join.mock.calls[1]);
   });
   it('blocks duplicate join presses and dismissal while writing', async () => {
@@ -493,7 +494,7 @@ describe('ledger pages with isolated API callbacks (no database/native claim)', 
     await screen.findByLabelText('邀请码 ABC234');
     jest.mocked(setStringAsync).mockResolvedValueOnce(false);
     await userEvent.press(screen.getByRole('button', { name: '复制邀请码' }));
-    expect(screen.getByText('复制失败，请稍后手动重试')).toBeOnTheScreen();
+    expect(screen.getByText('复制失败，请稍后重试')).toBeOnTheScreen();
     expect(screen.queryByText('邀请码已复制')).toBeNull();
     await userEvent.press(screen.getByRole('button', { name: '复制邀请码' }));
     expect(screen.getByText('邀请码已复制')).toBeOnTheScreen();
@@ -540,7 +541,7 @@ describe('custom covers and personal archive (API/native replacements)', () => {
       { uri: 'file:///cache/cover.jpg', name: 'cover.jpg', type: 'image/jpeg' },
     );
     expect(create.mock.calls[0]?.[0].body).toEqual({ name: '自定义封面', coverImageId: userId });
-    await userEvent.press(screen.getByRole('button', { name: '重试原提交' }));
+    await userEvent.press(screen.getByRole('button', { name: '重试创建' }));
     expect(upload).toHaveBeenCalledTimes(1);
     expect(create.mock.calls[0]).toEqual(create.mock.calls[1]);
   });
@@ -568,15 +569,15 @@ describe('custom covers and personal archive (API/native replacements)', () => {
     archive.mockRejectedValueOnce(new ApiError('REQUEST_TIMEOUT', '归档结果未知'));
     get.mockResolvedValue({ data: { ...detail, status: 'SETTLED' } });
     await show(<LedgerDetailScreen />);
-    await userEvent.press(await screen.findByRole('button', { name: '个人归档' }));
+    await userEvent.press(await screen.findByRole('button', { name: '归档' }));
     expect(archive).not.toHaveBeenCalled();
     await userEvent.press(screen.getByRole('button', { name: '暂不归档' }));
-    await userEvent.press(screen.getByRole('button', { name: '个人归档' }));
+    await userEvent.press(screen.getByRole('button', { name: '归档' }));
     await userEvent.press(screen.getByRole('button', { name: '确认归档' }));
     await screen.findByText('归档结果未知');
     expect(screen.getByRole('button', { name: '暂不归档' })).toBeDisabled();
     get.mockResolvedValue({ data: { ...detail, status: 'SETTLED', archivedAt: detail.createdAt } });
-    await userEvent.press(screen.getByRole('button', { name: '在线核对结果' }));
+    await userEvent.press(screen.getByRole('button', { name: '查询结果' }));
     await waitFor(() =>
       expect(router.replace).toHaveBeenCalledWith({
         pathname: '/ledgers',
@@ -589,7 +590,7 @@ describe('custom covers and personal archive (API/native replacements)', () => {
     get.mockResolvedValue({ data: { ...detail, status } });
     await show(<LedgerDetailScreen />);
     await screen.findByRole('button', { name: '查看成员 · 1 / 12' });
-    expect(screen.queryByRole('button', { name: '个人归档' })).toBeNull();
+    expect(screen.queryByRole('button', { name: '归档' })).toBeNull();
   });
 });
 
@@ -601,14 +602,14 @@ it('retains unknown create locks across an offline retry and offers an explicit 
   await fireEvent.changeText(screen.getByLabelText('账本名称'), '原账本');
   await userEvent.press(screen.getByRole('button', { name: '创建并邀请成员' }));
   await screen.findByText('创建超时');
-  await userEvent.press(screen.getByRole('button', { name: '重试原提交' }));
+  await userEvent.press(screen.getByRole('button', { name: '重试创建' }));
   await screen.findByText('当前断网');
   expect(screen.getByLabelText('账本名称')).toBeDisabled();
   expect(screen.getByRole('button', { name: '返回' })).toBeDisabled();
   expect(screen.getByRole('button', { name: '从相册选择自定义封面' })).toBeDisabled();
   expect(create.mock.calls[0]).toEqual(create.mock.calls[1]);
   expect(create).toHaveBeenCalledTimes(2);
-  await userEvent.press(screen.getByRole('button', { name: '返回账本列表在线核对' }));
+  await userEvent.press(screen.getByRole('button', { name: '回到账本列表查看' }));
   expect(router.replace).toHaveBeenCalledWith('/ledgers');
   expect(create).toHaveBeenCalledTimes(2);
 });
@@ -624,7 +625,7 @@ it('does not carry an unresolved archive confirmation into another ledger in the
     </QueryClientProvider>
   );
   const view = await render(node());
-  await userEvent.press(await screen.findByRole('button', { name: '个人归档' }));
+  await userEvent.press(await screen.findByRole('button', { name: '归档' }));
   await userEvent.press(screen.getByRole('button', { name: '确认归档' }));
   await screen.findByText('归档仍未知');
   const nextId = '00000000-0000-4000-8000-000000000009';
@@ -648,7 +649,7 @@ it('keeps the unresolved archive attempt mounted while its ledger is refetched',
       <LedgerDetailScreen />
     </QueryClientProvider>,
   );
-  await userEvent.press(await screen.findByRole('button', { name: '个人归档' }));
+  await userEvent.press(await screen.findByRole('button', { name: '归档' }));
   await userEvent.press(screen.getByRole('button', { name: '确认归档' }));
   await screen.findByText('归档仍未知');
   let resolve!: (value: typeof settled) => void;
@@ -672,7 +673,7 @@ it('keeps the unresolved archive attempt mounted while its ledger is refetched',
     resolve(settled);
     await refetch;
   });
-  await userEvent.press(await screen.findByRole('button', { name: '重试原提交' }));
+  await userEvent.press(await screen.findByRole('button', { name: '重试' }));
   expect(archive.mock.calls[0]).toEqual(archive.mock.calls[1]);
   await view.unmount();
   client.clear();

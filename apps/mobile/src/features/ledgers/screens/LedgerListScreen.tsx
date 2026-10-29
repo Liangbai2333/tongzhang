@@ -15,7 +15,7 @@ import { ledgersApi } from '../api';
 import { ledgersKeys } from '../query-keys';
 import { LedgerCover } from '../components/LedgerCover';
 import { LedgerActionsMenu } from '../components/LedgerActionsMenu';
-import { remaining, statusLabels, yuan } from '../presentation';
+import { netColor, remaining, statusLabels, yuan } from '../presentation';
 
 export default function LedgerListScreen() {
   const { user } = useAuth();
@@ -72,7 +72,7 @@ export default function LedgerListScreen() {
           <Text accessibilityLiveRegion="polite" style={ui.strong}>
             账本已归档
           </Text>
-          <Text style={ui.caption}>仅从你的当前列表移出，历史记录仍可查看。</Text>
+          <Text style={ui.caption}>已从当前列表移出，可以在历史账本中查看。</Text>
           <Button
             compact
             title="查看历史账本"
@@ -96,23 +96,22 @@ export default function LedgerListScreen() {
         <View style={styles.filter}>
           <Text style={ui.caption}>{archived ? '已归档账本' : '全部账本'}</Text>
         </View>
-        <Touch
-          accessibilityLabel={archived ? '返回当前账本' : '刷新列表'}
-          style={styles.refresh}
-          disabled={query.isFetching}
-          onPress={() => {
-            if (archived) setArchived(false);
-            else void refetch();
-          }}
-        >
-          <Text style={ui.caption}>{archived ? '返回当前账本' : '刷新列表'}</Text>
-        </Touch>
+        {archived && (
+          <Touch
+            accessibilityLabel="返回当前账本"
+            style={styles.refresh}
+            disabled={query.isFetching}
+            onPress={() => setArchived(false)}
+          >
+            <Text style={ui.caption}>返回当前账本</Text>
+          </Touch>
+        )}
       </View>
       {loading || failed ? (
         <RequestState
           loading={loading}
           title="暂时无法读取账本"
-          description="请联网后手动重试。"
+          description="请检查网络后重试。"
           error={query.error}
           onRetry={() => {
             void refetch();
@@ -166,7 +165,15 @@ export default function LedgerListScreen() {
                     </View>
                   </View>
                   <View style={styles.amounts}>
-                    <Text style={[ui.heading, ledger.status === 'SETTLED' && styles.successText]}>
+                    <Text
+                      style={[
+                        ui.heading,
+                        BigInt(ledger.myRemainingNetCents) !== 0n && {
+                          color: netColor(ledger.myRemainingNetCents),
+                        },
+                        ledger.status === 'SETTLED' && styles.successText,
+                      ]}
+                    >
                       {remaining(ledger.myRemainingNetCents)}
                     </Text>
                     <Text style={ui.caption}>总支出 {yuan(ledger.expenseTotalCents)}</Text>

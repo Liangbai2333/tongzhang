@@ -93,15 +93,15 @@ export default function SettlementRecordScreen({
       const text = transfer
         ? line(transfer)
         : [
-            `同账正式结算 · ${ledger.name} · 批次 ${record.id}`,
-            `账本总支出 ${yuan(record.expenseTotalCents)}，方案转账 ${yuan(record.transferTotalCents)}，共 ${record.transferCount} 笔`,
+            `同账结算方案 · ${ledger.name}`,
+            `总支出 ${yuan(record.expenseTotalCents)}，需转账 ${record.transferCount} 笔，共 ${yuan(record.transferTotalCents)}`,
             ...record.transfers.map(line),
-            '转账在应用外完成，登记不代表应用已验证到账。',
+            '转账请在应用外完成。',
           ].join('\n');
       if (!(await Clipboard.setStringAsync(text))) throw new Error('copy failed');
       setNotice(transfer ? '转账信息已复制' : '结算方案已复制');
     } catch {
-      setCopyError('复制失败，请稍后手动重试');
+      setCopyError('复制失败，请稍后重试');
     } finally {
       copyLock.current = false;
       setCopying(false);
@@ -148,7 +148,7 @@ export default function SettlementRecordScreen({
                     <Text style={ui.caption}>全部登记后，由账本创建者确认结清。</Text>
                   )}
                   {creator && !canSettle && (
-                    <Text style={ui.caption}>全部转账登记且每位成员剩余净额为零后才能结清。</Text>
+                    <Text style={ui.caption}>所有转账登记完成后才能结清。</Text>
                   )}
                 </>
               )}
@@ -159,22 +159,18 @@ export default function SettlementRecordScreen({
                   onPress={() => setAction('archive')}
                 />
               )}
-              {currentLedger.archivedAt && (
-                <Text style={ui.caption}>已个人归档 · 历史记录只读</Text>
-              )}
+              {currentLedger.archivedAt && <Text style={ui.caption}>已归档，仅供查看</Text>}
             </>
           ) : undefined
         }
       >
         {!record ? (
           <>
-            {initial && (
-              <Text style={ui.caption}>已确认正式批次：{initial.id}。最新进度以在线查询为准。</Text>
-            )}
+            {initial && <Text style={ui.caption}>结算已发起，不会重复提交。</Text>}
             <RequestState
               loading={loading}
-              title="暂时无法读取正式记录"
-              description="请手动重试在线查询，不会重复提交结算。"
+              title="暂时无法读取结算记录"
+              description="请检查网络后重试，不会重复发起结算。"
               error={query.error}
               onRetry={refresh}
             />
@@ -309,11 +305,11 @@ export default function SettlementRecordScreen({
                   </View>
                   {transfer.registeredAt && (
                     <Text style={ui.caption}>
-                      登记时间 {new Date(transfer.registeredAt).toLocaleString()}
+                      {transfer.registeredByMemberId
+                        ? `${name(transfer.registeredByMemberId)} 登记于 `
+                        : '登记于 '}
+                      {new Date(transfer.registeredAt).toLocaleString()}
                     </Text>
-                  )}
-                  {transfer.registeredByMemberId && (
-                    <Text style={ui.caption}>登记人：{name(transfer.registeredByMemberId)}</Text>
                   )}
                   {transfer.registrationNote && (
                     <Text style={ui.body}>备注：{transfer.registrationNote}</Text>
@@ -357,7 +353,7 @@ export default function SettlementRecordScreen({
                     <FigmaAsset asset={completionAssets.archive} />
                   </View>
                   <Text style={[ui.caption, ui.grow]}>
-                    账单与结算记录仅供查看，个人归档不影响其他成员。
+                    归档只会从你的列表移出，不影响其他成员。
                   </Text>
                 </View>
               </View>
@@ -369,26 +365,10 @@ export default function SettlementRecordScreen({
                   <Text style={[ui.strong, { color: colors.warning, fontSize: 13 }]}>
                     在应用外完成转账
                   </Text>
-                  <Text style={ui.caption}>
-                    登记已还仅记录转账状态，请自行核实到账，应用不验证到账情况。
-                  </Text>
+                  <Text style={ui.caption}>登记已还只做记录，请自行确认对方已收到。</Text>
                 </View>
               </View>
             )}
-            <View style={ui.card}>
-              <Text style={ui.strong}>正式批次</Text>
-              <Text selectable style={ui.caption}>
-                {record.id}
-              </Text>
-              <Text style={ui.caption}>
-                冻结前版本 {record.sourceVersion} · {record.algorithmVersion}
-              </Text>
-              <Text style={ui.caption}>创建时间 {new Date(record.createdAt).toLocaleString()}</Text>
-              <Text style={ui.caption}>
-                消费总额 {yuan(record.expenseTotalCents)} · 转账共 {record.transferCount} 笔，合计{' '}
-                {yuan(record.transferTotalCents)}
-              </Text>
-            </View>
             {settled && (
               <Button
                 title="复制完整方案"
@@ -399,7 +379,6 @@ export default function SettlementRecordScreen({
                 }}
               />
             )}
-            <Button title="刷新正式记录" variant="secondary" onPress={refresh} />
           </>
         )}
       </Screen>

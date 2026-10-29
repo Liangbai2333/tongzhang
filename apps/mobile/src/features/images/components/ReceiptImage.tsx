@@ -64,7 +64,7 @@ export function AuthorizedImage({
       <RequestState
         loading={query.isPending || query.isFetching}
         title={`暂时无法读取${label}`}
-        description="图片需在线核验成员权限，请手动重试。"
+        description="请检查网络后重试。"
         error={query.error}
         onRetry={() => {
           void query.refetch();

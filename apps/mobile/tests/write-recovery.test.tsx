@@ -70,7 +70,7 @@ describe('uncertain writes remain unresolved until a confirmed result', () => {
     );
     await userEvent.press(screen.getByRole('button', { name: '提交' }));
     await screen.findByText('结果未知');
-    await userEvent.press(screen.getByRole('button', { name: '在线核对结果' }));
+    await userEvent.press(screen.getByRole('button', { name: '查询结果' }));
     await view.unmount();
     await act(async () => {
       resolve(true);

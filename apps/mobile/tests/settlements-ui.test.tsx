@@ -155,6 +155,9 @@ async function show() {
     </QueryClientProvider>,
   );
 }
+async function pullToRefresh() {
+  await act(async () => screen.getByTestId('screen-scroll').props.refreshControl.props.onRefresh());
+}
 async function confirm() {
   await screen.findByRole('button', { name: '正式发起结算' });
   await userEvent.press(screen.getByRole('button', { name: '正式发起结算' }));
@@ -187,7 +190,7 @@ describe('formal settlement UI with isolated API callbacks', () => {
       { idempotencyKey: 'settlement-key-1' },
     );
     expect(read).toHaveBeenCalledTimes(1);
-    expect(screen.getByText(record.id)).toBeOnTheScreen();
+    expect(screen.getByText('待完成转账')).toBeOnTheScreen();
     expect(screen.getByLabelText('付款人：小白')).toBeOnTheScreen();
     expect(screen.getByLabelText('收款人：小安')).toBeOnTheScreen();
   });
@@ -215,7 +218,7 @@ describe('formal settlement UI with isolated API callbacks', () => {
     expect(screen.getByRole('button', { name: '返回检查' })).toBeDisabled();
     await act(async () => reject(new ApiError('REQUEST_TIMEOUT', '提交超时')));
     await screen.findByText('提交超时');
-    await userEvent.press(screen.getByRole('button', { name: '重试原结算提交' }));
+    await userEvent.press(screen.getByRole('button', { name: '重试' }));
     await screen.findByText('收付款记录');
     expect(start.mock.calls[0]).toEqual(start.mock.calls[1]);
   });
@@ -225,10 +228,10 @@ describe('formal settlement UI with isolated API callbacks', () => {
     await confirm();
     await userEvent.press(screen.getByRole('button', { name: '确认冻结并结算' }));
     read.mockRejectedValueOnce(new ApiError('SETTLEMENT_NOT_FOUND', '没有批次', 404));
-    await userEvent.press(screen.getByRole('button', { name: '在线核对正式记录' }));
-    await screen.findByText('暂未查到正式批次；原提交仍已保留，可显式重试或再次在线核对。');
+    await userEvent.press(screen.getByRole('button', { name: '查询结算记录' }));
+    await screen.findByText('还没有查到结算记录，可以重试提交。');
     expect(start).toHaveBeenCalledTimes(1);
-    await userEvent.press(screen.getByRole('button', { name: '在线核对正式记录' }));
+    await userEvent.press(screen.getByRole('button', { name: '查询结算记录' }));
     await screen.findByText('收付款记录');
     expect(start).toHaveBeenCalledTimes(1);
   });
@@ -241,7 +244,7 @@ describe('formal settlement UI with isolated API callbacks', () => {
     expect(screen.queryByRole('button', { name: '确认冻结并结算' })).toBeNull();
     get.mockResolvedValue({ data: { ...ledger, version: 3 } });
     preview.mockResolvedValue({ data: { ...plan, ledgerVersion: 3 } });
-    await userEvent.press(screen.getAllByRole('button', { name: '重新查询账本与预览' })[0]!);
+    await userEvent.press(screen.getAllByRole('button', { name: '刷新预览' })[0]!);
     await confirm();
     await userEvent.press(screen.getByRole('button', { name: '确认冻结并结算' }));
     await screen.findByText('收付款记录');
@@ -262,17 +265,17 @@ describe('formal settlement UI with isolated API callbacks', () => {
   it('reopens the saved batch for a frozen ledger and hides stale data after a failed refresh', async () => {
     get.mockResolvedValue({ data: { ...ledger, status: 'SETTLING' } });
     const view = await show();
-    await screen.findByText(record.id);
+    await screen.findByText('收付款记录');
     await view.unmount();
     await show();
-    await screen.findByText(record.id);
+    await screen.findByText('收付款记录');
     expect(read).toHaveBeenCalledTimes(2);
     expect(preview).not.toHaveBeenCalled();
     expect(start).not.toHaveBeenCalled();
     read.mockRejectedValueOnce(new ApiError('NETWORK_ERROR', '刷新中断'));
-    await userEvent.press(screen.getByRole('button', { name: '刷新正式记录' }));
+    await pullToRefresh();
     await screen.findByText('刷新中断');
-    expect(screen.queryByText(record.id)).toBeNull();
+    expect(screen.queryByText('收付款记录')).toBeNull();
   });
   it('shows a zero-transfer batch directly settled and renders registered metadata from A24', async () => {
     get.mockResolvedValue({ data: { ...ledger, status: 'SETTLED' } });
@@ -303,8 +306,8 @@ describe('formal settlement UI with isolated API callbacks', () => {
         progress: { paidCount: 1, totalCount: 1, remainingCents: '0' },
       },
     });
-    await userEvent.press(screen.getByRole('button', { name: '刷新正式记录' }));
-    await screen.findByText('登记人：小安');
+    await pullToRefresh();
+    await screen.findByText(/^小安 登记于 /);
     expect(screen.getByText('备注：线下收到')).toBeOnTheScreen();
   });
   it('retains the known successful batch identifier when the subsequent online read fails', async () => {
@@ -313,24 +316,24 @@ describe('formal settlement UI with isolated API callbacks', () => {
     await confirm();
     await userEvent.press(screen.getByRole('button', { name: '确认冻结并结算' }));
     await screen.findByText('查询中断');
-    expect(
-      screen.getByText(`已确认正式批次：${record.id}。最新进度以在线查询为准。`),
-    ).toBeOnTheScreen();
+    expect(screen.getByText('结算已发起，不会重复提交。')).toBeOnTheScreen();
     expect(start).toHaveBeenCalledTimes(1);
   });
   it('copies the saved transfer and full batch, and reports clipboard failures', async () => {
     get.mockResolvedValue({ data: { ...ledger, status: 'SETTLING' } });
     await show();
-    await screen.findByText(record.id);
+    await screen.findByText('收付款记录');
     await userEvent.press(screen.getByRole('button', { name: '复制第 1 笔转账信息' }));
     expect(setStringAsync).toHaveBeenLastCalledWith('小白 → 小安 ¥60.00 · 待登记');
     jest.mocked(setStringAsync).mockResolvedValueOnce(false);
     await userEvent.press(screen.getByRole('button', { name: '复制完整方案' }));
-    await screen.findByText('复制失败，请稍后手动重试');
+    await screen.findByText('复制失败，请稍后重试');
     expect(screen.queryByText('结算方案已复制')).toBeNull();
     await userEvent.press(screen.getByRole('button', { name: '复制完整方案' }));
     await screen.findByText('结算方案已复制');
-    expect(setStringAsync).toHaveBeenLastCalledWith(expect.stringContaining(record.id));
+    expect(setStringAsync).toHaveBeenLastCalledWith(
+      expect.stringContaining('同账结算方案 · 山野同行'),
+    );
     expect(start).not.toHaveBeenCalled();
   });
   it('never carries a successful batch into another ledger opened in the same route instance', async () => {
@@ -343,12 +346,12 @@ describe('formal settlement UI with isolated API callbacks', () => {
     const view = await render(node());
     await confirm();
     await userEvent.press(screen.getByRole('button', { name: '确认冻结并结算' }));
-    await screen.findByText(record.id);
+    await screen.findByText('收付款记录');
     mockLedgerId = otherId;
     get.mockResolvedValue({ data: { ...ledger, id: otherId } });
     await view.rerender(node());
     await screen.findByRole('button', { name: '正式发起结算' });
-    expect(screen.queryByText(record.id)).toBeNull();
+    expect(screen.queryByText('收付款记录')).toBeNull();
     expect(read).toHaveBeenCalledTimes(1);
   });
 });
@@ -406,7 +409,7 @@ describe('repayment and completion interactions (API replacements)', () => {
     mark.mockResolvedValue({
       data: { transfer: paidRecord.transfers[0]!, progress: paidRecord.progress },
     });
-    await userEvent.press(screen.getByRole('button', { name: '重试原提交' }));
+    await userEvent.press(screen.getByRole('button', { name: '重试' }));
     await screen.findByText('全部转账已登记');
     expect(mark.mock.calls[0]).toEqual(mark.mock.calls[1]);
     expect(mark.mock.calls[1]?.[0]).toEqual({
@@ -423,12 +426,12 @@ describe('repayment and completion interactions (API replacements)', () => {
     await userEvent.press(screen.getByRole('button', { name: '登记已还' }));
     await userEvent.press(screen.getByRole('button', { name: '确认登记已还' }));
     await screen.findByText('登记超时');
-    await userEvent.press(screen.getByRole('button', { name: '在线核对结果' }));
-    await screen.findByText('暂未确认操作完成；原提交已保留，请显式重试或再次在线核对。');
+    await userEvent.press(screen.getByRole('button', { name: '查询结果' }));
+    await screen.findByText('还没有查到结果，可以重试。');
     expect(screen.getByRole('button', { name: '取消' })).toBeDisabled();
     read.mockResolvedValue({ data: paidRecord });
     get.mockResolvedValue({ data: zeroLedger });
-    await userEvent.press(screen.getByRole('button', { name: '在线核对结果' }));
+    await userEvent.press(screen.getByRole('button', { name: '查询结果' }));
     await screen.findByText('全部转账已登记');
     expect(mark).toHaveBeenCalledTimes(1);
   });
@@ -477,7 +480,7 @@ describe('repayment and completion interactions (API replacements)', () => {
     await screen.findByText('结清结果未知');
     read.mockResolvedValue({ data: { ...paidRecord, ledgerStatus: 'SETTLED' } });
     get.mockResolvedValue({ data: { ...zeroLedger, status: 'SETTLED' } });
-    await userEvent.press(screen.getByRole('button', { name: '在线核对结果' }));
+    await userEvent.press(screen.getByRole('button', { name: '查询结果' }));
     await screen.findByText('账本已结清');
     expect(screen.getByRole('button', { name: '归档账本' })).toBeEnabled();
     expect(screen.getByRole('button', { name: '历史账单' })).toBeEnabled();

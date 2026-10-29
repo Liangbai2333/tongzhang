@@ -259,7 +259,7 @@ describe('expense flow with isolated API callbacks, not native/database proof', 
     expect(screen.getByLabelText('消费名称')).toHaveDisplayValue(' 食堂午餐 ');
     expect(screen.getByLabelText('消费金额')).toBeDisabled();
     expect(create).toHaveBeenCalledTimes(1);
-    await userEvent.press(screen.getByRole('button', { name: '重试原消费提交' }));
+    await userEvent.press(screen.getByRole('button', { name: '重试保存' }));
     expect(create.mock.calls[0]).toEqual(create.mock.calls[1]);
   });
   it('keeps permission/frozen errors without clearing editable input or retrying automatically', async () => {
@@ -350,7 +350,7 @@ describe('expense flow with isolated API callbacks, not native/database proof', 
       { uri: 'file:///cache/receipt.jpg', name: 'receipt.jpg', type: 'image/jpeg' },
     );
     expect(create.mock.calls[0]?.[0].body.receiptImageId).toBe(imageId);
-    await userEvent.press(screen.getByRole('button', { name: '重试原消费提交' }));
+    await userEvent.press(screen.getByRole('button', { name: '重试保存' }));
     expect(upload).toHaveBeenCalledTimes(1);
     expect(create.mock.calls[0]).toEqual(create.mock.calls[1]);
   });
@@ -401,7 +401,14 @@ describe('expense flow with isolated API callbacks, not native/database proof', 
   });
   it('filters through server queries, paginates with its cursor and hides stale rows after refresh failure', async () => {
     list.mockResolvedValueOnce({ data: [expense], page: { nextCursor: 'real-cursor' } });
-    await show(<ExpenseList ledger={ledger} userId={userId} />);
+    // The ledger page passes a new refresh signal on pull-to-refresh.
+    const client = createQueryClient();
+    const node = (refreshSignal: number) => (
+      <QueryClientProvider client={client}>
+        <ExpenseList ledger={ledger} userId={userId} refreshSignal={refreshSignal} />
+      </QueryClientProvider>
+    );
+    const view = await render(node(0));
     await screen.findByRole('button', { name: '查看消费 食堂午餐' });
     list.mockResolvedValueOnce({
       data: [{ ...expense, id: otherId, title: '车费' }],
@@ -416,7 +423,7 @@ describe('expense flow with isolated API callbacks, not native/database proof', 
     await screen.findByRole('button', { name: '查看消费 食堂午餐' });
     expect(list.mock.calls.at(-1)?.[0].query.category).toBe('TRANSPORT');
     list.mockRejectedValueOnce(new ApiError('FORBIDDEN', '无权访问消费', 403));
-    await userEvent.press(screen.getByRole('button', { name: '刷新流水' }));
+    await view.rerender(node(1));
     await screen.findByText('无权访问消费');
     expect(screen.queryByRole('button', { name: '查看消费 食堂午餐' })).toBeNull();
   });
@@ -471,8 +478,9 @@ describe('expense flow with isolated API callbacks, not native/database proof', 
   });
   it('shows real balances and copies only the server preview without starting settlement', async () => {
     await show(<BalancesScreen />);
-    await screen.findByText('+¥60.00');
-    expect(screen.getByText('−¥60.00')).toBeOnTheScreen();
+    await screen.findByText('待收回');
+    expect(screen.getByText('待支付')).toBeOnTheScreen();
+    expect(screen.getAllByText('¥60.00')).toHaveLength(3);
     await userEvent.press(screen.getByRole('button', { name: '预览结算' }));
     expect(router.push).toHaveBeenCalledWith({
       pathname: '/ledgers/[ledgerId]/settlement-preview',
@@ -484,7 +492,7 @@ describe('expense flow with isolated API callbacks, not native/database proof', 
     await screen.findByText('转账明细');
     jest.mocked(setStringAsync).mockResolvedValueOnce(false);
     await userEvent.press(screen.getByRole('button', { name: '复制完整方案' }));
-    await screen.findByText('复制失败，请稍后手动重试');
+    await screen.findByText('复制失败，请稍后重试');
     expect(screen.queryByText('结算方案已复制')).toBeNull();
     await userEvent.press(screen.getByRole('button', { name: '复制完整方案' }));
     await screen.findByText('结算方案已复制');

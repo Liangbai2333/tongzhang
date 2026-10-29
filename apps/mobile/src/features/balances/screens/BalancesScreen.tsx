@@ -7,7 +7,7 @@ import { RequestState } from '@/components/Feedback';
 import { useAuth } from '@/providers/AuthProvider';
 import { useOnlineQuery } from '@/lib/use-online-query';
 import { ledgersApi } from '@/features/ledgers/api';
-import { yuan, statusLabels } from '@/features/ledgers/presentation';
+import { netAmount, netColor, netLabel, statusLabels, yuan } from '@/features/ledgers/presentation';
 import { MemberAvatar } from '@/features/expenses/components/ExpenseUI';
 import { FigmaAsset } from '@/icons/FigmaAsset';
 import { expenseAssets } from '@/icons/expense-assets';
@@ -34,17 +34,11 @@ export default function BalancesScreen() {
   const preview = () =>
     router.push({ pathname: '/ledgers/[ledgerId]/settlement-preview', params: { ledgerId } });
   const members = query.data?.balance.members ?? [];
-  const receivable = members.reduce(
+  // Receivables always equal payables, so one "still to settle" figure is enough.
+  const outstanding = members.reduce(
     (sum, m) => sum + (BigInt(m.remainingNetCents) > 0n ? BigInt(m.remainingNetCents) : 0n),
     0n,
   );
-  const payable = members.reduce(
-    (sum, m) => sum + (BigInt(m.remainingNetCents) < 0n ? -BigInt(m.remainingNetCents) : 0n),
-    0n,
-  );
-  const paid = members.reduce((sum, m) => sum + BigInt(m.paidCents), 0n);
-  const shared = members.reduce((sum, m) => sum + BigInt(m.sharedCents), 0n);
-  const net = members.reduce((sum, m) => sum + BigInt(m.netCents), 0n);
   return (
     <Screen
       title="成员余额"
@@ -72,7 +66,7 @@ export default function BalancesScreen() {
         <RequestState
           loading={loading}
           title={valid ? '暂时无法读取余额' : '账本地址无效'}
-          description="请联网后手动重试，不使用离线余额。"
+          description="请检查网络后重试。"
           error={query.error}
           onRetry={
             valid
@@ -91,28 +85,17 @@ export default function BalancesScreen() {
               </Text>
               <Text style={s.status}>{statusLabels[ready.ledger.status]}</Text>
             </View>
-            <Text style={ui.caption}>账本总支出</Text>
+            <Text style={ui.caption}>总支出</Text>
             <Text style={ui.amount}>{yuan(ready.balance.expenseTotalCents)}</Text>
             <View style={ui.divider} />
-            <View style={ui.row}>
-              <View style={ui.grow}>
-                <Text style={ui.caption}>待收回</Text>
-                <Text style={[ui.heading, { color: colors.success }]}>
-                  {yuan(receivable.toString())}
-                </Text>
-              </View>
-              <View style={ui.grow}>
-                <Text style={ui.caption}>待偿还</Text>
-                <Text style={[ui.heading, { color: colors.danger }]}>
-                  {yuan(payable.toString())}
-                </Text>
-              </View>
+            <View style={ui.between}>
+              <Text style={ui.caption}>成员之间还需转账</Text>
+              <Text style={ui.strong}>
+                {outstanding === 0n ? '已全部平衡' : yuan(outstanding.toString())}
+              </Text>
             </View>
           </View>
-          <View style={ui.between}>
-            <Text style={ui.strong}>成员明细</Text>
-            <Text style={ui.caption}>＋ 应收 / − 应付</Text>
-          </View>
+          <Text style={ui.strong}>成员明细</Text>
           {members.map((member, i) => {
             const remaining = BigInt(member.remainingNetCents);
             return (
@@ -125,38 +108,16 @@ export default function BalancesScreen() {
                   </Text>
                 </View>
                 <View style={{ alignItems: 'flex-end' }}>
-                  <Text
-                    style={[
-                      ui.heading,
-                      {
-                        color:
-                          remaining > 0n
-                            ? colors.success
-                            : remaining < 0n
-                              ? colors.danger
-                              : colors.muted,
-                      },
-                    ]}
-                  >
-                    {remaining === 0n
-                      ? '已平衡'
-                      : `${remaining > 0n ? '+' : '−'}${yuan((remaining > 0n ? remaining : -remaining).toString())}`}
-                  </Text>
-                  <Text style={ui.caption}>
-                    {remaining > 0n ? '应收' : remaining < 0n ? '应付' : '无待收付'}
+                  {remaining !== 0n && (
+                    <Text style={ui.caption}>{netLabel(member.remainingNetCents)}</Text>
+                  )}
+                  <Text style={[ui.heading, { color: netColor(member.remainingNetCents) }]}>
+                    {netAmount(member.remainingNetCents)}
                   </Text>
                 </View>
               </View>
             );
           })}
-          <View style={s.summary}>
-            <Text style={ui.caption}>
-              已付 {yuan(paid.toString())} · 应摊 {yuan(shared.toString())}
-            </Text>
-            <Text style={[ui.strong, { color: net === 0n ? colors.success : colors.danger }]}>
-              净额 {yuan(net.toString())}
-            </Text>
-          </View>
         </>
       )}
     </Screen>
@@ -187,5 +148,4 @@ const s = StyleSheet.create({
     alignItems: 'center',
     gap: 12,
   },
-  summary: { backgroundColor: colors.mint, borderRadius: 16, padding: 12, gap: 4 },
 });

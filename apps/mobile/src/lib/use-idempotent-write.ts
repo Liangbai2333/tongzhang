@@ -34,17 +34,12 @@ export function useIdempotentWrite() {
     const payload = JSON.stringify(body);
     if (attempt.current && Date.now() - attempt.current.startedAt >= RETRY_WINDOW) {
       setError(
-        new ApiError(
-          'RETRY_WINDOW_EXPIRED',
-          '本次提交已超过 24 小时，请返回账本列表在线核对结果后再操作',
-        ),
+        new ApiError('RETRY_WINDOW_EXPIRED', '这次提交已超过 24 小时，请回到账本列表查看结果'),
       );
       return;
     }
     if (unresolved.current && attempt.current?.payload !== payload) {
-      setError(
-        new ApiError('RESULT_UNKNOWN', '上次提交结果尚未确认，请先重试原提交或返回列表核对'),
-      );
+      setError(new ApiError('RESULT_UNKNOWN', '上次提交的结果还未确认，请先重试'));
       return;
     }
     if (attempt.current?.payload !== payload)

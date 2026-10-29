@@ -80,12 +80,10 @@ export default function CreateLedgerScreen() {
             <InlineError message={cover.error} />
             <InlineError message={write.error ? requestErrorMessage(write.error) : null} />
             {write.uncertain && (
-              <Text style={ui.muted}>
-                提交结果尚未确认。重试会核对原提交；也可返回列表在线查看。
-              </Text>
+              <Text style={ui.muted}>网络中断，结果未确认。重试不会重复创建。</Text>
             )}
             <Button
-              title={write.uncertain ? '重试原提交' : '创建并邀请成员'}
+              title={write.uncertain ? '重试创建' : '创建并邀请成员'}
               loading={busy}
               onPress={() => {
                 void create();
@@ -93,7 +91,7 @@ export default function CreateLedgerScreen() {
             />
             {write.uncertain && (
               <Button
-                title="返回账本列表在线核对"
+                title="回到账本列表查看"
                 variant="secondary"
                 disabled={busy}
                 onPress={() => router.replace('/ledgers')}
@@ -130,10 +128,7 @@ export default function CreateLedgerScreen() {
                 contentFit="cover"
                 style={{ width: '100%', height: 180, borderRadius: 20 }}
               />
-              <Text style={ui.caption}>
-                自定义封面 · {cover.value.byteSize} 字节
-                {cover.value.imageId ? ' · 已上传，待创建绑定' : ''}
-              </Text>
+              <Text style={ui.caption}>已选择自定义封面</Text>
             </View>
           ) : (
             <LedgerCover coverKey={coverKey} preview />

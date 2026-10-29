@@ -47,7 +47,7 @@ function SettlementPage({ ledgerId }: { ledgerId: string }) {
         <RequestState
           loading={valid && (ledgerQuery.isPending || ledgerQuery.isFetching)}
           title={valid ? '暂时无法读取账本' : '账本地址无效'}
-          description="请在线查询账本状态后重试。"
+          description="请检查网络后重试。"
           error={ledgerQuery.error}
           onRetry={
             valid
@@ -146,7 +146,7 @@ function Preview({
     } catch (cause) {
       setCheckError(
         cause instanceof ApiError && cause.code === 'SETTLEMENT_NOT_FOUND'
-          ? '暂未查到正式批次；原提交仍已保留，可显式重试或再次在线核对。'
+          ? '还没有查到结算记录，可以重试提交。'
           : requestErrorMessage(cause),
       );
     } finally {
@@ -175,7 +175,7 @@ function Preview({
       if (!(await Clipboard.setStringAsync(text))) throw new Error('copy failed');
       setNotice('结算方案已复制');
     } catch {
-      setError('复制失败，请稍后手动重试');
+      setError('复制失败，请稍后重试');
     } finally {
       locked.current = false;
       setCopying(false);
@@ -219,15 +219,15 @@ function Preview({
               )}
               {blocked && (
                 <>
-                  <InlineError message="账本版本、状态或权限已变化，请重新在线查询。" />
-                  <Button title="重新查询账本与预览" onPress={onReload} />
+                  <InlineError message="账本内容有变化，请刷新后再结算。" />
+                  <Button title="刷新预览" onPress={onReload} />
                 </>
               )}
-              <Text style={[ui.caption, { textAlign: 'center' }]}>
-                {ledger.creatorUserId === user!.id
-                  ? '确认前不会冻结；正式结算后不可再记账或加入成员。'
-                  : '仅账本创建者可确认正式结算，你可以查看和复制预览。'}
-              </Text>
+              {ledger.creatorUserId !== user!.id && (
+                <Text style={[ui.caption, { textAlign: 'center' }]}>
+                  只有账本创建者可以发起结算。
+                </Text>
+              )}
             </>
           ) : undefined
         }
@@ -236,7 +236,7 @@ function Preview({
           <RequestState
             loading={loading}
             title={valid ? '暂时无法读取结算预览' : '账本地址无效'}
-            description="仅进行中账本可在线预览，请手动刷新核对。"
+            description="请检查网络后重试。"
             error={query.error}
             onRetry={
               valid
@@ -267,8 +267,8 @@ function Preview({
             <Text style={ui.strong}>转账明细</Text>
             {plan.transfers.length === 0 && (
               <View style={s.hero}>
-                <Text style={ui.heading}>当前无需转账</Text>
-                <Text style={ui.muted}>当前成员净额已平衡。预览不会改变账本状态。</Text>
+                <Text style={ui.heading}>无需转账</Text>
+                <Text style={ui.muted}>大家的收支已经平衡。</Text>
               </View>
             )}
             {plan.transfers.map((t) => {
@@ -300,7 +300,7 @@ function Preview({
                           longNames && { textAlign: 'center', fontSize: 13, lineHeight: 19 },
                         ]}
                       >
-                        {payer?.username ?? '请刷新核对成员'}
+                        {payer?.username ?? '未知成员'}
                       </Text>
                     </View>
                   </View>
@@ -335,7 +335,7 @@ function Preview({
                           longNames && { textAlign: 'center', fontSize: 13, lineHeight: 19 },
                         ]}
                       >
-                        {payee?.username ?? '请刷新核对成员'}
+                        {payee?.username ?? '未知成员'}
                       </Text>
                     </View>
                   </View>
@@ -345,10 +345,8 @@ function Preview({
             <View style={s.notice}>
               <FigmaAsset asset={expenseAssets.info} />
               <View style={ui.grow}>
-                <Text style={ui.strong}>结算后账单将冻结</Text>
-                <Text style={ui.caption}>
-                  结算后无法新增、编辑或删除原始消费。转账在应用外完成，同账仅计算与登记。成员或消费变化后需重新预览。
-                </Text>
+                <Text style={ui.strong}>发起结算后账本将冻结</Text>
+                <Text style={ui.caption}>不能再记账或加入成员。转账请在应用外完成。</Text>
               </View>
             </View>
           </>
@@ -372,25 +370,23 @@ function Preview({
           </Text>
         </View>
         <Text style={[ui.muted, { fontSize: 13, lineHeight: 19 }]}>
-          冻结后无法新增、编辑或删除原始消费，也不可再加入成员。此操作不可撤销；如需调整，请先返回检查。
-        </Text>
-        <Text style={ui.caption}>
-          版本 {confirmation?.expectedVersion} · 转账在应用外完成，同账不验证真实到账。
-          {plan?.transferCount === 0 ? '无需转账，将直接结清。' : ''}
+          {plan?.transferCount === 0
+            ? '无需转账，确认后账本将直接结清，且无法撤销。'
+            : '冻结后不能再记账或加入成员，且无法撤销。'}
         </Text>
         <InlineError message={write.error ? requestErrorMessage(write.error) : null} />
         <InlineError message={checkError} />
         {write.uncertain && (
           <Text style={ui.body}>
-            提交结果尚未确认，原版本和请求标识已保留。请显式重试原提交或在线核对。
+            网络中断，结果未确认。重试不会重复结算，也可以先查询结算记录。
           </Text>
         )}
         {blocked ? (
-          <Button title="重新查询账本与预览" onPress={onReload} />
+          <Button title="刷新预览" onPress={onReload} />
         ) : (
           <Button
             compact
-            title={write.uncertain ? '重试原结算提交' : '确认冻结并结算'}
+            title={write.uncertain ? '重试' : '确认冻结并结算'}
             loading={write.busy}
             disabled={checking}
             onPress={() => {
@@ -400,7 +396,7 @@ function Preview({
         )}
         {write.uncertain && (
           <Button
-            title="在线核对正式记录"
+            title="查询结算记录"
             variant="secondary"
             loading={checking}
             disabled={write.busy}

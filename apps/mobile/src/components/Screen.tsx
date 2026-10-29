@@ -70,6 +70,7 @@ export function Screen({
           </View>
         )}
         <ScrollView
+          testID="screen-scroll"
           keyboardShouldPersistTaps="handled"
           keyboardDismissMode="on-drag"
           showsVerticalScrollIndicator={false}

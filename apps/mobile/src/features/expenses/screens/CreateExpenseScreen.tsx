@@ -205,10 +205,10 @@ function ExpenseForm({ ledger, userId }: { ledger: Ledger; userId: string }) {
             <InlineError message={write.error ? requestErrorMessage(write.error) : null} />
             <InlineError message={receipt.error} />
             {write.uncertain && (
-              <Text style={ui.caption}>结果尚未确认，输入已保留；重试将核对原提交。</Text>
+              <Text style={ui.caption}>网络中断，结果未确认。重试不会重复记账。</Text>
             )}
             <Button
-              title={write.uncertain ? '重试原消费提交' : '保存消费'}
+              title={write.uncertain ? '重试保存' : '保存消费'}
               loading={busy}
               onPress={() => {
                 void save();
@@ -217,7 +217,7 @@ function ExpenseForm({ ledger, userId }: { ledger: Ledger; userId: string }) {
             {write.uncertain && (
               <Button
                 compact
-                title="返回账本在线核对"
+                title="回到账本查看"
                 variant="quiet"
                 disabled={busy}
                 onPress={() =>
@@ -303,7 +303,7 @@ function ExpenseForm({ ledger, userId }: { ledger: Ledger; userId: string }) {
             editable={!disabled}
             onChangeText={setNote}
           />
-          <Text style={expenseStyles.label}>收据图片（选填）</Text>
+          <Text style={expenseStyles.label}>收据图片（选填，最多 1 张）</Text>
           <View style={ui.row}>
             <Button
               style={s.receiptButton}
@@ -328,12 +328,6 @@ function ExpenseForm({ ledger, userId }: { ledger: Ledger; userId: string }) {
           </View>
           {receipt.value && (
             <View style={s.receipt}>
-              <Text style={ui.caption}>
-                {receipt.value.imageId
-                  ? '收据已上传，保存消费时绑定'
-                  : '已选择 1 张收据，保存时上传'}{' '}
-                · {Math.ceil(receipt.value.byteSize / 1024)} KiB
-              </Text>
               <View style={ui.row}>
                 <Touch
                   accessibilityLabel="收据预览"
@@ -349,8 +343,8 @@ function ExpenseForm({ ledger, userId }: { ledger: Ledger; userId: string }) {
                       style={s.thumbnail}
                     />
                     <View style={ui.grow}>
-                      <Text style={ui.strong}>收据预览</Text>
-                      <Text style={ui.caption}>可预览、移除后重新选择</Text>
+                      <Text style={ui.strong}>已添加收据</Text>
+                      <Text style={ui.caption}>点按查看大图</Text>
                     </View>
                   </View>
                 </Touch>
@@ -365,9 +359,6 @@ function ExpenseForm({ ledger, userId }: { ledger: Ledger; userId: string }) {
               </View>
             </View>
           )}
-          <Text style={ui.caption}>
-            最多 1 张 JPEG/PNG；选择后压缩到 1 MiB 内。保存失败保留当前表单，不自动重试。
-          </Text>
         </View>
         <ChoiceSheet
           visible={panel === 'category'}
@@ -437,9 +428,7 @@ function ExpenseForm({ ledger, userId }: { ledger: Ledger; userId: string }) {
           variant="members"
           onClose={() => setPanel(null)}
         >
-          <Text style={ui.body}>
-            当前输入仅保留在本页，离开后将清除；已上传但未绑定的收据不会成为消费记录。
-          </Text>
+          <Text style={ui.body}>离开后，已填写的内容不会保存。</Text>
           <Button compact title="继续填写" onPress={() => setPanel(null)} />
           <Button compact title="放弃并返回" variant="quiet" onPress={leave} />
         </Sheet>

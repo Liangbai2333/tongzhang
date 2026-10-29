@@ -12,7 +12,7 @@ export default function SessionRecovery() {
         loading={busy}
         title="暂时无法核验登录状态"
         loadingTitle="正在核验登录状态"
-        description="请确认网络连接后手动重试。"
+        description="请检查网络后重试。"
         loadingDescription="请稍候，正在安全恢复你的账号。"
         error={error}
         retryLabel="重新核验"

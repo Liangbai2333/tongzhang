@@ -1,8 +1,7 @@
 import { ArchiveLedgerSheet } from '../components/ArchiveLedgerSheet';
-import { LedgerCover } from '../components/LedgerCover';
 import { Stack } from 'expo-router';
 import { useState } from 'react';
-import { Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { router, useLocalSearchParams } from 'expo-router';
 import { uuidSchema } from '@tongzhang/contracts';
 import { Screen, ui } from '@/components/Screen';
@@ -20,7 +19,7 @@ import { useOnlineQuery } from '@/lib/use-online-query';
 import { ledgersApi } from '../api';
 import { ledgersKeys } from '../query-keys';
 import { EmptyLedger } from '../components/EmptyLedger';
-import { statusLabels, yuan } from '../presentation';
+import { netAmount, netColor, netLabel, statusLabels, yuan } from '../presentation';
 
 export default function LedgerDetailScreen() {
   const { ledgerId } = useLocalSearchParams<{ ledgerId: string }>();
@@ -37,6 +36,8 @@ function LedgerPage({ ledgerId }: { ledgerId: string }) {
   );
   const [archiving, setArchiving] = useState(false);
   const [members, setMembers] = useState(false);
+  // Pull-to-refresh rereads the ledger and its expense list together.
+  const [refreshSignal, setRefreshSignal] = useState(0);
   const ledger = query.data?.data;
   const loading = valid && (query.isPending || query.isFetching);
   const ready = valid && !loading && !query.isError && ledger;
@@ -53,6 +54,7 @@ function LedgerPage({ ledgerId }: { ledgerId: string }) {
         valid && !archiving
           ? () => {
               setMembers(false);
+              setRefreshSignal((n) => n + 1);
               void query.refetch();
             }
           : undefined
@@ -116,15 +118,25 @@ function LedgerPage({ ledgerId }: { ledgerId: string }) {
         </RequestState>
       ) : (
         <>
-          {ledger.coverImageId && (
-            <LedgerCover coverKey={ledger.coverKey} imageId={ledger.coverImageId} preview />
-          )}
-          {ledger.archivedAt && <Text style={ui.caption}>已个人归档 · 历史详情只读</Text>}
           {ledger.status !== 'ACTIVE' && (
-            <Text style={ui.caption}>账本已冻结，消费与分摊只读。</Text>
-          )}
-          {ledger.status === 'SETTLED' && !ledger.archivedAt && (
-            <Button title="个人归档" variant="secondary" onPress={() => setArchiving(true)} />
+            <View style={styles.readonly}>
+              <Text style={ui.caption}>
+                {ledger.archivedAt
+                  ? '已归档，仅供查看'
+                  : ledger.status === 'SETTLING'
+                    ? '消费已冻结，不能再记账'
+                    : '账本已结清，仅供查看'}
+              </Text>
+              {ledger.status === 'SETTLED' && !ledger.archivedAt && (
+                <Button
+                  compact
+                  title="归档"
+                  variant="secondary"
+                  style={styles.archive}
+                  onPress={() => setArchiving(true)}
+                />
+              )}
+            </View>
           )}
           {empty ? (
             <EmptyLedger
@@ -156,50 +168,34 @@ function LedgerPage({ ledgerId }: { ledgerId: string }) {
                 </Touch>
                 <Text style={ui.caption}>{statusLabels[ledger.status]}</Text>
               </View>
-              <View
-                style={[
-                  ui.card,
-                  { borderWidth: 1, borderColor: colors.border, padding: 20, gap: 16 },
-                ]}
-              >
-                <Text style={ui.caption}>总支出 · 人民币</Text>
+              <View style={styles.summary}>
+                <Text style={ui.caption}>总支出</Text>
                 <Text style={ui.amount}>{yuan(ledger.expenseTotalCents)}</Text>
                 <View style={ui.divider} />
                 <View style={[ui.row, { alignItems: 'flex-start' }]}>
                   <View style={ui.grow}>
-                    <Text style={ui.caption}>我的垫付</Text>
+                    <Text style={ui.caption}>我付了</Text>
                     <Text style={ui.strong}>{yuan(ledger.myPaidCents)}</Text>
                   </View>
                   <View style={ui.grow}>
-                    <Text style={ui.caption}>当前应摊</Text>
+                    <Text style={ui.caption}>我应摊</Text>
                     <Text style={ui.strong}>{yuan(ledger.mySharedCents)}</Text>
                   </View>
                   <View style={ui.grow}>
-                    <Text style={ui.caption}>剩余净额</Text>
-                    <Text
-                      style={[
-                        ui.strong,
-                        {
-                          color:
-                            BigInt(ledger.myRemainingNetCents) > 0n
-                              ? colors.success
-                              : BigInt(ledger.myRemainingNetCents) < 0n
-                                ? colors.danger
-                                : colors.muted,
-                        },
-                      ]}
-                    >
-                      {yuan(ledger.myRemainingNetCents)}
+                    <Text style={ui.caption}>{netLabel(ledger.myRemainingNetCents)}</Text>
+                    <Text style={[ui.strong, { color: netColor(ledger.myRemainingNetCents) }]}>
+                      {netAmount(ledger.myRemainingNetCents)}
                     </Text>
                   </View>
                 </View>
               </View>
             </>
           )}
-          <View style={{ flexDirection: 'row', gap: 8, flexWrap: 'wrap' }}>
+          <View style={styles.actions}>
             <Button
               compact
               labelStyle={{ fontSize: 14 }}
+              style={ui.grow}
               title="余额明细"
               variant="secondary"
               icon={<FigmaAsset asset={expenseAssets.balance} />}
@@ -210,16 +206,8 @@ function LedgerPage({ ledgerId }: { ledgerId: string }) {
             <Button
               compact
               labelStyle={{ fontSize: 14 }}
-              title="支出统计"
-              icon={<FigmaAsset asset={expenseAssets.chart} />}
-              variant="secondary"
-              disabled
-              onPress={() => {}}
-            />
-            <Button
-              compact
-              labelStyle={{ fontSize: 14 }}
-              title={ledger.status === 'ACTIVE' ? '结算预览' : '正式结算记录'}
+              style={ui.grow}
+              title={ledger.status === 'ACTIVE' ? '结算' : '结算记录'}
               variant="secondary"
               icon={<FigmaAsset asset={expenseAssets.settle} />}
               onPress={() =>
@@ -233,16 +221,8 @@ function LedgerPage({ ledgerId }: { ledgerId: string }) {
               }
             />
           </View>
-          <Text style={ui.caption}>支出统计暂未开放。</Text>
-          {!empty && <ExpenseList ledger={ledger} userId={user!.id} />}
           {!empty && (
-            <Button
-              title="刷新账本"
-              variant="quiet"
-              onPress={() => {
-                void query.refetch();
-              }}
-            />
+            <ExpenseList ledger={ledger} userId={user!.id} refreshSignal={refreshSignal} />
           )}
           <LedgerMembersSheet
             visible={members}
@@ -267,3 +247,24 @@ function LedgerPage({ ledgerId }: { ledgerId: string }) {
     </Screen>
   );
 }
+const styles = StyleSheet.create({
+  readonly: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    minHeight: 44,
+    paddingHorizontal: 16,
+    borderRadius: 16,
+    backgroundColor: colors.surface,
+  },
+  archive: { marginLeft: 'auto', minHeight: 36 },
+  summary: {
+    backgroundColor: colors.surface,
+    borderWidth: 1,
+    borderColor: colors.border,
+    borderRadius: 20,
+    padding: 20,
+    gap: 12,
+  },
+  actions: { flexDirection: 'row', gap: 8 },
+});
