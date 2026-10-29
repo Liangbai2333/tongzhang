@@ -19,7 +19,7 @@ export function remaining(cents: string) {
 
 /** Remaining net from the viewer's side: positive is owed to them, negative is what they owe. */
 export const netLabel = (cents: string) =>
-  BigInt(cents) > 0n ? '待收回' : BigInt(cents) < 0n ? '待支付' : '收支';
+  BigInt(cents) > 0n ? '待收回' : BigInt(cents) < 0n ? '待支付' : '待收付';
 export const netAmount = (cents: string) => {
   const value = BigInt(cents);
   return value === 0n ? '已平衡' : yuan((value < 0n ? -value : value).toString());

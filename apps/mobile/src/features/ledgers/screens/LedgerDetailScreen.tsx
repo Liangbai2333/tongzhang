@@ -39,7 +39,9 @@ function LedgerPage({ ledgerId }: { ledgerId: string }) {
   // Pull-to-refresh rereads the ledger and its expense list together.
   const [refreshSignal, setRefreshSignal] = useState(0);
   const ledger = query.data?.data;
-  const loading = valid && (query.isPending || query.isFetching);
+  // Keep the page (and the expense list's filter) mounted during a pull-to-refresh;
+  // only a first load or a refetch after a failure replaces the content.
+  const loading = valid && (query.isPending || (query.isFetching && query.isError));
   const ready = valid && !loading && !query.isError && ledger;
   const empty = ready && ledger.status === 'ACTIVE' && ledger.expenseTotalCents === '0';
   const invite = () =>

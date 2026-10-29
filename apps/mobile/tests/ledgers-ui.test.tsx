@@ -9,6 +9,7 @@ import LedgerDetailScreen from '../src/features/ledgers/screens/LedgerDetailScre
 import JoinLedgerScreen from '../src/features/invitations/screens/JoinLedgerScreen';
 import InvitationScreen from '../src/features/invitations/screens/InvitationScreen';
 import { ledgersApi } from '../src/features/ledgers/api';
+import { expensesApi } from '../src/features/expenses/api';
 import { invitationsApi } from '../src/features/invitations/api';
 import { ApiError } from '../src/lib/api-error';
 import { createQueryClient } from '../src/lib/query-client';
@@ -301,6 +302,21 @@ describe('ledger pages with isolated API callbacks (no database/native claim)', 
     await screen.findByText('网络未连接，请联网后重试');
     expect(screen.queryByText('鼓山一日')).toBeNull();
     expect(screen.queryByText('还没有账本')).toBeNull();
+  });
+  it('keeps the expense list mounted during pull-to-refresh and rereads it', async () => {
+    const listExpenses = jest.mocked(expensesApi.listExpenses);
+    get.mockResolvedValueOnce({ data: { ...detail, expenseTotalCents: '12000' } });
+    await show(<LedgerDetailScreen />);
+    await screen.findByText('还没有消费记录');
+    const reads = listExpenses.mock.calls.length;
+    let resolve!: (value: { data: typeof detail }) => void;
+    get.mockImplementationOnce(() => new Promise((done) => (resolve = done)));
+    await pullToRefresh();
+    // The filter-bearing list stays on screen while the ledger refetches.
+    expect(screen.getByText('还没有消费记录')).toBeOnTheScreen();
+    expect(listExpenses).toHaveBeenCalledTimes(reads + 1);
+    await act(async () => resolve({ data: { ...detail, expenseTotalCents: '12000' } }));
+    expect(listExpenses).toHaveBeenCalledTimes(reads + 1);
   });
   it('reads member names and real integer amounts, then hides data on permission rejection', async () => {
     get.mockResolvedValueOnce({

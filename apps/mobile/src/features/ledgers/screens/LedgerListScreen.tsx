@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { useInfiniteQuery } from '@tanstack/react-query';
@@ -25,6 +25,9 @@ export default function LedgerListScreen() {
   }>();
   const [menu, setMenu] = useState(false);
   const [archived, setArchived] = useState(view === 'archived');
+  useEffect(() => {
+    setArchived(view === 'archived');
+  }, [view]);
   const query = useInfiniteQuery({
     queryKey: [...ledgersKeys.root(user!.id), 'list', archived],
     queryFn: ({ pageParam }) =>

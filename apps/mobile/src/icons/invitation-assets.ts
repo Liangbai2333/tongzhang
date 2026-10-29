@@ -8,7 +8,6 @@ import friendTwo from '../../assets/figma/9bebe.png';
 import circleLarge from '../../assets/figma/2d029.svg';
 import circleSmall from '../../assets/figma/cf616.svg';
 import ledger from '../../assets/figma/4b368.svg';
-import scan from '../../assets/figma/ff61c.svg';
 import joinInfo from '../../assets/figma/42245.svg';
 
 export const invitationAssets = {
@@ -21,6 +20,5 @@ export const invitationAssets = {
   circleLarge: { source: circleLarge, width: 160, height: 160 },
   circleSmall: { source: circleSmall, width: 80, height: 80 },
   ledger: { source: ledger, width: 32, height: 32 },
-  scan: { source: scan, width: 20, height: 20 },
   joinInfo: { source: joinInfo, width: 18, height: 18 },
 } as const;

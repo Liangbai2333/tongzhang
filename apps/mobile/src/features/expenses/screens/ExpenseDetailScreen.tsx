@@ -81,7 +81,7 @@ export default function ExpenseDetailScreen() {
               <Text style={ui.muted}>日期</Text>
               <Text style={ui.strong}>{expense.occurredOn}</Text>
             </View>
-            {expense.recorderName !== expense.payerName && (
+            {expense.recorderMemberId !== expense.payerMemberId && (
               <>
                 <View style={ui.divider} />
                 <View style={s.info}>

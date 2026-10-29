@@ -10,7 +10,6 @@ import remove from '../../assets/figma/cd81f.svg';
 import members from '../../assets/figma/dc86b.svg';
 import memberChevron from '../../assets/figma/1936a.svg';
 import balance from '../../assets/figma/356ba.svg';
-import chart from '../../assets/figma/e073e.svg';
 import settle from '../../assets/figma/9e35a.svg';
 import dining from '../../assets/figma/04660.svg';
 import ticket from '../../assets/figma/e7687.svg';
@@ -40,7 +39,6 @@ export const expenseAssets = {
   members: { source: members, width: 16.0008, height: 16.0008 },
   memberChevron: { source: memberChevron, width: 16.0008, height: 16.0008 },
   balance: { source: balance, width: 16, height: 16 },
-  chart: { source: chart, width: 16, height: 16 },
   settle: { source: settle, width: 16, height: 16 },
   dining: { source: dining, width: 20, height: 20 },
   ticket: { source: ticket, width: 20, height: 20 },
