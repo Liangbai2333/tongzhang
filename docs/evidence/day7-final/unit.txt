@@ -1,0 +1,13 @@
+$ pnpm build:shared && vitest run
+$ pnpm -r --filter "./packages/*" build
+$ tsc -p tsconfig.json
+$ tsc -p tsconfig.json
+
+ RUN  v5.0.4 /Users/liangbai/Homework/tongzhang
+
+
+ Test Files  19 passed (19)
+      Tests  125 passed (125)
+   Start at  03:52:31
+   Duration  2.41s (tests 41%, import 37%, transform 20%, worker 2%)
+
