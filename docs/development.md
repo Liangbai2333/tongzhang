@@ -44,7 +44,7 @@ Compose 的 `--env-file` 给 `${变量}` 提供值，只有 `environment` 显式
 
 生产只定义一次 `POSTGRES_USER`、`POSTGRES_PASSWORD`、`POSTGRES_DB`，Compose 将其分别映射给 PostgreSQL 和 API 的 `PG*` 变量。密码直接传给数据库驱动，无需 URL 编码。含 `$` 的 dotenv 值用单引号包裹，其他引号按 dotenv 规则转义。
 
-生产首次部署须在 `infra/.env` 设置独立随机 `AUTH_JWT_SECRET`，可用 `node -e "console.log(require('node:crypto').randomBytes(32).toString('hex'))"` 生成并妥善保存。Compose 显式注入 API 与迁移容器，不注入 PostgreSQL 或移动端；不得使用测试密钥。已有本地环境拉取变更后执行 `pnpm setup:env`、`pnpm migrate:db`。
+生产首次部署须在 `infra/.env` 设置独立随机 `AUTH_JWT_SECRET`，可用 `node -e "console.log(require('node:crypto').randomBytes(32).toString('hex'))"` 生成并妥善保存。Compose 显式注入 API 与迁移容器，不注入 PostgreSQL 或移动端；不得使用测试密钥。已有本地环境拉取变更后执行 `pnpm setup:env`、`pnpm migrate:db`。迁移已合并为单个 `0000_init`（初始迁移合并前执行过旧迁移的本地库），这类本地库需要先重建再迁移：`docker compose --env-file apps/server/.env -f infra/compose.dev.yml exec -T postgres psql -U tongzhang -d postgres -c "DROP DATABASE tongzhang WITH (FORCE)" -c "CREATE DATABASE tongzhang"`，随后 `pnpm migrate:db`；测试库 `tongzhang_test` 同理。
 
 数据库连接只使用上述五个 `PG*` 参数，不读取 `DATABASE_URL`。`TEST_DATABASE_URL` 专供真实数据库测试，不是应用运行配置。
 
