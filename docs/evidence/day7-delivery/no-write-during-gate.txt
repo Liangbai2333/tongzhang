@@ -1,0 +1,5 @@
+ expenses_during_gate 
+----------------------
+                    0
+(1 row)
+

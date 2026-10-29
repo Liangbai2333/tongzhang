@@ -1,0 +1,192 @@
+{
+  "candidate": "df4d773c8d724b0cf453b0baa0764f6871f1a103",
+  "device": "Tongzhang_Day7, Android 17/API37 ARM64, 1080x2400",
+  "serials": ["emulator-5556", "emulator-5580"],
+  "apiPort": 3374,
+  "upstreamPort": 3375,
+  "metroPort": 8074,
+  "apk": {
+    "name": "tongzhang-Day7-arm64-debug.apk",
+    "bytes": 99547334,
+    "sha256": "44032027a84452e3b5485e95acba0e656f335686fb32f49483aad55dc9112f91"
+  },
+  "screenshots": [
+    {
+      "file": "01-fresh-installed-welcome.png",
+      "sha256": "41c6f09d2fbb8e52e65aba8369c74a90619ac08ccbe5cc96e04eca8fc93c9fda"
+    },
+    {
+      "file": "02-owner-login-current-list.png",
+      "sha256": "480a3516d42b9a1addb788935168b6eb5c46c26081b44aa7f8eef3778642aa88"
+    },
+    {
+      "file": "03-system-photo-picker.png",
+      "sha256": "45bd1bd3aac55476e205b91ae602eaf5080290af662647dda1bd8ac640b19249"
+    },
+    {
+      "file": "04-picker-cancel-retains-name.png",
+      "sha256": "badb4dace208d95bf5077bde8dae2e7cdf89f3edea9feb3e5f2d3566a9b5fa05"
+    },
+    {
+      "file": "05-selected-custom-cover.png",
+      "sha256": "29475109d350c431abd558a1c7dd8a6c16c1acc14b242b98f4357b24497c6446"
+    },
+    {
+      "file": "06-created-invitation.png",
+      "sha256": "ae7e9733d880d9f43e62cf808c387fb6e998b4ddddd9f6b7bb3956482cdf390d"
+    },
+    {
+      "file": "07-owner-ledger-detail.png",
+      "sha256": "84e13efc433948b7d02474bbf2efb1f559972c2edda97168c4b3d1fb5580b96b"
+    },
+    {
+      "file": "08-profile-icons.png",
+      "sha256": "d0250620a5b9a9c2b5a240fd4bb1305af720855e25259c1c97c09e5d4cc98481"
+    },
+    {
+      "file": "09-member-login.png",
+      "sha256": "11ce2ee3fe4f6f28d72bfc9e9c161f98ed7ad9cd918aba7a16cc3b8824187172"
+    },
+    {
+      "file": "10-member-join-preview.png",
+      "sha256": "07e1dca3c14a7f23295ddb84e9f4b7f82b14370a5fdd3c67b43bd8da0957c009"
+    },
+    {
+      "file": "11-member-joined.png",
+      "sha256": "2e64327442a5b47033916cab81e90b8786a8c81747c508035da2c36a71032107"
+    },
+    {
+      "file": "12-expense-120-split.png",
+      "sha256": "660033626b3bfc4181d86ce928f5181247bf90874f3f03a9b436f162c8c16b30"
+    },
+    {
+      "file": "13-camera-permission.png",
+      "sha256": "f99e88bc973e29f76d5ca3ade52d453bf9a8e2c1c6cb2c37d6358374e171d19e"
+    },
+    {
+      "file": "14-camera-denied-keeps-form.png",
+      "sha256": "0666126443e3928d95cc3ff1fec28374f8743b7663318be9e42d1837399d076a"
+    },
+    {
+      "file": "15-selected-receipt.png",
+      "sha256": "5d3b1a3f8e21d993b5f390f3fe3760884af661bd171208331bb669ff331f5095"
+    },
+    {
+      "file": "16-real-401-gate.png",
+      "sha256": "34ba5d157688284c1ff34453b2cbea5eaf43f6f7b37446b2a5217d16d1c3eb26"
+    },
+    {
+      "file": "17-network-lost-during-verification.png",
+      "sha256": "45993385012a970867b4d59378ee10a3f5a5eb92de3ab67f0e9e4608337fae62"
+    },
+    {
+      "file": "18-late-200-still-gated.png",
+      "sha256": "548e2404fa1f1a3825863d2d7abc317e7dd0084530b3949669da12b76b92164c"
+    },
+    {
+      "file": "19-network-restored-still-gated.png",
+      "sha256": "68aabdb2a9c13f799330f83006edcb15dc0f312a9a73fcb301e962019f0ca9e3"
+    },
+    {
+      "file": "20-same-account-retained-receipt.png",
+      "sha256": "e4a20265e7b0161046a52cdd9c9044f63ace4cfcf68dd68bee0392026bb4cad6"
+    },
+    {
+      "file": "21-expense-saved-once.png",
+      "sha256": "a222ad8177332d5ded071c09da8d0152b66e74c16536fa287e56d8411d44ed8f"
+    },
+    {
+      "file": "22-authorized-receipt.png",
+      "sha256": "7dded21c8986e59ef91415fd4d07d27fc2aac224f63d24b9763188223d756351"
+    },
+    {
+      "file": "23-balances-60.png",
+      "sha256": "5df3c2668451c6733486344dad3740724f2da9034f63c7c65bc1b5efc301fa09"
+    },
+    {
+      "file": "24-member-readonly-preview.png",
+      "sha256": "622136c167de4c17a413d8765589b3444732198adbb8cebec9cd648c0bfc60f4"
+    },
+    {
+      "file": "25-other-account-unsaved-form.png",
+      "sha256": "8f37609485e810139f4f1106878dcfa4de845ba115c12f07f0a7d634fdeb7e8b"
+    },
+    {
+      "file": "26-different-account-cleared-form.png",
+      "sha256": "6aa88285655ab37bca7d0163c794d55158770d4ed3553e12ea6af275ee03219c"
+    },
+    {
+      "file": "27-owner-preview.png",
+      "sha256": "fc1edd13eb7e104f97b9f363404ee88fd5f9db9ae9d9aa8027019172b241d7dd"
+    },
+    {
+      "file": "28-freeze-confirm.png",
+      "sha256": "45f8f361346b1ed7cab5a5bc58e3b13e1b7a073db92241752ed9603d52aac25a"
+    },
+    {
+      "file": "29-formal-pending-60.png",
+      "sha256": "af60ea0de999360454cf3c5f32d0a0735a2beb5fee813863c78fb0436f53a94f"
+    },
+    {
+      "file": "30-paid-confirm.png",
+      "sha256": "ec383f16a0d85de00196515ec44907375add358ab39f37999b29ce26376cdc41"
+    },
+    {
+      "file": "31-paid-zero-remaining.png",
+      "sha256": "658ef8df2e8837e5c57cf880fa9878c0ed86dd2e011c98c765f515606e164d5c"
+    },
+    {
+      "file": "32-close-confirm.png",
+      "sha256": "f92ad1bc473a5e90cd88efcfdb8e06c1ada95b9806f391bc1d8565fc8566f08e"
+    },
+    {
+      "file": "33-settled.png",
+      "sha256": "c816ad9b53dc62baa0225237c91092e344e5b12a2a76c3deaa15a91312da5a79"
+    },
+    {
+      "file": "34-personal-archive-confirm.png",
+      "sha256": "4b366326275a4f5909ee7175c9f200b12c681a2e94fec2e0953caa89d1e4469b"
+    },
+    {
+      "file": "35-owner-archived-current.png",
+      "sha256": "7febde2054f9450d202880ff3dc3d6d929bbaff14ea3bcb1f9af07c00cd68841"
+    },
+    {
+      "file": "36-owner-history.png",
+      "sha256": "13ad4cf5d684a6f7663b895794523968f8bcff94c909fd4a7afc211c921de23a"
+    },
+    {
+      "file": "37-history-readonly-ledger.png",
+      "sha256": "f15f7448698d93bdadfe2b3adf0ed988cca52673e57fd734e82e42da6980867a"
+    },
+    {
+      "file": "38-archived-authorized-receipt.png",
+      "sha256": "ef5cac59d0a9a1abf40ade08afa1e4dead7b39731efb6b02299f61dc1b1a28c0"
+    },
+    {
+      "file": "39-member-current-unaffected.png",
+      "sha256": "b8c01141c53b1c3b78c9f958c7c3f0b780eed8427d386cf67b732524a23e0954"
+    },
+    {
+      "file": "40-member-history-empty.png",
+      "sha256": "cf5f9792af483bff816cb35e0f7625445ea78aadaab11f46c4109bb0965b9805"
+    }
+  ],
+  "results": {
+    "mainPath": "PASS",
+    "real401SameAccount": "PASS",
+    "late200DuringNetworkSuspension": "PASS",
+    "differentAccountClearsForm": "PASS",
+    "archiveFinancialSnapshotUnchanged": "PASS",
+    "otherMemberUnaffected": "PASS"
+  },
+  "financial": {
+    "expenseCents": "12000",
+    "splitCents": ["6000", "6000"],
+    "formalTransferCents": "6000",
+    "state": "SETTLED",
+    "version": 5,
+    "audits": 7
+  },
+  "scope": "development APK requires same-version Metro and real API; no physical device, iOS complete path, release signing or production deployment claim"
+}

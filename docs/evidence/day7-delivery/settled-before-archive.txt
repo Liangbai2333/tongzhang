@@ -1,0 +1,20 @@
+      name      | status  | version 
+----------------+---------+---------
+ Day7-final-120 | SETTLED |       5
+(1 row)
+
+    title    | amount_cents 
+-------------+--------------
+ Day7-dinner |        12000
+(1 row)
+
+ expense_total_cents | transfer_total_cents | transfer_count 
+---------------------+----------------------+----------------
+               12000 |                 6000 |              1
+(1 row)
+
+ amount_cents | status | registration_note 
+--------------+--------+-------------------
+         6000 | PAID   | Day7-test-6000
+(1 row)
+

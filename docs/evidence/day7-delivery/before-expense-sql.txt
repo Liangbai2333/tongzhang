@@ -1,0 +1,10 @@
+      name      | status | version 
+----------------+--------+---------
+ Day7-final-120 | ACTIVE |       2
+(1 row)
+
+ expense_count 
+---------------
+             0
+(1 row)
+

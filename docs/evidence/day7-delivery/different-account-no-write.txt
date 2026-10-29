@@ -1,0 +1,10 @@
+    title    | amount_cents 
+-------------+--------------
+ Day7-dinner |        12000
+(1 row)
+
+ never_transfer_count 
+----------------------
+                    0
+(1 row)
+

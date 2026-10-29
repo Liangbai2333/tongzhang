@@ -1,0 +1,32 @@
+{
+  "assets": [
+    {
+      "browser_download_url": "https://github.com/Liangbai2333/tongzhang/releases/download/alpha-day7-20261029/README-Day7.md",
+      "digest": "sha256:ba08df14c65c77439d0826264766c96b77ea699e43f4a2e94b9c9059b51a31f6",
+      "name": "README-Day7.md",
+      "size": 2819
+    },
+    {
+      "browser_download_url": "https://github.com/Liangbai2333/tongzhang/releases/download/alpha-day7-20261029/SHA256SUMS.txt",
+      "digest": "sha256:586e6e6fc4edfd8b82c1c360e770924f0aafe40020ec1e356e370ccce6e15e9c",
+      "name": "SHA256SUMS.txt",
+      "size": 197
+    },
+    {
+      "browser_download_url": "https://github.com/Liangbai2333/tongzhang/releases/download/alpha-day7-20261029/tongzhang-Day7-arm64-debug.apk",
+      "digest": "sha256:44032027a84452e3b5485e95acba0e656f335686fb32f49483aad55dc9112f91",
+      "name": "tongzhang-Day7-arm64-debug.apk",
+      "size": 99547334
+    },
+    {
+      "browser_download_url": "https://github.com/Liangbai2333/tongzhang/releases/download/alpha-day7-20261029/tongzhang-Day7-source-df4d773.zip",
+      "digest": "sha256:187a98e03e5232fd81027e2be026adc85b54fe023c31703748ed91c2b24e0490",
+      "name": "tongzhang-Day7-source-df4d773.zip",
+      "size": 64764789
+    }
+  ],
+  "draft": false,
+  "html_url": "https://github.com/Liangbai2333/tongzhang/releases/tag/alpha-day7-20261029",
+  "prerelease": true,
+  "target_commitish": "df4d773c8d724b0cf453b0baa0764f6871f1a103"
+}

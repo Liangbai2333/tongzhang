@@ -1,5 +1,7 @@
 # App 操作手册
 
+Day7 固定交付候选 `df4d773` 的新安装、完整原生流程、下载包与可复现启动说明见 [最终交付](day7-delivery-acceptance.md)。以下Day6引用保留历史归属；后续工程细化不自动继承原生验收结果。
+
 文档按 `1d5709f`（2026-10-29）源码复核，Day7 当前验证与交付边界见 [最终复核记录](day7-final-review.md)。完整双账号原生路径仍引用 [Day6 #58/#59](issues58-59-final-acceptance.md)，冷启动与权限证据见 [#60](issue60-native-candidate-validation.md)；当前个人中心及界面增量截图来自 [PR #80](https://github.com/Liangbai2333/tongzhang/pull/80)，不代表重新完成整条原生主链。接口见[索引](api-reference.md)，能力边界见[已知限制](known-limitations.md)。
 
 ## 安装、启动与登录

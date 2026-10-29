@@ -1,0 +1,10 @@
+ status | version 
+--------+---------
+ ACTIVE |       3
+(1 row)
+
+ batches_after_preview 
+-----------------------
+                     0
+(1 row)
+

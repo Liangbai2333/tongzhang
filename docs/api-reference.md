@@ -1,6 +1,6 @@
 # 当前接口索引
 
-适用候选 `bade612`，2026-10-28 按 [endpoints.ts](../packages/contracts/src/endpoints.ts) 的全部 30 项登记、字段 Schema 与实际 service 重新走查；[逐项结果和证据归属](issue61-candidate-documentation-validation.md#30-项接口走查)。contracts、服务端实现与迁移相对 #49 的 `7616adb` 未变，Day6 更新集中于移动端认证恢复。入口使用说明见 [App 手册](app-user-guide.md)，当前主链原生证据见 [#58/#59](issues58-59-final-acceptance.md)。登记契约不表示已实现；下表明确列出 501 项。
+Day7 固定交付候选 `df4d773` 的30项登记方法、路径、成功码、认证、幂等和路由已重新对照通过，见 [最终交付核对](day7-delivery-acceptance.md)。此前完整字段与service走查见 [#61历史结果](issue61-candidate-documentation-validation.md#30-项接口走查)；Day7已有UUID规范化、公共游标及校验细化，不再声称实现与Day5完全未变。UUID经契约规范化为小写，接口形状和下表登记保持一致；不把后续工程改动自动计入固定包原生验收。登记不等于实现，501项仍按下表明确列出。
 
 ## 通用协议与安全边界
 

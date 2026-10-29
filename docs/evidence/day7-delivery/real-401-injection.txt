@@ -1,0 +1,6 @@
+UPDATE 2
+ expenses 
+----------
+        0
+(1 row)
+
