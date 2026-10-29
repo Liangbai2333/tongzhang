@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { MAX_EXPENSE_CENTS } from '@tongzhang/domain';
-export const uuidSchema = z.uuid();
+/** PostgreSQL compares UUIDs case-insensitively; normalize once so locks, hashes and ID comparisons agree. */
+export const uuidSchema = z.uuid().overwrite((value) => value.toLowerCase());
 export const instantSchema = z.iso.datetime({ offset: true });
 export const localDateSchema = z.iso.date();
 /** Integer cents as a decimal string, within PostgreSQL BIGINT. */

@@ -30,7 +30,6 @@ function requireRegistrarRole(access: LedgerAccess, payerMemberId: string) {
 
 export function createGetSettlement(db: Orm): Handler<'getSettlement'> {
   return async (input, context) => {
-    if (!context.principal) throw new AppError('UNAUTHENTICATED', '请先登录', 401);
     const userId = context.principal.userId;
     return db.transaction(
       async (tx) => {
@@ -45,19 +44,16 @@ export function createGetSettlement(db: Orm): Handler<'getSettlement'> {
 
 export function createMarkTransferPaid(db: Orm): Handler<'markTransferPaid'> {
   return async (input, context) => {
-    if (!context.principal) throw new AppError('UNAUTHENTICATED', '请先登录', 401);
-    if (!context.idempotencyKey)
-      throw new AppError('VALIDATION_ERROR', '缺少有效的 Idempotency-Key', 400);
     const userId = context.principal.userId;
-    const ledgerId = input.params.ledgerId.toLowerCase();
-    const transferId = input.params.transferId.toLowerCase();
+    const ledgerId = input.params.ledgerId;
+    const transferId = input.params.transferId;
     const result = await withTransaction(db, (tx) =>
       executeIdempotent(
         tx,
         {
           userId,
           operation: `POST /api/v1/ledgers/${ledgerId}/settlement/transfers/${transferId}/paid`,
-          key: context.idempotencyKey!,
+          key: context.idempotencyKey,
           request: { ledgerId, transferId, body: input.body },
           responseStatus: 200,
           authorize: async () => {
@@ -110,18 +106,15 @@ export function createMarkTransferPaid(db: Orm): Handler<'markTransferPaid'> {
 
 export function createSettleLedger(db: Orm): Handler<'settleLedger'> {
   return async (input, context) => {
-    if (!context.principal) throw new AppError('UNAUTHENTICATED', '请先登录', 401);
-    if (!context.idempotencyKey)
-      throw new AppError('VALIDATION_ERROR', '缺少有效的 Idempotency-Key', 400);
     const userId = context.principal.userId;
-    const ledgerId = input.params.ledgerId.toLowerCase();
+    const ledgerId = input.params.ledgerId;
     const result = await withTransaction(db, (tx) =>
       executeIdempotent(
         tx,
         {
           userId,
           operation: `POST /api/v1/ledgers/${ledgerId}/settle`,
-          key: context.idempotencyKey!,
+          key: context.idempotencyKey,
           request: { ledgerId },
           responseStatus: 200,
           authorize: async () => requireCreator(await requireLedgerMember(tx, ledgerId, userId)),

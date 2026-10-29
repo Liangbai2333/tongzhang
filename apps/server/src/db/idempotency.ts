@@ -48,8 +48,10 @@ export async function executeIdempotent<T>(
   scope: IdempotencyScope,
   work: () => Promise<T>,
 ): Promise<{ body: T; statusCode: number; replayed: boolean }> {
-  if (!uuidSchema.safeParse(scope.key).success || !scope.operation || scope.operation.length > 160)
+  const parsedKey = uuidSchema.safeParse(scope.key);
+  if (!parsedKey.success || !scope.operation || scope.operation.length > 160)
     throw new AppError('VALIDATION_ERROR', '缺少有效的幂等请求标识', 400);
+  const key = parsedKey.data;
   if (
     !Number.isInteger(scope.responseStatus) ||
     scope.responseStatus < 200 ||
@@ -57,12 +59,12 @@ export async function executeIdempotent<T>(
   )
     throw new Error('Idempotency only stores successful responses');
   const hash = hashIdempotencyRequest(scope.request);
-  await lockIdempotencyKey(tx, scope.userId, scope.operation, scope.key);
+  await lockIdempotencyKey(tx, scope.userId, scope.operation, key);
   await scope.authorize();
   const match = and(
     eq(idempotencyKeys.userId, scope.userId),
     eq(idempotencyKeys.operation, scope.operation),
-    eq(idempotencyKeys.key, scope.key),
+    eq(idempotencyKeys.key, key),
   );
   const [existing] = await tx.select().from(idempotencyKeys).where(match).limit(1);
   const now = new Date();
@@ -87,7 +89,7 @@ export async function executeIdempotent<T>(
   await tx.insert(idempotencyKeys).values({
     userId: scope.userId,
     operation: scope.operation,
-    key: scope.key,
+    key,
     requestHash: hash,
     responseStatus: scope.responseStatus,
     responseBody: jsonBody,
@@ -96,7 +98,7 @@ export async function executeIdempotent<T>(
   });
   return { body, statusCode: scope.responseStatus, replayed: false };
 }
-/** Acquire before the ledger lock; lookup and result insert stay in the same tx. */
+/** Acquire before the ledger lock; lookup and result insert stay in the same tx. IDs are uuidSchema-normalized. */
 export const lockIdempotencyKey = (
   tx: Transaction,
   userId: string,
@@ -105,5 +107,5 @@ export const lockIdempotencyKey = (
 ) =>
   tx.execute(
     // PostgreSQL UUID equality ignores case; the lock must use the same identity.
-    sql`SELECT pg_advisory_xact_lock(hashtextextended(${JSON.stringify([userId.toLowerCase(), operation, key.toLowerCase()])}, 0))`,
+    sql`SELECT pg_advisory_xact_lock(hashtextextended(${JSON.stringify([userId, operation, key])}, 0))`,
   );

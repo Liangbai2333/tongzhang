@@ -7,7 +7,7 @@ import {
   type Operation,
   type EndpointParsedInput,
 } from '@tongzhang/contracts';
-import type { Authenticator, Handler, ServiceContext } from './context.js';
+import type { Authenticator, Handler, Principal, ServiceContext } from './context.js';
 import { AppError } from './errors.js';
 export function registerOperation<K extends Operation>(
   app: FastifyInstance,
@@ -51,15 +51,19 @@ export function registerOperation<K extends Operation>(
       reply.header('Cache-Control', 'no-store');
     },
     handler: async (request, reply) => {
-      const context: ServiceContext = {
-        requestId: request.id,
-        principal: request.principal ?? null,
-      };
+      let idempotencyKey: string | undefined;
       if (endpoint.idempotent) {
         const key = uuidSchema.safeParse(request.headers['idempotency-key']);
         if (!key.success) throw new AppError('VALIDATION_ERROR', '缺少有效的 Idempotency-Key', 400);
-        context.idempotencyKey = key.data;
+        idempotencyKey = key.data;
       }
+      // onRequest has authenticated (or rejected) every authenticated endpoint, and the
+      // key was validated above, so the per-endpoint guarantees of ServiceContext<K> hold.
+      const context = {
+        requestId: request.id,
+        principal: request.principal ?? null,
+        idempotencyKey,
+      } as ServiceContext<K>;
       let body: unknown = request.body;
       let file: unknown;
       if (endpoint.transport === 'multipart') {
@@ -108,6 +112,6 @@ declare module 'fastify' {
     authenticate: Authenticator;
   }
   interface FastifyRequest {
-    principal?: ServiceContext['principal'];
+    principal?: Principal;
   }
 }

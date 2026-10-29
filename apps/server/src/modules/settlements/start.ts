@@ -13,18 +13,15 @@ import { toSettlementDto } from './mapper.js';
 
 export function createStartSettlement(db: Orm): Handler<'startSettlement'> {
   return async (input, context) => {
-    if (!context.principal) throw new AppError('UNAUTHENTICATED', '请先登录', 401);
-    if (!context.idempotencyKey)
-      throw new AppError('VALIDATION_ERROR', '缺少有效的 Idempotency-Key', 400);
     const userId = context.principal.userId;
-    const ledgerId = input.params.ledgerId.toLowerCase();
+    const ledgerId = input.params.ledgerId;
     const result = await withTransaction(db, (tx) =>
       executeIdempotent(
         tx,
         {
           userId,
           operation: `POST /api/v1/ledgers/${ledgerId}/settlement`,
-          key: context.idempotencyKey!,
+          key: context.idempotencyKey,
           request: { ledgerId, body: input.body },
           responseStatus: 201,
           authorize: async () => {

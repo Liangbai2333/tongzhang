@@ -1,6 +1,5 @@
 import type { Handler } from '../../http/context.js';
 import type { Orm } from '../../db/transaction.js';
-import { AppError } from '../../http/errors.js';
 import { computeBalances, readLedgerSnapshot, toBalanceDto } from '../balances/index.js';
 
 import { requireActive } from '../ledgers/index.js';
@@ -22,7 +21,6 @@ export function createSettlementsService(db: Orm): SettlementsService {
      * Read-only preview. It never writes batches/transfers, never bumps the version and never freezes.
      */
     previewSettlement: async (input, context) => {
-      if (!context.principal) throw new AppError('UNAUTHENTICATED', '请先登录', 401);
       const snapshot = await readLedgerSnapshot(
         db,
         input.params.ledgerId,

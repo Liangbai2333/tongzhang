@@ -33,21 +33,18 @@ export function createExpensesService(
   receipts: ReceiptBinder = receiptBinder,
 ): ExpensesService {
   const createExpense: Handler<'createExpense'> = async (input, context) => {
-    if (!context.principal) throw new AppError('UNAUTHENTICATED', '请先登录', 401);
-    if (!context.idempotencyKey)
-      throw new AppError('VALIDATION_ERROR', '缺少有效的 Idempotency-Key', 400);
     const userId = context.principal.userId;
     const { ledgerId } = input.params;
-    const rawBody = input.body;
+    const body = input.body;
 
     const result = await withTransaction(db, (tx) =>
       executeIdempotent(
         tx,
         {
           userId,
-          operation: `POST /api/v1/ledgers/${ledgerId.toLowerCase()}/expenses`,
-          key: context.idempotencyKey!,
-          request: { ledgerId: ledgerId.toLowerCase(), body: rawBody },
+          operation: `POST /api/v1/ledgers/${ledgerId}/expenses`,
+          key: context.idempotencyKey,
+          request: { ledgerId, body },
           responseStatus: 201,
           // Membership is re-checked even before a replay.
           authorize: async () => {
@@ -55,14 +52,6 @@ export function createExpensesService(
           },
         },
         async () => {
-          // PostgreSQL treats UUID case-insensitively; normalize before any comparison or lookup.
-          const body = {
-            ...rawBody,
-            payerMemberId: rawBody.payerMemberId.toLowerCase(),
-            splits: rawBody.splits.map((s) => ({ ...s, memberId: s.memberId.toLowerCase() })),
-          } as typeof rawBody;
-          if (new Set(body.splits.map((s) => s.memberId)).size !== body.splits.length)
-            throw new AppError('VALIDATION_ERROR', '分摊成员不能重复', 400);
           // Ledger lock: serialises with settlement start/freeze and other writers.
           const [ledger] = await tx
             .select({ id: ledgers.id })
@@ -193,7 +182,6 @@ export function createExpensesService(
   };
 
   const listExpenses: Handler<'listExpenses'> = async (input, context) => {
-    if (!context.principal) throw new AppError('UNAUTHENTICATED', '请先登录', 401);
     const userId = context.principal.userId;
     return db.transaction(
       async (tx) => {
@@ -205,7 +193,6 @@ export function createExpensesService(
   };
 
   const getExpense: Handler<'getExpense'> = async (input, context) => {
-    if (!context.principal) throw new AppError('UNAUTHENTICATED', '请先登录', 401);
     const userId = context.principal.userId;
     const { ledgerId, expenseId } = input.params;
     return db.transaction(

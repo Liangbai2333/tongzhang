@@ -56,9 +56,6 @@ const encodeCursor = (at: string, id: string) =>
 
 export function createLedgersService(db: Orm): LedgersService {
   const createLedger: Handler<'createLedger'> = async (input, context) => {
-    if (!context.principal) throw new AppError('UNAUTHENTICATED', '请先登录', 401);
-    if (!context.idempotencyKey)
-      throw new AppError('VALIDATION_ERROR', '缺少有效的 Idempotency-Key', 400);
     const userId = context.principal.userId;
     const body = input.body;
 
@@ -68,7 +65,7 @@ export function createLedgersService(db: Orm): LedgersService {
         {
           userId,
           operation: 'POST /api/v1/ledgers',
-          key: context.idempotencyKey!,
+          key: context.idempotencyKey,
           request: { body },
           responseStatus: 201,
           // Creating a ledger needs only a signed-in user; there is no ledger to check yet.
@@ -122,7 +119,6 @@ export function createLedgersService(db: Orm): LedgersService {
   };
 
   const listLedgers: Handler<'listLedgers'> = async (input, context) => {
-    if (!context.principal) throw new AppError('UNAUTHENTICATED', '请先登录', 401);
     const userId = context.principal.userId;
     const { archived, limit, cursor } = input.query;
     const after = cursor ? decodeCursor(cursor) : null;
@@ -165,7 +161,6 @@ export function createLedgersService(db: Orm): LedgersService {
   };
 
   const getLedger: Handler<'getLedger'> = async (input, context) => {
-    if (!context.principal) throw new AppError('UNAUTHENTICATED', '请先登录', 401);
     const userId = context.principal.userId;
     return db.transaction(async (tx) => {
       // Membership first: a stranger gets the same 403 for missing and foreign ledgers.
@@ -194,7 +189,6 @@ export function createLedgersService(db: Orm): LedgersService {
   };
 
   const listMembers: Handler<'listMembers'> = async (input, context) => {
-    if (!context.principal) throw new AppError('UNAUTHENTICATED', '请先登录', 401);
     const userId = context.principal.userId;
     return db.transaction(async (tx) => {
       await requireLedgerMember(tx, input.params.ledgerId, userId);
@@ -208,18 +202,15 @@ export function createLedgersService(db: Orm): LedgersService {
   };
 
   const archiveLedger: Handler<'archiveLedger'> = async (input, context) => {
-    if (!context.principal) throw new AppError('UNAUTHENTICATED', '请先登录', 401);
-    if (!context.idempotencyKey)
-      throw new AppError('VALIDATION_ERROR', '缺少有效的 Idempotency-Key', 400);
     const userId = context.principal.userId;
-    const ledgerId = input.params.ledgerId.toLowerCase();
+    const ledgerId = input.params.ledgerId;
     const result = await withTransaction(db, (tx) =>
       executeIdempotent(
         tx,
         {
           userId,
           operation: `POST /api/v1/ledgers/${ledgerId}/archive`,
-          key: context.idempotencyKey!,
+          key: context.idempotencyKey,
           request: { ledgerId },
           responseStatus: 200,
           authorize: async () => {

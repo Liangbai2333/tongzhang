@@ -17,7 +17,7 @@ export const receiptBinder: ReceiptBinder = {
       .from(imageAssets)
       .where(eq(imageAssets.id, input.imageId))
       .for('update');
-    if (!image || image.uploadedByUserId !== input.userId.toLowerCase())
+    if (!image || image.uploadedByUserId !== input.userId)
       throw new AppError('FORBIDDEN', '你没有权限使用此图片', 403);
     if (image.kind !== 'RECEIPT' || image.ledgerId !== null)
       throw new AppError('IMAGE_INVALID', '请使用尚未绑定的收据图片', 400);
@@ -48,7 +48,7 @@ export async function bindCover(
     .from(imageAssets)
     .where(eq(imageAssets.id, input.imageId))
     .for('update');
-  if (!image || image.uploadedByUserId !== input.userId.toLowerCase())
+  if (!image || image.uploadedByUserId !== input.userId)
     throw new AppError('FORBIDDEN', '你没有权限使用此图片', 403);
   if (image.kind !== 'COVER' || image.ledgerId !== null)
     throw new AppError('IMAGE_INVALID', '请使用尚未绑定的封面图片', 400);

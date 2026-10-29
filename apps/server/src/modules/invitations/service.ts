@@ -19,11 +19,6 @@ export interface InvitationsService {
 const invalidCode = () => new AppError('INVITE_INVALID', '邀请码无效，请核对后重试', 400);
 const expiredCode = () => new AppError('INVITE_EXPIRED', '邀请码已过期，请联系创建者重新生成', 409);
 
-function requireUser(context: { principal: { userId: string } | null }) {
-  if (!context.principal) throw new AppError('UNAUTHENTICATED', '请先登录', 401);
-  return context.principal.userId;
-}
-
 /** A revoked (replaced) code is indistinguishable from one that never existed. */
 async function findInvitation(db: DatabaseExecutor, code: string) {
   const [row] = await db
@@ -42,7 +37,7 @@ async function findInvitation(db: DatabaseExecutor, code: string) {
 
 export function createInvitationsService(db: Orm): InvitationsService {
   const getInvitation: Handler<'getInvitation'> = async (input, context) => {
-    const userId = requireUser(context);
+    const userId = context.principal.userId;
     const { ledgerId } = input.params;
     const access = await requireLedgerMember(db, ledgerId, userId);
     requireCreator(access);
@@ -56,17 +51,15 @@ export function createInvitationsService(db: Orm): InvitationsService {
   };
 
   const resetInvitation: Handler<'resetInvitation'> = async (input, context) => {
-    const userId = requireUser(context);
-    if (!context.idempotencyKey)
-      throw new AppError('VALIDATION_ERROR', '缺少有效的 Idempotency-Key', 400);
-    const ledgerId = input.params.ledgerId.toLowerCase();
+    const userId = context.principal.userId;
+    const ledgerId = input.params.ledgerId;
     const result = await withTransaction(db, (tx) =>
       executeIdempotent(
         tx,
         {
           userId,
           operation: `POST /api/v1/ledgers/${ledgerId}/invitation/reset`,
-          key: context.idempotencyKey!,
+          key: context.idempotencyKey,
           request: { ledgerId },
           responseStatus: 200,
           authorize: async () => {
@@ -107,7 +100,7 @@ export function createInvitationsService(db: Orm): InvitationsService {
   };
 
   const previewJoin: Handler<'previewJoin'> = async (input, context) => {
-    const userId = requireUser(context);
+    const userId = context.principal.userId;
     // Read-only: no lock, no write, no idempotency key.
     return db.transaction(
       async (tx) => {
@@ -150,9 +143,7 @@ export function createInvitationsService(db: Orm): InvitationsService {
   };
 
   const joinLedger: Handler<'joinLedger'> = async (input, context) => {
-    const userId = requireUser(context);
-    if (!context.idempotencyKey)
-      throw new AppError('VALIDATION_ERROR', '缺少有效的 Idempotency-Key', 400);
+    const userId = context.principal.userId;
     const code = input.body.code;
     const result = await withTransaction(db, (tx) =>
       executeIdempotent(
@@ -160,7 +151,7 @@ export function createInvitationsService(db: Orm): InvitationsService {
         {
           userId,
           operation: 'POST /api/v1/invitations/join',
-          key: context.idempotencyKey!,
+          key: context.idempotencyKey,
           request: { code },
           responseStatus: 200,
           // Any signed-in user may present a code; the code itself is validated in the work step.

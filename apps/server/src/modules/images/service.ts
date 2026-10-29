@@ -15,7 +15,6 @@ export interface ImagesService {
 export function createImagesService(db: Orm): ImagesService {
   return {
     uploadImage: async (input, context) => {
-      if (!context.principal) throw new AppError('UNAUTHENTICATED', '请先登录', 401);
       const userId = context.principal.userId;
       // Optional ledgerId is a permission precheck, never a premature business binding.
       if (input.body.ledgerId)
@@ -35,7 +34,6 @@ export function createImagesService(db: Orm): ImagesService {
       return { data: { ...image!, ...metadata, byteSize: input.file.content.byteLength } };
     },
     getImage: async (input, context) => {
-      if (!context.principal) throw new AppError('UNAUTHENTICATED', '请先登录', 401);
       const userId = context.principal.userId;
       return db.transaction(
         async (tx) => {
