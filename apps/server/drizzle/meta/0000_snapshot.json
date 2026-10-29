@@ -1,9 +1,82 @@
 {
-  "id": "aebcecff-f39e-46cb-a927-f9bbf7a31211",
+  "id": "dd172655-cbbb-430f-ad79-504e2b18d556",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
+    "public.auth_refresh_tokens": {
+      "name": "auth_refresh_tokens",
+      "schema": "",
+      "columns": {
+        "token_hash": {
+          "name": "token_hash",
+          "type": "varchar(64)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "session_id": {
+          "name": "session_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "consumed_at": {
+          "name": "consumed_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "ix_auth_refresh_tokens_session": {
+          "name": "ix_auth_refresh_tokens_session",
+          "columns": [
+            {
+              "expression": "session_id",
+              "isExpression": false,
+              "asc": true,
+              "nulls": "last"
+            }
+          ],
+          "isUnique": false,
+          "concurrently": false,
+          "method": "btree",
+          "with": {}
+        }
+      },
+      "foreignKeys": {
+        "auth_refresh_tokens_session_id_auth_sessions_id_fk": {
+          "name": "auth_refresh_tokens_session_id_auth_sessions_id_fk",
+          "tableFrom": "auth_refresh_tokens",
+          "tableTo": "auth_sessions",
+          "columnsFrom": ["session_id"],
+          "columnsTo": ["id"],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {
+        "ck_auth_refresh_tokens_hash": {
+          "name": "ck_auth_refresh_tokens_hash",
+          "value": "token_hash ~ '^[0-9a-f]{64}$'"
+        },
+        "ck_auth_refresh_tokens_consumed": {
+          "name": "ck_auth_refresh_tokens_consumed",
+          "value": "consumed_at IS NULL OR consumed_at >= created_at"
+        }
+      },
+      "isRLSEnabled": false
+    },
     "public.auth_sessions": {
       "name": "auth_sessions",
       "schema": "",
@@ -18,12 +91,6 @@
         "user_id": {
           "name": "user_id",
           "type": "uuid",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "token_hash": {
-          "name": "token_hash",
-          "type": "varchar(64)",
           "primaryKey": false,
           "notNull": true
         },
@@ -96,19 +163,9 @@
           "columns": ["id"]
         }
       },
-      "uniqueConstraints": {
-        "uq_auth_sessions_token_hash": {
-          "name": "uq_auth_sessions_token_hash",
-          "nullsNotDistinct": false,
-          "columns": ["token_hash"]
-        }
-      },
+      "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {
-        "ck_auth_sessions_hash": {
-          "name": "ck_auth_sessions_hash",
-          "value": "token_hash ~ '^[0-9a-f]{64}$'"
-        },
         "ck_auth_sessions_expiry": {
           "name": "ck_auth_sessions_expiry",
           "value": "expires_at > created_at"

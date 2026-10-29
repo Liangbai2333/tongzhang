@@ -30,9 +30,6 @@ it('fails closed on missing settings, bad ports and unrestricted proxy trust wit
   expect(() => readEnv({ ...source, TRUST_PROXY: 'true' })).toThrow('TRUST_PROXY');
   expect(() => readEnv({ ...source, PGPORT: source.PGPASSWORD })).not.toThrow(source.PGPASSWORD);
   expect(readEnv({ ...source, TRUST_PROXY: '172.30.0.0/28' }).TRUST_PROXY).toBe('172.30.0.0/28');
-  expect(() =>
-    readEnv({ ...source, DATABASE_URL: 'postgresql://legacy:secret@localhost/db' }),
-  ).toThrow('DATABASE_URL 已停用');
 });
 it.each(['production', 'test'])('does not read a local .env in %s', (mode) => {
   vi.stubEnv('NODE_ENV', mode);

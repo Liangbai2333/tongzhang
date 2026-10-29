@@ -1,13 +1,19 @@
+CREATE TABLE "auth_refresh_tokens" (
+	"token_hash" varchar(64) PRIMARY KEY NOT NULL,
+	"session_id" uuid NOT NULL,
+	"consumed_at" timestamp with time zone,
+	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
+	CONSTRAINT "ck_auth_refresh_tokens_hash" CHECK (token_hash ~ '^[0-9a-f]{64}$'),
+	CONSTRAINT "ck_auth_refresh_tokens_consumed" CHECK (consumed_at IS NULL OR consumed_at >= created_at)
+);
+--> statement-breakpoint
 CREATE TABLE "auth_sessions" (
 	"id" uuid DEFAULT gen_random_uuid() NOT NULL,
 	"user_id" uuid NOT NULL,
-	"token_hash" varchar(64) NOT NULL,
 	"expires_at" timestamp with time zone NOT NULL,
 	"revoked_at" timestamp with time zone,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	CONSTRAINT "pk_auth_sessions" PRIMARY KEY("id"),
-	CONSTRAINT "uq_auth_sessions_token_hash" UNIQUE("token_hash"),
-	CONSTRAINT "ck_auth_sessions_hash" CHECK (token_hash ~ '^[0-9a-f]{64}$'),
 	CONSTRAINT "ck_auth_sessions_expiry" CHECK (expires_at > created_at),
 	CONSTRAINT "ck_auth_sessions_revoked" CHECK (revoked_at IS NULL OR revoked_at >= created_at)
 );
@@ -210,6 +216,7 @@ CREATE TABLE "users" (
 	CONSTRAINT "ck_users_password_hash" CHECK (password_hash LIKE '$argon2id$%')
 );
 --> statement-breakpoint
+ALTER TABLE "auth_refresh_tokens" ADD CONSTRAINT "auth_refresh_tokens_session_id_auth_sessions_id_fk" FOREIGN KEY ("session_id") REFERENCES "public"."auth_sessions"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "auth_sessions" ADD CONSTRAINT "fk_auth_sessions_user_id" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE restrict ON UPDATE restrict;--> statement-breakpoint
 ALTER TABLE "expense_images" ADD CONSTRAINT "fk_expense_images_ledger_id_expense_id" FOREIGN KEY ("ledger_id","expense_id") REFERENCES "public"."expenses"("ledger_id","id") ON DELETE restrict ON UPDATE restrict;--> statement-breakpoint
 ALTER TABLE "expense_images" ADD CONSTRAINT "fk_expense_images_ledger_id_image_id" FOREIGN KEY ("ledger_id","image_id") REFERENCES "public"."image_assets"("ledger_id","id") ON DELETE restrict ON UPDATE restrict;--> statement-breakpoint
@@ -236,6 +243,7 @@ ALTER TABLE "settlement_transfers" ADD CONSTRAINT "fk_settlement_transfers_ledge
 ALTER TABLE "settlement_transfers" ADD CONSTRAINT "fk_settlement_transfers_ledger_id_payer_member_id" FOREIGN KEY ("ledger_id","payer_member_id") REFERENCES "public"."ledger_members"("ledger_id","id") ON DELETE restrict ON UPDATE restrict;--> statement-breakpoint
 ALTER TABLE "settlement_transfers" ADD CONSTRAINT "fk_settlement_transfers_ledger_id_payee_member_id" FOREIGN KEY ("ledger_id","payee_member_id") REFERENCES "public"."ledger_members"("ledger_id","id") ON DELETE restrict ON UPDATE restrict;--> statement-breakpoint
 ALTER TABLE "settlement_transfers" ADD CONSTRAINT "fk_settlement_transfers_ledger_id_registered_by_member_id" FOREIGN KEY ("ledger_id","registered_by_member_id") REFERENCES "public"."ledger_members"("ledger_id","id") ON DELETE restrict ON UPDATE restrict;--> statement-breakpoint
+CREATE INDEX "ix_auth_refresh_tokens_session" ON "auth_refresh_tokens" USING btree ("session_id");--> statement-breakpoint
 CREATE INDEX "ix_auth_sessions_user" ON "auth_sessions" USING btree ("user_id");--> statement-breakpoint
 CREATE INDEX "ix_auth_sessions_expiry" ON "auth_sessions" USING btree ("expires_at");--> statement-breakpoint
 CREATE INDEX "ix_expense_splits_member" ON "expense_splits" USING btree ("ledger_id","member_id");--> statement-breakpoint

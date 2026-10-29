@@ -17,8 +17,6 @@ const envSchema = z.object({
 
 export type Env = z.infer<typeof envSchema>;
 export function readEnv(source: NodeJS.ProcessEnv = process.env): Env {
-  if (source.DATABASE_URL)
-    throw new Error('DATABASE_URL 已停用，请配置 PGHOST/PGPORT/PGUSER/PGPASSWORD/PGDATABASE。');
   const result = envSchema.safeParse(source);
   if (!result.success) {
     // Configuration errors must not print credentials or the original input.

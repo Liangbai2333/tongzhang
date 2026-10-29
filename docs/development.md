@@ -44,9 +44,9 @@ Compose 的 `--env-file` 给 `${变量}` 提供值，只有 `environment` 显式
 
 生产只定义一次 `POSTGRES_USER`、`POSTGRES_PASSWORD`、`POSTGRES_DB`，Compose 将其分别映射给 PostgreSQL 和 API 的 `PG*` 变量。密码直接传给数据库驱动，无需 URL 编码。含 `$` 的 dotenv 值用单引号包裹，其他引号按 dotenv 规则转义。
 
-生产首次部署须在 `infra/.env` 设置独立随机 `AUTH_JWT_SECRET`，可用 `node -e "console.log(require('node:crypto').randomBytes(32).toString('hex'))"` 生成并妥善保存。Compose 显式注入 API 与迁移容器，不注入 PostgreSQL 或移动端；不得使用测试密钥。已有本地环境拉取变更后执行 `pnpm setup:env`、`pnpm migrate:db`；新迁移撤销旧单令牌会话，所有旧客户端需要重新登录。
+生产首次部署须在 `infra/.env` 设置独立随机 `AUTH_JWT_SECRET`，可用 `node -e "console.log(require('node:crypto').randomBytes(32).toString('hex'))"` 生成并妥善保存。Compose 显式注入 API 与迁移容器，不注入 PostgreSQL 或移动端；不得使用测试密钥。已有本地环境拉取变更后执行 `pnpm setup:env`、`pnpm migrate:db`。
 
-旧版 `DATABASE_URL` 已停用；已有开发文件需要拆成上述五个 `PG*` 参数，并移除旧变量。`TEST_DATABASE_URL` 专供真实数据库测试，不是应用运行配置。
+数据库连接只使用上述五个 `PG*` 参数，不读取 `DATABASE_URL`。`TEST_DATABASE_URL` 专供真实数据库测试，不是应用运行配置。
 
 数据库镜像的初始化变量只在空数据卷首次初始化时生效。修改 `.env` 不会自动修改已有数据库的用户或口令；需要显式修改数据库并同步配置，不能通过删卷解决。
 
