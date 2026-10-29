@@ -40,7 +40,7 @@ export function ArchiveLedgerSheet({
       }}
       onDone={() => {
         void client.invalidateQueries({ queryKey: ['user', userId] });
-        router.replace({ pathname: '/ledgers', params: { archivedNotice: ledger.id } });
+        router.dismissTo({ pathname: '/ledgers', params: { archivedNotice: ledger.id } });
       }}
       onCancel={onCancel}
     >

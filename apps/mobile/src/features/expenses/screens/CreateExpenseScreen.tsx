@@ -12,7 +12,7 @@ import { Sheet } from '@/components/Sheet';
 import { Touch } from '@/components/Touch';
 import { InlineError, RequestState, requestErrorMessage } from '@/components/Feedback';
 import { useAuth } from '@/providers/AuthProvider';
-import { useOnlineQuery } from '@/lib/use-online-query';
+import { blocksContent, useOnlineQuery } from '@/lib/use-online-query';
 import { useIdempotentWrite } from '@/lib/use-idempotent-write';
 import { ledgersApi } from '@/features/ledgers/api';
 import { ledgersKeys } from '@/features/ledgers/query-keys';
@@ -46,7 +46,7 @@ export default function CreateExpenseScreen() {
     () => ledgersApi.getLedger({ params: { ledgerId }, query: {}, body: undefined }),
     valid,
   );
-  const loading = valid && (query.isPending || query.isFetching);
+  const loading = valid && blocksContent(query);
   if (!valid || loading || query.isError || !query.data)
     return (
       <Screen title="记一笔" variant="ledger">

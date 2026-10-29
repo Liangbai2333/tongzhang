@@ -1,6 +1,4 @@
 // Original Figma exports: list glyphs from Screen 5:358 (09.01), panel icons from Icons 121:17.
-import ledger from '../../assets/figma/281c6.svg';
-import history from '../../assets/figma/ab1c0.svg';
 import user from '../../assets/figma/a5b01.svg';
 import settings from '../../assets/figma/9ce9a.svg';
 import about from '../../assets/figma/61916.svg';
@@ -12,8 +10,6 @@ import lock from '../../assets/figma/fc0fc.svg';
 import note from '../../assets/figma/dde5f.svg';
 
 export const profileAssets = {
-  ledger: { source: ledger, width: 20, height: 20 },
-  history: { source: history, width: 20, height: 20 },
   user: { source: user, width: 20, height: 20 },
   settings: { source: settings, width: 20, height: 20 },
   about: { source: about, width: 20, height: 20 },

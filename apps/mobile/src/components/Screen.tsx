@@ -28,6 +28,7 @@ export function Screen({
   refreshing = false,
   onRefresh,
   onBack,
+  tabRoot = false,
 }: PropsWithChildren<{
   title?: string;
   footer?: ReactNode;
@@ -39,9 +40,11 @@ export function Screen({
   refreshing?: boolean;
   onRefresh?: () => void;
   onBack?: () => void;
+  /** A (tabs) screen: the persistent tab bar owns the bottom safe area. */
+  tabRoot?: boolean;
 }>) {
   return (
-    <SafeAreaView style={styles.root} edges={['top', 'bottom']}>
+    <SafeAreaView style={styles.root} edges={tabRoot ? ['top'] : ['top', 'bottom']}>
       <KeyboardAvoidingView
         style={styles.root}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}

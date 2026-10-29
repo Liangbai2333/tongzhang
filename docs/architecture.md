@@ -224,7 +224,7 @@ apps/mobile/app/
         └── app.tsx
 ```
 
-当前认证阶段的已登录落点为 `(app)/account.tsx`，展示真实 `getMe` 账号信息并提供退出入口；账本与主导航由后续模块接通。未登录区域为 `(auth)/welcome.tsx`、`login.tsx`、`register.tsx`；根 Stack 使用 Protected 守卫，恢复与网络错误在根容器显示，不独立建立路由。
+当前已登录区域的主导航为 `(app)/(tabs)`：`ledgers.tsx`（账本）与 `account.tsx`（我的）由底部标签切换，标签栏常驻且两页保持挂载；账本详情等页面在 `(app)` Stack 中推入并隐藏标签栏，返回列表使用 `router.dismissTo`。未登录区域为 `(auth)/welcome.tsx`、`login.tsx`、`register.tsx`；根 Stack 使用 Protected 守卫，恢复与网络错误在根容器显示，不独立建立路由。
 
 路由文件只读取参数、组装导航并导出业务 Screen；不在里面写金额算法、请求实现或大段表单。
 

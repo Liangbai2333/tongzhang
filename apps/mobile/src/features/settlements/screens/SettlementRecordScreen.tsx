@@ -13,7 +13,7 @@ import { Screen, ui } from '@/components/Screen';
 import { Touch } from '@/components/Touch';
 import { Button } from '@/components/Button';
 import { InlineError, RequestState } from '@/components/Feedback';
-import { useOnlineQuery } from '@/lib/use-online-query';
+import { blocksContent, useOnlineQuery } from '@/lib/use-online-query';
 import { useAuth } from '@/providers/AuthProvider';
 import { ledgersApi } from '@/features/ledgers/api';
 import { yuan } from '@/features/ledgers/presentation';
@@ -57,7 +57,7 @@ export default function SettlementRecordScreen({
   const copyLock = useRef(false);
   const [copyError, setCopyError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
-  const loading = query.isPending || query.isFetching;
+  const loading = blocksContent(query);
   const record =
     !query.isError && !loading
       ? query.data?.settlement

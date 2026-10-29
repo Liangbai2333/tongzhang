@@ -2,10 +2,10 @@ import { useCallback, useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { useInfiniteQuery } from '@tanstack/react-query';
+import { blocksContent } from '@/lib/use-online-query';
 import { Screen, ui } from '@/components/Screen';
 import { Button } from '@/components/Button';
 import { Touch } from '@/components/Touch';
-import { MainTabs } from '@/components/MainTabs';
 import { EmptyState, InlineError, RequestState, requestErrorMessage } from '@/components/Feedback';
 import { useAuth } from '@/providers/AuthProvider';
 import { FigmaAsset } from '@/icons/FigmaAsset';
@@ -21,7 +21,8 @@ export default function LedgerListScreen() {
   const { user } = useAuth();
   const { archivedNotice, view } = useLocalSearchParams<{
     archivedNotice?: string;
-    view?: 'archived';
+    /** Set by other tabs; the list stays mounted, so later values must be followed too. */
+    view?: 'archived' | 'current';
   }>();
   const [menu, setMenu] = useState(false);
   const [archived, setArchived] = useState(view === 'archived');
@@ -48,7 +49,7 @@ export default function LedgerListScreen() {
       void refetch();
     }, [refetch, archived]),
   );
-  const loading = query.isPending || query.isRefetching;
+  const loading = blocksContent(query);
   const failed = query.isError && !query.isFetchNextPageError;
   const ledgers = query.data?.pages.flatMap((page) => page.data) ?? [];
   const hour = new Date().getHours();
@@ -64,7 +65,7 @@ export default function LedgerListScreen() {
           <FigmaAsset asset={ledgerAssets.homeAdd} />
         </Touch>
       }
-      footer={<MainTabs active="ledgers" />}
+      tabRoot
       refreshing={query.isRefetching}
       onRefresh={() => {
         void refetch();
@@ -104,7 +105,10 @@ export default function LedgerListScreen() {
             accessibilityLabel="返回当前账本"
             style={styles.refresh}
             disabled={query.isFetching}
-            onPress={() => setArchived(false)}
+            onPress={() => {
+              setArchived(false);
+              router.setParams({ view: 'current' });
+            }}
           >
             <Text style={ui.caption}>返回当前账本</Text>
           </Touch>

@@ -5,6 +5,7 @@ import { router } from 'expo-router';
 import type { EndpointOutput } from '@tongzhang/contracts';
 import CreateLedgerScreen from '../src/features/ledgers/screens/CreateLedgerScreen';
 import LedgerListScreen from '../src/features/ledgers/screens/LedgerListScreen';
+import { MainTabBar } from '../src/components/MainTabs';
 import LedgerDetailScreen from '../src/features/ledgers/screens/LedgerDetailScreen';
 import JoinLedgerScreen from '../src/features/invitations/screens/JoinLedgerScreen';
 import InvitationScreen from '../src/features/invitations/screens/InvitationScreen';
@@ -19,7 +20,7 @@ import { setStringAsync } from 'expo-clipboard';
 
 const userId = '00000000-0000-4000-8000-000000000001';
 const ledgerId = '00000000-0000-4000-8000-000000000002';
-const mockParams = { ledgerId };
+const mockParams: { ledgerId: string; view?: 'archived' | 'current' } = { ledgerId };
 let mockKeyNumber = 0;
 jest.mock('../src/providers/AuthProvider', () => ({ useAuth: () => ({ user: { id: userId } }) }));
 jest.mock('../src/features/ledgers/api', () => ({
@@ -52,7 +53,14 @@ jest.mock('../src/lib/api', () => ({ createIdempotencyKey: () => `key-${++mockKe
 jest.mock('expo-clipboard', () => ({ setStringAsync: jest.fn() }));
 jest.mock('react-native-qrcode-svg', () => () => null);
 jest.mock('expo-router', () => ({
-  router: { canGoBack: () => true, back: jest.fn(), replace: jest.fn(), push: jest.fn() },
+  router: {
+    canGoBack: () => true,
+    back: jest.fn(),
+    replace: jest.fn(),
+    push: jest.fn(),
+    dismissTo: jest.fn(),
+    setParams: jest.fn(),
+  },
   Stack: { Screen: () => null },
   useLocalSearchParams: () => mockParams,
   useFocusEffect: (callback: () => void) =>
@@ -162,7 +170,41 @@ describe('ledger pages with isolated API callbacks (no database/native claim)', 
     await userEvent.press(screen.getByRole('button', { name: '创建或加入账本' }));
     await userEvent.press(screen.getByRole('button', { name: '有邀请码？加入账本' }));
     expect(router.push).toHaveBeenLastCalledWith('/invitations/join');
+  });
+  it('keeps the selected tab in a persistent bar and switches tabs without a page push', async () => {
+    const navigation = { emit: jest.fn(() => ({ defaultPrevented: false })), navigate: jest.fn() };
+    const state = {
+      index: 0,
+      routes: [
+        { key: 'ledgers-key', name: 'ledgers' },
+        { key: 'account-key', name: 'account' },
+      ],
+    };
+    await render(
+      <MainTabBar
+        state={state as never}
+        navigation={navigation as never}
+        descriptors={{}}
+        insets={{ top: 0, bottom: 34, left: 0, right: 0 }}
+      />,
+    );
     expect(screen.getByRole('tab', { name: '账本', selected: true })).toBeOnTheScreen();
+    await userEvent.press(screen.getByRole('tab', { name: '账本' }));
+    expect(navigation.navigate).not.toHaveBeenCalled();
+    await userEvent.press(screen.getByRole('tab', { name: '我的' }));
+    expect(navigation.navigate).toHaveBeenCalledWith('account');
+  });
+  it('follows view params sent by another tab while staying mounted', async () => {
+    const client = await show(<LedgerListScreen />);
+    await screen.findByText('还没有账本');
+    mockParams.view = 'archived';
+    await screen.rerender(
+      <QueryClientProvider client={client}>
+        <LedgerListScreen />
+      </QueryClientProvider>,
+    );
+    await waitFor(() => expect(list.mock.calls.at(-1)?.[0].query.archived).toBe('true'));
+    mockParams.view = undefined;
   });
   it('queries archived ledgers online and switches back to the active list', async () => {
     await show(<LedgerListScreen />);
@@ -176,6 +218,7 @@ describe('ledger pages with isolated API callbacks (no database/native claim)', 
     expect(list.mock.calls.at(-1)?.[0].query.archived).toBe('true');
     await userEvent.press(screen.getByRole('button', { name: '返回当前账本' }));
     await screen.findByText('还没有账本');
+    expect(router.setParams).toHaveBeenCalledWith({ view: 'current' });
     expect(list.mock.calls.at(-1)?.[0].query.archived).toBe('false');
   });
   it('keeps archive filtering when fetching the next history page', async () => {
@@ -595,7 +638,7 @@ describe('custom covers and personal archive (API/native replacements)', () => {
     get.mockResolvedValue({ data: { ...detail, status: 'SETTLED', archivedAt: detail.createdAt } });
     await userEvent.press(screen.getByRole('button', { name: '查询结果' }));
     await waitFor(() =>
-      expect(router.replace).toHaveBeenCalledWith({
+      expect(router.dismissTo).toHaveBeenCalledWith({
         pathname: '/ledgers',
         params: { archivedNotice: ledgerId },
       }),
@@ -626,7 +669,7 @@ it('retains unknown create locks across an offline retry and offers an explicit 
   expect(create.mock.calls[0]).toEqual(create.mock.calls[1]);
   expect(create).toHaveBeenCalledTimes(2);
   await userEvent.press(screen.getByRole('button', { name: '回到账本列表查看' }));
-  expect(router.replace).toHaveBeenCalledWith('/ledgers');
+  expect(router.dismissTo).toHaveBeenCalledWith('/ledgers');
   expect(create).toHaveBeenCalledTimes(2);
 });
 

@@ -211,6 +211,30 @@ describe('AuthProvider lifecycle and memory isolation', () => {
       listener.mockImplementation(original!);
     }
   });
+  it('ignores the iOS inactive state used by the app switcher and system prompts', async () => {
+    let change!: (state: 'active' | 'inactive' | 'background') => void;
+    const listener = jest.mocked(AppState.addEventListener);
+    const original = listener.getMockImplementation();
+    listener.mockImplementation((_event, callback) => {
+      change = callback;
+      return { remove: jest.fn() };
+    });
+    try {
+      await mount();
+      expect(await screen.findByText('authenticated:在线用户')).toBeOnTheScreen();
+      await act(async () => {
+        change('inactive');
+      });
+      expect(screen.getByText('authenticated:在线用户')).toBeOnTheScreen();
+      await act(async () => {
+        change('active');
+      });
+      expect(screen.getByText('authenticated:在线用户')).toBeOnTheScreen();
+      expect(mockRestore).toHaveBeenCalledTimes(1);
+    } finally {
+      listener.mockImplementation(original!);
+    }
+  });
   it('keeps remote-revocation failure visible after local sign out', async () => {
     await mount();
     expect(await screen.findByText('authenticated:在线用户')).toBeOnTheScreen();

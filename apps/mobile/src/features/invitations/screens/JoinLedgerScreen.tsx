@@ -157,7 +157,7 @@ export default function JoinLedgerScreen() {
                 variant="outlined"
                 disabled={write.busy}
                 onPress={() => {
-                  if (write.uncertain) router.replace('/ledgers');
+                  if (write.uncertain) router.dismissTo('/ledgers');
                   else dismissPreview();
                 }}
               />
