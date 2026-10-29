@@ -19,9 +19,12 @@ import { remaining, statusLabels, yuan } from '../presentation';
 
 export default function LedgerListScreen() {
   const { user } = useAuth();
-  const { archivedNotice } = useLocalSearchParams<{ archivedNotice?: string }>();
+  const { archivedNotice, view } = useLocalSearchParams<{
+    archivedNotice?: string;
+    view?: 'archived';
+  }>();
   const [menu, setMenu] = useState(false);
-  const [archived, setArchived] = useState(false);
+  const [archived, setArchived] = useState(view === 'archived');
   const query = useInfiniteQuery({
     queryKey: [...ledgersKeys.root(user!.id), 'list', archived],
     queryFn: ({ pageParam }) =>

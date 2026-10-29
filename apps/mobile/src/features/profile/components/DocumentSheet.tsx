@@ -17,14 +17,29 @@ export function DocumentSheet({
   document: DocumentKind | null;
   onClose: () => void;
 }) {
-  const content = readingDocuments[document ?? 'about'];
   return (
     <Sheet
       visible={document !== null}
-      title={content.title}
+      title={readingDocuments[document ?? 'about'].title}
       contentKey={document ?? undefined}
       onClose={onClose}
     >
+      <DocumentBody document={document ?? 'about'} onClose={onClose} />
+    </Sheet>
+  );
+}
+
+/** Reading content shared by the standalone sheet and panels that switch in place. */
+export function DocumentBody({
+  document,
+  onClose,
+}: {
+  document: DocumentKind;
+  onClose: () => void;
+}) {
+  const content = readingDocuments[document];
+  return (
+    <>
       <View style={styles.section}>
         {document === 'about' && (
           <Text style={ui.strong}>
@@ -55,7 +70,7 @@ export function DocumentSheet({
         </Text>
       </View>
       <Button title="关闭" variant="secondary" onPress={onClose} />
-    </Sheet>
+    </>
   );
 }
 

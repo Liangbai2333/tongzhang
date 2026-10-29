@@ -1,8 +1,11 @@
 import { describe, it, expect, jest, beforeEach } from '@jest/globals';
 import { render, screen, userEvent, fireEvent, waitFor } from '@testing-library/react-native';
+import { QueryClientProvider } from '@tanstack/react-query';
 import AuthScreen from '../src/features/auth/screens/AuthScreen';
 import AccountScreen from '../src/features/profile/screens/AccountScreen';
 import { ApiError } from '../src/lib/api-error';
+import { createQueryClient } from '../src/lib/query-client';
+import { ledgersApi } from '../src/features/ledgers/api';
 
 const mockLogin = jest.fn<() => Promise<void>>();
 const mockRegister = jest.fn<() => Promise<void>>();
@@ -24,9 +27,12 @@ const mockAuth = {
   },
 };
 jest.mock('../src/providers/AuthProvider', () => ({ useAuth: () => mockAuth }));
+jest.mock('../src/features/ledgers/api', () => ({ ledgersApi: { listLedgers: jest.fn() } }));
 jest.mock('expo-router', () => ({
   router: { canGoBack: () => false, replace: jest.fn(), push: jest.fn() },
   Stack: { Screen: () => null },
+  useFocusEffect: (callback: () => void) =>
+    jest.requireActual<typeof import('react')>('react').useEffect(callback, [callback]),
 }));
 jest.mock('../src/icons/FigmaAsset', () => {
   const asset = { source: 1, width: 20, height: 20 };
@@ -38,7 +44,21 @@ beforeEach(() => {
   mockLogin.mockResolvedValue();
   mockRegister.mockResolvedValue();
   mockLogout.mockResolvedValue();
+  // A full first page plus a cursor means "more than 50"; counts are never extrapolated.
+  jest.mocked(ledgersApi.listLedgers).mockImplementation(async ({ query }) => {
+    const archived = query.archived === 'true';
+    return {
+      data: new Array(archived ? 2 : 50).fill(null) as never,
+      page: { nextCursor: archived ? null : 'next-page' },
+    };
+  });
 });
+const renderAccount = () =>
+  render(
+    <QueryClientProvider client={createQueryClient()}>
+      <AccountScreen />
+    </QueryClientProvider>,
+  );
 describe('real auth page interactions with isolated API callbacks', () => {
   it('offers explicit reauthentication and abandonment without navigating away from the retained form', async () => {
     await render(<AuthScreen recovery />);
@@ -195,12 +215,13 @@ describe('real auth page interactions with isolated API callbacks', () => {
     },
   );
   it('opens all profile documents and returns to the same verified account', async () => {
-    await render(<AccountScreen />);
-    for (const [title, section] of [
+    await renderAccount();
+    for (const [title, section, via] of [
       ['关于同账', '共同记录，清楚分摊'],
-      ['用户协议', '一、服务范围'],
-      ['隐私说明', '一、账号信息与登录凭据'],
+      ['用户协议', '一、服务范围', '设置'],
+      ['隐私说明', '一、账号信息与登录凭据', '设置'],
     ]) {
+      if (via) await userEvent.press(screen.getByRole('button', { name: via }));
       await userEvent.press(screen.getByRole('button', { name: title }));
       expect(screen.getByRole('header', { name: title })).toBeOnTheScreen();
       expect(screen.getByRole('header', { name: section })).toBeOnTheScreen();
@@ -218,8 +239,26 @@ describe('real auth page interactions with isolated API callbacks', () => {
     await userEvent.press(screen.getByRole('button', { name: '显示密码' }));
     expect(screen.getByLabelText('密码')).toHaveProp('secureTextEntry', false);
   });
+  it('reads ledger counts online without guessing beyond the first page', async () => {
+    await renderAccount();
+    expect(await screen.findByText('全部 50+ 本')).toBeOnTheScreen();
+    expect(screen.getByText('2 本历史账本')).toBeOnTheScreen();
+    expect(screen.getByLabelText('我参与的账本 50+')).toBeOnTheScreen();
+    for (const archived of ['false', 'true'])
+      expect(ledgersApi.listLedgers).toHaveBeenCalledWith(
+        expect.objectContaining({ query: { archived, limit: 50 } }),
+      );
+  });
+  it('shows account details read-only and keeps explicit reverification', async () => {
+    await renderAccount();
+    await userEvent.press(screen.getByRole('button', { name: '账户信息' }));
+    expect(screen.getByText('资料修改暂未开放。')).toBeOnTheScreen();
+    expect(screen.getAllByText('测试用户').length).toBeGreaterThan(1);
+    await userEvent.press(screen.getByRole('button', { name: '重新核验登录状态' }));
+    expect(mockAuth.restore).toHaveBeenCalledTimes(1);
+  });
   it('shows the verified user and requires logout confirmation', async () => {
-    await render(<AccountScreen />);
+    await renderAccount();
     expect(screen.getByText('test@example.test')).toBeOnTheScreen();
     await userEvent.press(screen.getByRole('button', { name: '退出登录' }));
     expect(mockLogout).not.toHaveBeenCalled();
