@@ -8,8 +8,9 @@ on:
 permissions:
   contents: read
 concurrency:
-  # A newer push to the same pull request supersedes its older run.
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  # A newer push to the same pull request supersedes its older run. Other events get a
+  # per-run group, so main and release checks are never queued behind or dropped.
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number && format('pr-{0}', github.event.pull_request.number) || github.run_id }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 jobs:
   check:
