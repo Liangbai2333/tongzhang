@@ -19,7 +19,7 @@ pnpm dev:ios
 
 日常先按需执行 `pnpm up:db`，再执行 `pnpm dev:ios`（或 `dev:android`）。`dev` 只检查数据库、编译并启动 API、共享包监听与 Metro，不执行迁移或原生安装；Ctrl+C 停止本次进程，保留数据库。拉到新迁移后执行 `pnpm migrate:db`。Android 首次使用 `pnpm build:android`。
 
-Android、指定模拟器、配置真机 IP 等步骤见 [开发说明](docs/development.md)。
+Android、指定模拟器、配置真机 IP 等步骤见 [开发说明](docs/development.md)；多人各用一台手机联调见 [实机多人联调](docs/multi-device-testing.md)。
 
 API 默认 `http://localhost:3300`：
 

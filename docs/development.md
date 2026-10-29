@@ -135,6 +135,8 @@ Metro 独占终端输入和原生终端输出；其他进程的日志带名称�
 
 Android 也可保留 `http://localhost:3300`，配合 `adb reverse tcp:3300 tcp:3300`；设备重启/重连后重新转发，多设备加 `-s <序列号>`。真机使用 localhost 时指手机自身，只有 USB reverse 才转向电脑。API 地址不包含 `/api/v1`，不要误填 Metro 的 8081 端口。API 和 Metro 独立；本轮隔离验收端口只是夹具，不是项目默认值。
 
+多台手机连同一主机联调的网络、安装和流程见 [实机多人联调](multi-device-testing.md)。
+
 修改 `apps/mobile/.env` 后重启 Metro并重新载入 App。若改变 API 端口，同步更新移动端地址。所有地址都指向 API；本项目没有 Web 应用。
 
 `APP_VARIANT=development` 允许开发 HTTP；`production` 禁止原生明文通信。preview 和 production 的 EAS profile 显式设置生产 variant，缺失或无效的 HTTPS API 地址会在读取 app config 时失败。EAS environments 分别为 development / preview / production，需要在 Expo 项目中设置各自的 `EXPO_PUBLIC_API_BASE_URL`。目前尚未绑定 Expo 项目、签名或执行云构建。
