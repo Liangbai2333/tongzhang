@@ -5,7 +5,7 @@ import { Screen, ui } from '@/components/Screen';
 import { Button } from '@/components/Button';
 import { RequestState } from '@/components/Feedback';
 import { useAuth } from '@/providers/AuthProvider';
-import { useOnlineQuery } from '@/lib/use-online-query';
+import { blocksContent, useOnlineQuery } from '@/lib/use-online-query';
 import { ledgersApi } from '@/features/ledgers/api';
 import { netAmount, netColor, netLabel, statusLabels, yuan } from '@/features/ledgers/presentation';
 import { MemberAvatar } from '@/features/expenses/components/ExpenseUI';
@@ -29,7 +29,7 @@ export default function BalancesScreen() {
     },
     valid,
   );
-  const loading = valid && (query.isPending || query.isFetching);
+  const loading = valid && blocksContent(query);
   const ready = valid && !loading && !query.isError && query.data;
   const preview = () =>
     router.push({ pathname: '/ledgers/[ledgerId]/settlement-preview', params: { ledgerId } });

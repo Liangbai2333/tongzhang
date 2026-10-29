@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { router, useFocusEffect } from 'expo-router';
 import { useInfiniteQuery } from '@tanstack/react-query';
+import { blocksContent } from '@/lib/use-online-query';
 import { expenseListQuerySchema, type EndpointInput } from '@tongzhang/contracts';
 import { Button } from '@/components/Button';
 import { Field } from '@/components/Field';
@@ -82,7 +83,7 @@ export function ExpenseList({
     lastSignal.current = refreshSignal;
     void refetch();
   }, [refreshSignal, refetch]);
-  const loading = query.isPending || query.isRefetching;
+  const loading = blocksContent(query);
   const failed = query.isError && !query.isFetchNextPageError;
   const rows = [
     ...new Map(

@@ -9,7 +9,7 @@ import { Button } from '@/components/Button';
 import { Sheet } from '@/components/Sheet';
 import { InlineError, RequestState } from '@/components/Feedback';
 import { useAuth } from '@/providers/AuthProvider';
-import { useOnlineQuery } from '@/lib/use-online-query';
+import { blocksContent, useOnlineQuery } from '@/lib/use-online-query';
 import { ledgersApi } from '@/features/ledgers/api';
 import { FigmaAsset } from '@/icons/FigmaAsset';
 import { invitationAssets } from '@/icons/invitation-assets';
@@ -39,7 +39,7 @@ export default function InvitationScreen() {
   const [actionError, setActionError] = useState<string | null>(null);
   const [acting, setActing] = useState(false);
   const write = useInvitationReset(ledgerId);
-  const loading = valid && (query.isPending || query.isFetching);
+  const loading = valid && blocksContent(query);
   const invitation = query.data?.data;
   const ready = valid && !loading && !query.isError && invitation;
   const expired =

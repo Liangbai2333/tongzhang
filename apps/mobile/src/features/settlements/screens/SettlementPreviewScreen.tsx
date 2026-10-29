@@ -13,7 +13,7 @@ import SettlementRecordScreen from './SettlementRecordScreen';
 import { Screen, ui } from '@/components/Screen';
 import { Button } from '@/components/Button';
 import { InlineError, RequestState, requestErrorMessage } from '@/components/Feedback';
-import { useOnlineQuery } from '@/lib/use-online-query';
+import { blocksContent, useOnlineQuery } from '@/lib/use-online-query';
 import { useAuth } from '@/providers/AuthProvider';
 import { yuan } from '@/features/ledgers/presentation';
 import { MemberAvatar } from '@/features/expenses/components/ExpenseUI';
@@ -41,11 +41,11 @@ function SettlementPage({ ledgerId }: { ledgerId: string }) {
     valid,
   );
   const ledger = ledgerQuery.data?.data;
-  if (!valid || ledgerQuery.isPending || ledgerQuery.isFetching || ledgerQuery.isError || !ledger)
+  if (!valid || blocksContent(ledgerQuery) || ledgerQuery.isError || !ledger)
     return (
       <Screen title="结算" variant="ledger">
         <RequestState
-          loading={valid && (ledgerQuery.isPending || ledgerQuery.isFetching)}
+          loading={valid && blocksContent(ledgerQuery)}
           title={valid ? '暂时无法读取账本' : '账本地址无效'}
           description="请检查网络后重试。"
           error={ledgerQuery.error}
@@ -101,7 +101,7 @@ function Preview({
   const locked = useRef(false);
   const [notice, setNotice] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const loading = valid && (query.isPending || query.isFetching);
+  const loading = valid && blocksContent(query);
   const plan = query.data?.data;
   const ready = valid && !loading && !query.isError && plan;
   const busy = write.busy || checking;
@@ -213,7 +213,8 @@ function Preview({
                 <Button
                   title="正式发起结算"
                   icon={<FigmaAsset asset={expenseAssets.preview} />}
-                  disabled={busy}
+                  // The plan stays visible while refreshing; confirm only the latest version.
+                  disabled={busy || query.isFetching}
                   onPress={() => setConfirmation({ expectedVersion: plan.ledgerVersion })}
                 />
               )}

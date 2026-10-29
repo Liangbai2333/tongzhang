@@ -1,6 +1,7 @@
 import { describe, it, expect, jest, beforeEach } from '@jest/globals';
 import { render, screen, userEvent, fireEvent, waitFor } from '@testing-library/react-native';
 import { QueryClientProvider } from '@tanstack/react-query';
+import { router } from 'expo-router';
 import AuthScreen from '../src/features/auth/screens/AuthScreen';
 import AccountScreen from '../src/features/profile/screens/AccountScreen';
 import { ApiError } from '../src/lib/api-error';
@@ -29,7 +30,7 @@ const mockAuth = {
 jest.mock('../src/providers/AuthProvider', () => ({ useAuth: () => mockAuth }));
 jest.mock('../src/features/ledgers/api', () => ({ ledgersApi: { listLedgers: jest.fn() } }));
 jest.mock('expo-router', () => ({
-  router: { canGoBack: () => false, replace: jest.fn(), push: jest.fn() },
+  router: { canGoBack: () => false, replace: jest.fn(), push: jest.fn(), navigate: jest.fn() },
   Stack: { Screen: () => null },
   useFocusEffect: (callback: () => void) =>
     jest.requireActual<typeof import('react')>('react').useEffect(callback, [callback]),
@@ -241,9 +242,18 @@ describe('real auth page interactions with isolated API callbacks', () => {
   });
   it('reads ledger counts online without guessing beyond the first page', async () => {
     await renderAccount();
-    expect(await screen.findByText('全部 50+ 本')).toBeOnTheScreen();
-    expect(screen.getByText('2 本历史账本')).toBeOnTheScreen();
-    expect(screen.getByLabelText('我参与的账本 50+')).toBeOnTheScreen();
+    expect(await screen.findByText('50+')).toBeOnTheScreen();
+    expect(screen.getByRole('button', { name: '历史账本 2' })).toBeOnTheScreen();
+    await userEvent.press(screen.getByRole('button', { name: '历史账本 2' }));
+    expect(router.navigate).toHaveBeenLastCalledWith({
+      pathname: '/ledgers',
+      params: { view: 'archived' },
+    });
+    await userEvent.press(screen.getByRole('button', { name: '我参与的账本 50+' }));
+    expect(router.navigate).toHaveBeenLastCalledWith({
+      pathname: '/ledgers',
+      params: { view: 'current' },
+    });
     for (const archived of ['false', 'true'])
       expect(ledgersApi.listLedgers).toHaveBeenCalledWith(
         expect.objectContaining({ query: { archived, limit: 50 } }),

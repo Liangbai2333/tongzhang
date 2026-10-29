@@ -75,7 +75,7 @@ stateDiagram-v2
     restoring --> anonymous: 401 且无保留身份
     restoring --> error: 网络或其他失败
     restoring --> reauthentication: 401 且有保留身份
-    authenticated --> restoring: 回到前台再次核验 / 进入后台或断网（保留页面）
+    authenticated --> restoring: 从后台回到前台再次核验 / 进入后台或断网（保留页面）
     authenticated --> reauthentication: 业务请求 401 或续期结果未知
     anonymous --> authenticated: 登录或注册，且 getMe 成功
     error --> restoring: 用户显式重试
@@ -85,6 +85,8 @@ stateDiagram-v2
 ```
 
 只有 `authenticated` 放行业务请求（`sessionAdmission` 的值始终等于 `status === 'authenticated'`）。`restoring`、`error`、`reauthentication` 都锁住界面。
+
+只有 `AppState` 进入 `background` 才挂起并在回到 `active` 时重新核验；iOS 的 `inactive`（多任务切换、控制中心、系统弹窗）不挂起、也不触发核验，否则多任务快照会显示核验页，且每次瞥一眼都要重新核验。保留页面的核验期间，根布局用半透明遮罩盖住当前页（`SessionRecovery` 的 `compact` 形态），只有核验失败才切换为整页恢复界面。
 
 `suspended` 的语义：进入后台或收到断网事件时置位，表示**此刻之前已发出的核验作废**。`verify` 收到响应时若该标志仍置位，即使服务端返回成功也丢弃并抛 `NETWORK_UNAVAILABLE`，必须由用户显式重试，恢复联网不会自动放行。这是产品规则（见[操作手册](../app-user-guide.md)），不是技术限制。维护时必须保持：
 

@@ -6,7 +6,7 @@ import { Screen, ui } from '@/components/Screen';
 import { Button } from '@/components/Button';
 import { Sheet } from '@/components/Sheet';
 import { RequestState } from '@/components/Feedback';
-import { useOnlineQuery } from '@/lib/use-online-query';
+import { blocksContent, useOnlineQuery } from '@/lib/use-online-query';
 import { useAuth } from '@/providers/AuthProvider';
 import { colors } from '@/theme/tokens';
 import { yuan } from '@/features/ledgers/presentation';
@@ -26,7 +26,7 @@ export default function ExpenseDetailScreen() {
     () => expensesApi.getExpense({ params: { ledgerId, expenseId }, query: {}, body: undefined }),
     valid,
   );
-  const loading = valid && (query.isPending || query.isFetching);
+  const loading = valid && blocksContent(query);
   const expense = query.data?.data;
   const ready = valid && !loading && !query.isError && expense;
   return (

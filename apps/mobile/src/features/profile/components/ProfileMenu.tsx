@@ -1,5 +1,5 @@
 import { Fragment, type ReactNode } from 'react';
-import { StyleSheet, Text, View, type StyleProp, type ViewStyle } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { Touch } from '@/components/Touch';
 import { FigmaAsset, type DesignAsset } from '@/icons/FigmaAsset';
 import { profileAssets } from '@/icons/profile-assets';
@@ -19,16 +19,14 @@ export function MenuGroup({
   title,
   items,
   disabled = false,
-  headerStyle,
 }: {
   title: string;
   items: MenuItem[];
   disabled?: boolean;
-  headerStyle?: StyleProp<ViewStyle>;
 }) {
   return (
     <View style={styles.group}>
-      <View style={[styles.header, headerStyle]}>
+      <View style={styles.header}>
         <Text style={styles.caption}>{title}</Text>
       </View>
       {items.map((item, index) => (

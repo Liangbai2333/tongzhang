@@ -39,13 +39,25 @@ export function AuthProvider({ children }: PropsWithChildren) {
       if (controller.getSnapshot().status !== 'reauthentication') client.clear();
     });
     void controller.restore();
+    // Only real backgrounding suspends the session. iOS also reports `inactive` for the app
+    // switcher, Control Center and system prompts; locking there flashed the recovery screen
+    // into the switcher snapshot and re-verified on every glance.
+    let backgrounded = false;
     const focus = AppState.addEventListener('change', (next) => {
+      if (next === 'background') {
+        backgrounded = true;
+        controller.suspend({ preserveScreen: true });
+        return;
+      }
+      if (next !== 'active') return;
+      const { status } = controller.getSnapshot();
       if (
-        next === 'active' &&
-        ['authenticated', 'error', 'restoring'].includes(controller.getSnapshot().status)
+        status === 'error' ||
+        status === 'restoring' ||
+        (backgrounded && status === 'authenticated')
       )
         void controller.restore();
-      else if (next !== 'active') controller.suspend({ preserveScreen: true });
+      backgrounded = false;
     });
     const network = Network.addNetworkStateListener((next) => {
       if (next.isConnected === false || next.isInternetReachable === false)

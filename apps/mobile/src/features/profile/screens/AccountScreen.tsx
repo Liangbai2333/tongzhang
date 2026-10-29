@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { router } from 'expo-router';
 import { Screen, ui } from '@/components/Screen';
-import { MainTabs } from '@/components/MainTabs';
 import { Button } from '@/components/Button';
 import { Sheet } from '@/components/Sheet';
 import { Touch } from '@/components/Touch';
@@ -68,7 +67,7 @@ export default function AccountScreen() {
       variant="ledger"
       back={false}
       contentStyle={styles.content}
-      footer={<MainTabs active="account" />}
+      tabRoot
       refreshing={current.query.isRefetching || history.query.isRefetching}
       onRefresh={() => {
         void current.query.refetch();
@@ -95,45 +94,43 @@ export default function AccountScreen() {
       <View style={styles.stats}>
         {(
           [
-            { key: 'current', entry: current, label: '我参与的账本', highlight: true },
-            { key: 'history', entry: history, label: '历史账本', highlight: false },
+            {
+              key: 'current',
+              entry: current,
+              label: '我参与的账本',
+              highlight: true,
+              view: 'current',
+            },
+            {
+              key: 'history',
+              entry: history,
+              label: '历史账本',
+              highlight: false,
+              view: 'archived',
+            },
           ] as const
         ).map((stat) => (
-          <View
+          <Touch
             key={stat.key}
-            accessible
             accessibilityLabel={`${stat.label} ${countText(stat.entry, (count) => count)}`}
+            accessibilityHint={stat.view === 'archived' ? '打开历史账本' : '打开账本列表'}
+            disabled={busy}
+            onPress={() => router.navigate({ pathname: '/ledgers', params: { view: stat.view } })}
             style={[styles.stat, stat.highlight && styles.statHighlight]}
           >
-            <Text style={styles.statValue}>{stat.entry.count ?? '–'}</Text>
-            <Text style={styles.caption}>{stat.label}</Text>
-          </View>
+            <View style={styles.statContent}>
+              <Text style={styles.statValue}>{stat.entry.count ?? '–'}</Text>
+              <View style={styles.statLabel}>
+                <Text style={styles.caption}>{stat.label}</Text>
+                <FigmaAsset asset={profileAssets.chevron} />
+              </View>
+            </View>
+          </Touch>
         ))}
       </View>
       <MenuGroup
-        title="我的账本"
-        disabled={busy}
-        items={[
-          {
-            key: 'ledgers',
-            title: '我的账本',
-            icon: profileAssets.ledger,
-            subtitle: countText(current, (count) => `全部 ${count} 本`),
-            onPress: () => router.replace('/ledgers'),
-          },
-          {
-            key: 'history',
-            title: '历史记录',
-            icon: profileAssets.history,
-            subtitle: countText(history, (count) => `${count} 本历史账本`),
-            onPress: () => router.replace({ pathname: '/ledgers', params: { view: 'archived' } }),
-          },
-        ]}
-      />
-      <MenuGroup
         title="账号设置"
         disabled={busy}
-        headerStyle={styles.settingsHeader}
         items={[
           {
             key: 'account',
@@ -261,14 +258,9 @@ const styles = StyleSheet.create({
   caption: { fontSize: 12, lineHeight: 17, color: colors.muted },
   tagline: { fontSize: 13, lineHeight: 21, color: colors.muted },
   stats: { flexDirection: 'row', gap: 12 },
-  stat: {
-    flex: 1,
-    alignItems: 'center',
-    gap: 4,
-    padding: 16,
-    borderRadius: 16,
-    backgroundColor: colors.surface,
-  },
+  stat: { flex: 1, padding: 16, borderRadius: 16, backgroundColor: colors.surface },
+  statContent: { alignItems: 'center', gap: 4 },
+  statLabel: { flexDirection: 'row', alignItems: 'center', gap: 2 },
   statHighlight: { backgroundColor: colors.primarySoft },
   statValue: {
     fontSize: 18,
@@ -277,7 +269,6 @@ const styles = StyleSheet.create({
     color: colors.text,
     fontVariant: ['tabular-nums'],
   },
-  settingsHeader: { paddingTop: 10, paddingBottom: 6 },
   logout: { minHeight: 44, alignItems: 'center', justifyContent: 'center' },
   logoutText: { fontSize: 15, lineHeight: 22, color: colors.danger },
   accountHead: { alignItems: 'center', gap: 12, paddingVertical: 8 },

@@ -4,7 +4,7 @@ import { colors } from '@/theme/tokens';
 import { Image } from 'expo-image';
 import { MAX_IMAGE_BYTES } from '@tongzhang/contracts';
 import { RequestState } from '@/components/Feedback';
-import { useOnlineQuery } from '@/lib/use-online-query';
+import { blocksContent, useOnlineQuery } from '@/lib/use-online-query';
 import { ApiError } from '@/lib/api-error';
 import { useAuth } from '@/providers/AuthProvider';
 import { imagesApi } from '../api';
@@ -41,7 +41,7 @@ export function AuthorizedImage({
       throw new ApiError('INVALID_IMAGE', '图片超过允许大小');
     return imageDataUri(result.content, result.mimeType);
   });
-  if (height <= 60 && (query.isPending || query.isFetching || query.isError))
+  if (height <= 60 && (blocksContent(query) || query.isError))
     return (
       <View style={{ height, width: height, alignItems: 'center', justifyContent: 'center' }}>
         {query.isError ? (
@@ -59,10 +59,10 @@ export function AuthorizedImage({
         )}
       </View>
     );
-  if (query.isPending || query.isFetching || query.isError)
+  if (blocksContent(query) || query.isError)
     return (
       <RequestState
-        loading={query.isPending || query.isFetching}
+        loading={blocksContent(query)}
         title={`暂时无法读取${label}`}
         description="请检查网络后重试。"
         error={query.error}

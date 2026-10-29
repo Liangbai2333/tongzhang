@@ -94,7 +94,7 @@ export default function CreateLedgerScreen() {
                 title="回到账本列表查看"
                 variant="secondary"
                 disabled={busy}
-                onPress={() => router.replace('/ledgers')}
+                onPress={() => router.dismissTo('/ledgers')}
               />
             )}
           </>
