@@ -56,10 +56,50 @@
 
 刷新预检查离线或明确返回 429 时保留凭据；超时、连接中断、无效响应或服务端错误导致轮换结果不确定时清除本地凭据，提示重新登录，避免重用可能已经消费的 Refresh Token。401 直接清除会话。
 
+### 5.1 会话状态与不变量
+
+移动端会话由三层各自负责一类问题的机制组成，不是重复防护，修改任一层前先确认它防的是哪类竞态：
+
+| 机制                                         | 所在层                         | 防止                                                                           |
+| -------------------------------------------- | ------------------------------ | ------------------------------------------------------------------------------ |
+| `auth-session.ts` 的会话版本（`generation`） | 凭据存储，与界面无关           | 退出、换账号或重新登录后，迟到的刷新响应把旧令牌写回，旧请求的 401 清除新会话  |
+| `controller.ts` 的 `intent`、`suspended`     | 登录状态机                     | 迟到的 `getMe`/登录结果覆盖更新的操作；断网或进入后台期间发出的核验结果被采纳  |
+| `session-admission.ts`                       | 业务请求入口，镜像状态机的放行 | 核验或重新登录期间，被遮住但仍挂载的页面（含上传的延迟后续请求）继续发业务请求 |
+
+`verify` 同时检查 `intent` 与 `sessionVersion()`：前者判断本次核验是否已被更晚的操作取代，后者判断核验期间凭据是否被替换。图片接口在令牌获取前后各检查一次放行状态，因为刷新可能耗时数秒。
+
+```mermaid
+stateDiagram-v2
+    [*] --> restoring: 冷启动
+    restoring --> authenticated: getMe 成功
+    restoring --> anonymous: 401 且无保留身份
+    restoring --> error: 网络或其他失败
+    restoring --> reauthentication: 401 且有保留身份
+    authenticated --> restoring: 回到前台再次核验 / 进入后台或断网（保留页面）
+    authenticated --> reauthentication: 业务请求 401 或续期结果未知
+    anonymous --> authenticated: 登录或注册，且 getMe 成功
+    error --> restoring: 用户显式重试
+    reauthentication --> authenticated: 同账号登录且 getMe 成功
+    reauthentication --> anonymous: 放弃表单或主动退出
+    authenticated --> anonymous: 退出
+```
+
+只有 `authenticated` 放行业务请求（`sessionAdmission` 的值始终等于 `status === 'authenticated'`）。`restoring`、`error`、`reauthentication` 都锁住界面。
+
+`suspended` 的语义：进入后台或收到断网事件时置位，表示**此刻之前已发出的核验作废**。`verify` 收到响应时若该标志仍置位，即使服务端返回成功也丢弃并抛 `NETWORK_UNAVAILABLE`，必须由用户显式重试，恢复联网不会自动放行。这是产品规则（见[操作手册](../app-user-guide.md)），不是技术限制。维护时必须保持：
+
+1. `suspend()` 在任何提前返回之前置位，包括 `reauthentication` 与进行中的登录/注册。
+2. `restore()` 只有在确定发起新的核验请求时才清除；复用进行中的 `restorePending` 时不得清除，否则已作废的核验会被重新采纳。
+3. 恢复联网本身不触发核验、刷新或任何写操作。
+
+这两条顺序依赖曾分别导致 `ef87306`（复用进行中的核验时被清除）与 `0e9155c`（重新登录期间断网时未置位）两个缺陷，对应回归测试在 `apps/mobile/tests/auth-controller.test.ts`。
+
+网络状态来自 `expo-network`：`addNetworkStateListener` 接收系统推送，`isConnected` 或 `isInternetReachable` 任一为 `false` 即触发挂起。Android 通过 `registerDefaultNetworkCallback`，其 `isInternetReachable` 要求默认网络具备 `INTERNET` 与系统验证的 `VALIDATED` 能力（VPN 另要求下行带宽非零）；iOS 使用 `NWPathMonitor`，两个字段都等于路径 `satisfied`。因此连着没有外网的 Wi-Fi 时 Android 会报不可达，即使 API 在局域网内可连；这种环境未做过原生验证。`http.ts` 的发送前预检使用同一判断，其产生的 `NETWORK_UNAVAILABLE` 表示请求未发出，刷新令牌未被消耗，所以可以保留凭据；删除这层预检会使离线刷新变成“结果不确定”而清除登录，不得删除。
+
 退出分别尝试服务端撤销与本地清理，返回 `serverRevoked` / `localCleared` 两项结果。Provider 保留跨导航的结果提示并清空用户查询缓存；远端未确认或本地删除失败时不能声称已完全退出，本地清理失败提供显式重试入口。注册/登录表单和协议仍沿用原页面与面板约定；退出/切换账号时卸载用户页面以清除表单状态。
 
 ## 6 迁移与验证
 
-`0001` 迁移撤销全部旧单令牌会话，删除会话上的旧 token_hash，新增刷新摘要表。客户端删除旧 `tongzhang.session.token` 项，使用新的 Refresh Token 项，用户必须重新登录。发布时按既有独立迁移流程执行，API 启动不迁移。
+迁移已合并为单个 `0000_init`，包含 users、auth_sessions 和 auth_refresh_tokens，不含任何针对旧数据的升级语句；合并前执行过旧迁移的本地库需要重建后再迁移（步骤见[开发与部署说明](../development.md)）。发布时按既有独立迁移流程执行，API 启动不迁移。
 
 无数据库测试覆盖 JWT 验证、客户端单次刷新、提前刷新、写请求不重发、401 清理、刷新不确定结果和迟到响应。真实 PostgreSQL 集成测试覆盖注册/登录/资料、轮换和摘要存储、重放撤销、并发刷新、刷新与退出竞态、绝对到期及不同会话隔离。原生安装与真机交互须单独验收，JavaScript 导出通过不代表真机通过。本轮 iOS 模拟器真实账号验证和截图见[移动端认证实现与验证](../mobile-auth-validation.md)。

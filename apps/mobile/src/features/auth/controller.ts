@@ -31,6 +31,11 @@ export function createAuthController(api: Dependencies) {
     notice: null,
   };
   let intent = 0;
+  // Set by suspend() (network loss or backgrounding) and cleared only when a new verification
+  // actually starts. verify() rejects any response that arrives while it is set, so a getMe sent
+  // before the interruption can never mark the session authenticated. Keep these invariants:
+  // suspend() sets it before every early return; restore() clears it only after deciding not to
+  // reuse restorePending. See docs/modules/auth.md section 5.1.
   let suspended = false;
   let restorePending: Promise<void> | null = null;
   const listeners = new Set<() => void>();
