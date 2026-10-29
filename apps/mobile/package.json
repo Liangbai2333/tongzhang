@@ -56,7 +56,7 @@
     "build:android": "expo prebuild --platform android && expo run:android --no-bundler",
     "export": "expo export --platform android --platform ios",
     "typecheck": "tsc --noEmit",
-    "test": "jest --runInBand"
+    "test": "jest --maxWorkers=4"
   },
   "private": true
 }
