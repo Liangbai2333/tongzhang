@@ -1,4 +1,5 @@
 import { and, desc, eq, isNotNull, isNull, sql } from 'drizzle-orm';
+import { z } from 'zod';
 import { uuidSchema } from '@tongzhang/contracts';
 import type { Handler } from '../../http/context.js';
 import { withTransaction, type Orm } from '../../db/transaction.js';
@@ -6,6 +7,7 @@ import { executeIdempotent } from '../../db/idempotency.js';
 import { appendAudit } from '../../db/audit.js';
 import { ledgerMembers, ledgers } from '../../db/schema/index.js';
 import { AppError } from '../../http/errors.js';
+import { decodeCursor, encodeCursor } from '../../http/cursor.js';
 import { issueInvitation, toInvitationDto } from '../invitations/index.js';
 import { bindCover } from '../images/index.js';
 import { requireLedgerMember } from './access.js';
@@ -20,39 +22,20 @@ export interface LedgersService {
 }
 
 const READ_ONLY = { isolationLevel: 'repeatable read', accessMode: 'read only' } as const;
-const badCursor = () => new AppError('VALIDATION_ERROR', '分页游标无效', 400);
 
-/** Reject impossible dates (month 99, Feb 30) that PostgreSQL would fail to cast. */
-function isRealInstant(at: string) {
-  // JavaScript accepts year zero, but PostgreSQL timestamps do not.
-  if (at.startsWith('0000-')) return false;
-  const seconds = at.slice(0, 19);
-  const date = new Date(`${seconds}Z`);
-  return !Number.isNaN(date.getTime()) && date.toISOString().startsWith(seconds);
-}
-
+/** Reject impossible dates (month 99, Feb 30, year zero) that PostgreSQL would fail to cast. */
+const instantCursor = z
+  .string()
+  .regex(/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d\.\d{6}Z$/)
+  .refine((at) => {
+    // JavaScript accepts year zero, but PostgreSQL timestamps do not.
+    if (at.startsWith('0000-')) return false;
+    const seconds = at.slice(0, 19);
+    const date = new Date(`${seconds}Z`);
+    return !Number.isNaN(date.getTime()) && date.toISOString().startsWith(seconds);
+  });
 /** Cursor = last (joined_at, member id); the timestamp keeps microsecond precision as text. */
-function decodeCursor(cursor: string) {
-  try {
-    const value = JSON.parse(Buffer.from(cursor, 'base64url').toString('utf8')) as unknown;
-    if (Array.isArray(value) && value.length === 2) {
-      const [at, id] = value as unknown[];
-      if (
-        typeof at === 'string' &&
-        typeof id === 'string' &&
-        /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d\.\d{6}Z$/.test(at) &&
-        isRealInstant(at) &&
-        uuidSchema.safeParse(id).success
-      )
-        return { at, id };
-    }
-  } catch {
-    // fall through
-  }
-  throw badCursor();
-}
-const encodeCursor = (at: string, id: string) =>
-  Buffer.from(JSON.stringify([at, id])).toString('base64url');
+const cursorSchema = z.tuple([instantCursor, uuidSchema]);
 
 export function createLedgersService(db: Orm): LedgersService {
   const createLedger: Handler<'createLedger'> = async (input, context) => {
@@ -121,7 +104,7 @@ export function createLedgersService(db: Orm): LedgersService {
   const listLedgers: Handler<'listLedgers'> = async (input, context) => {
     const userId = context.principal.userId;
     const { archived, limit, cursor } = input.query;
-    const after = cursor ? decodeCursor(cursor) : null;
+    const after = cursor ? decodeCursor(cursor, cursorSchema) : null;
     return db.transaction(async (tx) => {
       const joinedText = sql<string>`to_char(${ledgerMembers.joinedAt} AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS.US"Z"')`;
       const rows = await tx
@@ -138,7 +121,7 @@ export function createLedgersService(db: Orm): LedgersService {
             eq(ledgerMembers.userId, userId),
             archived ? isNotNull(ledgerMembers.archivedAt) : isNull(ledgerMembers.archivedAt),
             after
-              ? sql`(${ledgerMembers.joinedAt}, ${ledgerMembers.id}) < (${after.at}::timestamptz, ${after.id}::uuid)`
+              ? sql`(${ledgerMembers.joinedAt}, ${ledgerMembers.id}) < (${after[0]}::timestamptz, ${after[1]}::uuid)`
               : undefined,
           ),
         )
@@ -154,7 +137,7 @@ export function createLedgersService(db: Orm): LedgersService {
         ),
         page: {
           nextCursor:
-            rows.length > limit && last ? encodeCursor(last.joinedText, last.memberId) : null,
+            rows.length > limit && last ? encodeCursor([last.joinedText, last.memberId]) : null,
         },
       };
     }, READ_ONLY);

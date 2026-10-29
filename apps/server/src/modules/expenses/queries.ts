@@ -4,17 +4,9 @@ import { expenseSummarySchema, localDateSchema, uuidSchema } from '@tongzhang/co
 import type { EndpointParsedInput } from '@tongzhang/contracts';
 import type { DatabaseExecutor } from '../../db/transaction.js';
 import { expenses, ledgerMembers, users } from '../../db/schema/index.js';
-import { AppError } from '../../http/errors.js';
+import { decodeCursor, encodeCursor } from '../../http/cursor.js';
 
 const cursorSchema = z.tuple([localDateSchema, uuidSchema]);
-function decodeCursor(cursor: string) {
-  try {
-    if (!/^[A-Za-z0-9_-]+$/.test(cursor)) throw new Error();
-    return cursorSchema.parse(JSON.parse(Buffer.from(cursor, 'base64url').toString('utf8')));
-  } catch {
-    throw new AppError('VALIDATION_ERROR', '分页游标无效', 400);
-  }
-}
 
 /** Keyset pagination follows the partial ledger/date/id index, including equal-date ties. */
 export async function queryExpenses(
@@ -22,7 +14,7 @@ export async function queryExpenses(
   ledgerId: string,
   query: EndpointParsedInput<'listExpenses'>['query'],
 ) {
-  const after = query.cursor ? decodeCursor(query.cursor) : null;
+  const after = query.cursor ? decodeCursor(query.cursor, cursorSchema) : null;
   const rows = await db
     .select({ expense: expenses, payerName: users.username })
     .from(expenses)
@@ -55,9 +47,7 @@ export async function queryExpenses(
     ),
     page: {
       nextCursor:
-        rows.length > query.limit && last
-          ? Buffer.from(JSON.stringify([last.occurredOn, last.id])).toString('base64url')
-          : null,
+        rows.length > query.limit && last ? encodeCursor([last.occurredOn, last.id]) : null,
     },
   };
 }

@@ -93,17 +93,13 @@ export function registerOperation<K extends Operation>(
         throw new AppError('VALIDATION_ERROR', '该接口不接受请求体', 400);
       }
       const result = await handler(input as EndpointParsedInput<K>, context);
-      const validated = endpoint.response.parse(result);
       if (endpoint.transport === 'binary') {
-        const image = z
-          .object({ content: z.instanceof(Uint8Array), mimeType: z.string() })
-          .parse(validated);
-        return reply
-          .header('Cache-Control', 'no-store')
-          .type(image.mimeType)
-          .send(Buffer.from(image.content));
+        // Binary bodies bypass the zod serializer, so this is their only response check.
+        const image = endpoint.response.parse(result) as { content: Uint8Array; mimeType: string };
+        return reply.type(image.mimeType).send(Buffer.from(image.content));
       }
-      return (reply as FastifyReply).code(endpoint.statusCode).send(validated);
+      // The zod serializerCompiler validates this payload against endpoint.response when sending.
+      return (reply as FastifyReply).code(endpoint.statusCode).send(result);
     },
   });
 }

@@ -99,12 +99,7 @@ export async function executeIdempotent<T>(
   return { body, statusCode: scope.responseStatus, replayed: false };
 }
 /** Acquire before the ledger lock; lookup and result insert stay in the same tx. IDs are uuidSchema-normalized. */
-export const lockIdempotencyKey = (
-  tx: Transaction,
-  userId: string,
-  operation: string,
-  key: string,
-) =>
+const lockIdempotencyKey = (tx: Transaction, userId: string, operation: string, key: string) =>
   tx.execute(
     // PostgreSQL UUID equality ignores case; the lock must use the same identity.
     sql`SELECT pg_advisory_xact_lock(hashtextextended(${JSON.stringify([userId, operation, key])}, 0))`,
