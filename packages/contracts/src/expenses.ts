@@ -9,6 +9,8 @@ import {
   versionSchema,
 } from './scalars.js';
 import { pageQueryShape } from './http.js';
+import { MAX_AI_DRAFT_TEXT_LENGTH, MAX_AI_DRAFT_WARNINGS, MAX_LEDGER_MEMBERS } from './limits.js';
+
 const base = {
   title: z.string().trim().min(1).max(60),
   amountCents: expenseMoneySchema,
@@ -24,17 +26,17 @@ const amounts = equal.extend({ amountCents: nonnegativeMoneySchema });
 const equalExpense = z.strictObject({
   ...base,
   splitMode: z.literal('EQUAL'),
-  splits: z.array(equal).min(1).max(12),
+  splits: z.array(equal).min(1).max(MAX_LEDGER_MEMBERS),
 });
 const sharesExpense = z.strictObject({
   ...base,
   splitMode: z.literal('SHARES'),
-  splits: z.array(shares).min(1).max(12),
+  splits: z.array(shares).min(1).max(MAX_LEDGER_MEMBERS),
 });
 const amountsExpense = z.strictObject({
   ...base,
   splitMode: z.literal('AMOUNT'),
-  splits: z.array(amounts).min(1).max(12),
+  splits: z.array(amounts).min(1).max(MAX_LEDGER_MEMBERS),
 });
 const expenseInputSchema = z.discriminatedUnion('splitMode', [
   equalExpense,
@@ -60,6 +62,68 @@ export const updateExpenseBodySchema = z
     amountsExpense.extend({ version: versionSchema }),
   ])
   .superRefine(validateSplit);
+
+export const parseExpenseDraftBodySchema = z
+  .strictObject({
+    text: z.string().trim().min(1).max(MAX_AI_DRAFT_TEXT_LENGTH).optional(),
+    receiptImageId: uuidSchema.optional(),
+    referenceDate: localDateSchema.optional(),
+  })
+  .refine(
+    (v) => v.text !== undefined || v.receiptImageId !== undefined,
+    '请提供记账文本或收据图片',
+  );
+
+const draftBase = {
+  title: z.string().trim().min(1).max(60).nullable(),
+  amountCents: expenseMoneySchema.nullable(),
+  category: categorySchema,
+  occurredOn: localDateSchema.nullable(),
+  payerMemberId: uuidSchema.nullable(),
+  note: z.string().max(500).nullable(),
+  receiptImageId: uuidSchema.nullable(),
+  warnings: z.array(z.string().trim().min(1).max(200)).max(MAX_AI_DRAFT_WARNINGS),
+};
+const equalDraft = z.strictObject({
+  ...draftBase,
+  splitMode: z.literal('EQUAL'),
+  splits: z.array(equal).max(MAX_LEDGER_MEMBERS),
+});
+const sharesDraft = z.strictObject({
+  ...draftBase,
+  splitMode: z.literal('SHARES'),
+  splits: z.array(shares).min(1).max(MAX_LEDGER_MEMBERS),
+});
+const amountsDraft = z.strictObject({
+  ...draftBase,
+  splitMode: z.literal('AMOUNT'),
+  splits: z.array(amounts).min(1).max(MAX_LEDGER_MEMBERS),
+});
+const rawExpenseDraftSchema = z.discriminatedUnion('splitMode', [
+  equalDraft,
+  sharesDraft,
+  amountsDraft,
+]);
+export const expenseDraftSchema = rawExpenseDraftSchema.superRefine((v, ctx) => {
+  if (new Set(v.splits.map((s) => s.memberId)).size !== v.splits.length)
+    ctx.addIssue({ code: 'custom', path: ['splits'], message: '分摊成员不能重复' });
+  if (v.splitMode === 'AMOUNT') {
+    if (v.amountCents === null) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['amountCents'],
+        message: '按金额分摊草稿必须包含有效总金额',
+      });
+    } else if (
+      expenseMoneySchema.safeParse(v.amountCents).success &&
+      v.splits.every((m) => nonnegativeMoneySchema.safeParse(m.amountCents).success) &&
+      v.splits.reduce((sum, s) => sum + BigInt(s.amountCents), 0n) !== BigInt(v.amountCents)
+    ) {
+      ctx.addIssue({ code: 'custom', path: ['splits'], message: '分摊合计必须等于消费金额' });
+    }
+  }
+});
+
 export const expenseListQuerySchema = z
   .object({
     ...pageQueryShape,
@@ -99,3 +163,5 @@ export const expenseDetailSchema = expenseSummarySchema.extend({
   canEdit: z.boolean(),
 });
 export type CreateExpenseInput = z.infer<typeof createExpenseBodySchema>;
+export type ParseExpenseDraftInput = z.infer<typeof parseExpenseDraftBodySchema>;
+export type ExpenseDraft = z.infer<typeof expenseDraftSchema>;

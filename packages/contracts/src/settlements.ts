@@ -9,6 +9,8 @@ import {
   moneySchema,
 } from './scalars.js';
 import { memberBalanceSchema } from './balances.js';
+import { MAX_REMINDER_NOTE_LENGTH } from './limits.js';
+
 export const planTransferSchema = z.object({
   sequence: z.number().int().min(1).max(11),
   payerMemberId: uuidSchema,
@@ -56,3 +58,19 @@ export const settlementDetailsSchema = settlementSchema.extend({
 });
 export const startSettlementBodySchema = z.strictObject({ expectedVersion: versionSchema });
 export const markPaidBodySchema = z.strictObject({ note: z.string().max(200).optional() });
+export const remindTransferBodySchema = z.strictObject({
+  note: z.string().trim().min(1).max(MAX_REMINDER_NOTE_LENGTH).optional(),
+});
+export const transferReminderResultSchema = z
+  .object({
+    ledgerId: uuidSchema,
+    transferId: uuidSchema,
+    remindedAt: instantSchema,
+    cooldownEndsAt: instantSchema,
+    delivered: z.boolean(),
+  })
+  .refine((v) => Date.parse(v.cooldownEndsAt) >= Date.parse(v.remindedAt), {
+    path: ['cooldownEndsAt'],
+    message: '冷却结束时间不能早于催还时间',
+  });
+export type TransferReminderResult = z.infer<typeof transferReminderResultSchema>;

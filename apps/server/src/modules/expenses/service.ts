@@ -5,6 +5,7 @@ import { withTransaction, type Orm } from '../../db/transaction.js';
 import { executeIdempotent } from '../../db/idempotency.js';
 import { appendAudit } from '../../db/audit.js';
 import { AppError } from '../../http/errors.js';
+import { notReady } from '../../http/not-ready.js';
 import { requireActive, requireExpenseEditor, requireLedgerMember } from '../ledgers/index.js';
 import { receiptBinder } from '../images/index.js';
 import type { ReceiptBinder } from './receipt.js';
@@ -31,6 +32,7 @@ export interface ExpensesService {
   getExpense: Handler<'getExpense'>;
   updateExpense: Handler<'updateExpense'>;
   deleteExpense: Handler<'deleteExpense'>;
+  parseExpenseDraft: Handler<'parseExpenseDraft'>;
 }
 
 type ExpenseSplitPayload = CreateExpenseInput extends infer U
@@ -353,5 +355,6 @@ export function createExpensesService(
     getExpense,
     updateExpense,
     deleteExpense,
+    parseExpenseDraft: notReady('parseExpenseDraft'),
   };
 }

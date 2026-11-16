@@ -1,6 +1,6 @@
 # 团队协作规范
 
-技术约束见 [AGENTS.md](AGENTS.md)，安装与启动见 [README.md](README.md)。
+技术约束见 [AGENTS.md](AGENTS.md)，全栈编码与测试审查规范见 [docs/code-standards.md](docs/code-standards.md)，Beta 冲刺规划见 [docs/beta-sprint-plan.md](docs/beta-sprint-plan.md)，安装与启动见 [README.md](README.md)。
 
 ## 任务与 Issue
 
@@ -26,9 +26,9 @@ git switch -c feat/12-create-expense
 ## PR 与合并
 
 - 成员通过 PR 向 `main` 提交修改，不直接推送 `main`；未完成但需要讨论时使用 Draft PR。
-- PR 不使用固定模板，简要写清关联任务、修改内容和实际验证结果；界面改动附截图。
-- 按 [AGENTS.md](AGENTS.md) 执行适用检查：代码修改运行 `pnpm check`，业务或基础设施逻辑修改运行对应测试；移动端和依赖改动补充规定检查。
-- 系统架构负责人审核，成员在原分支继续修改；检查通过、意见处理完后，由系统架构负责人合并。
+- PR 不使用固定模板，简要写清关联任务、修改内容、实际验证结果，并交代权限与状态、金额与守恒、事务与幂等、错误码与手册同步情况；界面改动附截图。
+- 按 [AGENTS.md](AGENTS.md) 与 [docs/code-standards.md](docs/code-standards.md) 执行适用检查：代码修改运行 `pnpm check`，业务或基础设施逻辑修改运行对应测试；移动端和依赖改动补充规定检查。改变外部行为或接口范围的 PR 须在同一 PR 内同步更新对应操作手册、接口索引或已知限制。
+- 除作者外，合并前须有一名相邻职责成员核对并留下具体书面审查意见；系统架构负责人终审，成员在原分支继续修改，检查通过、意见处理完后由系统架构负责人合并。
 - 优先使用 **fast-forward**（`git merge --ff-only`）合并；无法快进时使用普通 **merge**，创建合并提交并保留原提交及其作者、提交者和时间。
 - 只有用户明确要求时才使用 **rebase**（含 GitHub **Rebase and merge**），不为保持线性历史默认重写提交。GitHub 合并按钮不提供 fast-forward 时，审核通过后使用 Git 执行快进。
 - 合并后删除任务分支，成员同步最新 `main`。
