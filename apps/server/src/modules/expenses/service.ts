@@ -12,7 +12,6 @@ import type { ReceiptBinder } from './receipt.js';
 import { queryExpenses } from './queries.js';
 import { toExpenseDetailDto, type PersistedSplit } from './mapper.js';
 import {
-  clearExpenseReceipt,
   findActiveExpense,
   incrementLedgerVersion,
   insertExpenseWithSplits,
@@ -20,6 +19,7 @@ import {
   readExpenseSplits,
   readMemberNames,
   readReceiptImageId,
+  removeExpenseReceipt,
   softDeleteExpenseRow,
   updateExpenseWithSplits,
 } from './repository.js';
@@ -252,7 +252,8 @@ export function createExpensesService(
           const currentReceiptId = await readReceiptImageId(tx, ledgerId, expenseId);
           const nextReceiptId = body.receiptImageId ?? null;
           if (nextReceiptId !== currentReceiptId) {
-            if (currentReceiptId !== null) await clearExpenseReceipt(tx, ledgerId, expenseId);
+            if (currentReceiptId !== null)
+              await removeExpenseReceipt(tx, { ledgerId, expenseId, imageId: currentReceiptId });
             if (nextReceiptId !== null)
               await receipts.bind(tx, {
                 ledgerId,

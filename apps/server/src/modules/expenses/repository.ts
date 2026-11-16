@@ -5,6 +5,7 @@ import {
   expenseImages,
   expenseSplits,
   expenses,
+  imageAssets,
   ledgerMembers,
   ledgers,
   users,
@@ -176,11 +177,23 @@ export async function updateExpenseWithSplits(
   return updated;
 }
 
-/** Detach expense_images while keeping image_assets bound to the ledger to prevent cross-ledger reuse. */
-export async function clearExpenseReceipt(tx: Transaction, ledgerId: string, expenseId: string) {
+/**
+ * Detach the replaced receipt and delete its bytea row in the same transaction.
+ * A detached receipt keeps its ledger binding, so neither rebinding nor temporary
+ * cleanup could ever reach it again; keeping it would only leak storage.
+ */
+export async function removeExpenseReceipt(
+  tx: Transaction,
+  input: { ledgerId: string; expenseId: string; imageId: string },
+) {
   await tx
     .delete(expenseImages)
-    .where(and(eq(expenseImages.ledgerId, ledgerId), eq(expenseImages.expenseId, expenseId)));
+    .where(
+      and(eq(expenseImages.ledgerId, input.ledgerId), eq(expenseImages.expenseId, input.expenseId)),
+    );
+  await tx
+    .delete(imageAssets)
+    .where(and(eq(imageAssets.ledgerId, input.ledgerId), eq(imageAssets.id, input.imageId)));
 }
 
 export async function softDeleteExpenseRow(

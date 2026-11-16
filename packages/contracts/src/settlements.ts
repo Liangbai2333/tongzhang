@@ -61,13 +61,16 @@ export const markPaidBodySchema = z.strictObject({ note: z.string().max(200).opt
 export const remindTransferBodySchema = z.strictObject({
   note: z.string().trim().min(1).max(MAX_REMINDER_NOTE_LENGTH).optional(),
 });
+/**
+ * The reminder result never reveals whether the payer turned notifications off.
+ * A repeat inside the cooldown window is rejected with `429 REMINDER_COOLDOWN`.
+ */
 export const transferReminderResultSchema = z
   .object({
     ledgerId: uuidSchema,
     transferId: uuidSchema,
     remindedAt: instantSchema,
     cooldownEndsAt: instantSchema,
-    delivered: z.boolean(),
   })
   .refine((v) => Date.parse(v.cooldownEndsAt) >= Date.parse(v.remindedAt), {
     path: ['cooldownEndsAt'],
