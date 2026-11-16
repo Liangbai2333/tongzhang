@@ -5,4 +5,6 @@ export function registerProfileRoutes(app: FastifyInstance, service: ProfileServ
   registerOperation(app, 'getMe', service.getMe);
   registerOperation(app, 'updateProfile', service.updateProfile);
   registerOperation(app, 'updatePreferences', service.updatePreferences);
+  registerOperation(app, 'listNotifications', service.listNotifications);
+  registerOperation(app, 'markNotificationRead', service.markNotificationRead);
 }

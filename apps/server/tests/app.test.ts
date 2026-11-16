@@ -58,8 +58,16 @@ it('publishes business contracts and validates auth input without a database', a
   apps.push(app);
   const spec = (await app.inject('/docs/json')).json();
   expect(spec.paths).toHaveProperty('/api/v1/ledgers/{ledgerId}/settlement');
+  expect(spec.paths).toHaveProperty('/api/v1/ledgers/{ledgerId}/expenses/ai-draft');
+  expect(spec.paths).toHaveProperty(
+    '/api/v1/ledgers/{ledgerId}/settlement/transfers/{transferId}/remind',
+  );
+  expect(spec.paths).toHaveProperty('/api/v1/me/notifications');
+  expect(spec.paths).toHaveProperty('/api/v1/me/notifications/{notificationId}/read');
   const protectedResponse = await app.inject('/api/v1/ledgers');
   expect(protectedResponse.statusCode).toBe(401);
+  const notificationsResponse = await app.inject('/api/v1/me/notifications');
+  expect(notificationsResponse.statusCode).toBe(401);
   const response = await app.inject({
     method: 'POST',
     url: '/api/v1/auth/register',

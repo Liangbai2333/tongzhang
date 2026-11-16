@@ -8,6 +8,8 @@ export interface ProfileService {
   getMe: Handler<'getMe'>;
   updateProfile: Handler<'updateProfile'>;
   updatePreferences: Handler<'updatePreferences'>;
+  listNotifications: Handler<'listNotifications'>;
+  markNotificationRead: Handler<'markNotificationRead'>;
 }
 export function createProfileService(db: Orm): ProfileService {
   return {
@@ -19,5 +21,7 @@ export function createProfileService(db: Orm): ProfileService {
     },
     updateProfile: notReady('updateProfile'),
     updatePreferences: notReady('updatePreferences'),
+    listNotifications: notReady('listNotifications'),
+    markNotificationRead: notReady('markNotificationRead'),
   };
 }
