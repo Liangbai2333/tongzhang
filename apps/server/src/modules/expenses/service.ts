@@ -26,6 +26,7 @@ export interface ExpensesService {
   getExpense: Handler<'getExpense'>;
   updateExpense: Handler<'updateExpense'>;
   deleteExpense: Handler<'deleteExpense'>;
+  parseExpenseDraft: Handler<'parseExpenseDraft'>;
 }
 
 export function createExpensesService(
@@ -254,5 +255,6 @@ export function createExpensesService(
     getExpense,
     updateExpense: notReady('updateExpense'),
     deleteExpense: notReady('deleteExpense'),
+    parseExpenseDraft: notReady('parseExpenseDraft'),
   };
 }

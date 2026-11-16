@@ -2,6 +2,7 @@ import type { Handler } from '../../http/context.js';
 import { appendAudit } from '../../db/audit.js';
 import { withTransaction, type Orm } from '../../db/transaction.js';
 import { AppError } from '../../http/errors.js';
+import { notReady } from '../../http/not-ready.js';
 import { findUser, lockUser, updateNotificationPreference, updateUsername } from './repository.js';
 import { toUserSelf } from './mapper.js';
 
@@ -9,6 +10,8 @@ export interface ProfileService {
   getMe: Handler<'getMe'>;
   updateProfile: Handler<'updateProfile'>;
   updatePreferences: Handler<'updatePreferences'>;
+  listNotifications: Handler<'listNotifications'>;
+  markNotificationRead: Handler<'markNotificationRead'>;
 }
 
 /** Match PostgreSQL `ck_users_username` (`char_length(username) BETWEEN 2 AND 30`) and UTF-8 rules. */
@@ -75,5 +78,7 @@ export function createProfileService(db: Orm): ProfileService {
       });
       return { data: { notificationEnabled: updated.notificationEnabled } };
     },
+    listNotifications: notReady('listNotifications'),
+    markNotificationRead: notReady('markNotificationRead'),
   };
 }
