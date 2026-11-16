@@ -8,7 +8,7 @@
 
 ## 快速开始
 
-环境：Node.js 24、pnpm 12.6.0、Docker Desktop。安装与环境变量设置见[成员环境配置](docs/environment-setup.md)，Windows 成员从其中的 [Windows 步骤](docs/environment-setup.md#windows)开始。下面以 macOS 的 iOS 开发为例，iOS 模拟器还需 Xcode 和 CocoaPods。
+环境：Node.js 24、pnpm 12.6.0、Docker Desktop；端口、`adb reverse` 与 JDK 17 要求见[启动前必看](docs/environment-setup.md#启动前必看)。安装与环境变量设置见[成员环境配置](docs/environment-setup.md)，Windows 成员从其中的 [Windows 步骤](docs/environment-setup.md#windows)开始。下面以 macOS 的 iOS 开发为例，iOS 模拟器还需 Xcode 和 CocoaPods。
 
 ```bash
 pnpm install --frozen-lockfile
