@@ -1,0 +1,15 @@
+# commit 3b1f65c  2026-11-16T14:21:04Z  node v26.13.0  cmd: pnpm test
+$ pnpm build:shared && vitest run
+$ pnpm -r --filter "./packages/*" build
+$ tsc -p tsconfig.json
+$ tsc -p tsconfig.json
+
+ RUN  v5.0.4 <worktree>
+
+
+ Test Files  22 passed (22)
+      Tests  157 passed (157)
+   Start at  06:21:05
+   Duration  1.19s (tests 41%, import 35%, transform 24%, worker 1%)
+
+exit=0

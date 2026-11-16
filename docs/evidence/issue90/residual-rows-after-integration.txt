@@ -1,0 +1,7 @@
+users|0
+ledgers|0
+expenses|0
+expense_splits|0
+operation_logs|0
+idempotency_keys|0
+PostgreSQL 17.11 on aarch64-unknown-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit

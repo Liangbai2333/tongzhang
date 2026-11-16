@@ -1,0 +1,15 @@
+# commit 3b1f65c  2026-11-16T14:21:31Z  node v26.13.0  cmd: TEST_DATABASE_URL=postgres://test:***@127.0.0.1:55442/tongzhang_test pnpm test:integration (postgres:17-alpine throwaway container)
+$ pnpm build:shared && vitest run --config vitest.integration.config.ts
+$ pnpm -r --filter "./packages/*" build
+$ tsc -p tsconfig.json
+$ tsc -p tsconfig.json
+
+ RUN  v5.0.4 <worktree>
+
+
+ Test Files  17 passed (17)
+      Tests  152 passed (152)
+   Start at  06:21:32
+   Duration  4.60s (tests 67%, import 25%, transform 7%)
+
+exit=0
