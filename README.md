@@ -4,11 +4,11 @@
 
 当前可在真实 API / PostgreSQL 上完成注册登录、在线会话核验、自定义封面建账、邀请码加入、消费与收据、余额和结算预览、正式冻结、整笔已还登记、创建者结清、个人归档与历史只读查看。Day7 固定交付候选 `df4d773` 已完成独立 Android 新安装与完整主路径验收，见 [最终验收、安装包与启动说明](docs/day7-delivery-acceptance.md)。后续工程细化不自动包含在该交付包的验收结论中。Day6 双账号 Android 模拟器主链及 401 同账号核验恢复见 [#58/#59](docs/issues58-59-final-acceptance.md)，原生兼容性、权限和冷启动增量复测见 [#60](docs/issue60-native-candidate-validation.md)；历史证据保留各自版本，不代表本次重新执行。
 
-统计仍为 501；消费修改/删除（A16/A17）、个人资料修改（A28）与通知偏好保存（A29）服务端已接通，移动端编辑/删除入口与扫码待开放。已还只是人工登记，不改变消费；个人归档只影响本人。发布签名包、物理真机、iOS 当前完整主链及生产部署未在本轮验收。完整边界见[已知限制](docs/known-limitations.md)。
+支出统计（A21）服务端已接通，移动端统计图表待开放；消费修改/删除（A16/A17）、个人资料修改（A28）与通知偏好保存（A29）服务端已接通，移动端编辑/删除入口与扫码待开放。已还只是人工登记，不改变消费；个人归档只影响本人。发布签名包、物理真机、iOS 当前完整主链及生产部署未在本轮验收。完整边界见[已知限制](docs/known-limitations.md)。
 
 ## 快速开始
 
-环境：Node.js 24、pnpm 12.6.0、Docker Desktop。安装与环境变量设置见[成员环境配置](docs/environment-setup.md)，Windows 成员从其中的 [Windows 步骤](docs/environment-setup.md#windows)开始。下面以 macOS 的 iOS 开发为例，iOS 模拟器还需 Xcode 和 CocoaPods。
+环境：Node.js 24、pnpm 12.6.0、Docker Desktop；端口、`adb reverse` 与 JDK 17 要求见[启动前必看](docs/environment-setup.md#启动前必看)。安装与环境变量设置见[成员环境配置](docs/environment-setup.md)，Windows 成员从其中的 [Windows 步骤](docs/environment-setup.md#windows)开始。下面以 macOS 的 iOS 开发为例，iOS 模拟器还需 Xcode 和 CocoaPods。
 
 ```bash
 pnpm install --frozen-lockfile

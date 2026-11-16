@@ -1,8 +1,8 @@
 import type { Handler } from '../../http/context.js';
-import { notReady } from '../../http/not-ready.js';
 import type { Orm } from '../../db/transaction.js';
 import { computeBalances, toBalanceDto } from './calculator.js';
 import { readLedgerSnapshot } from './snapshot.js';
+import { readStatistics } from './statistics-reader.js';
 
 export interface BalancesService {
   getBalances: Handler<'getBalances'>;
@@ -25,6 +25,8 @@ export function createBalancesService(db: Orm): BalancesService {
         },
       } as Awaited<ReturnType<Handler<'getBalances'>>>;
     },
-    getStatistics: notReady('getStatistics'),
+    getStatistics: async (input, context) => ({
+      data: await readStatistics(db, input.params.ledgerId, context.principal.userId),
+    }),
   };
 }
