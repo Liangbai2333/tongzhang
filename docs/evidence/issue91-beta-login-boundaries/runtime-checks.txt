@@ -1,0 +1,17 @@
+2026-11-16T14:44:50.877Z GET /health/ready 200
+2026-11-16T14:46:11.908Z POST /api/v1/auth/register 201
+2026-11-16T14:46:11.988Z POST /api/v1/ledgers 201
+2026-11-16T14:48:21.673Z POST /api/v1/auth/login 401
+2026-11-16T14:48:29.478Z POST /api/v1/auth/login 401
+2026-11-16T14:49:19.524Z POST /api/v1/auth/login 200
+2026-11-16T14:49:19.668Z GET /api/v1/me 200
+2026-11-16T14:49:19.957Z GET /api/v1/ledgers?limit=20&archived=false 200
+2026-11-16T14:51:52.588Z POST /api/v1/auth/login 200
+2026-11-16T14:51:52.797Z GET /api/v1/me 200
+2026-11-16T14:51:53.310Z GET /api/v1/ledgers?limit=20&archived=false 200
+2026-11-16T14:54:16.222Z GET /api/v1/me 200
+
+PostgreSQL columns: ledgers|cover_images|invitations
+before 1|0|1
+empty 1|0|1
+blank 1|0|1
