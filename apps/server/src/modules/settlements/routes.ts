@@ -6,5 +6,6 @@ export function registerSettlementsRoutes(app: FastifyInstance, service: Settlem
   registerOperation(app, 'startSettlement', service.startSettlement);
   registerOperation(app, 'getSettlement', service.getSettlement);
   registerOperation(app, 'markTransferPaid', service.markTransferPaid);
+  registerOperation(app, 'remindTransfer', service.remindTransfer);
   registerOperation(app, 'settleLedger', service.settleLedger);
 }
