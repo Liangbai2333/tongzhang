@@ -1,0 +1,32 @@
+PostgreSQL columns: ledgers|cover_images|invitations
+before 9|0|9
+empty 9|0|9
+blank 9|0|9
+
+Visible ledger rows before switching tabs and after returning during refetch
+[53,210][1028,269] Button '' '打开账本 Beta89 Review 06' false
+[53,294][1028,611] Button '' '打开账本 Beta89 Review 05' false
+[53,638][1028,956] Button '' '打开账本 Beta89 Review 04' false
+[53,981][1028,1298] Button '' '打开账本 Beta89 Review 03' false
+[53,1325][1028,1643] Button '' '打开账本 Beta89 Review 02' false
+[53,1668][1028,1985] Button '' '打开账本 Beta89 Review 01' false
+
+Device API requests and responses (UTC, response bodies omitted)
+2026-11-16T14:46:51.818Z -> 2026-11-16T14:46:51.825Z #1 GET /health/ready 200 delayMs=0
+2026-11-16T14:52:02.236Z -> 2026-11-16T14:52:02.274Z #2 POST /api/v1/auth/login 401 delayMs=0
+2026-11-16T14:52:10.564Z -> 2026-11-16T14:52:10.611Z #3 POST /api/v1/auth/login 401 delayMs=0
+2026-11-16T14:52:22.718Z -> 2026-11-16T14:52:22.746Z #4 POST /api/v1/auth/login 200 delayMs=0
+2026-11-16T14:52:22.830Z -> 2026-11-16T14:52:22.834Z #5 GET /api/v1/me 200 delayMs=0
+2026-11-16T14:52:23.038Z -> 2026-11-16T14:52:23.052Z #6 GET /api/v1/ledgers 200 delayMs=0
+2026-11-16T14:53:59.286Z -> 2026-11-16T14:53:59.329Z #7 POST /api/v1/auth/login 200 delayMs=0
+2026-11-16T14:53:59.400Z -> 2026-11-16T14:53:59.404Z #8 GET /api/v1/me 200 delayMs=0
+2026-11-16T14:53:59.569Z -> 2026-11-16T14:53:59.582Z #9 GET /api/v1/ledgers 200 delayMs=0
+2026-11-16T14:54:48.268Z -> 2026-11-16T14:54:48.280Z #10 GET /api/v1/me 200 delayMs=0
+2026-11-16T14:55:09.702Z -> 2026-11-16T14:55:09.715Z #11 GET /api/v1/ledgers 200 delayMs=0
+2026-11-16T14:56:04.491Z -> 2026-11-16T14:56:04.508Z #12 GET /api/v1/ledgers 200 delayMs=0
+2026-11-16T14:56:04.527Z -> 2026-11-16T14:56:04.530Z #13 GET /api/v1/ledgers 200 delayMs=0
+2026-11-16T14:56:07.378Z -> 2026-11-16T14:56:12.386Z #14 GET /api/v1/ledgers 200 delayMs=5000
+2026-11-16T14:56:49.279Z -> 2026-11-16T14:56:54.291Z #16 GET /api/v1/ledgers 200 delayMs=5000
+2026-11-16T14:56:49.279Z -> 2026-11-16T14:56:54.296Z #15 GET /api/v1/ledgers 200 delayMs=5000
+2026-11-16T14:56:49.974Z -> 2026-11-16T14:56:54.984Z #17 GET /api/v1/ledgers 200 delayMs=5000
+2026-11-16T14:56:56.693Z -> 2026-11-16T14:57:01.702Z #18 GET /api/v1/ledgers 200 delayMs=5000
