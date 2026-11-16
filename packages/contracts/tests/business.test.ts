@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
+  MAX_STATISTICS_DAILY_POINTS,
   createExpenseBodySchema,
   updateExpenseBodySchema,
   parseExpenseDraftBodySchema,
@@ -88,6 +89,7 @@ describe('business contracts', () => {
       expenseCount: 0,
       categories: [],
       dailyTrend: [],
+      dailyTrendTruncated: false,
       topExpenses: [],
       members: [
         { memberId: ids[0], username: '小安', paidCents: '0', sharedCents: '0', netCents: '0' },
@@ -107,6 +109,7 @@ describe('business contracts', () => {
         { date: '2026-11-15', amountCents: '24000', expenseCount: 2 },
         { date: '2026-11-16', amountCents: '6000', expenseCount: 1 },
       ],
+      dailyTrendTruncated: false,
       topExpenses: [
         {
           id: '00000000-0000-4000-8000-000000000011',
@@ -191,6 +194,36 @@ describe('business contracts', () => {
         members: gushanStats.members.map((m, i) => (i === 0 ? { ...m, netCents: '2999' } : m)),
       }).success,
     ).toBe(false);
+    // Truncated trends keep only the latest days: allowed only at the limit, sums may fall short
+    const fullTrend = Array.from({ length: MAX_STATISTICS_DAILY_POINTS }, (_, idx) => ({
+      date: new Date(Date.UTC(2025, 0, 1) + idx * 86_400_000).toISOString().slice(0, 10),
+      amountCents: '1',
+      expenseCount: 1,
+    }));
+    const truncatedStats = {
+      ...emptyStats,
+      expenseTotalCents: '400',
+      expenseCount: 400,
+      categories: [{ category: 'OTHER', amountCents: '400', expenseCount: 400, percentage: '100' }],
+      dailyTrend: fullTrend,
+      dailyTrendTruncated: true,
+      members: [
+        { memberId: ids[0], username: '小安', paidCents: '400', sharedCents: '400', netCents: '0' },
+      ],
+    };
+    expect(statisticsSchema.safeParse(truncatedStats).success).toBe(true);
+    expect(
+      statisticsSchema.safeParse({ ...truncatedStats, dailyTrendTruncated: false }).success,
+    ).toBe(false);
+    expect(
+      statisticsSchema.safeParse({ ...truncatedStats, dailyTrend: fullTrend.slice(1) }).success,
+    ).toBe(false);
+    expect(statisticsSchema.safeParse({ ...gushanStats, dailyTrendTruncated: true }).success).toBe(
+      false,
+    );
+    expect(
+      statisticsSchema.safeParse({ ...truncatedStats, expenseTotalCents: '300' }).success,
+    ).toBe(false);
     // Reject out-of-bounds arrays and missing required fields
     expect(
       statisticsSchema.safeParse({
@@ -268,7 +301,6 @@ describe('business contracts', () => {
         transferId: ids[1],
         remindedAt: '2026-11-16T10:00:00.000Z',
         cooldownEndsAt: '2026-11-16T16:00:00.000Z',
-        delivered: true,
       }).success,
     ).toBe(true);
     expect(
@@ -277,7 +309,6 @@ describe('business contracts', () => {
         transferId: ids[1],
         remindedAt: '2026-11-16T16:00:00.000Z',
         cooldownEndsAt: '2026-11-16T10:00:00.000Z',
-        delivered: false,
       }).success,
     ).toBe(false);
 
@@ -306,6 +337,21 @@ describe('business contracts', () => {
         actorUserId: ids[3],
         actorName: '小安',
         amountCents: '0',
+        note: null,
+        readAt: null,
+        createdAt: '2026-11-16T10:00:00.000Z',
+      }).success,
+    ).toBe(false);
+    expect(
+      notificationSchema.safeParse({
+        id: ids[0],
+        type: 'SETTLEMENT_STARTED',
+        ledgerId: ids[1],
+        ledgerName: '鼓山一日',
+        transferId: ids[2],
+        actorUserId: ids[3],
+        actorName: '小安',
+        amountCents: '3000',
         note: null,
         readAt: null,
         createdAt: '2026-11-16T10:00:00.000Z',

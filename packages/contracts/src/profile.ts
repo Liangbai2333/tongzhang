@@ -7,7 +7,8 @@ import { MAX_REMINDER_NOTE_LENGTH } from './limits.js';
 export const updateProfileBodySchema = z.strictObject({ username: usernameSchema });
 export const updatePreferencesBodySchema = z.strictObject({ notificationEnabled: z.boolean() });
 
-export const notificationTypeSchema = z.enum(['SETTLEMENT_REMINDER', 'SETTLEMENT_STARTED']);
+/** Beta only delivers in-app settlement reminders; every item points at one pending transfer. */
+export const notificationTypeSchema = z.enum(['SETTLEMENT_REMINDER']);
 export const notificationListQuerySchema = z.object({
   ...pageQueryShape,
   unreadOnly: z

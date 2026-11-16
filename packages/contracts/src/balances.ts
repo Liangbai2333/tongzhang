@@ -66,6 +66,8 @@ export const statisticsSchema = z
     expenseCount: z.number().int().nonnegative(),
     categories: z.array(categoryStatSchema).max(MAX_EXPENSE_CATEGORIES),
     dailyTrend: z.array(dailyExpenseStatSchema).max(MAX_STATISTICS_DAILY_POINTS),
+    /** True when the ledger has more expense days than the limit; only the latest days are returned. */
+    dailyTrendTruncated: z.boolean(),
     topExpenses: z.array(topExpenseStatSchema).max(MAX_TOP_EXPENSES),
     members: z.array(memberExpenseStatSchema).max(MAX_LEDGER_MEMBERS),
   })
@@ -101,24 +103,31 @@ export const statisticsSchema = z
         break;
       }
     }
-    if (
-      v.dailyTrend.length < MAX_STATISTICS_DAILY_POINTS &&
-      v.dailyTrend.every((d) => nonnegativeMoneySchema.safeParse(d.amountCents).success) &&
-      v.dailyTrend.reduce((sum, d) => sum + BigInt(d.amountCents), 0n) !== totalCents
-    )
+    if (v.dailyTrendTruncated && v.dailyTrend.length !== MAX_STATISTICS_DAILY_POINTS)
       ctx.addIssue({
         code: 'custom',
-        path: ['dailyTrend'],
-        message: '按日趋势金额合计必须等于有效消费总额',
+        path: ['dailyTrendTruncated'],
+        message: '仅当按日趋势达到上限天数时才可标记截断',
       });
-    if (
-      v.dailyTrend.length < MAX_STATISTICS_DAILY_POINTS &&
-      v.dailyTrend.reduce((sum, d) => sum + d.expenseCount, 0) !== v.expenseCount
-    )
+    if (v.dailyTrend.every((d) => nonnegativeMoneySchema.safeParse(d.amountCents).success)) {
+      const trendCents = v.dailyTrend.reduce((sum, d) => sum + BigInt(d.amountCents), 0n);
+      if (v.dailyTrendTruncated ? trendCents > totalCents : trendCents !== totalCents)
+        ctx.addIssue({
+          code: 'custom',
+          path: ['dailyTrend'],
+          message: v.dailyTrendTruncated
+            ? '截断后的按日趋势金额不能超过有效消费总额'
+            : '按日趋势金额合计必须等于有效消费总额',
+        });
+    }
+    const trendCount = v.dailyTrend.reduce((sum, d) => sum + d.expenseCount, 0);
+    if (v.dailyTrendTruncated ? trendCount > v.expenseCount : trendCount !== v.expenseCount)
       ctx.addIssue({
         code: 'custom',
         path: ['dailyTrend'],
-        message: '按日趋势笔数合计必须等于有效消费笔数',
+        message: v.dailyTrendTruncated
+          ? '截断后的按日趋势笔数不能超过有效消费笔数'
+          : '按日趋势笔数合计必须等于有效消费笔数',
       });
 
     if (new Set(v.topExpenses.map((e) => e.id)).size !== v.topExpenses.length)

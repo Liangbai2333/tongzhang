@@ -908,15 +908,22 @@ describe('updateExpense (A16)', () => {
       receiptImageId: receipt2,
     });
 
-    // Old receipt1 stays bound to this ledger (cannot be reused on a new expense, and survives temporary cleanup).
+    // The replaced receipt1 is deleted in the same transaction: no orphaned bytea row is left behind.
+    expect(
+      await fixture.db.orm.select().from(imageAssets).where(eq(imageAssets.id, receipt1)),
+    ).toHaveLength(0);
+    expect(
+      (
+        await fixture.app.inject({
+          method: 'GET',
+          url: `/api/v1/images/${receipt1}`,
+          headers: { authorization: `Bearer ${s.friend.accessToken}` },
+        })
+      ).statusCode,
+    ).toBe(403);
     expect(
       (await post(s.friend.accessToken, bodyFor(s, { receiptImageId: receipt1 }))).statusCode,
-    ).toBe(400);
-    await fixture.db.orm
-      .update(imageAssets)
-      .set({ createdAt: sql`now() - interval '25 hours'` })
-      .where(eq(imageAssets.id, receipt1));
-    expect(await cleanupTemporaryImages(fixture.db.orm)).toBe(0);
+    ).toBe(403);
 
     // Clearing receipt (null) detaches expense_images cleanly.
     const cleared = await patch(
@@ -931,6 +938,9 @@ describe('updateExpense (A16)', () => {
         .select()
         .from(expenseImages)
         .where(eq(expenseImages.expenseId, expenseId)),
+    ).toHaveLength(0);
+    expect(
+      await fixture.db.orm.select().from(imageAssets).where(eq(imageAssets.id, receipt2)),
     ).toHaveLength(0);
   });
 
