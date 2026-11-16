@@ -1,0 +1,37 @@
+# commit 3b1f65c  2026-11-16T14:21:06Z  node v26.13.0  cmd: pnpm test:mobile
+$ pnpm build:shared && pnpm --filter @tongzhang/mobile test
+$ pnpm -r --filter "./packages/*" build
+$ tsc -p tsconfig.json
+$ tsc -p tsconfig.json
+$ jest --maxWorkers=4
+PASS iOS tests/expenses-ui.test.tsx (13.134 s)
+PASS Android tests/expenses-ui.test.tsx (13.229 s)
+PASS Android tests/ledgers-ui.test.tsx (16.117 s)
+PASS iOS tests/ledgers-ui.test.tsx (16.298 s)
+PASS Android tests/settlements-ui.test.tsx (7.274 s)
+PASS iOS tests/settlements-ui.test.tsx (7.296 s)
+PASS Android tests/auth-provider.test.tsx
+PASS iOS tests/auth-provider.test.tsx
+PASS Android tests/auth-navigation.test.tsx
+PASS iOS tests/auth-navigation.test.tsx
+PASS Android tests/feedback.test.tsx
+PASS Android tests/receipt-files.test.tsx
+PASS iOS tests/feedback.test.tsx
+PASS iOS tests/receipt-files.test.tsx
+PASS Android tests/images-api.test.tsx
+PASS iOS tests/images-api.test.tsx
+PASS Android tests/write-recovery.test.tsx
+PASS iOS tests/write-recovery.test.tsx
+PASS Android tests/auth-api.test.tsx
+PASS iOS tests/auth-api.test.tsx
+PASS Android tests/session-token.test.tsx
+PASS iOS tests/session-token.test.tsx
+PASS Android tests/auth-ui.test.tsx (7.152 s)
+PASS iOS tests/auth-ui.test.tsx (7.135 s)
+
+Test Suites: 24 passed, 24 total
+Tests:       258 passed, 258 total
+Snapshots:   0 total
+Time:        23.899 s
+Ran all test suites in 2 projects.
+exit=0
