@@ -15,7 +15,10 @@ it('allows creator overrides but rejects unrelated members and frozen edits', ()
   ).toThrow();
   expect(() =>
     requireExpenseEditor({ status: 'SETTLING', memberId: 'a', isCreator: true }, 'a'),
-  ).toThrow();
+  ).toThrow('账本已进入结算，无法修改');
+  expect(() =>
+    requireExpenseEditor({ status: 'SETTLED', memberId: 'a', isCreator: true }, 'a'),
+  ).toThrow('账本已进入结算，无法修改');
   expect(() =>
     requireTransferRegistrar({ status: 'SETTLING', memberId: 'a', isCreator: true }, 'b'),
   ).not.toThrow();
