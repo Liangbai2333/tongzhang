@@ -11,7 +11,7 @@
 | 服务端   | `apps/server/src/modules/profile/`                    |
 | 移动端   | `apps/mobile/src/features/profile/`                   |
 | 共享契约 | `packages/contracts/src/profile.ts` 与 `endpoints.ts` |
-| 数据     | users；operation_logs（用户名修改）                   |
+| 数据     | users；operation_logs（资料与通知偏好更新）           |
 
 ## 2 子功能与接口
 
@@ -27,7 +27,7 @@
 
 ## 4 数据规则与事务
 
-修改用户名与审计同事务；通知使用notificationEnabled绝对值，不使用toggle命令，重复提交同值不产生反转。
+修改用户名、保存通知偏好均在事务内锁定本人用户行并与 `operation_logs` 操作审计同事务提交；通知使用 `notificationEnabled` 布尔绝对值，不使用 toggle 命令，重复提交同值不产生反转。
 
 响应不返回passwordHash，不允许提交userId修改别人；邮箱与人民币固定只读。
 
@@ -35,7 +35,7 @@
 
 个人中心和应用设置是页面；用户名、隐私、协议与退出确认是面板。通知开关即时提交，无保存设置按钮。
 
-当前账号页已接入“关于同账”“用户协议”“隐私说明”三个阅读入口。正文统一在 `features/profile/documents.ts` 维护，`components/DocumentSheet.tsx` 供个人中心和登录/注册页复用；阅读与关闭不更新资料、不提交认证、不改变同意状态。完整设置页、用户名编辑和通知偏好仍待对应任务接通。
+当前服务端 `A04`、`A28`、`A29` 已全部接通真实持久化与审计；移动端账号页已接入“关于同账”“用户协议”“隐私说明”三个阅读入口。正文统一在 `features/profile/documents.ts` 维护，`components/DocumentSheet.tsx` 供个人中心和登录/注册页复用；阅读与关闭不更新资料、不提交认证、不改变同意状态。移动端用户名编辑面板与通知开关交互待对应前端任务接通。
 
 ## 6 开发与验收
 
