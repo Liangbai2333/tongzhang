@@ -47,8 +47,8 @@ Day7 固定交付候选 `df4d773` 的30项登记方法、路径、成功码、�
 | A25 markTransferPaid  | POST `L/settlement/transfers/:transferId/paid` | `{note?}` → `{transfer,progress}`，200                                             | 新登记需 SETTLING 该笔付款人或创建者；已 PAID 保留首次登记信息 | 必需             |
 | A26 settleLedger      | POST `L/settle`                                | 无 body → `{ledgerId,status:"SETTLED",settledAt}`，200                             | 创建者、全部 PAID 且每人剩余净额 0；已结清可重复确认           | 必需             |
 | A27 archiveLedger     | POST `L/archive`                               | 无 body → `{ledgerId,archivedAt}`，200                                             | SETTLED 当前成员；只归档自己，重复保留原时间                   | 必需             |
-| A28 updateProfile     | PATCH `/api/v1/me`                             | `{username}` → 契约 UserSelf/200                                                   | **实际 501；App 资料只读**                                     | —                |
-| A29 updatePreferences | PATCH `/api/v1/me/preferences`                 | `{notificationEnabled:boolean}` → 契约同名字段/200                                 | **实际 501；未保存开关或发送通知**                             | —                |
+| A28 updateProfile     | PATCH `/api/v1/me`                             | `{username}` → UserSelf，200                                                       | 当前账号；持久化并写审计，邮箱保持只读（App 编辑待开放）       | —                |
+| A29 updatePreferences | PATCH `/api/v1/me/preferences`                 | `{notificationEnabled:boolean}` → `{notificationEnabled}`，200                     | 当前账号；按绝对值持久化并写审计（App 开关与提醒事件待开放）   | —                |
 | A30 refresh           | POST `/api/v1/auth/refresh`                    | `{refreshToken}` → TokenPair，200                                                  | 不需 Bearer；刷新令牌轮换，App 会话管理                        | —                |
 
 认证/参数/幂等校验先于未实现 handler，因此不合法请求可先返回 400/401，而非所有 A16/A17 请求都直接 501。
@@ -67,6 +67,7 @@ Day7 固定交付候选 `df4d773` 的30项登记方法、路径、成功码、�
 | A18         | 文本 kind=COVER/RECEIPT、ledgerId 可省略；文件名字段 file，仅一张 JPEG/PNG，≤1048576 字节、每边≤4096、≤1600 万像素，实际解码/MIME 校验，不接受动画多页；仅上传不会提前绑定                                                                                   |
 | A23         | expectedVersion 为 1–2147483647 整数，取最新 A22.ledgerVersion，不能使用消费 version 或自行加一                                                                                                                                                              |
 | A25         | note 可省略，最多 200 字；不接受金额、部分登记、撤销或其他状态字段                                                                                                                                                                                           |
+| A28/A29     | A28 严格对象 `{username}`，trim 后 2–30 个有效字符（不接受 email/userId 等额外字段，邮箱保持只读）；A29 严格对象 `{notificationEnabled:boolean}`，按布尔绝对值写入 `users.notification_enabled`                                                              |
 
 请求严格对象不接受额外字段的范围见各 Schema（消费、建账、邀请、认证、图片 metadata、登记、冻结）；query 不应自行拼接未知字段。
 
@@ -109,6 +110,6 @@ A25 只改变转账登记与剩余净额，不修改原消费、分摊、原净�
 | NOT_FOUND / SETTLEMENT_NOT_FOUND / TRANSFER_NOT_FOUND，404 | 分别为消费或接口、正式批次、转账不存在；核对资源与时机                                                                                          |
 | IMAGE_INVALID / 400，PAYLOAD_TOO_LARGE / 413               | 图片类型/绑定/解码不合法或超限；权限仍可能返回 403，重新选择可用图片                                                                            |
 | RATE_LIMITED / 429                                         | 稍后显式重试；不能通过自动循环重复写入                                                                                                          |
-| NOT_IMPLEMENTED / 501                                      | A16/A17/A21/A28/A29 边界；不按网络故障无限重试                                                                                                  |
+| FEATURE_NOT_READY / 501                                    | A16/A17/A21 边界；不按网络故障无限重试                                                                                                          |
 
 实现证据：[HTTP 适配](../apps/server/src/http/operation.ts)、[事务幂等](../apps/server/src/db/idempotency.ts)、[账本](../apps/server/src/modules/ledgers/service.ts)、[邀请](../apps/server/src/modules/invitations/service.ts)、[消费](../apps/server/src/modules/expenses/service.ts)、[图片](../apps/server/src/modules/images/service.ts)、[正式冻结](../apps/server/src/modules/settlements/start.ts)、[登记/结清](../apps/server/src/modules/settlements/progress.ts)、[在线确认面板](../apps/mobile/src/components/OnlineWriteSheet.tsx)。权限、冲突和未知结果的既有自动化/异常原生证据见 [#48](issue48-native-candidate-validation.md) 与 [#46/#47](issues46-47-acceptance.md)，保留原来源版本；#49 只重做完整正常 App 路径，不能冒充重验了每个错误码。
