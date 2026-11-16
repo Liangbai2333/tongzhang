@@ -7,4 +7,5 @@ export function registerExpensesRoutes(app: FastifyInstance, service: ExpensesSe
   registerOperation(app, 'getExpense', service.getExpense);
   registerOperation(app, 'updateExpense', service.updateExpense);
   registerOperation(app, 'deleteExpense', service.deleteExpense);
+  registerOperation(app, 'parseExpenseDraft', service.parseExpenseDraft);
 }

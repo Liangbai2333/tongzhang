@@ -1,12 +1,12 @@
 import { randomInt } from 'node:crypto';
-import type { EndpointOutput } from '@tongzhang/contracts';
+import { INVITE_QR_PREFIX, formatInviteQrPayload, type EndpointOutput } from '@tongzhang/contracts';
 import type { Transaction } from '../../db/transaction.js';
 import { invitations } from '../../db/schema/index.js';
 
 /** Same alphabet as the `ck_invitations_code` constraint: no 0/1/I/O. */
 const ALPHABET = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ';
 export const INVITATION_TTL_MS = 7 * 86_400_000;
-export const INVITE_QR_PREFIX = 'tongzhang:invite:v1:';
+export { INVITE_QR_PREFIX };
 
 export const generateInviteCode = () =>
   Array.from({ length: 6 }, () => ALPHABET[randomInt(ALPHABET.length)]).join('');
@@ -22,7 +22,7 @@ export function toInvitationDto(
     code: row.code,
     expiresAt: row.expiresAt.toISOString(),
     expired: row.expiresAt <= now,
-    qrPayload: `${INVITE_QR_PREFIX}${row.code}`,
+    qrPayload: formatInviteQrPayload(row.code),
   };
 }
 

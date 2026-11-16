@@ -1,4 +1,5 @@
 import type { Handler } from '../../http/context.js';
+import { notReady } from '../../http/not-ready.js';
 import type { Orm } from '../../db/transaction.js';
 import { computeBalances, readLedgerSnapshot, toBalanceDto } from '../balances/index.js';
 
@@ -12,6 +13,7 @@ export interface SettlementsService {
   startSettlement: Handler<'startSettlement'>;
   getSettlement: Handler<'getSettlement'>;
   markTransferPaid: Handler<'markTransferPaid'>;
+  remindTransfer: Handler<'remindTransfer'>;
   settleLedger: Handler<'settleLedger'>;
 }
 
@@ -53,6 +55,7 @@ export function createSettlementsService(db: Orm): SettlementsService {
     startSettlement: createStartSettlement(db),
     getSettlement: createGetSettlement(db),
     markTransferPaid: createMarkTransferPaid(db),
+    remindTransfer: notReady('remindTransfer'),
     settleLedger: createSettleLedger(db),
   };
 }
