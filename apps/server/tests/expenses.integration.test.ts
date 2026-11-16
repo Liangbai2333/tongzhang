@@ -1,15 +1,21 @@
 import { randomUUID } from 'node:crypto';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
-import { eq } from 'drizzle-orm';
+import { eq, sql } from 'drizzle-orm';
 import {
+  expenseImages,
   expenseSplits,
   expenses,
   idempotencyKeys,
+  imageAssets,
   ledgerMembers,
   ledgers,
   operationLogs,
 } from '../src/db/schema/index.js';
+import { createExpensesService } from '../src/modules/expenses/index.js';
+import { cleanupTemporaryImages } from '../src/modules/images/cleanup.js';
+import { receiptBinder } from '../src/modules/images/index.js';
 import { integrationFixture } from './fixtures/integration.js';
+import { imageBytes, imageMultipart } from './fixtures/images.js';
 
 let fixture: Awaited<ReturnType<typeof integrationFixture>>;
 let ledgerId: string | undefined;
@@ -19,6 +25,7 @@ beforeEach(async () => {
 afterEach(async () => {
   if (ledgerId) {
     await fixture.db.orm.delete(operationLogs).where(eq(operationLogs.ledgerId, ledgerId));
+    await fixture.db.orm.delete(expenseImages).where(eq(expenseImages.ledgerId, ledgerId));
     await fixture.db.orm.delete(expenseSplits).where(eq(expenseSplits.ledgerId, ledgerId));
     await fixture.db.orm.delete(expenses).where(eq(expenses.ledgerId, ledgerId));
   }
@@ -549,5 +556,724 @@ describe('expense queries', () => {
       ).toBe(400);
     }
     expect((await get(s.owner.accessToken, '', '?limit=51')).statusCode).toBe(400);
+  });
+});
+
+const patch = (
+  token: string,
+  expenseId: string,
+  payload: object,
+  key: string = randomUUID(),
+  targetLedgerId: string = ledgerId!,
+) =>
+  fixture.app.inject({
+    method: 'PATCH',
+    url: `/api/v1/ledgers/${targetLedgerId}/expenses/${expenseId}`,
+    headers: { authorization: `Bearer ${token}`, 'idempotency-key': key },
+    payload,
+  });
+
+const del = (
+  token: string,
+  expenseId: string,
+  query = '?version=1',
+  key: string = randomUUID(),
+  targetLedgerId: string = ledgerId!,
+) =>
+  fixture.app.inject({
+    method: 'DELETE',
+    url: `/api/v1/ledgers/${targetLedgerId}/expenses/${expenseId}${query}`,
+    headers: { authorization: `Bearer ${token}`, 'idempotency-key': key },
+  });
+
+async function uploadReceipt(token: string, kind: 'RECEIPT' | 'COVER' = 'RECEIPT') {
+  const request = imageMultipart(await imageBytes(), 'image/png', [['kind', kind]]);
+  const response = await fixture.app.inject({
+    method: 'POST',
+    url: '/api/v1/images',
+    ...request,
+    headers: { ...request.headers, authorization: `Bearer ${token}` },
+  });
+  expect(response.statusCode).toBe(201);
+  return response.json().data.imageId as string;
+}
+
+describe('updateExpense (A16)', () => {
+  it('recomputes splits in bigint cents, increments both versions, preserves recorder and updates preview version', async () => {
+    const s = await seed();
+    const created = await post(s.friend.accessToken, bodyFor(s, { note: '初始备注' }));
+    expect(created.statusCode).toBe(201);
+    const expenseId = created.json().data.id as string;
+
+    const previewBefore = await fixture.app.inject({
+      url: `/api/v1/ledgers/${ledgerId}/settlement-preview`,
+      headers: { authorization: `Bearer ${s.owner.accessToken}` },
+    });
+    expect(previewBefore.statusCode).toBe(200);
+    expect(previewBefore.json().data.ledgerVersion).toBe(2);
+
+    // Creator edits an expense originally recorded by friend: recorderMemberId must stay friendMember.
+    const updated = await patch(
+      s.owner.accessToken,
+      expenseId,
+      bodyFor(s, {
+        title: '更正为按份晚餐',
+        amountCents: '10000',
+        category: 'SHOPPING',
+        occurredOn: '2026-10-25',
+        payerMemberId: s.friendMember,
+        splitMode: 'SHARES',
+        splits: [
+          { memberId: s.ownerMember, shares: 1 },
+          { memberId: s.friendMember, shares: 2 },
+        ],
+        note: '创建者协助更正',
+        version: 1,
+      }),
+    );
+    expect(updated.statusCode).toBe(200);
+    expect(updated.json().data).toMatchObject({
+      id: expenseId,
+      title: '更正为按份晚餐',
+      amountCents: '10000',
+      category: 'SHOPPING',
+      occurredOn: '2026-10-25',
+      payerMemberId: s.friendMember,
+      recorderMemberId: s.friendMember,
+      recorderName: s.friend.user.username,
+      splitMode: 'SHARES',
+      note: '创建者协助更正',
+      version: 2,
+      canEdit: true,
+    });
+    const byMember = Object.fromEntries(
+      updated
+        .json()
+        .data.splits.map((x: { memberId: string; amountCents: string; shares: number }) => [
+          x.memberId,
+          { amountCents: x.amountCents, shares: x.shares },
+        ]),
+    );
+    expect(byMember[s.ownerMember]).toEqual({ amountCents: '3333', shares: 1 });
+    expect(byMember[s.friendMember]).toEqual({ amountCents: '6667', shares: 2 });
+
+    const [ledger] = await fixture.db.orm.select().from(ledgers).where(eq(ledgers.id, ledgerId!));
+    expect(ledger!.version).toBe(3);
+
+    // Previous settlement preview version (2) is invalidated by the edit.
+    const staleStart = await fixture.app.inject({
+      method: 'POST',
+      url: `/api/v1/ledgers/${ledgerId}/settlement`,
+      headers: {
+        authorization: `Bearer ${s.owner.accessToken}`,
+        'idempotency-key': randomUUID(),
+      },
+      payload: { expectedVersion: 2 },
+    });
+    expect(staleStart.statusCode).toBe(409);
+    expect(staleStart.json().error.code).toBe('VERSION_CONFLICT');
+
+    const previewAfter = await fixture.app.inject({
+      url: `/api/v1/ledgers/${ledgerId}/settlement-preview`,
+      headers: { authorization: `Bearer ${s.owner.accessToken}` },
+    });
+    expect(previewAfter.json().data).toMatchObject({
+      ledgerVersion: 3,
+      expenseTotalCents: '10000',
+      transferTotalCents: '3333',
+    });
+
+    const logs = await fixture.db.orm
+      .select()
+      .from(operationLogs)
+      .where(eq(operationLogs.ledgerId, ledgerId!));
+    expect(logs.map((l) => l.action)).toEqual(['EXPENSE_CREATED', 'EXPENSE_UPDATED']);
+  });
+
+  it('enforces 401/403/404 and rejects SETTLING or SETTLED ledgers with 409 LEDGER_FROZEN', async () => {
+    const s = await seed();
+    const third = await fixture.register('普通成员丙');
+    const [thirdMember] = await fixture.db.orm
+      .insert(ledgerMembers)
+      .values({ ledgerId: ledgerId!, userId: third.user.id })
+      .returning();
+
+    // Friend records an expense where thirdMember is the payer: payer role alone must not grant edit access.
+    const created = await post(
+      s.friend.accessToken,
+      bodyFor(s, { payerMemberId: thirdMember!.id }),
+    );
+    const expenseId = created.json().data.id as string;
+    const updatePayload = bodyFor(s, { title: '试图越权修改', version: 1 });
+
+    const anon = await fixture.app.inject({
+      method: 'PATCH',
+      url: `/api/v1/ledgers/${ledgerId}/expenses/${expenseId}`,
+      headers: { 'idempotency-key': randomUUID() },
+      payload: updatePayload,
+    });
+    expect(anon.statusCode).toBe(401);
+
+    const outsiderRes = await patch(s.outsider.accessToken, expenseId, updatePayload);
+    expect(outsiderRes.statusCode).toBe(403);
+    expect(outsiderRes.json().error.code).toBe('FORBIDDEN');
+
+    const payerButNotEditor = await patch(third.accessToken, expenseId, updatePayload);
+    expect(payerButNotEditor.statusCode).toBe(403);
+    expect(payerButNotEditor.json().error.code).toBe('FORBIDDEN');
+
+    const missing = await patch(s.owner.accessToken, randomUUID(), updatePayload);
+    expect(missing.statusCode).toBe(404);
+    expect(missing.json().error.code).toBe('NOT_FOUND');
+
+    const otherLedger = await fixture.ledger(s.owner);
+    const crossLedger = await patch(
+      s.owner.accessToken,
+      expenseId,
+      updatePayload,
+      randomUUID(),
+      otherLedger,
+    );
+    expect(crossLedger.statusCode).toBe(404);
+
+    for (const [status, settledAt] of [
+      ['SETTLING', null],
+      ['SETTLED', new Date()],
+    ] as const) {
+      await fixture.db.orm
+        .update(ledgers)
+        .set({ status, settledAt })
+        .where(eq(ledgers.id, ledgerId!));
+      for (const actor of [s.owner, s.friend]) {
+        const frozen = await patch(actor.accessToken, expenseId, updatePayload);
+        expect(frozen.statusCode).toBe(409);
+        expect(frozen.json().error.code).toBe('LEDGER_FROZEN');
+      }
+    }
+
+    const [row] = await fixture.db.orm.select().from(expenses).where(eq(expenses.id, expenseId));
+    expect(row!.title).toBe('晚餐');
+    expect(row!.version).toBe(1);
+  });
+
+  it('rejects stale versions and concurrent conflicting edits with 409 VERSION_CONFLICT', async () => {
+    const s = await seed();
+    const created = await post(s.owner.accessToken, bodyFor(s));
+    const expenseId = created.json().data.id as string;
+
+    const wrongVersion = await patch(s.owner.accessToken, expenseId, bodyFor(s, { version: 2 }));
+    expect(wrongVersion.statusCode).toBe(409);
+    expect(wrongVersion.json().error.code).toBe('VERSION_CONFLICT');
+
+    const [r1, r2] = await Promise.all([
+      patch(
+        s.owner.accessToken,
+        expenseId,
+        bodyFor(s, { title: '并发修改A', amountCents: '8000', version: 1 }),
+      ),
+      patch(
+        s.owner.accessToken,
+        expenseId,
+        bodyFor(s, { title: '并发修改B', amountCents: '9000', version: 1 }),
+      ),
+    ]);
+    expect([r1.statusCode, r2.statusCode].sort()).toEqual([200, 409]);
+    const loser = r1.statusCode === 409 ? r1 : r2;
+    expect(loser.json().error.code).toBe('VERSION_CONFLICT');
+
+    const [saved] = await fixture.db.orm.select().from(expenses).where(eq(expenses.id, expenseId));
+    expect(saved!.version).toBe(2);
+    const [ledger] = await fixture.db.orm.select().from(ledgers).where(eq(ledgers.id, ledgerId!));
+    expect(ledger!.version).toBe(3);
+  });
+
+  it('retains existing receipts, swaps or clears receipts atomically, and rolls back failed swaps', async () => {
+    const s = await seed();
+    const receipt1 = await uploadReceipt(s.friend.accessToken);
+    const created = await post(
+      s.friend.accessToken,
+      bodyFor(s, { receiptImageId: receipt1, note: '附第一张收据' }),
+    );
+    expect(created.statusCode).toBe(201);
+    const expenseId = created.json().data.id as string;
+
+    // Creator (different from receipt1 uploader) edits title while retaining the existing receipt1.
+    const retained = await patch(
+      s.owner.accessToken,
+      expenseId,
+      bodyFor(s, { title: '保留原收据', receiptImageId: receipt1, version: 1 }),
+    );
+    expect(retained.statusCode).toBe(200);
+    expect(retained.json().data.receiptImageId).toBe(receipt1);
+
+    // Swapping to an invalid image (another user's unbound upload, cover, missing, or another expense's receipt) rolls back everything.
+    const otherExpenseReceipt = await uploadReceipt(s.friend.accessToken);
+    const secondExpense = await post(
+      s.friend.accessToken,
+      bodyFor(s, { title: '另一笔消费', receiptImageId: otherExpenseReceipt }),
+    );
+    expect(secondExpense.statusCode).toBe(201);
+    const foreignUnbound = await uploadReceipt(s.owner.accessToken);
+    const wrongKind = await uploadReceipt(s.friend.accessToken, 'COVER');
+
+    for (const [badId, expectedStatus, expectedCode] of [
+      [otherExpenseReceipt, 400, 'IMAGE_INVALID'],
+      [foreignUnbound, 403, 'FORBIDDEN'],
+      [wrongKind, 400, 'IMAGE_INVALID'],
+      [randomUUID(), 403, 'FORBIDDEN'],
+    ] as const) {
+      const failed = await patch(
+        s.friend.accessToken,
+        expenseId,
+        bodyFor(s, {
+          title: '不应落库的修改',
+          amountCents: '20000',
+          receiptImageId: badId,
+          version: 2,
+        }),
+      );
+      expect(failed.statusCode).toBe(expectedStatus);
+      expect(failed.json().error.code).toBe(expectedCode);
+    }
+
+    // Verify full rollback: expense still at version 2 with receipt1 and original 12000 amount.
+    const unchanged = await get(s.owner.accessToken, `/${expenseId}`);
+    expect(unchanged.json().data).toMatchObject({
+      title: '保留原收据',
+      amountCents: '12000',
+      version: 2,
+      receiptImageId: receipt1,
+    });
+
+    // Injected failure after receiptBinder.bind rolls back old receipt detachment, new receipt binding and version bumps.
+    const receipt2 = await uploadReceipt(s.friend.accessToken);
+    const failingService = createExpensesService(fixture.db.orm, {
+      bind: async (tx, input) => {
+        await receiptBinder.bind(tx, input);
+        throw new Error('injected failure after receipt swap');
+      },
+    });
+    const swapKey = randomUUID();
+    await expect(
+      failingService.updateExpense(
+        {
+          params: { ledgerId: ledgerId!, expenseId },
+          query: {},
+          body: {
+            title: '回滚换绑',
+            amountCents: '16000',
+            category: 'DINING' as const,
+            occurredOn: '2026-10-24',
+            payerMemberId: s.ownerMember,
+            splitMode: 'EQUAL' as const,
+            splits: [{ memberId: s.ownerMember }, { memberId: s.friendMember }],
+            receiptImageId: receipt2,
+            version: 2,
+          },
+        },
+        {
+          principal: { userId: s.friend.user.id, sessionId: randomUUID() },
+          requestId: randomUUID(),
+          idempotencyKey: swapKey,
+        },
+      ),
+    ).rejects.toThrow('injected failure after receipt swap');
+
+    const [receipt2RowBefore] = await fixture.db.orm
+      .select()
+      .from(imageAssets)
+      .where(eq(imageAssets.id, receipt2));
+    expect(receipt2RowBefore!.ledgerId).toBeNull();
+    expect((await get(s.owner.accessToken, `/${expenseId}`)).json().data.receiptImageId).toBe(
+      receipt1,
+    );
+
+    // Retry with the same key and receipt2 succeeds atomically.
+    const swapped = await patch(
+      s.friend.accessToken,
+      expenseId,
+      bodyFor(s, {
+        title: '换绑第二张收据',
+        amountCents: '16000',
+        receiptImageId: receipt2,
+        version: 2,
+      }),
+      swapKey,
+    );
+    expect(swapped.statusCode).toBe(200);
+    expect(swapped.json().data).toMatchObject({
+      title: '换绑第二张收据',
+      amountCents: '16000',
+      version: 3,
+      receiptImageId: receipt2,
+    });
+
+    // Old receipt1 stays bound to this ledger (cannot be reused on a new expense, and survives temporary cleanup).
+    expect(
+      (await post(s.friend.accessToken, bodyFor(s, { receiptImageId: receipt1 }))).statusCode,
+    ).toBe(400);
+    await fixture.db.orm
+      .update(imageAssets)
+      .set({ createdAt: sql`now() - interval '25 hours'` })
+      .where(eq(imageAssets.id, receipt1));
+    expect(await cleanupTemporaryImages(fixture.db.orm)).toBe(0);
+
+    // Clearing receipt (null) detaches expense_images cleanly.
+    const cleared = await patch(
+      s.friend.accessToken,
+      expenseId,
+      bodyFor(s, { title: '移除收据', receiptImageId: null, version: 3 }),
+    );
+    expect(cleared.statusCode).toBe(200);
+    expect(cleared.json().data.receiptImageId).toBeNull();
+    expect(
+      await fixture.db.orm
+        .select()
+        .from(expenseImages)
+        .where(eq(expenseImages.expenseId, expenseId)),
+    ).toHaveLength(0);
+  });
+
+  it('replays identical idempotent updates (even after freeze) and rejects payload changes with 409 IDEMPOTENCY_CONFLICT', async () => {
+    const s = await seed();
+    const created = await post(s.owner.accessToken, bodyFor(s));
+    const expenseId = created.json().data.id as string;
+
+    const key = randomUUID();
+    const updateBody = bodyFor(s, { title: '幂等更新', amountCents: '18000', version: 1 });
+    const first = await patch(s.owner.accessToken, expenseId, updateBody, key);
+    expect(first.statusCode).toBe(200);
+
+    const replayActive = await patch(s.owner.accessToken, expenseId, updateBody, key);
+    expect(replayActive.statusCode).toBe(200);
+    expect(replayActive.json()).toEqual(first.json());
+
+    const conflict = await patch(
+      s.owner.accessToken,
+      expenseId,
+      bodyFor(s, { title: '篡改同键内容', amountCents: '18000', version: 1 }),
+      key,
+    );
+    expect(conflict.statusCode).toBe(409);
+    expect(conflict.json().error.code).toBe('IDEMPOTENCY_CONFLICT');
+
+    await fixture.db.orm
+      .update(ledgers)
+      .set({ status: 'SETTLING' })
+      .where(eq(ledgers.id, ledgerId!));
+    const replayAfterFreeze = await patch(s.owner.accessToken, expenseId, updateBody, key);
+    expect(replayAfterFreeze.statusCode).toBe(200);
+    expect(replayAfterFreeze.json()).toEqual(first.json());
+
+    const [ledger] = await fixture.db.orm.select().from(ledgers).where(eq(ledgers.id, ledgerId!));
+    expect(ledger!.version).toBe(3);
+  });
+});
+
+describe('deleteExpense (A17)', () => {
+  it('soft-deletes with version check, replays idempotently, preserves receipts and restores Gushan 4-member conservation', async () => {
+    const an = await fixture.register('小安');
+    const bai = await fixture.register('小白');
+    const chen = await fixture.register('小陈');
+    const ding = await fixture.register('小丁');
+    ledgerId = await fixture.ledger(an, [bai, chen, ding]);
+    const rows = await fixture.db.orm
+      .select()
+      .from(ledgerMembers)
+      .where(eq(ledgerMembers.ledgerId, ledgerId));
+    const mAn = rows.find((r) => r.userId === an.user.id)!.id;
+    const mBai = rows.find((r) => r.userId === bai.user.id)!.id;
+    const mChen = rows.find((r) => r.userId === chen.user.id)!.id;
+    const mDing = rows.find((r) => r.userId === ding.user.id)!.id;
+    const allFour = [
+      { memberId: mAn },
+      { memberId: mBai },
+      { memberId: mChen },
+      { memberId: mDing },
+    ];
+
+    // 1. 小安付食堂 12000（初始误填 10000，编辑修正为 12000）
+    const canteen = await post(an.accessToken, {
+      title: '食堂',
+      amountCents: '10000',
+      category: 'DINING',
+      occurredOn: '2026-11-16',
+      payerMemberId: mAn,
+      splitMode: 'EQUAL',
+      splits: allFour,
+    });
+    const fixedCanteen = await patch(an.accessToken, canteen.json().data.id, {
+      title: '食堂',
+      amountCents: '12000',
+      category: 'DINING',
+      occurredOn: '2026-11-16',
+      payerMemberId: mAn,
+      splitMode: 'EQUAL',
+      splits: allFour,
+      version: 1,
+    });
+    expect(fixedCanteen.statusCode).toBe(200);
+
+    // 2. 小白付门票 12000，四人均分
+    expect(
+      (
+        await post(bai.accessToken, {
+          title: '门票',
+          amountCents: '12000',
+          category: 'TICKET',
+          occurredOn: '2026-11-16',
+          payerMemberId: mBai,
+          splitMode: 'EQUAL',
+          splits: allFour,
+        })
+      ).statusCode,
+    ).toBe(201);
+
+    // 3. 小陈付车费 6000，小安/小陈均分
+    expect(
+      (
+        await post(chen.accessToken, {
+          title: '车费',
+          amountCents: '6000',
+          category: 'TRANSPORT',
+          occurredOn: '2026-11-16',
+          payerMemberId: mChen,
+          splitMode: 'EQUAL',
+          splits: [{ memberId: mAn }, { memberId: mChen }],
+        })
+      ).statusCode,
+    ).toBe(201);
+
+    // 4. 小丁误记一笔带收据消费 5000，再由创建者小安软删除恢复“鼓山一日”基准账
+    const dingReceipt = await uploadReceipt(ding.accessToken);
+    const mistake = await post(ding.accessToken, {
+      title: '误记零食',
+      amountCents: '5000',
+      category: 'DINING',
+      occurredOn: '2026-11-16',
+      payerMemberId: mDing,
+      splitMode: 'EQUAL',
+      splits: allFour,
+      receiptImageId: dingReceipt,
+    });
+    const mistakeId = mistake.json().data.id as string;
+
+    const [ledgerBeforeDelete] = await fixture.db.orm
+      .select()
+      .from(ledgers)
+      .where(eq(ledgers.id, ledgerId));
+
+    const deleteKey = randomUUID();
+    const deleted = await del(an.accessToken, mistakeId, '?version=1', deleteKey);
+    expect(deleted.statusCode).toBe(200);
+    expect(deleted.json()).toEqual({ data: { deletedId: mistakeId } });
+
+    // Idempotent replay returns 200 without bumping ledger version a second time; altered version on same key returns 409.
+    const replay = await del(an.accessToken, mistakeId, '?version=1', deleteKey);
+    expect(replay.statusCode).toBe(200);
+    expect(replay.json()).toEqual({ data: { deletedId: mistakeId } });
+    const keyConflict = await del(an.accessToken, mistakeId, '?version=2', deleteKey);
+    expect(keyConflict.statusCode).toBe(409);
+    expect(keyConflict.json().error.code).toBe('IDEMPOTENCY_CONFLICT');
+
+    // Fresh delete or update on soft-deleted row returns 404 NOT_FOUND.
+    expect((await del(an.accessToken, mistakeId, '?version=1')).statusCode).toBe(404);
+    expect(
+      (
+        await patch(an.accessToken, mistakeId, {
+          title: '已删除不可改',
+          amountCents: '5000',
+          category: 'DINING',
+          occurredOn: '2026-11-16',
+          payerMemberId: mDing,
+          splitMode: 'EQUAL',
+          splits: allFour,
+          version: 1,
+        })
+      ).statusCode,
+    ).toBe(404);
+    expect((await get(an.accessToken, `/${mistakeId}`)).statusCode).toBe(404);
+
+    const [deletedRow] = await fixture.db.orm
+      .select()
+      .from(expenses)
+      .where(eq(expenses.id, mistakeId));
+    expect(deletedRow!.deletedAt).not.toBeNull();
+    expect(deletedRow!.version).toBe(1);
+
+    const [ledgerAfterDelete] = await fixture.db.orm
+      .select()
+      .from(ledgers)
+      .where(eq(ledgers.id, ledgerId));
+    expect(ledgerAfterDelete!.version).toBe(ledgerBeforeDelete!.version + 1);
+
+    // Soft-deleted expense receipt remains preserved against temporary image cleanup.
+    await fixture.db.orm
+      .update(imageAssets)
+      .set({ createdAt: sql`now() - interval '25 hours'` })
+      .where(eq(imageAssets.id, dingReceipt));
+    expect(await cleanupTemporaryImages(fixture.db.orm)).toBe(0);
+
+    // Verify Gushan 4-person benchmark: total 30000, nets +3000/+6000/-3000/-6000, 2 transfers totaling 9000.
+    const list = await get(an.accessToken);
+    expect(list.json().data).toHaveLength(3);
+
+    const balances = await fixture.app.inject({
+      url: `/api/v1/ledgers/${ledgerId}/balances`,
+      headers: { authorization: `Bearer ${an.accessToken}` },
+    });
+    expect(balances.statusCode).toBe(200);
+    expect(balances.json().data.expenseTotalCents).toBe('30000');
+    const netByMember = Object.fromEntries(
+      balances
+        .json()
+        .data.members.map((m: { memberId: string; netCents: string }) => [m.memberId, m.netCents]),
+    );
+    expect(netByMember).toEqual({
+      [mAn]: '3000',
+      [mBai]: '6000',
+      [mChen]: '-3000',
+      [mDing]: '-6000',
+    });
+
+    const preview = await fixture.app.inject({
+      url: `/api/v1/ledgers/${ledgerId}/settlement-preview`,
+      headers: { authorization: `Bearer ${an.accessToken}` },
+    });
+    expect(preview.statusCode).toBe(200);
+    expect(preview.json().data).toMatchObject({
+      ledgerVersion: ledgerAfterDelete!.version,
+      expenseTotalCents: '30000',
+      transferTotalCents: '9000',
+      transferCount: 2,
+    });
+    expect(preview.json().data.transfers).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          payerMemberId: mChen,
+          payeeMemberId: mAn,
+          amountCents: '3000',
+        }),
+        expect.objectContaining({
+          payerMemberId: mDing,
+          payeeMemberId: mBai,
+          amountCents: '6000',
+        }),
+      ]),
+    );
+  });
+
+  it('enforces permissions, frozen ledger rejection, version conflicts, invalid query params and rollback atomicity', async () => {
+    const s = await seed();
+    const third = await fixture.register('普通成员丙');
+    const [thirdMember] = await fixture.db.orm
+      .insert(ledgerMembers)
+      .values({ ledgerId: ledgerId!, userId: third.user.id })
+      .returning();
+
+    const created = await post(
+      s.friend.accessToken,
+      bodyFor(s, { payerMemberId: thirdMember!.id }),
+    );
+    const expenseId = created.json().data.id as string;
+
+    expect(
+      (
+        await fixture.app.inject({
+          method: 'DELETE',
+          url: `/api/v1/ledgers/${ledgerId}/expenses/${expenseId}?version=1`,
+          headers: { 'idempotency-key': randomUUID() },
+        })
+      ).statusCode,
+    ).toBe(401);
+    expect((await del(s.outsider.accessToken, expenseId)).statusCode).toBe(403);
+    expect((await del(third.accessToken, expenseId)).statusCode).toBe(403);
+    expect((await del(s.owner.accessToken, randomUUID())).statusCode).toBe(404);
+
+    for (const badQuery of [
+      '',
+      '?version=0',
+      '?version=-1',
+      '?version=abc',
+      '?version=2147483648',
+    ]) {
+      const bad = await del(s.owner.accessToken, expenseId, badQuery);
+      expect(bad.statusCode).toBe(400);
+      expect(bad.json().error.code).toBe('VALIDATION_ERROR');
+    }
+
+    const wrongVersion = await del(s.friend.accessToken, expenseId, '?version=2');
+    expect(wrongVersion.statusCode).toBe(409);
+    expect(wrongVersion.json().error.code).toBe('VERSION_CONFLICT');
+
+    // Audit failure rolls back soft-delete and ledger version increment.
+    const rollbackKey = randomUUID();
+    await expect(
+      createExpensesService(fixture.db.orm).deleteExpense(
+        {
+          params: { ledgerId: ledgerId!, expenseId },
+          query: { version: 1 },
+          body: undefined,
+        },
+        {
+          principal: { userId: s.friend.user.id, sessionId: randomUUID() },
+          requestId: 'invalid-audit-uuid',
+          idempotencyKey: rollbackKey,
+        },
+      ),
+    ).rejects.toThrow();
+
+    const [stillActive] = await fixture.db.orm
+      .select()
+      .from(expenses)
+      .where(eq(expenses.id, expenseId));
+    expect(stillActive!.deletedAt).toBeNull();
+    const [ledgerUnchanged] = await fixture.db.orm
+      .select()
+      .from(ledgers)
+      .where(eq(ledgers.id, ledgerId!));
+    expect(ledgerUnchanged!.version).toBe(2);
+
+    for (const [status, settledAt] of [
+      ['SETTLING', null],
+      ['SETTLED', new Date()],
+    ] as const) {
+      await fixture.db.orm
+        .update(ledgers)
+        .set({ status, settledAt })
+        .where(eq(ledgers.id, ledgerId!));
+      const frozen = await del(s.owner.accessToken, expenseId, '?version=1');
+      expect(frozen.statusCode).toBe(409);
+      expect(frozen.json().error.code).toBe('LEDGER_FROZEN');
+    }
+  });
+
+  it('serializes settlement freeze against concurrent expense edit/delete on the ledger lock', async () => {
+    const s = await seed();
+    const created = await post(s.friend.accessToken, bodyFor(s));
+    const expenseId = created.json().data.id as string;
+
+    // expectedVersion is 2 right now; racing startSettlement(2) against deleteExpense(1) must serialize cleanly.
+    const [freezeRes, deleteRes] = await Promise.all([
+      fixture.app.inject({
+        method: 'POST',
+        url: `/api/v1/ledgers/${ledgerId}/settlement`,
+        headers: {
+          authorization: `Bearer ${s.owner.accessToken}`,
+          'idempotency-key': randomUUID(),
+        },
+        payload: { expectedVersion: 2 },
+      }),
+      del(s.friend.accessToken, expenseId, '?version=1'),
+    ]);
+
+    if (freezeRes.statusCode === 201) {
+      expect(deleteRes.statusCode).toBe(409);
+      expect(deleteRes.json().error.code).toBe('LEDGER_FROZEN');
+    } else {
+      expect(deleteRes.statusCode).toBe(200);
+      expect(freezeRes.statusCode).toBe(409);
+      expect(freezeRes.json().error.code).toBe('VERSION_CONFLICT');
+    }
   });
 });
