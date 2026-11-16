@@ -1,5 +1,7 @@
 # 环境、开发与部署
 
+本地启动先看 [启动前必看](environment-setup.md#启动前必看)：API `3300`、Metro `8081`，Android 设备执行 `adb reverse tcp:3300 tcp:3300` 与 `adb reverse tcp:8081 tcp:8081`；Day7 安装包按其 README 使用 `3374`/`8074`；原生构建只用 JDK 17，JDK 25 会导致 CMake 失败。
+
 命令与配置核对基线：`7616adb`（2026-10-27）；业务操作见 [App 手册](app-user-guide.md)，协议见 [当前接口索引](api-reference.md)，未验收范围见 [已知限制](known-limitations.md)。历史报告仍按各自版本阅读。
 
 ## 1. 职责与配置来源
