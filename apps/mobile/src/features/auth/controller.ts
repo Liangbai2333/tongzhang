@@ -182,7 +182,7 @@ export function createAuthController(api: Dependencies) {
         if (id === intent) update({ operation: null });
       }
     },
-    suspend({ preserveScreen = false }: { preserveScreen?: boolean } = {}) {
+    suspend({ preserveScreen = false, error }: { preserveScreen?: boolean; error?: unknown } = {}) {
       suspended = true;
       if (state.status === 'reauthentication') return;
       if (state.operation) {
@@ -196,9 +196,11 @@ export function createAuthController(api: Dependencies) {
           // Navigation blocks the retained screen until online verification succeeds.
           user: preserveScreen ? state.user : null,
           status: preserveScreen ? 'restoring' : 'error',
-          error: preserveScreen
-            ? null
-            : new ApiError('NETWORK_UNAVAILABLE', '请联网后重新核验登录状态'),
+          error:
+            error ??
+            (preserveScreen
+              ? null
+              : new ApiError('NETWORK_UNAVAILABLE', '请联网后重新核验登录状态')),
         });
     },
   };

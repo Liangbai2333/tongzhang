@@ -29,6 +29,10 @@ export default function LedgerListScreen() {
   useEffect(() => {
     setArchived(view === 'archived');
   }, [view]);
+  const selectArchived = (next: boolean) => {
+    setArchived(next);
+    router.setParams({ view: next ? 'archived' : 'current' });
+  };
   const query = useInfiniteQuery({
     queryKey: [...ledgersKeys.root(user!.id), 'list', archived],
     queryFn: ({ pageParam }) =>
@@ -68,6 +72,7 @@ export default function LedgerListScreen() {
       tabRoot
       refreshing={query.isRefetching}
       onRefresh={() => {
+        setMenu(false);
         void refetch();
       }}
     >
@@ -81,7 +86,7 @@ export default function LedgerListScreen() {
             compact
             title="查看历史账本"
             variant="secondary"
-            onPress={() => setArchived(true)}
+            onPress={() => selectArchived(true)}
           />
         </View>
       )}
@@ -105,10 +110,7 @@ export default function LedgerListScreen() {
             accessibilityLabel="返回当前账本"
             style={styles.refresh}
             disabled={query.isFetching}
-            onPress={() => {
-              setArchived(false);
-              router.setParams({ view: 'current' });
-            }}
+            onPress={() => selectArchived(false)}
           >
             <Text style={ui.caption}>返回当前账本</Text>
           </Touch>
@@ -204,7 +206,7 @@ export default function LedgerListScreen() {
             <Touch
               accessibilityLabel="已归档账本"
               style={styles.archive}
-              onPress={() => setArchived(true)}
+              onPress={() => selectArchived(true)}
             >
               <View style={ui.between}>
                 <Text style={ui.body}>已归档账本</Text>
