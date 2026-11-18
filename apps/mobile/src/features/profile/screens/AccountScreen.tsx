@@ -69,10 +69,14 @@ export default function AccountScreen() {
       contentStyle={styles.content}
       tabRoot
       refreshing={current.query.isRefetching || history.query.isRefetching}
-      onRefresh={() => {
-        void current.query.refetch();
-        void history.query.refetch();
-      }}
+      onRefresh={
+        !busy && panel.kind === 'closed'
+          ? () => {
+              void current.query.refetch();
+              void history.query.refetch();
+            }
+          : undefined
+      }
     >
       <View style={[ui.card, styles.profile]}>
         <View style={ui.row}>

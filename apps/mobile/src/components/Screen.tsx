@@ -44,7 +44,7 @@ export function Screen({
   /** A (tabs) screen: the persistent tab bar owns the bottom safe area. */
   tabRoot?: boolean;
 }>) {
-  const pull = usePullIndicator(refreshing);
+  const pull = usePullIndicator(refreshing, Boolean(onRefresh));
   return (
     <SafeAreaView style={styles.root} edges={tabRoot ? ['top'] : ['top', 'bottom']}>
       <KeyboardAvoidingView
@@ -109,25 +109,45 @@ export function Screen({
  */
 function FocusedRefreshControl({ refreshing, ...props }: RefreshControlProps) {
   const focused = useIsFocused();
-  return <RefreshControl {...props} refreshing={refreshing && focused} />;
+  return <RefreshControl {...props} refreshing={Boolean(refreshing) && focused} />;
 }
 /**
- * Pages refetch whenever they gain focus. Only a refresh the user pulled for shows the spinner;
- * focus and tab refetches update the content quietly.
+ * Pages refetch whenever they gain focus. Only a refresh the user pulled for on a focused page
+ * shows the spinner; focus/tab refetches update quietly, and leaving focus clears any pull state
+ * so off-screen completions never leave a stuck spinner.
  */
-function usePullIndicator(refreshing: boolean) {
+function usePullIndicator(refreshing: boolean, enabled: boolean) {
+  const focused = useIsFocused();
   const [pulled, setPulled] = useState(false);
   const wasRefreshing = useRef(refreshing);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const clearTimer = () => {
+    if (timer.current !== null) {
+      clearTimeout(timer.current);
+      timer.current = null;
+    }
+  };
+  useEffect(() => clearTimer, []);
   useEffect(() => {
-    if (wasRefreshing.current && !refreshing) setPulled(false);
+    if (!focused || !enabled) {
+      clearTimer();
+      setPulled(false);
+    } else if (refreshing) {
+      clearTimer();
+    } else if (wasRefreshing.current) {
+      setPulled(false);
+    }
     wasRefreshing.current = refreshing;
-  }, [refreshing]);
+  }, [enabled, focused, refreshing]);
   return {
-    visible: pulled && refreshing,
+    visible: pulled && refreshing && focused && enabled,
     start: () => {
+      if (!focused || !enabled) return;
+      clearTimer();
       setPulled(true);
       // A pull that starts no fetch must not leave a pending spinner for the next focus refetch.
-      setTimeout(() => {
+      timer.current = setTimeout(() => {
+        timer.current = null;
         if (!wasRefreshing.current) setPulled(false);
       }, 1000);
     },

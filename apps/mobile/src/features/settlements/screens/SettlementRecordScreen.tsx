@@ -115,7 +115,7 @@ export default function SettlementRecordScreen({
         title={`${ledger.name} · ${record?.ledgerStatus === 'SETTLED' ? '已结清' : '结算中'}`}
         variant="ledger"
         onRefresh={action === null ? refresh : undefined}
-        refreshing={query.isFetching && !query.isPending}
+        refreshing={query.isRefetching}
         contentStyle={{ paddingTop: 8, gap: settled ? 12 : 16 }}
         footer={
           record && !loading ? (
@@ -328,7 +328,7 @@ export default function SettlementRecordScreen({
                   accessibilityRole="button"
                   accessibilityLabel="历史账单"
                   onPress={() =>
-                    router.push({
+                    router.dismissTo({
                       pathname: '/ledgers/[ledgerId]',
                       params: { ledgerId: ledger.id },
                     })
