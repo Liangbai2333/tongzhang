@@ -6,18 +6,18 @@
 
 ## 1. 职责与配置来源
 
-| 层级       | 职责                                                   | 入口                                               |
-| ---------- | ------------------------------------------------------ | -------------------------------------------------- |
-| 应用配置   | 校验变量、生成数据库连接参数；不启动容器               | 服务端 `src/config/env.ts`、移动端 `app.config.ts` |
-| 开发初始化 | 创建缺失的配置、启动开发数据库、执行首次迁移           | `pnpm setup`                                       |
-| 开发运行   | 检查数据库与端口、首次编译、启动 watcher / API / Metro | `pnpm dev`、`dev:ios`、`dev:android`               |
-| 原生构建   | Prebuild 应用 config plugin，然后编译安装开发客户端    | `pnpm build:ios`、`build:android`                  |
-| 基础设施   | 数据库、卷、容器网络、HTTPS                            | `infra/compose.*.yml`                              |
-| 图片清理   | 独立清理过期未绑定、无引用资产                         | `pnpm cleanup:images`、生产 `cleanup-images` 服务  |
-| 数据库迁移 | 独立执行已提交 SQL；失败即中止                         | `pnpm migrate:db`、生产 `migrate` 服务             |
-| CI         | 检查、测试、构建及容器验证，不访问生产                 | `.github/workflows/ci.yml`                         |
-| 镜像发布   | 手动触发检查，发布验证过的镜像到 GHCR                  | `.github/workflows/publish.yml`                    |
-| 生产部署   | 拉取指定镜像、备份、迁移、更新、健康验收               | `bash infra/deploy.sh`                             |
+| 层级       | 职责                                                                      | 入口                                               |
+| ---------- | ------------------------------------------------------------------------- | -------------------------------------------------- |
+| 应用配置   | 校验变量、生成数据库连接参数；不启动容器                                  | 服务端 `src/config/env.ts`、移动端 `app.config.ts` |
+| 开发初始化 | 创建缺失的配置、启动开发数据库、执行首次迁移                              | `pnpm setup`                                       |
+| 开发运行   | 检查数据库与端口、首次编译、启动 watcher / API / Metro                    | `pnpm dev`、`dev:ios`、`dev:android`               |
+| 原生构建   | Prebuild 应用 config plugin，然后编译安装开发客户端                       | `pnpm build:ios`、`build:android`                  |
+| 基础设施   | 数据库、卷、容器网络、HTTPS                                               | `infra/compose.*.yml`                              |
+| 图片清理   | 独立清理过期未绑定、无引用资产                                            | `pnpm cleanup:images`、生产 `cleanup-images` 服务  |
+| 数据库迁移 | 独立执行已提交 SQL；失败即中止                                            | `pnpm migrate:db`、生产 `migrate` 服务             |
+| CI         | 检查、测试、构建及容器验证并行执行，PR 按改动路径跳过无关任务，不访问生产 | `.github/workflows/ci.yml`                         |
+| 镜像发布   | 手动触发检查，发布验证过的镜像到 GHCR                                     | `.github/workflows/publish.yml`                    |
+| 生产部署   | 拉取指定镜像、备份、迁移、更新、健康验收                                  | `bash infra/deploy.sh`                             |
 
 只有三份人工维护的环境文件：
 
