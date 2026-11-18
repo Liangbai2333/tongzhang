@@ -231,6 +231,17 @@ describe('AuthProvider lifecycle and memory isolation', () => {
       });
       expect(screen.getByText('authenticated:在线用户')).toBeOnTheScreen();
       expect(mockRestore).toHaveBeenCalledTimes(1);
+      // Even after an offline suspension or error, Control Center (`inactive` -> `active`) must not auto-retry.
+      await act(async () => {
+        mockNetwork({ isConnected: false });
+      });
+      expect(screen.getByText('restoring:在线用户')).toBeOnTheScreen();
+      await act(async () => {
+        change('inactive');
+        change('active');
+      });
+      expect(mockRestore).toHaveBeenCalledTimes(1);
+      expect(screen.getByText('restoring:在线用户')).toBeOnTheScreen();
     } finally {
       listener.mockImplementation(original!);
     }

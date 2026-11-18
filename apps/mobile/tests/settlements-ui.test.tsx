@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 import { QueryClientProvider } from '@tanstack/react-query';
-import { act, fireEvent, render, screen, userEvent } from '@testing-library/react-native';
+import { act, fireEvent, render, screen, userEvent, waitFor } from '@testing-library/react-native';
+import { router } from 'expo-router';
 import { setStringAsync } from 'expo-clipboard';
 import type { EndpointOutput } from '@tongzhang/contracts';
 import SettlementPreviewScreen from '../src/features/settlements/screens/SettlementPreviewScreen';
@@ -35,7 +36,13 @@ jest.mock('../src/lib/api', () => ({
 jest.mock('expo-clipboard', () => ({ setStringAsync: jest.fn() }));
 jest.mock('expo-router', () => ({
   useIsFocused: () => true,
-  router: { canGoBack: () => true, back: jest.fn(), replace: jest.fn(), push: jest.fn() },
+  router: {
+    canGoBack: () => true,
+    back: jest.fn(),
+    replace: jest.fn(),
+    push: jest.fn(),
+    dismissTo: jest.fn(),
+  },
   Stack: { Screen: () => null },
   useLocalSearchParams: () => ({ ledgerId: mockLedgerId }),
   useFocusEffect: (callback: () => void) =>
@@ -253,6 +260,29 @@ describe('formal settlement UI with isolated API callbacks', () => {
     expect(start.mock.calls[1]?.[1]?.idempotencyKey).not.toBe(
       start.mock.calls[0]?.[1]?.idempotencyKey,
     );
+  });
+  it('keeps the preview plan mounted and shows the pull spinner only for a gesture refresh', async () => {
+    await show();
+    await screen.findByText('转账明细');
+    const spinner = () => screen.getByTestId('screen-scroll').props.refreshControl.props.refreshing;
+    expect(spinner()).toBe(false);
+    let resolveLedger!: (value: { data: typeof ledger }) => void;
+    let resolvePreview!: (value: { data: typeof plan }) => void;
+    get.mockImplementationOnce(() => new Promise((done) => (resolveLedger = done)));
+    preview.mockImplementationOnce(() => new Promise((done) => (resolvePreview = done)));
+    await pullToRefresh();
+    expect(screen.getByText('转账明细')).toBeOnTheScreen();
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: '正式发起结算' })).toBeDisabled();
+      expect(spinner()).toBe(true);
+    });
+    await act(async () => resolveLedger({ data: ledger }));
+    expect(spinner()).toBe(true);
+    await act(async () => resolvePreview({ data: plan }));
+    await waitFor(() => {
+      expect(spinner()).toBe(false);
+      expect(screen.getByRole('button', { name: '正式发起结算' })).toBeEnabled();
+    });
   });
   it.each(['FORBIDDEN', 'LEDGER_FROZEN'])('requires a state refresh for %s', async (code) => {
     start.mockRejectedValueOnce(new ApiError(code, '操作已不可用', 409));
@@ -485,6 +515,11 @@ describe('repayment and completion interactions (API replacements)', () => {
     await screen.findByText('账本已结清');
     expect(screen.getByRole('button', { name: '归档账本' })).toBeEnabled();
     expect(screen.getByRole('button', { name: '历史账单' })).toBeEnabled();
+    await userEvent.press(screen.getByRole('button', { name: '历史账单' }));
+    expect(router.dismissTo).toHaveBeenCalledWith({
+      pathname: '/ledgers/[ledgerId]',
+      params: { ledgerId },
+    });
     expect(screen.queryByRole('button', { name: '登记已还' })).toBeNull();
     expect(settle).toHaveBeenCalledTimes(1);
   });

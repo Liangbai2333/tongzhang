@@ -38,6 +38,7 @@ function LedgerPage({ ledgerId }: { ledgerId: string }) {
   const [members, setMembers] = useState(false);
   // Pull-to-refresh rereads the ledger and its expense list together.
   const [refreshSignal, setRefreshSignal] = useState(0);
+  const [expensesRefreshing, setExpensesRefreshing] = useState(false);
   const ledger = query.data?.data;
   // Keep the page (and the expense list's filter) mounted during a pull-to-refresh.
   const loading = valid && blocksContent(query);
@@ -60,7 +61,7 @@ function LedgerPage({ ledgerId }: { ledgerId: string }) {
             }
           : undefined
       }
-      refreshing={query.isFetching && !query.isPending}
+      refreshing={query.isRefetching || (Boolean(ready && !empty) && expensesRefreshing)}
       action={
         ready ? (
           <Touch
@@ -223,7 +224,12 @@ function LedgerPage({ ledgerId }: { ledgerId: string }) {
             />
           </View>
           {!empty && (
-            <ExpenseList ledger={ledger} userId={user!.id} refreshSignal={refreshSignal} />
+            <ExpenseList
+              ledger={ledger}
+              userId={user!.id}
+              refreshSignal={refreshSignal}
+              onRefreshingChange={setExpensesRefreshing}
+            />
           )}
           <LedgerMembersSheet
             visible={members}

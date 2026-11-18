@@ -11,6 +11,7 @@ import * as Network from 'expo-network';
 import { useQueryClient } from '@tanstack/react-query';
 import { authApi } from '@/features/auth/api';
 import { createAuthController } from '@/features/auth/controller';
+import { ApiError } from '@/lib/api-error';
 import { sessionToken } from '@/lib/session-token';
 import { sessionAdmission } from '@/lib/session-admission';
 
@@ -49,19 +50,20 @@ export function AuthProvider({ children }: PropsWithChildren) {
         controller.suspend({ preserveScreen: true });
         return;
       }
-      if (next !== 'active') return;
-      const { status } = controller.getSnapshot();
-      if (
-        status === 'error' ||
-        status === 'restoring' ||
-        (backgrounded && status === 'authenticated')
-      )
-        void controller.restore();
+      if (next !== 'active' || !backgrounded) return;
       backgrounded = false;
+      const { status } = controller.getSnapshot();
+      if (status === 'error' || status === 'restoring' || status === 'authenticated')
+        void controller.restore();
     });
     const network = Network.addNetworkStateListener((next) => {
       if (next.isConnected === false || next.isInternetReachable === false)
-        controller.suspend({ preserveScreen: true });
+        controller.suspend({
+          preserveScreen: true,
+          error: backgrounded
+            ? undefined
+            : new ApiError('NETWORK_UNAVAILABLE', '请联网后重新核验登录状态'),
+        });
       // Network recovery does not automatically retry a refresh or any write.
     });
     return () => {

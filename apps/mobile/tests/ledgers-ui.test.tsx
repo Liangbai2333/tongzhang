@@ -132,6 +132,9 @@ const reset = jest.mocked(invitationsApi.resetInvitation);
 async function pullToRefresh() {
   await act(async () => screen.getByTestId('screen-scroll').props.refreshControl.props.onRefresh());
 }
+function pullSpinner() {
+  return screen.getByTestId('screen-scroll').props.refreshControl.props.refreshing;
+}
 async function show(node: React.ReactElement) {
   const client = createQueryClient();
   await render(<QueryClientProvider client={client}>{node}</QueryClientProvider>);
@@ -145,7 +148,11 @@ async function previewCode() {
 beforeEach(() => {
   jest.clearAllMocks();
   mockParams.ledgerId = ledgerId;
+  mockParams.view = undefined;
   mockKeyNumber = 0;
+  jest.mocked(router.setParams).mockImplementation((next: { view?: string }) => {
+    mockParams.view = next.view as 'archived' | 'current' | undefined;
+  });
   jest.mocked(imagesApi.upload).mockReset();
   jest.mocked(selectReceipt).mockReset();
   jest.mocked(ledgersApi.archiveLedger).mockReset();
@@ -196,7 +203,20 @@ describe('ledger pages with isolated API callbacks (no database/native claim)', 
     expect(navigation.navigate).toHaveBeenCalledWith('account');
   });
   it('follows view params sent by another tab while staying mounted', async () => {
+    mockParams.view = 'current';
     const client = await show(<LedgerListScreen />);
+    await screen.findByText('还没有账本');
+    // Toggling to history inside the list keeps route params synced so a later tab navigation back to current works.
+    await userEvent.press(screen.getByRole('button', { name: '已归档账本' }));
+    expect(router.setParams).toHaveBeenCalledWith({ view: 'archived' });
+    await screen.findByText('还没有已归档账本');
+    mockParams.view = 'current';
+    await screen.rerender(
+      <QueryClientProvider client={client}>
+        <LedgerListScreen />
+      </QueryClientProvider>,
+    );
+    await waitFor(() => expect(list.mock.calls.at(-1)?.[0].query.archived).toBe('false'));
     await screen.findByText('还没有账本');
     mockParams.view = 'archived';
     await screen.rerender(
@@ -205,6 +225,7 @@ describe('ledger pages with isolated API callbacks (no database/native claim)', 
       </QueryClientProvider>,
     );
     await waitFor(() => expect(list.mock.calls.at(-1)?.[0].query.archived).toBe('true'));
+    expect(pullSpinner()).toBe(false);
     mockParams.view = undefined;
   });
   it('queries archived ledgers online and switches back to the active list', async () => {
@@ -352,14 +373,21 @@ describe('ledger pages with isolated API callbacks (no database/native claim)', 
     get.mockResolvedValueOnce({ data: { ...detail, expenseTotalCents: '12000' } });
     await show(<LedgerDetailScreen />);
     await screen.findByText('还没有消费记录');
+    expect(pullSpinner()).toBe(false);
     const reads = listExpenses.mock.calls.length;
-    let resolve!: (value: { data: typeof detail }) => void;
-    get.mockImplementationOnce(() => new Promise((done) => (resolve = done)));
+    let resolveLedger!: (value: { data: typeof detail }) => void;
+    let resolveExpenses!: (value: EndpointOutput<'listExpenses'>) => void;
+    get.mockImplementationOnce(() => new Promise((done) => (resolveLedger = done)));
+    listExpenses.mockImplementationOnce(() => new Promise((done) => (resolveExpenses = done)));
     await pullToRefresh();
-    // The filter-bearing list stays on screen while the ledger refetches.
+    // The filter-bearing list stays on screen while both the ledger and its expenses refetch.
     expect(screen.getByText('还没有消费记录')).toBeOnTheScreen();
+    await waitFor(() => expect(pullSpinner()).toBe(true));
     expect(listExpenses).toHaveBeenCalledTimes(reads + 1);
-    await act(async () => resolve({ data: { ...detail, expenseTotalCents: '12000' } }));
+    await act(async () => resolveLedger({ data: { ...detail, expenseTotalCents: '12000' } }));
+    expect(pullSpinner()).toBe(true);
+    await act(async () => resolveExpenses({ data: [], page: { nextCursor: null } }));
+    await waitFor(() => expect(pullSpinner()).toBe(false));
     expect(listExpenses).toHaveBeenCalledTimes(reads + 1);
   });
   it('reads member names and real integer amounts, then hides data on permission rejection', async () => {
@@ -569,6 +597,13 @@ describe('ledger pages with isolated API callbacks (no database/native claim)', 
     }
     expect(reset).toHaveBeenCalledTimes(2);
     expect(reset.mock.calls[0]?.[1]).not.toEqual(reset.mock.calls[1]?.[1]);
+    expect(pullSpinner()).toBe(false);
+    let finishRead!: (value: { data: typeof invitation }) => void;
+    readInvitation.mockImplementationOnce(() => new Promise((done) => (finishRead = done)));
+    await pullToRefresh();
+    await waitFor(() => expect(pullSpinner()).toBe(true));
+    await act(async () => finishRead({ data: invitation }));
+    await waitFor(() => expect(pullSpinner()).toBe(false));
   });
   it('disables sharing an expired invitation and displays the recovery action', async () => {
     readInvitation.mockResolvedValueOnce({ data: { ...invitation, expired: true } });
