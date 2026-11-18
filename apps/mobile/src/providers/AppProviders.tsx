@@ -9,9 +9,10 @@ import { createQueryClient } from '@/lib/query-client';
 export function AppProviders({ children }: PropsWithChildren) {
   const [client] = useState(createQueryClient);
   useEffect(() => {
-    const focus = AppState.addEventListener('change', (state) =>
-      focusManager.setFocused(state === 'active'),
-    );
+    const focus = AppState.addEventListener('change', (state) => {
+      if (state === 'active') focusManager.setFocused(true);
+      else if (state === 'background') focusManager.setFocused(false);
+    });
     const network = Network.addNetworkStateListener((state) => {
       onlineManager.setOnline(state.isConnected !== false && state.isInternetReachable !== false);
     });

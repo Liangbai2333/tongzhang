@@ -1,5 +1,5 @@
 import { describe, it, expect, jest, beforeEach } from '@jest/globals';
-import { render, screen, userEvent, fireEvent, waitFor } from '@testing-library/react-native';
+import { act, render, screen, userEvent, fireEvent, waitFor } from '@testing-library/react-native';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { router } from 'expo-router';
 import AuthScreen from '../src/features/auth/screens/AuthScreen';
@@ -259,6 +259,32 @@ describe('real auth page interactions with isolated API callbacks', () => {
       expect(ledgersApi.listLedgers).toHaveBeenCalledWith(
         expect.objectContaining({ query: { archived, limit: 50 } }),
       );
+    const spinner = () => screen.getByTestId('screen-scroll').props.refreshControl.props.refreshing;
+    expect(spinner()).toBe(false);
+    let resolveCurrent!: (value: { data: never; page: { nextCursor: null } }) => void;
+    let resolveHistory!: (value: { data: never; page: { nextCursor: null } }) => void;
+    jest.mocked(ledgersApi.listLedgers).mockImplementation(({ query }) =>
+      query.archived === 'true'
+        ? new Promise((done) => {
+            resolveHistory = done;
+          })
+        : new Promise((done) => {
+            resolveCurrent = done;
+          }),
+    );
+    await act(async () =>
+      screen.getByTestId('screen-scroll').props.refreshControl.props.onRefresh(),
+    );
+    await waitFor(() => expect(spinner()).toBe(true));
+    await act(async () =>
+      resolveCurrent({ data: new Array(3).fill(null) as never, page: { nextCursor: null } }),
+    );
+    await waitFor(() => expect(screen.getByText('3')).toBeOnTheScreen());
+    expect(spinner()).toBe(true);
+    await act(async () =>
+      resolveHistory({ data: new Array(1).fill(null) as never, page: { nextCursor: null } }),
+    );
+    await waitFor(() => expect(spinner()).toBe(false));
   });
   it('shows account details read-only and keeps explicit reverification', async () => {
     await renderAccount();

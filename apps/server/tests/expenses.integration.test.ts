@@ -1287,3 +1287,159 @@ describe('deleteExpense (A17)', () => {
     }
   });
 });
+
+describe('A16/A17 route-level Idempotency-Key guards (issue 106)', () => {
+  const keylessPatch = (token: string, expenseId: string, payload: object, key?: string) =>
+    fixture.app.inject({
+      method: 'PATCH',
+      url: `/api/v1/ledgers/${ledgerId}/expenses/${expenseId}`,
+      headers: {
+        authorization: `Bearer ${token}`,
+        ...(key === undefined ? {} : { 'idempotency-key': key }),
+      },
+      payload,
+    });
+  const keylessDelete = (token: string, expenseId: string, key?: string) =>
+    fixture.app.inject({
+      method: 'DELETE',
+      url: `/api/v1/ledgers/${ledgerId}/expenses/${expenseId}?version=1`,
+      headers: {
+        authorization: `Bearer ${token}`,
+        ...(key === undefined ? {} : { 'idempotency-key': key }),
+      },
+    });
+
+  it('rejects missing or malformed keys on A16/A17 with 400 VALIDATION_ERROR and leaves no trace', async () => {
+    const s = await seed();
+    const created = await post(s.owner.accessToken, bodyFor(s));
+    const expenseId = created.json().data.id as string;
+    const updateBody = bodyFor(s, { title: '缺键改写', amountCents: '18000', version: 1 });
+
+    const keyRowsBefore = await fixture.db.orm
+      .select()
+      .from(idempotencyKeys)
+      .where(eq(idempotencyKeys.userId, s.owner.user.id));
+
+    for (const badKey of [undefined, '', 'not-a-uuid', '1234']) {
+      const edit = await keylessPatch(s.owner.accessToken, expenseId, updateBody, badKey);
+      expect(edit.statusCode).toBe(400);
+      expect(edit.json().error.code).toBe('VALIDATION_ERROR');
+      const remove = await keylessDelete(s.owner.accessToken, expenseId, badKey);
+      expect(remove.statusCode).toBe(400);
+      expect(remove.json().error.code).toBe('VALIDATION_ERROR');
+    }
+
+    const [expense] = await fixture.db.orm
+      .select()
+      .from(expenses)
+      .where(eq(expenses.id, expenseId));
+    expect(expense!.title).toBe('晚餐');
+    expect(expense!.version).toBe(1);
+    expect(expense!.deletedAt).toBeNull();
+    const [ledger] = await fixture.db.orm.select().from(ledgers).where(eq(ledgers.id, ledgerId!));
+    expect(ledger!.version).toBe(2);
+    expect(
+      await fixture.db.orm
+        .select()
+        .from(idempotencyKeys)
+        .where(eq(idempotencyKeys.userId, s.owner.user.id)),
+    ).toHaveLength(keyRowsBefore.length);
+  });
+
+  it('authenticates before checking the key, so anonymous keyless requests get 401 not 400', async () => {
+    const s = await seed();
+    const created = await post(s.owner.accessToken, bodyFor(s));
+    const expenseId = created.json().data.id as string;
+    const edit = await fixture.app.inject({
+      method: 'PATCH',
+      url: `/api/v1/ledgers/${ledgerId}/expenses/${expenseId}`,
+      payload: bodyFor(s, { version: 1 }),
+    });
+    expect(edit.statusCode).toBe(401);
+    const remove = await fixture.app.inject({
+      method: 'DELETE',
+      url: `/api/v1/ledgers/${ledgerId}/expenses/${expenseId}?version=1`,
+    });
+    expect(remove.statusCode).toBe(401);
+  });
+
+  it('scopes keys by user and operation: a stolen key never replays another user result, and A16/A17 do not share a key', async () => {
+    const s = await seed();
+    const created = await post(s.owner.accessToken, bodyFor(s));
+    const expenseId = created.json().data.id as string;
+    const key = randomUUID();
+    const updateBody = bodyFor(s, { title: '同键隔离', amountCents: '18000', version: 1 });
+
+    const first = await patch(s.owner.accessToken, expenseId, updateBody, key);
+    expect(first.statusCode).toBe(200);
+
+    // Replay still re-checks permission: the friend is neither recorder nor creator.
+    const stolen = await patch(s.friend.accessToken, expenseId, updateBody, key);
+    expect(stolen.statusCode).toBe(403);
+
+    // The same key on the DELETE route is a different operation scope and runs for real.
+    const removed = await del(s.owner.accessToken, expenseId, '?version=2', key);
+    expect(removed.statusCode).toBe(200);
+    const [expense] = await fixture.db.orm
+      .select()
+      .from(expenses)
+      .where(eq(expenses.id, expenseId));
+    expect(expense!.deletedAt).not.toBeNull();
+    // A17 only stamps deleted_at: the expense version stays at the A16 result, the ledger version advances.
+    expect(expense!.version).toBe(2);
+    const [ledger] = await fixture.db.orm.select().from(ledgers).where(eq(ledgers.id, ledgerId!));
+    expect(ledger!.version).toBe(4);
+  });
+
+  it('rolls back A16 edits, split recomputation and ledger version when the audit write fails', async () => {
+    const s = await seed();
+    const created = await post(s.owner.accessToken, bodyFor(s));
+    const expenseId = created.json().data.id as string;
+    const rollbackKey = randomUUID();
+
+    await expect(
+      createExpensesService(fixture.db.orm).updateExpense(
+        {
+          params: { ledgerId: ledgerId!, expenseId },
+          query: {},
+          body: {
+            title: '审计失败回滚',
+            amountCents: '30000',
+            category: 'DINING' as const,
+            occurredOn: '2026-10-25',
+            payerMemberId: s.friendMember,
+            splitMode: 'EQUAL' as const,
+            splits: [{ memberId: s.ownerMember }, { memberId: s.friendMember }],
+            version: 1,
+          },
+        },
+        {
+          principal: { userId: s.owner.user.id, sessionId: randomUUID() },
+          requestId: 'invalid-audit-uuid',
+          idempotencyKey: rollbackKey,
+        },
+      ),
+    ).rejects.toThrow();
+
+    const [expense] = await fixture.db.orm
+      .select()
+      .from(expenses)
+      .where(eq(expenses.id, expenseId));
+    expect(expense!.title).toBe('晚餐');
+    expect(expense!.amountCents).toBe(12000n);
+    expect(expense!.version).toBe(1);
+    const splits = await fixture.db.orm
+      .select()
+      .from(expenseSplits)
+      .where(eq(expenseSplits.expenseId, expenseId));
+    expect(splits.map((row) => row.amountCents).sort()).toEqual([6000n, 6000n]);
+    const [ledger] = await fixture.db.orm.select().from(ledgers).where(eq(ledgers.id, ledgerId!));
+    expect(ledger!.version).toBe(2);
+    expect(
+      await fixture.db.orm
+        .select()
+        .from(idempotencyKeys)
+        .where(eq(idempotencyKeys.key, rollbackKey)),
+    ).toHaveLength(0);
+  });
+});

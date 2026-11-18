@@ -42,7 +42,7 @@ export default function ExpenseDetailScreen() {
             }
           : undefined
       }
-      refreshing={query.isFetching && !query.isPending}
+      refreshing={query.isRefetching}
     >
       {!ready ? (
         <RequestState

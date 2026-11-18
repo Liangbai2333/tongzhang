@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 import { QueryClientProvider } from '@tanstack/react-query';
-import { fireEvent, render, screen, userEvent } from '@testing-library/react-native';
+import { act, fireEvent, render, screen, userEvent, waitFor } from '@testing-library/react-native';
 import { router } from 'expo-router';
 import { setStringAsync } from 'expo-clipboard';
 import type { EndpointOutput } from '@tongzhang/contracts';
@@ -456,6 +456,17 @@ describe('expense flow with isolated API callbacks, not native/database proof', 
     await screen.findByLabelText('收据图片');
     expect(read).toHaveBeenCalledWith(imageId);
     await userEvent.press(screen.getByRole('button', { name: '关闭面板' }));
+    const spinner = () => screen.getByTestId('screen-scroll').props.refreshControl.props.refreshing;
+    expect(spinner()).toBe(false);
+    let resolveDetail!: (value: { data: typeof expense }) => void;
+    detail.mockImplementationOnce(() => new Promise((done) => (resolveDetail = done)));
+    await act(async () =>
+      screen.getByTestId('screen-scroll').props.refreshControl.props.onRefresh(),
+    );
+    expect(screen.getByText('食堂午餐')).toBeOnTheScreen();
+    await waitFor(() => expect(spinner()).toBe(true));
+    await act(async () => resolveDetail({ data: expense }));
+    await waitFor(() => expect(spinner()).toBe(false));
   });
   it('never shows expense contents when the server rejects membership', async () => {
     detail.mockRejectedValueOnce(new ApiError('FORBIDDEN', '无权访问该消费', 403));
@@ -487,6 +498,17 @@ describe('expense flow with isolated API callbacks, not native/database proof', 
       pathname: '/ledgers/[ledgerId]/settlement-preview',
       params: { ledgerId },
     });
+    const spinner = () => screen.getByTestId('screen-scroll').props.refreshControl.props.refreshing;
+    expect(spinner()).toBe(false);
+    let resolveBalance!: (value: { data: typeof balances }) => void;
+    balance.mockImplementationOnce(() => new Promise((done) => (resolveBalance = done)));
+    await act(async () =>
+      screen.getByTestId('screen-scroll').props.refreshControl.props.onRefresh(),
+    );
+    expect(screen.getByText('待收回')).toBeOnTheScreen();
+    await waitFor(() => expect(spinner()).toBe(true));
+    await act(async () => resolveBalance({ data: balances }));
+    await waitFor(() => expect(spinner()).toBe(false));
   });
   it('reports clipboard failures honestly and never writes from settlement preview', async () => {
     await show(<SettlementPreviewScreen />);

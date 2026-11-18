@@ -89,6 +89,16 @@ export default function InvitationScreen() {
         variant="ledger"
         backDisabled={busy}
         contentStyle={styles.content}
+        onRefresh={
+          valid && !busy && !write.uncertain && !confirm
+            ? () => {
+                setNotice(null);
+                setActionError(null);
+                void query.refetch();
+              }
+            : undefined
+        }
+        refreshing={query.isRefetching}
         footer={ready ? <Button title="进入账本" disabled={busy} onPress={enter} /> : undefined}
       >
         {!ready ? (
