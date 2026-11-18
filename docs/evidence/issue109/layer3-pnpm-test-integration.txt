@@ -1,0 +1,82 @@
+# commit b6bec0e  2026-11-18T12:55:39Z  node v24.21.0  cmd: TEST_DATABASE_URL=postgresql://tongzhang:***@127.0.0.1:55409/tongzhang_test pnpm test:integration (postgres:17-alpine throwaway container)
+$ pnpm build:shared && vitest run --config vitest.integration.config.ts
+$ pnpm -r --filter "./packages/*" build
+$ tsc -p tsconfig.json
+$ tsc -p tsconfig.json
+
+ RUN  v5.0.4 <worktree>
+
+ ✓ apps/server/tests/schema.integration.test.ts (3 tests) 622ms
+   ✓ checks real sessions and parses transformed queries exactly once 523ms
+ ✓ apps/server/tests/full-lifecycle.integration.test.ts (1 test) 1215ms
+   ✓ preserves the 12000/6000 lifecycle through cover, receipt, settlement and personal history over TCP HTTP 1214ms
+ ✓ apps/server/tests/expense-concurrency.integration.test.ts (3 tests) 1391ms
+   ✓ B15 concurrent A16/A17 on isolated PostgreSQL (3)
+     ✓ resolves a concurrent edit and delete of one expense to exactly one winner 655ms
+     ✓ lets exactly one of two concurrent same-version edits win with 409 VERSION_CONFLICT 349ms
+     ✓ applies concurrent writes on different expenses and keeps soft-deleted rows readable 386ms
+ ✓ apps/server/tests/archive.integration.test.ts (4 tests) 1487ms
+   ✓ personal archive and history (4)
+     ✓ paginates only the caller's archived memberships without mixing current or other-member history 672ms
+     ✓ archives only the caller of a settled ledger and keeps history readable 343ms
+ ✓ apps/server/tests/access.integration.test.ts (2 tests) 482ms
+   ✓ real HTTP ledger access foundations (2)
+     ✓ returns contract 401/403 errors for anonymous and nonmember requests without leaking the ledger 318ms
+ ✓ apps/server/tests/auth.integration.test.ts (10 tests) 1531ms
+   ✓ real PostgreSQL dual-token authentication (10)
+     ✓ rejects unknown accounts and ambiguous usernames with independent contract expectations 434ms
+ ✓ apps/server/tests/profile.integration.test.ts (8 tests) 1884ms
+   ✓ profile A28/A29 persistence, audit and QR invitation compatibility (issue 86) (5)
+     ✓ updates 2..30 character usernames with audit logs, keeps email read-only, and propagates across ledgers 613ms
+     ✓ verifies QR-scanned 6-char codes against A11/A12 7-day TTL, reset revocation and 12-member row lock 394ms
+ ✓ apps/server/tests/database.integration.test.ts (1 test) 132ms
+ ✓ apps/server/tests/balances.integration.test.ts (7 tests) 1858ms
+   ✓ balances and read-only settlement preview (7)
+     ✓ returns integer-string balances summing to zero and a single 6000 transfer 538ms
+ ✓ apps/server/tests/expense-profile-regression.integration.test.ts (4 tests) 2136ms
+   ✓ B15 Day 2 isolated-DB regressions for A16/A17 and A28/A29 (issue 109) (4)
+     ✓ rejects sequential stale versions and syncs A14 filters, keyset cursor and all read views 1025ms
+     ✓ enforces 409 LEDGER_FROZEN on A16/A17 across real SETTLING and SETTLED states while A28/A29 propagate cleanly 795ms
+ ✓ apps/server/tests/idempotency.integration.test.ts (11 tests) 2196ms
+   ✓ real PostgreSQL idempotency through an isolated HTTP adapter (11)
+     ✓ replays the exact success body without duplicating the ledger change or audit 474ms
+ ✓ apps/server/tests/images.integration.test.ts (10 tests) 2203ms
+   ✓ real image HTTP and database lifecycle (10)
+     ✓ uploads real jpeg bytes to bytea and restricts unbound reads to uploader 445ms
+     ✓ binds receipt, expense, splits, version, audit and replay result once in the same transaction 302ms
+ ✓ apps/server/tests/statistics.integration.test.ts (9 tests) 2491ms
+   ✓ A21 getStatistics (4)
+     ✓ aggregates the 鼓山一日 30000-cent ledger and conserves totals against A20 682ms
+     ✓ excludes soft-deleted expenses and other ledgers 489ms
+   ✓ A21 after A16 edits and A17 soft deletes (issue 107) (5)
+     ✓ keeps every breakdown in sync after editing amount, category, date and split, then soft-deleting 321ms
+ ✓ apps/server/tests/ledgers.integration.test.ts (12 tests) 2566ms
+   ✓ createLedger / list / detail / members (7)
+     ✓ makes the creator a member, issues an invitation and reads the same data everywhere 504ms
+ ✓ apps/server/tests/ledger-invitation-regression.integration.test.ts (11 tests) 2582ms
+   ✓ independent ledger and invitation HTTP/PostgreSQL regressions (issue 18) (11)
+     ✓ keeps preview read-only and returns complete, consistent contracts to both accounts 588ms
+     ✓ rejects a reused join key with another valid code without joining the other ledger 355ms
+ ✓ apps/server/tests/cover-cleanup.integration.test.ts (14 tests) 2678ms
+   ✓ Issue #29 cover transaction and real two-account acceptance (4)
+     ✓ uploads, creates, joins and reads a cover, then saves/replays/queries 12000 cents with 6000 each 784ms
+     ✓ rejects foreign, missing, wrong-kind and already-bound images without partial creation 360ms
+ ✓ apps/server/tests/settlements.integration.test.ts (13 tests) 3459ms
+   ✓ formal settlement on real PostgreSQL (13)
+     ✓ keeps preview read-only, persists the server plan and freezes subsequent expense writes 656ms
+     ✓ saves the four-member acceptance ledger as one batch with two ordered transfer snapshots 524ms
+ ✓ apps/server/tests/settlement-progress.integration.test.ts (17 tests) 4432ms
+   ✓ settlement progress, registration and closing on real PostgreSQL (17)
+     ✓ reads the saved snapshot, registers both payments, and closes without changing expense totals 890ms
+     ✓ keeps the formal settlement readable after personal archive in the real closing flow 465ms
+     ✓ returns explicit missing errors and rejects anonymous, nonmembers, cross-ledger transfers and invalid writes 312ms
+ ✓ apps/server/tests/expenses.integration.test.ts (32 tests) 5944ms
+   ✓ createExpense (15)
+     ✓ splits 12000 cents into 6000 + 6000 and commits everything together 518ms
+
+ Test Files  19 passed (19)
+      Tests  172 passed (172)
+   Start at  04:55:40
+   Duration  7.52s (tests 67%, import 25%, transform 8%)
+
+exit=0
