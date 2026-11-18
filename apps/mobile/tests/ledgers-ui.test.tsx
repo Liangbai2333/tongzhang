@@ -150,8 +150,9 @@ beforeEach(() => {
   mockParams.ledgerId = ledgerId;
   mockParams.view = undefined;
   mockKeyNumber = 0;
-  jest.mocked(router.setParams).mockImplementation((next: { view?: string }) => {
-    mockParams.view = next.view as 'archived' | 'current' | undefined;
+  jest.mocked(router.setParams).mockImplementation((next) => {
+    const view = (next as { view?: string }).view;
+    mockParams.view = view === 'archived' || view === 'current' ? view : undefined;
   });
   jest.mocked(imagesApi.upload).mockReset();
   jest.mocked(selectReceipt).mockReset();
