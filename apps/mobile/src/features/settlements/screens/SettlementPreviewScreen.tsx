@@ -33,7 +33,6 @@ export default function SettlementPreviewScreen() {
 function SettlementPage({ ledgerId }: { ledgerId: string }) {
   const { user } = useAuth();
   const valid = uuidSchema.safeParse(ledgerId).success;
-  const [generation, setGeneration] = useState(0);
   const [started, setStarted] = useState<Settlement | null>(null);
   const ledgerQuery = useOnlineQuery(
     ledgersKeys.ledger(user!.id, ledgerId),
@@ -43,7 +42,18 @@ function SettlementPage({ ledgerId }: { ledgerId: string }) {
   const ledger = ledgerQuery.data?.data;
   if (!valid || blocksContent(ledgerQuery) || ledgerQuery.isError || !ledger)
     return (
-      <Screen title="结算" variant="ledger">
+      <Screen
+        title="结算"
+        variant="ledger"
+        onRefresh={
+          valid
+            ? () => {
+                void ledgerQuery.refetch();
+              }
+            : undefined
+        }
+        refreshing={ledgerQuery.isRefetching}
+      >
         <RequestState
           loading={valid && blocksContent(ledgerQuery)}
           title={valid ? '暂时无法读取账本' : '账本地址无效'}
@@ -63,11 +73,11 @@ function SettlementPage({ ledgerId }: { ledgerId: string }) {
     return <SettlementRecordScreen ledger={ledger} initial={started ?? undefined} />;
   return (
     <Preview
-      key={generation}
       ledger={ledger}
+      ledgerRefreshing={ledgerQuery.isRefetching}
+      ledgerFetching={ledgerQuery.isFetching}
       onStarted={setStarted}
-      onReload={() => {
-        setGeneration((value) => value + 1);
+      onRefreshLedger={() => {
         void ledgerQuery.refetch();
       }}
     />
@@ -76,12 +86,16 @@ function SettlementPage({ ledgerId }: { ledgerId: string }) {
 
 function Preview({
   ledger,
+  ledgerRefreshing,
+  ledgerFetching,
   onStarted,
-  onReload,
+  onRefreshLedger,
 }: {
   ledger: Ledger;
+  ledgerRefreshing: boolean;
+  ledgerFetching: boolean;
   onStarted: (settlement: Settlement) => void;
-  onReload: () => void;
+  onRefreshLedger: () => void;
 }) {
   const ledgerId = ledger.id;
   const { user } = useAuth();
@@ -181,6 +195,15 @@ function Preview({
       setCopying(false);
     }
   }
+  function reload() {
+    write.reset();
+    setConfirmation(null);
+    setCheckError(null);
+    setNotice(null);
+    setError(null);
+    onRefreshLedger();
+    void query.refetch();
+  }
   return (
     <>
       <Stack.Screen options={{ gestureEnabled: false }} />
@@ -189,8 +212,8 @@ function Preview({
         title="结算预览"
         variant="ledger"
         contentStyle={{ paddingTop: 8, gap: 16 }}
-        onRefresh={!busy && !write.uncertain && !confirmation ? onReload : undefined}
-        refreshing={query.isFetching && !query.isPending}
+        onRefresh={!busy && !write.uncertain && !confirmation ? reload : undefined}
+        refreshing={ledgerRefreshing || query.isRefetching}
         footer={
           ready ? (
             <>
@@ -214,14 +237,14 @@ function Preview({
                   title="正式发起结算"
                   icon={<FigmaAsset asset={expenseAssets.preview} />}
                   // The plan stays visible while refreshing; confirm only the latest version.
-                  disabled={busy || query.isFetching}
+                  disabled={busy || ledgerFetching || query.isFetching}
                   onPress={() => setConfirmation({ expectedVersion: plan.ledgerVersion })}
                 />
               )}
               {blocked && (
                 <>
                   <InlineError message="账本内容有变化，请刷新后再结算。" />
-                  <Button title="刷新预览" onPress={onReload} />
+                  <Button title="刷新预览" onPress={reload} />
                 </>
               )}
               {ledger.creatorUserId !== user!.id && (
@@ -383,7 +406,7 @@ function Preview({
           </Text>
         )}
         {blocked ? (
-          <Button title="刷新预览" onPress={onReload} />
+          <Button title="刷新预览" onPress={reload} />
         ) : (
           <Button
             compact
