@@ -1,0 +1,2 @@
+$ pnpm --filter @tongzhang/mobile exec expo install --check
+Dependencies are up to date
