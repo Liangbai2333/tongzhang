@@ -1,15 +1,19 @@
-import { describe, expect, it, jest } from '@jest/globals';
+import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 import { act, render, screen, userEvent } from '@testing-library/react-native';
 import { useState } from 'react';
 import { InlineError, RequestState, EmptyState } from '../src/components/Feedback';
 import { Button } from '../src/components/Button';
 import { Screen } from '../src/components/Screen';
 import { ApiError } from '../src/lib/api-error';
+let mockFocused = true;
 jest.mock('../src/icons/FigmaAsset', () => ({ FigmaAsset: () => null, figmaAssets: {} }));
 jest.mock('expo-router', () => ({
-  useIsFocused: () => true,
+  useIsFocused: () => mockFocused,
   router: {},
 }));
+beforeEach(() => {
+  mockFocused = true;
+});
 describe('shared in-page feedback and submission controls', () => {
   it('shows the pull spinner only for a refresh the user pulled for', async () => {
     const onRefresh = jest.fn();
@@ -32,6 +36,75 @@ describe('shared in-page feedback and submission controls', () => {
     await screen.rerender(page(false));
     await screen.rerender(page(true));
     expect(spinner()).toBe(false);
+  });
+  it('clears the pull spinner immediately when leaving focus and never sticks after off-screen completion', async () => {
+    const onRefresh = jest.fn();
+    const page = (refreshing: boolean) => (
+      <Screen refreshing={refreshing} onRefresh={onRefresh}>
+        {null}
+      </Screen>
+    );
+    const spinner = () => screen.getByTestId('screen-scroll').props.refreshControl.props.refreshing;
+    await render(page(false));
+    await act(async () =>
+      screen.getByTestId('screen-scroll').props.refreshControl.props.onRefresh(),
+    );
+    await screen.rerender(page(true));
+    expect(spinner()).toBe(true);
+    // Switching tabs or pushing a detail screen drops focus before the request finishes.
+    mockFocused = false;
+    await screen.rerender(page(true));
+    expect(spinner()).toBe(false);
+    // Returning while the old fetch is still running or starting a focus refetch stays quiet.
+    mockFocused = true;
+    await screen.rerender(page(true));
+    expect(spinner()).toBe(false);
+    // Start another user pull, then let the refresh complete while the page is off screen.
+    await act(async () =>
+      screen.getByTestId('screen-scroll').props.refreshControl.props.onRefresh(),
+    );
+    await screen.rerender(page(true));
+    expect(spinner()).toBe(true);
+    mockFocused = false;
+    await screen.rerender(page(false));
+    mockFocused = true;
+    await screen.rerender(page(true));
+    expect(spinner()).toBe(false);
+  });
+  it('clears pending pull state when no fetch starts or refresh is disabled', async () => {
+    const callbacks: Array<() => void> = [];
+    const realSetTimeout = global.setTimeout;
+    const spy = jest.spyOn(global, 'setTimeout').mockImplementation(((
+      fn: TimerHandler,
+      ms?: number,
+      ...args: unknown[]
+    ) => {
+      if (ms === 1000 && typeof fn === 'function') callbacks.push(fn as () => void);
+      return realSetTimeout(fn, ms, ...args);
+    }) as typeof setTimeout);
+    try {
+      const onRefresh = jest.fn();
+      await render(
+        <Screen refreshing={false} onRefresh={onRefresh}>
+          {null}
+        </Screen>,
+      );
+      await act(async () =>
+        screen.getByTestId('screen-scroll').props.refreshControl.props.onRefresh(),
+      );
+      expect(callbacks).toHaveLength(1);
+      await act(async () => {
+        callbacks[0]!();
+      });
+      await screen.rerender(
+        <Screen refreshing onRefresh={onRefresh}>
+          {null}
+        </Screen>,
+      );
+      expect(screen.getByTestId('screen-scroll').props.refreshControl.props.refreshing).toBe(false);
+    } finally {
+      spy.mockRestore();
+    }
   });
   it('renders optional field errors as accessible alerts', async () => {
     await render(<InlineError />);

@@ -51,7 +51,7 @@ export default function BalancesScreen() {
             }
           : undefined
       }
-      refreshing={query.isFetching && !query.isPending}
+      refreshing={query.isRefetching}
       footer={
         ready && ready.ledger.status === 'ACTIVE' ? (
           <Button

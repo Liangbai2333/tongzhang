@@ -45,11 +45,13 @@ export function ExpenseList({
   ledger,
   userId,
   refreshSignal = 0,
+  onRefreshingChange,
 }: {
   ledger: Ledger;
   userId: string;
   /** Bumped by the owning page's pull-to-refresh. */
   refreshSignal?: number;
+  onRefreshingChange?: (refreshing: boolean) => void;
 }) {
   const [filter, setFilter] = useState<Filter>({});
   const [draft, setDraft] = useState<Filter>({});
@@ -83,6 +85,12 @@ export function ExpenseList({
     lastSignal.current = refreshSignal;
     void refetch();
   }, [refreshSignal, refetch]);
+  useEffect(() => {
+    onRefreshingChange?.(query.isRefetching);
+    return () => {
+      onRefreshingChange?.(false);
+    };
+  }, [onRefreshingChange, query.isRefetching]);
   const loading = blocksContent(query);
   const failed = query.isError && !query.isFetchNextPageError;
   const rows = [
