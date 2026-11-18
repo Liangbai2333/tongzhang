@@ -3,7 +3,14 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { asc, eq } from 'drizzle-orm';
 import type { z } from 'zod';
 import { endpoints, errorResponseSchema, inviteCodeSchema } from '@tongzhang/contracts';
-import { invitations, ledgerMembers, operationLogs, users } from '../src/db/schema/index.js';
+import {
+  expenses,
+  invitations,
+  ledgerMembers,
+  ledgers,
+  operationLogs,
+  users,
+} from '../src/db/schema/index.js';
 import { INVITE_QR_PREFIX } from '../src/modules/invitations/issue.js';
 import { createProfileService } from '../src/modules/profile/index.js';
 import { integrationFixture, testPassword, type TestAccount } from './fixtures/integration.js';
@@ -502,5 +509,176 @@ describe('profile A28/A29 persistence, audit and QR invitation compatibility (is
         await Promise.allSettled(pending);
       }
     }
+  });
+});
+
+describe('A28 username propagation across ledger, expense, balance and statistics views (issue 105)', () => {
+  async function seedSharedLedger() {
+    const alice = await fixture.register('联动甲');
+    const bob = await fixture.register('联动乙');
+    const ledgerId = await fixture.ledger(alice, [bob]);
+    const members = await fixture.db.orm
+      .select()
+      .from(ledgerMembers)
+      .where(eq(ledgerMembers.ledgerId, ledgerId));
+    const aliceMember = members.find((row) => row.userId === alice.user.id)!.id;
+    const bobMember = members.find((row) => row.userId === bob.user.id)!.id;
+    const created = await fixture.app.inject({
+      method: 'POST',
+      url: `/api/v1/ledgers/${ledgerId}/expenses`,
+      headers: authHeaders(alice, randomUUID()),
+      payload: {
+        title: '联动晚餐',
+        amountCents: '9001',
+        category: 'DINING',
+        occurredOn: '2026-11-17',
+        payerMemberId: aliceMember,
+        splitMode: 'EQUAL',
+        splits: [{ memberId: aliceMember }, { memberId: bobMember }],
+      },
+    });
+    expect(created.statusCode).toBe(201);
+    return {
+      alice,
+      bob,
+      ledgerId,
+      aliceMember,
+      bobMember,
+      expenseId: created.json().data.id as string,
+    };
+  }
+
+  const rename = (account: TestAccount, username: string) =>
+    fixture.app.inject({
+      method: 'PATCH',
+      url: '/api/v1/me',
+      headers: authHeaders(account),
+      payload: { username },
+    });
+
+  it('shows the new names in A14/A15, A20 and A21 without touching versions or money', async () => {
+    const s = await seedSharedLedger();
+    const [ledgerBefore] = await fixture.db.orm
+      .select()
+      .from(ledgers)
+      .where(eq(ledgers.id, s.ledgerId));
+    const [expenseBefore] = await fixture.db.orm
+      .select()
+      .from(expenses)
+      .where(eq(expenses.id, s.expenseId));
+
+    expect((await rename(s.alice, '付款人甲')).statusCode).toBe(200);
+    expect((await rename(s.bob, '分摊人乙')).statusCode).toBe(200);
+
+    const list = await fixture.app.inject({
+      url: `/api/v1/ledgers/${s.ledgerId}/expenses`,
+      headers: authHeaders(s.bob),
+    });
+    expect(list.statusCode).toBe(200);
+    expect(
+      (list.json().data as Array<{ id: string; payerName: string }>).find(
+        (row) => row.id === s.expenseId,
+      )?.payerName,
+    ).toBe('付款人甲');
+
+    const detail = await fixture.app.inject({
+      url: `/api/v1/ledgers/${s.ledgerId}/expenses/${s.expenseId}`,
+      headers: authHeaders(s.bob),
+    });
+    expect(detail.statusCode).toBe(200);
+    const detailData = detail.json().data as {
+      payerName: string;
+      recorderName: string;
+      splits: Array<{ memberId: string; username: string; amountCents: string }>;
+    };
+    expect(detailData.payerName).toBe('付款人甲');
+    expect(detailData.recorderName).toBe('付款人甲');
+    expect(
+      Object.fromEntries(detailData.splits.map((row) => [row.memberId, row.username])),
+    ).toEqual({ [s.aliceMember]: '付款人甲', [s.bobMember]: '分摊人乙' });
+    // 9001 splits 4501 + 4500; renaming must not move a single cent.
+    expect(detailData.splits.map((row) => row.amountCents).sort()).toEqual(['4500', '4501']);
+
+    const balances = await fixture.app.inject({
+      url: `/api/v1/ledgers/${s.ledgerId}/balances`,
+      headers: authHeaders(s.alice),
+    });
+    expect(balances.statusCode).toBe(200);
+    expect(
+      Object.fromEntries(
+        (balances.json().data.members as Array<{ memberId: string; username: string }>).map(
+          (row) => [row.memberId, row.username],
+        ),
+      ),
+    ).toEqual({ [s.aliceMember]: '付款人甲', [s.bobMember]: '分摊人乙' });
+
+    const statistics = await fixture.app.inject({
+      url: `/api/v1/ledgers/${s.ledgerId}/statistics`,
+      headers: authHeaders(s.bob),
+    });
+    expect(statistics.statusCode).toBe(200);
+    const statsData = statistics.json().data as {
+      expenseTotalCents: string;
+      topExpenses: Array<{ payerName: string }>;
+      members: Array<{ memberId: string; username: string }>;
+    };
+    expect(statsData.expenseTotalCents).toBe('9001');
+    expect(statsData.topExpenses[0]?.payerName).toBe('付款人甲');
+    expect(
+      Object.fromEntries(statsData.members.map((row) => [row.memberId, row.username])),
+    ).toEqual({ [s.aliceMember]: '付款人甲', [s.bobMember]: '分摊人乙' });
+
+    // A28 is display-only: ledger and expense versions, amounts and updatedAt are untouched.
+    const [ledgerAfter] = await fixture.db.orm
+      .select()
+      .from(ledgers)
+      .where(eq(ledgers.id, s.ledgerId));
+    const [expenseAfter] = await fixture.db.orm
+      .select()
+      .from(expenses)
+      .where(eq(expenses.id, s.expenseId));
+    expect(ledgerAfter).toEqual(ledgerBefore);
+    expect(expenseAfter).toEqual(expenseBefore);
+  });
+
+  it('records a same-name rename as a no-op write that still leaves exactly one audit row', async () => {
+    const alice = await fixture.register('同名不变');
+    const [before] = await fixture.db.orm.select().from(users).where(eq(users.id, alice.user.id));
+
+    const response = await rename(alice, '  同名不变  ');
+    expect(response.statusCode).toBe(200);
+    expect(response.json().data.username).toBe('同名不变');
+
+    const [after] = await fixture.db.orm.select().from(users).where(eq(users.id, alice.user.id));
+    expect(after).toEqual(before);
+    const audits = await fixture.db.orm
+      .select()
+      .from(operationLogs)
+      .where(eq(operationLogs.actorUserId, alice.user.id));
+    expect(audits).toHaveLength(1);
+    expect(audits[0]).toMatchObject({
+      action: 'PROFILE_UPDATED',
+      details: { previousUsername: '同名不变', username: '同名不变' },
+    });
+  });
+
+  it('keeps A28 and A29 independent: renaming never flips the preference and vice versa', async () => {
+    const alice = await fixture.register('互不影响');
+    expect(
+      (
+        await fixture.app.inject({
+          method: 'PATCH',
+          url: '/api/v1/me/preferences',
+          headers: authHeaders(alice),
+          payload: { notificationEnabled: false },
+        })
+      ).statusCode,
+    ).toBe(200);
+
+    const renamed = success(await rename(alice, '改名不动开关'), endpoints.updateProfile.response);
+    expect(renamed.data).toMatchObject({ username: '改名不动开关', notificationEnabled: false });
+
+    const [row] = await fixture.db.orm.select().from(users).where(eq(users.id, alice.user.id));
+    expect(row).toMatchObject({ username: '改名不动开关', notificationEnabled: false });
   });
 });

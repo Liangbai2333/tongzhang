@@ -210,11 +210,29 @@ describe('mobile authentication and route admission state', () => {
     const { api, auth } = fixture();
     await auth.restore();
     auth.suspend({ preserveScreen: true });
-    expect(auth.getSnapshot()).toMatchObject({ status: 'restoring', user, operation: null });
+    expect(auth.getSnapshot()).toMatchObject({
+      status: 'restoring',
+      user,
+      operation: null,
+      error: null,
+    });
+    const offline = new ApiError('NETWORK_UNAVAILABLE', '请联网后重新核验登录状态');
+    auth.suspend({ preserveScreen: true, error: offline });
+    expect(auth.getSnapshot()).toMatchObject({
+      status: 'restoring',
+      user,
+      operation: null,
+      error: offline,
+    });
     const request = deferred<{ data: typeof user }>();
     api.getMe.mockReturnValueOnce(request.promise);
     const pending = auth.restore();
-    expect(auth.getSnapshot()).toMatchObject({ status: 'restoring', user, operation: 'restore' });
+    expect(auth.getSnapshot()).toMatchObject({
+      status: 'restoring',
+      user,
+      operation: 'restore',
+      error: null,
+    });
     request.resolve({ data: user });
     await pending;
     expect(auth.getSnapshot()).toMatchObject({ status: 'authenticated', user, operation: null });
