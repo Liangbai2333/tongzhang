@@ -1,0 +1,157 @@
+=== HTTP Request & Delay Log (Proxy 127.0.0.1:3388 -> Fastify 127.0.0.1:3387) ===
+2026-11-18T12:57:39.015Z (start=2026-11-18T12:57:38.959Z) POST /api/v1/auth/register 201
+2026-11-18T12:57:39.046Z (start=2026-11-18T12:57:39.019Z) POST /api/v1/auth/register 201
+2026-11-18T12:57:39.073Z (start=2026-11-18T12:57:39.048Z) POST /api/v1/auth/register 201
+2026-11-18T12:57:39.098Z (start=2026-11-18T12:57:39.074Z) POST /api/v1/auth/register 201
+2026-11-18T12:57:39.122Z (start=2026-11-18T12:57:39.099Z) POST /api/v1/ledgers 201
+2026-11-18T12:57:39.130Z (start=2026-11-18T12:57:39.124Z) POST /api/v1/invitations/preview 200
+2026-11-18T12:57:39.141Z (start=2026-11-18T12:57:39.131Z) POST /api/v1/invitations/join 200
+2026-11-18T12:57:39.146Z (start=2026-11-18T12:57:39.142Z) POST /api/v1/invitations/preview 200
+2026-11-18T12:57:39.154Z (start=2026-11-18T12:57:39.146Z) POST /api/v1/invitations/join 200
+2026-11-18T12:57:39.160Z (start=2026-11-18T12:57:39.156Z) POST /api/v1/invitations/preview 200
+2026-11-18T12:57:39.168Z (start=2026-11-18T12:57:39.161Z) POST /api/v1/invitations/join 200
+2026-11-18T12:57:39.177Z (start=2026-11-18T12:57:39.169Z) GET /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883 200
+2026-11-18T12:57:39.188Z (start=2026-11-18T12:57:39.177Z) POST /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883/expenses 201
+2026-11-18T12:57:39.196Z (start=2026-11-18T12:57:39.189Z) POST /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883/expenses 201
+2026-11-18T12:57:39.205Z (start=2026-11-18T12:57:39.197Z) POST /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883/expenses 201
+2026-11-18T12:57:39.208Z (start=2026-11-18T12:57:39.205Z) POST /api/v1/auth/logout 200
+2026-11-18T12:57:39.212Z (start=2026-11-18T12:57:39.209Z) POST /api/v1/auth/logout 200
+2026-11-18T12:57:39.215Z (start=2026-11-18T12:57:39.212Z) POST /api/v1/auth/logout 200
+2026-11-18T12:57:39.218Z (start=2026-11-18T12:57:39.216Z) POST /api/v1/auth/logout 200
+2026-11-18T12:59:20.880Z (start=2026-11-18T12:59:20.871Z) GET /health/ready 200
+2026-11-18T13:04:12.064Z (start=2026-11-18T13:04:11.991Z) POST /api/v1/auth/login 200
+2026-11-18T13:04:12.211Z (start=2026-11-18T13:04:12.206Z) GET /api/v1/me 200
+2026-11-18T13:04:12.390Z (start=2026-11-18T13:04:12.373Z) GET /api/v1/ledgers?limit=20&archived=false 200
+2026-11-18T13:07:44.497Z (start=2026-11-18T13:07:44.466Z) GET /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883 200
+2026-11-18T13:07:44.625Z (start=2026-11-18T13:07:44.616Z) GET /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883/expenses?limit=20 200
+2026-11-18T13:07:49.577Z (start=2026-11-18T13:07:49.568Z) GET /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883/expenses/72e08504-2f05-42d6-9672-2a21b19715a8 200
+2026-11-18T13:07:53.689Z (start=2026-11-18T13:07:53.684Z) GET /api/v1/me 200
+2026-11-18T13:08:04.152Z (start=2026-11-18T13:07:59.642Z delay=4500ms) GET /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883/expenses/72e08504-2f05-42d6-9672-2a21b19715a8 200
+2026-11-18T13:08:06.689Z (start=2026-11-18T13:08:06.681Z) GET /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883/expenses?limit=20 200
+2026-11-18T13:08:06.706Z (start=2026-11-18T13:08:06.681Z) GET /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883 200
+2026-11-18T13:08:11.343Z (start=2026-11-18T13:08:11.335Z) GET /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883 200
+2026-11-18T13:08:11.344Z (start=2026-11-18T13:08:11.335Z) GET /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883/balances 200
+2026-11-18T13:08:16.082Z (start=2026-11-18T13:08:16.071Z) GET /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883/settlement-preview 200
+2026-11-18T13:08:16.082Z (start=2026-11-18T13:08:16.071Z) GET /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883 200
+2026-11-18T13:08:25.389Z (start=2026-11-18T13:08:20.881Z delay=4500ms) GET /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883/balances 200
+2026-11-18T13:08:25.392Z (start=2026-11-18T13:08:20.882Z delay=4500ms) GET /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883 200
+2026-11-18T13:08:31.431Z (start=2026-11-18T13:08:26.923Z delay=4500ms) GET /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883/balances 200
+2026-11-18T13:08:31.431Z (start=2026-11-18T13:08:26.923Z delay=4500ms) GET /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883 200
+2026-11-18T13:08:52.219Z (start=2026-11-18T13:08:52.199Z) GET /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883/settlement-preview 200
+2026-11-18T13:08:52.222Z (start=2026-11-18T13:08:52.199Z) GET /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883 200
+2026-11-18T13:08:56.425Z (start=2026-11-18T13:08:56.420Z) GET /api/v1/me 200
+2026-11-18T13:09:07.031Z (start=2026-11-18T13:09:02.521Z delay=4500ms) GET /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883/settlement-preview 200
+2026-11-18T13:09:07.032Z (start=2026-11-18T13:09:02.520Z delay=4500ms) GET /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883 200
+2026-11-18T13:09:13.903Z (start=2026-11-18T13:09:13.873Z) POST /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883/settlement 201
+2026-11-18T13:09:14.057Z (start=2026-11-18T13:09:14.050Z) GET /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883/settlement 200
+2026-11-18T13:09:14.064Z (start=2026-11-18T13:09:14.053Z) GET /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883 200
+2026-11-18T13:09:18.977Z (start=2026-11-18T13:09:18.971Z) GET /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883/balances 200
+2026-11-18T13:09:18.978Z (start=2026-11-18T13:09:18.970Z) GET /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883 200
+2026-11-18T13:09:21.658Z (start=2026-11-18T13:09:21.653Z) GET /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883/expenses?limit=20 200
+2026-11-18T13:09:21.660Z (start=2026-11-18T13:09:21.653Z) GET /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883 200
+2026-11-18T13:09:24.429Z (start=2026-11-18T13:09:24.422Z) GET /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883/settlement 200
+2026-11-18T13:09:24.431Z (start=2026-11-18T13:09:24.423Z) GET /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883 200
+2026-11-18T13:09:24.450Z (start=2026-11-18T13:09:24.424Z) GET /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883 200
+2026-11-18T13:09:28.603Z (start=2026-11-18T13:09:28.599Z) GET /api/v1/me 200
+2026-11-18T13:09:39.243Z (start=2026-11-18T13:09:34.734Z delay=4500ms) GET /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883/settlement 200
+2026-11-18T13:09:39.244Z (start=2026-11-18T13:09:34.735Z delay=4500ms) GET /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883 200
+2026-11-18T13:09:44.178Z (start=2026-11-18T13:09:44.151Z) POST /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883/settlement/transfers/5e441429-1897-4cc4-ae74-b6d35bdbaf43/paid 200
+2026-11-18T13:09:44.402Z (start=2026-11-18T13:09:44.388Z) GET /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883 200
+2026-11-18T13:09:44.405Z (start=2026-11-18T13:09:44.397Z) GET /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883/settlement 200
+2026-11-18T13:09:49.520Z (start=2026-11-18T13:09:49.490Z) POST /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883/settlement/transfers/c09c6503-b3c1-4637-8c02-828f33eee1f7/paid 200
+2026-11-18T13:09:49.728Z (start=2026-11-18T13:09:49.715Z) GET /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883/settlement 200
+2026-11-18T13:09:49.739Z (start=2026-11-18T13:09:49.715Z) GET /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883 200
+2026-11-18T13:09:57.086Z (start=2026-11-18T13:09:57.039Z) POST /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883/settle 200
+2026-11-18T13:09:57.322Z (start=2026-11-18T13:09:57.309Z) GET /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883/settlement 200
+2026-11-18T13:09:57.329Z (start=2026-11-18T13:09:57.313Z) GET /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883 200
+2026-11-18T13:10:03.713Z (start=2026-11-18T13:10:03.705Z) GET /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883/expenses?limit=20 200
+2026-11-18T13:10:03.717Z (start=2026-11-18T13:10:03.705Z) GET /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883 200
+2026-11-18T13:10:08.572Z (start=2026-11-18T13:10:08.567Z) GET /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883/expenses?limit=20 200
+2026-11-18T13:10:10.590Z (start=2026-11-18T13:10:10.580Z) POST /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883/archive 200
+2026-11-18T13:10:10.754Z (start=2026-11-18T13:10:10.750Z) GET /api/v1/ledgers?limit=20&archived=false 200
+2026-11-18T13:10:15.738Z (start=2026-11-18T13:10:15.734Z) GET /api/v1/ledgers?limit=50&archived=false 200
+2026-11-18T13:10:15.744Z (start=2026-11-18T13:10:15.737Z) GET /api/v1/ledgers?limit=50&archived=true 200
+2026-11-18T13:10:20.781Z (start=2026-11-18T13:10:20.776Z) GET /api/v1/ledgers?limit=20&archived=false 200
+2026-11-18T13:10:20.783Z (start=2026-11-18T13:10:20.776Z) GET /api/v1/ledgers?limit=20&archived=true 200
+2026-11-18T13:10:27.532Z (start=2026-11-18T13:10:27.527Z) GET /api/v1/ledgers?limit=20&archived=false 200
+2026-11-18T13:10:31.959Z (start=2026-11-18T13:10:31.953Z) GET /api/v1/ledgers?limit=50&archived=false 200
+2026-11-18T13:10:31.962Z (start=2026-11-18T13:10:31.953Z) GET /api/v1/ledgers?limit=50&archived=true 200
+2026-11-18T13:10:36.654Z (start=2026-11-18T13:10:36.650Z) GET /api/v1/ledgers?limit=20&archived=false 200
+2026-11-18T13:10:36.658Z (start=2026-11-18T13:10:36.650Z) GET /api/v1/ledgers?limit=20&archived=true 200
+2026-11-18T13:10:41.425Z (start=2026-11-18T13:10:41.416Z) GET /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883 200
+2026-11-18T13:10:41.522Z (start=2026-11-18T13:10:41.518Z) GET /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883/expenses?limit=20 200
+2026-11-18T13:10:50.897Z (start=2026-11-18T13:10:46.387Z delay=4500ms) GET /api/v1/ledgers?limit=20&archived=true 200
+2026-11-18T13:10:56.900Z (start=2026-11-18T13:10:52.392Z delay=4500ms) GET /api/v1/ledgers?limit=20&archived=true 200
+2026-11-18T13:13:29.435Z (start=2026-11-18T13:13:29.409Z) GET /api/v1/ledgers?limit=50&archived=false 200
+2026-11-18T13:13:29.442Z (start=2026-11-18T13:13:29.409Z) GET /api/v1/ledgers?limit=50&archived=true 200
+2026-11-18T13:13:38.802Z (start=2026-11-18T13:13:34.291Z delay=4500ms) GET /api/v1/ledgers?limit=20&archived=true 200
+2026-11-18T13:13:41.629Z (start=2026-11-18T13:13:41.619Z) GET /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883 200
+2026-11-18T13:13:41.747Z (start=2026-11-18T13:13:41.741Z) GET /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883/expenses?limit=20 200
+2026-11-18T13:13:46.565Z (start=2026-11-18T13:13:46.557Z) GET /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883/expenses/a239cba3-1e25-4253-a1c6-2c4ac0229f59 200
+2026-11-18T13:13:55.765Z (start=2026-11-18T13:13:51.256Z delay=4500ms) GET /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883/expenses?limit=20 200
+2026-11-18T13:13:55.766Z (start=2026-11-18T13:13:51.256Z delay=4500ms) GET /api/v1/ledgers/9db8c958-9639-4650-b27d-30df2a69b883 200
+2026-11-18T13:13:58.466Z (start=2026-11-18T13:13:58.459Z) GET /api/v1/ledgers?limit=20&archived=true 200
+2026-11-18T13:14:01.029Z (start=2026-11-18T13:14:01.025Z) GET /api/v1/ledgers?limit=50&archived=false 200
+2026-11-18T13:14:01.032Z (start=2026-11-18T13:14:01.025Z) GET /api/v1/ledgers?limit=50&archived=true 200
+2026-11-18T13:14:05.473Z (start=2026-11-18T13:14:05.468Z) POST /api/v1/auth/logout 200
+2026-11-18T13:15:06.423Z (start=2026-11-18T13:15:06.386Z) POST /api/v1/auth/login 200
+2026-11-18T13:15:06.478Z (start=2026-11-18T13:15:06.475Z) GET /api/v1/me 200
+2026-11-18T13:15:06.578Z (start=2026-11-18T13:15:06.565Z) GET /api/v1/ledgers?limit=20&archived=false 200
+
+=== PostgreSQL 17 Snapshot (database: beta108) ===
+                  id                  |   name   | status  | version | settled 
+--------------------------------------+----------+---------+---------+---------
+ 9db8c958-9639-4650-b27d-30df2a69b883 | 鼓山一日 | SETTLED |       9 | t
+(1 row)
+
+              member_id               | username |       email       | is_creator | archived 
+--------------------------------------+----------+-------------------+------------+----------
+ 1c9ae5b0-6742-4c1b-9797-7862086c741d | 小丁     | ding@beta108.test | f          | f
+ 6a31801e-299c-4258-aaea-12f5900a4c92 | 小安     | an@beta108.test   | t          | t
+ 835845fb-297e-46c8-a787-23d4d732ffff | 小白     | bai@beta108.test  | f          | f
+ 94fec7c9-5e3b-4642-bf2c-3fca7acfafa5 | 小陈     | chen@beta108.test | f          | f
+(4 rows)
+
+              expense_id              |  title   | category  | amount_cents | split_mode | occurred_on | payer | recorder | version | deleted_at 
+--------------------------------------+----------+-----------+--------------+------------+-------------+-------+----------+---------+------------
+ 72e08504-2f05-42d6-9672-2a21b19715a8 | 食堂     | DINING    |        12000 | EQUAL      | 2026-11-17  | 小安  | 小安     |       1 | 
+ 01db1c83-0632-4bec-954b-7c8345946927 | 鼓山门票 | TICKET    |        12000 | EQUAL      | 2026-11-17  | 小白  | 小白     |       1 | 
+ a239cba3-1e25-4253-a1c6-2c4ac0229f59 | 车费     | TRANSPORT |         6000 | EQUAL      | 2026-11-17  | 小陈  | 小陈     |       1 | 
+(3 rows)
+
+  title   | username | shares | amount_cents 
+----------+----------+--------+--------------
+ 食堂     | 小丁     |        |         3000
+ 食堂     | 小安     |        |         3000
+ 食堂     | 小白     |        |         3000
+ 食堂     | 小陈     |        |         3000
+ 鼓山门票 | 小丁     |        |         3000
+ 鼓山门票 | 小安     |        |         3000
+ 鼓山门票 | 小白     |        |         3000
+ 鼓山门票 | 小陈     |        |         3000
+ 车费     | 小安     |        |         3000
+ 车费     | 小陈     |        |         3000
+(10 rows)
+
+               batch_id               | source_version | algorithm_version | expense_total_cents | transfer_total_cents | transfer_count |                                                                                                                                                net_snapshot                                                                                                                                                
+--------------------------------------+----------------+-------------------+---------------------+----------------------+----------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ 6407ad40-54e5-4b3a-9262-00cc9668a982 |              7 | zero-sum-dp-v1    |               30000 |                 9000 |              2 | [{"memberId": "1c9ae5b0-6742-4c1b-9797-7862086c741d", "netCents": "-6000"}, {"memberId": "6a31801e-299c-4258-aaea-12f5900a4c92", "netCents": "3000"}, {"memberId": "835845fb-297e-46c8-a787-23d4d732ffff", "netCents": "6000"}, {"memberId": "94fec7c9-5e3b-4642-bf2c-3fca7acfafa5", "netCents": "-3000"}]
+(1 row)
+
+ sequence | payer | payee | amount_cents | status | registered_by 
+----------+-------+-------+--------------+--------+---------------
+        1 | 小丁  | 小白  |         6000 | PAID   | 小安
+        2 | 小陈  | 小安  |         3000 | PAID   | 小安
+(2 rows)
+
+       action       | count 
+--------------------+-------
+ EXPENSE_CREATED    |     3
+ LEDGER_ARCHIVED    |     1
+ LEDGER_CREATED     |     1
+ LEDGER_SETTLED     |     1
+ MEMBER_JOINED      |     3
+ SETTLEMENT_STARTED |     1
+ TRANSFER_PAID      |     2
+(7 rows)
+
