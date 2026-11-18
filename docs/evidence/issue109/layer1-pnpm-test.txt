@@ -1,0 +1,40 @@
+# commit b6bec0e  2026-11-18T12:55:09Z  node v24.21.0  cmd: pnpm test
+$ pnpm build:shared && vitest run
+$ pnpm -r --filter "./packages/*" build
+$ tsc -p tsconfig.json
+$ tsc -p tsconfig.json
+
+ RUN  v5.0.4 <worktree>
+
+ ✓ apps/mobile/tests/auth-controller.test.ts (21 tests) 9ms
+ ✓ scripts/tests/network-policy.test.mjs (3 tests) 3ms
+ ✓ apps/server/tests/settlement.test.ts (2 tests) 12ms
+ ✓ apps/server/tests/env.test.ts (6 tests) 7ms
+ ✓ apps/mobile/tests/auth-session.test.ts (16 tests) 112ms
+ ✓ apps/server/tests/balances.test.ts (3 tests) 4ms
+ ✓ packages/domain/tests/split.test.ts (2 tests) 4ms
+ ✓ packages/contracts/tests/business.test.ts (8 tests) 28ms
+ ✓ apps/server/tests/auth-tokens.test.ts (11 tests) 28ms
+ ✓ packages/contracts/tests/beta-negative.test.ts (21 tests) 43ms
+ ✓ scripts/tests/environment.test.mjs (9 tests) 156ms
+ ✓ apps/server/tests/statistics.test.ts (10 tests) 7ms
+ ✓ apps/server/tests/policy.test.ts (2 tests) 91ms
+ ✓ apps/server/tests/images.test.ts (7 tests) 51ms
+ ✓ packages/domain/tests/money.test.ts (8 tests) 3ms
+ ✓ scripts/tests/setup-env.test.mjs (4 tests) 396ms
+ ✓ apps/server/tests/idempotency.test.ts (14 tests) 5ms
+ ✓ apps/server/tests/mobile-config.test.ts (5 tests) 382ms
+ ✓ apps/server/tests/expenses.test.ts (3 tests) 8ms
+ ✓ apps/server/tests/profile.test.ts (4 tests) 122ms
+ ✓ apps/server/tests/proxy.test.ts (2 tests) 97ms
+ ✓ apps/server/tests/app.test.ts (4 tests) 186ms
+ ✓ scripts/tests/deploy.test.mjs (2 tests) 1240ms
+   ✓ gates service updates on migration success (failure=false) 879ms
+   ✓ gates service updates on migration success (failure=true) 360ms
+
+ Test Files  23 passed (23)
+      Tests  167 passed (167)
+   Start at  04:55:10
+   Duration  1.43s (tests 35%, import 34%, transform 30%, worker 1%)
+
+exit=0
