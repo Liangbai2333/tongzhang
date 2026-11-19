@@ -41,6 +41,8 @@ export function registerOperation<K extends Operation>(
         413: errorResponseSchema,
         429: errorResponseSchema,
         501: errorResponseSchema,
+        502: errorResponseSchema,
+        503: errorResponseSchema,
       },
     },
     // Verify before processing potentially large request bodies.
