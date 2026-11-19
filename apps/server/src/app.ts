@@ -10,14 +10,23 @@ import {
   serializerCompiler,
   jsonSchemaTransform,
 } from 'fastify-type-provider-zod';
-import { databaseConfig, type Env } from './config/env.js';
+import { aiDraftConfig, databaseConfig, type Env } from './config/env.js';
 import { createDatabase, type Database } from './db/client.js';
 import { databasePlugin } from './db/plugin.js';
 import { errorsPlugin } from './http/errors.js';
 import { systemRoutes } from './http/system.js';
+import { createAiDraftProvider, type AiDraftProvider } from './modules/expenses/index.js';
 import { registerBusinessModules } from './modules/index.js';
 
-export async function buildApp(env: Env, database: Database = createDatabase(databaseConfig(env))) {
+export interface BuildAppOptions {
+  aiDraftProvider?: AiDraftProvider;
+}
+
+export async function buildApp(
+  env: Env,
+  database: Database = createDatabase(databaseConfig(env)),
+  options: BuildAppOptions = {},
+) {
   const app = Fastify({
     trustProxy: env.TRUST_PROXY || false,
     genReqId: () => randomUUID(),
@@ -43,6 +52,8 @@ export async function buildApp(env: Env, database: Database = createDatabase(dat
   });
   await app.register(rateLimit, { global: false });
   await app.register(systemRoutes);
-  registerBusinessModules(app, env.AUTH_JWT_SECRET);
+  registerBusinessModules(app, env.AUTH_JWT_SECRET, {
+    aiDraftProvider: options.aiDraftProvider ?? createAiDraftProvider(aiDraftConfig(env)),
+  });
   return app;
 }

@@ -5,10 +5,11 @@ import { withTransaction, type Orm } from '../../db/transaction.js';
 import { executeIdempotent } from '../../db/idempotency.js';
 import { appendAudit } from '../../db/audit.js';
 import { AppError } from '../../http/errors.js';
-import { notReady } from '../../http/not-ready.js';
 import { requireActive, requireExpenseEditor, requireLedgerMember } from '../ledgers/index.js';
-import { receiptBinder } from '../images/index.js';
+import { readDraftReceiptImage, receiptBinder } from '../images/index.js';
 import type { ReceiptBinder } from './receipt.js';
+import { createUnconfiguredAiDraftProvider, type AiDraftProvider } from './ai-draft-provider.js';
+import { normalizeAiDraftOutput } from './ai-draft-normalizer.js';
 import { queryExpenses } from './queries.js';
 import { toExpenseDetailDto, type PersistedSplit } from './mapper.js';
 import {
@@ -91,6 +92,7 @@ export function computeExpenseAllocation(
 export function createExpensesService(
   db: Orm,
   receipts: ReceiptBinder = receiptBinder,
+  aiDraftProvider: AiDraftProvider = createUnconfiguredAiDraftProvider(),
 ): ExpensesService {
   const createExpense: Handler<'createExpense'> = async (input, context) => {
     const userId = context.principal.userId;
@@ -350,12 +352,60 @@ export function createExpensesService(
     return result.body;
   };
 
+  const parseExpenseDraft: Handler<'parseExpenseDraft'> = async (input, context) => {
+    const userId = context.principal.userId;
+    const { ledgerId } = input.params;
+    const body = input.body;
+
+    // Read-only transaction guarantees zero writes to expenses, splits, ledgers, or images.
+    const snapshot = await db.transaction(
+      async (tx) => {
+        const access = await requireLedgerMember(tx, ledgerId, userId);
+        requireActive(access);
+        const names = await readMemberNames(tx, ledgerId);
+        const receiptImage = body.receiptImageId
+          ? await readDraftReceiptImage(tx, { imageId: body.receiptImageId, userId })
+          : undefined;
+        return { access, names, receiptImage };
+      },
+      { isolationLevel: 'repeatable read', accessMode: 'read only' },
+    );
+
+    const members = [...snapshot.names.entries()].map(([memberId, username]) => ({
+      memberId,
+      username,
+    }));
+    let rawDraft: unknown;
+    try {
+      rawDraft = await aiDraftProvider.parse({
+        ...(body.text !== undefined ? { text: body.text } : {}),
+        ...(body.referenceDate !== undefined ? { referenceDate: body.referenceDate } : {}),
+        ...(snapshot.receiptImage !== undefined ? { receiptImage: snapshot.receiptImage } : {}),
+        members,
+        currentMemberId: snapshot.access.memberId,
+      });
+    } catch (error) {
+      if (error instanceof AppError) throw error;
+      throw new AppError(
+        'AI_DRAFT_UPSTREAM_ERROR',
+        'AI 解析服务暂时不可用，请稍后重试或手动填写',
+        502,
+      );
+    }
+    const draft = normalizeAiDraftOutput(rawDraft, {
+      names: snapshot.names,
+      receiptImageId: snapshot.receiptImage?.imageId ?? null,
+      ...(body.referenceDate !== undefined ? { referenceDate: body.referenceDate } : {}),
+    });
+    return { data: draft };
+  };
+
   return {
     createExpense,
     listExpenses,
     getExpense,
     updateExpense,
     deleteExpense,
-    parseExpenseDraft: notReady('parseExpenseDraft'),
+    parseExpenseDraft,
   };
 }
