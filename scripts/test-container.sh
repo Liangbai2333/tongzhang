@@ -37,7 +37,7 @@ for (const [path, status] of [['/health/live',200],['/health/ready',200],['/docs
 const pool = new pg.Pool();
 try {
   const tables = await pool.query("select count(*)::int as count from information_schema.tables where table_schema='public'");
-  assert.equal(tables.rows[0].count, 14);
+  assert.equal(tables.rows[0].count, 15);
   const json = (path, body, token) => fetch(`http://127.0.0.1:3300${path}`, {
     method: 'POST',
     headers: { ...(body ? {'Content-Type':'application/json'} : {}), ...(token ? {Authorization:`Bearer ${token}`} : {}) },
