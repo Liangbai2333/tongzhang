@@ -1,5 +1,5 @@
 import { afterEach, expect, it, vi } from 'vitest';
-import { databaseConfig, loadLocalEnv, readEnv } from '../src/config/env.js';
+import { aiDraftConfig, databaseConfig, loadLocalEnv, readEnv } from '../src/config/env.js';
 
 const source = {
   NODE_ENV: 'development',
@@ -60,4 +60,47 @@ it('requires a 256-bit hex signing secret without exposing its value', () => {
     expect(String(error)).not.toContain(privateValue);
     expect(String(error)).toContain('AUTH_JWT_SECRET');
   }
+});
+
+it('keeps AI draft config optional and validates URL/timeout without leaking secrets', () => {
+  expect(aiDraftConfig(readEnv(source))).toBeNull();
+  expect(
+    aiDraftConfig(
+      readEnv({
+        ...source,
+        AI_DRAFT_API_BASE_URL: 'https://api.example.test/v1',
+        AI_DRAFT_API_KEY: 'sk-only-partial',
+      }),
+    ),
+  ).toBeNull();
+
+  const configured = aiDraftConfig(
+    readEnv({
+      ...source,
+      AI_DRAFT_API_BASE_URL: 'https://api.example.test/v1',
+      AI_DRAFT_API_KEY: 'sk-test-secret',
+      AI_DRAFT_MODEL: 'gpt-4o-mini',
+      AI_DRAFT_TIMEOUT_MS: '8000',
+    }),
+  );
+  expect(configured).toEqual({
+    apiBaseUrl: 'https://api.example.test/v1',
+    apiKey: 'sk-test-secret',
+    model: 'gpt-4o-mini',
+    timeoutMs: 8000,
+  });
+
+  const secretKey = 'sk-never-leak-this';
+  try {
+    readEnv({
+      ...source,
+      AI_DRAFT_API_BASE_URL: 'ftp://invalid.example.test',
+      AI_DRAFT_API_KEY: secretKey,
+    });
+    throw new Error('Expected validation failure');
+  } catch (error) {
+    expect(String(error)).toContain('AI_DRAFT_API_BASE_URL');
+    expect(String(error)).not.toContain(secretKey);
+  }
+  expect(() => readEnv({ ...source, AI_DRAFT_TIMEOUT_MS: '100' })).toThrow('AI_DRAFT_TIMEOUT_MS');
 });

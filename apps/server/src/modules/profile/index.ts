@@ -1,3 +1,8 @@
 export { registerProfileRoutes } from './routes.js';
-export { createProfileService, type ProfileService } from './service.js';
-export { toUserSelf } from './mapper.js';
+export {
+  createProfileService,
+  deliverSettlementReminderNotification,
+  type DeliverSettlementReminderInput,
+  type ProfileService,
+} from './service.js';
+export { toNotificationItem, toNotificationReadResult, toUserSelf } from './mapper.js';
