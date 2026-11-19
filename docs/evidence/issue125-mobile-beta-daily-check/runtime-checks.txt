@@ -1,0 +1,50 @@
+=== Issue #125 Beta Day 3 Daily Check Runtime Evidence ===
+Date: 2026-11-18 (Beta Sprint Day 3)
+Git HEAD (new build commit): 9cbe6bacdce8ee130d3103b6ed2246b6b4456831
+
+=== Host APK SHA-256 ===
+ca9c42ca2bf7ee572080be153264e4e07824c37b4573e8c06853544a7112f8b5  /Users/liangbai/Homework/tongzhang-125-daily-check/apps/mobile/android/app/build/outputs/apk/debug/app-debug.apk
+
+=== Device base.apk SHA-256 ===
+ca9c42ca2bf7ee572080be153264e4e07824c37b4573e8c06853544a7112f8b5  /data/app/~~4nXAbQKAt-uGyt8-4HAIxQ==/com.tongzhang.app-32scVDBaiRsni-b9CtIfbw==/base.apk
+
+=== Android Emulator Info ===
+Device: emulator-5554 (Medium_Phone_API_37.0, -no-snapshot-load -no-snapshot-save -gpu swiftshader_indirect)
+Android Release: 17 (API 37)
+ABI: arm64-v8a
+Display: Physical size: 1080x2400
+adb reverse --list:
+host-15 tcp:3375 tcp:3375
+host-15 tcp:8075 tcp:8075
+
+
+=== AndroidManifest.xml Camera / Audio Permissions ===
+2:  <uses-permission android:name="android.permission.CAMERA"/>
+5:  <uses-permission android:name="android.permission.RECORD_AUDIO" tools:node="remove"/>
+
+=== PostgreSQL 17 (beta125) Final Snapshot ===
+ username  |      email       | notification_enabled 
+-----------+------------------+----------------------
+ 小安      | an@beta125.test  | t
+ XiaoBai25 | bai@beta125.test | f
+(2 rows)
+
+                  id                  |      name      |  status  | version 
+--------------------------------------+----------------+----------+---------
+ 8e265a45-1020-42d9-89e0-097a8ef11085 | 鼓山周末行     | SETTLING |      12
+ 6d2c9603-8f1c-4c23-b3b2-2a52ace316e9 | 空账本统计核对 | ACTIVE   |       2
+(2 rows)
+
+                  id                  |            title             | amount_cents | category  | version | soft_deleted 
+--------------------------------------+------------------------------+--------------+-----------+---------+--------------
+ edb963d9-09b4-4d11-887a-bfe62672f09f | 鼓山半山茶室（已由小安修订） |        16000 | DINING    |       4 | f
+ 51ff09f6-c27f-4979-9e6b-629f9ef8d1e7 | 涌泉寺门票                   |         8000 | TICKET    |       1 | t
+ 400a573e-45b9-4c13-b19e-b1697b33d4fd | 山脚民宿                     |        18000 | LODGING   |       1 | f
+ 5b8cea5d-86b9-41ac-adb2-15183f99c899 | 下山缆车票                   |         6000 | TRANSPORT |       1 | t
+(4 rows)
+
+ source_version | algorithm_version | expense_total_cents | transfer_total_cents | transfer_count 
+----------------+-------------------+---------------------+----------------------+----------------
+             11 | zero-sum-dp-v1    |               34000 |                 1000 |              1
+(1 row)
+
