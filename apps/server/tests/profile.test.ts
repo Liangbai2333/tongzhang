@@ -1,16 +1,28 @@
 import { randomUUID } from 'node:crypto';
 import { afterEach, describe, expect, it } from 'vitest';
-import { errorResponseSchema, inviteCodeSchema, userSelfSchema } from '@tongzhang/contracts';
+import {
+  errorResponseSchema,
+  inviteCodeSchema,
+  notificationReadResultSchema,
+  notificationSchema,
+  userSelfSchema,
+} from '@tongzhang/contracts';
 import { buildApp } from '../src/app.js';
 import { readEnv } from '../src/config/env.js';
 import type { Orm } from '../src/db/transaction.js';
+import { encodeCursor } from '../src/http/cursor.js';
 import {
   generateInviteCode,
   INVITATION_TTL_MS,
   INVITE_QR_PREFIX,
   toInvitationDto,
 } from '../src/modules/invitations/issue.js';
-import { createProfileService, toUserSelf } from '../src/modules/profile/index.js';
+import {
+  createProfileService,
+  toNotificationItem,
+  toNotificationReadResult,
+  toUserSelf,
+} from '../src/modules/profile/index.js';
 
 const env = readEnv({
   NODE_ENV: 'test',
@@ -29,7 +41,7 @@ afterEach(async () => {
 });
 
 describe('profile and invitation QR contract guards without PostgreSQL', () => {
-  it('rejects unauthenticated access to A04, A28 and A29 with 401 UNAUTHENTICATED', async () => {
+  it('rejects unauthenticated access to A04, A28, A29, A33 and A34 with 401 UNAUTHENTICATED', async () => {
     const app = await buildApp(env);
     apps.push(app);
     const requests = [
@@ -40,6 +52,8 @@ describe('profile and invitation QR contract guards without PostgreSQL', () => {
         url: '/api/v1/me/preferences',
         payload: { notificationEnabled: false },
       },
+      { method: 'GET' as const, url: '/api/v1/me/notifications' },
+      { method: 'POST' as const, url: `/api/v1/me/notifications/${randomUUID()}/read` },
     ];
     for (const request of requests) {
       const response = await app.inject(request);
@@ -101,6 +115,64 @@ describe('profile and invitation QR contract guards without PostgreSQL', () => {
       const extracted = dto.qrPayload.slice(INVITE_QR_PREFIX.length);
       expect(inviteCodeSchema.parse(extracted)).toBe(code);
       expect(toInvitationDto({ id: randomUUID(), code, expiresAt }, expiresAt).expired).toBe(true);
+    }
+  });
+
+  it('maps NotificationItem and NotificationReadResult strictly without exposing recipientUserId', () => {
+    const createdAt = new Date('2026-11-18T10:00:00.000Z');
+    const readAt = new Date('2026-11-18T10:05:00.000Z');
+    const row = {
+      id: randomUUID(),
+      recipientUserId: randomUUID(),
+      actorUserId: randomUUID(),
+      type: 'SETTLEMENT_REMINDER',
+      ledgerId: randomUUID(),
+      transferId: randomUUID(),
+      amountCents: 6000n,
+      note: '方便时转一下鼓山门票钱',
+      readAt: null as Date | null,
+      createdAt,
+    };
+    const unreadDto = toNotificationItem({
+      notification: row,
+      ledgerName: '鼓山一日',
+      actorName: '小白',
+    });
+    expect(notificationSchema.parse(unreadDto)).toEqual(unreadDto);
+    expect(unreadDto).not.toHaveProperty('recipientUserId');
+    expect(unreadDto.amountCents).toBe('6000');
+    expect(unreadDto.readAt).toBeNull();
+
+    const readDto = toNotificationReadResult({ ...row, readAt });
+    expect(notificationReadResultSchema.parse(readDto)).toEqual({
+      notificationId: row.id,
+      readAt: readAt.toISOString(),
+    });
+  });
+
+  it('rejects malformed or impossible notification pagination cursors before hitting PostgreSQL', async () => {
+    const service = createProfileService({} as Orm);
+    const context = {
+      requestId: randomUUID(),
+      principal: { userId: randomUUID(), sessionId: randomUUID() },
+      idempotencyKey: undefined,
+    };
+    const invalidCursors = [
+      'not-base64url!',
+      encodeCursor(['2026-02-30T00:00:00.000000Z', randomUUID()]),
+      encodeCursor(['0000-01-01T00:00:00.000000Z', randomUUID()]),
+      encodeCursor(['2026-11-18T10:00:00.000000Z', 'not-a-uuid']),
+    ];
+    for (const cursor of invalidCursors) {
+      await expect(
+        service.listNotifications(
+          { params: {}, query: { limit: 20, unreadOnly: false, cursor }, body: undefined },
+          context,
+        ),
+      ).rejects.toMatchObject({
+        code: 'VALIDATION_ERROR',
+        statusCode: 400,
+      });
     }
   });
 });
