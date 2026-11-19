@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { inArray } from 'drizzle-orm';
 import { authResultSchema, type EndpointOutput } from '@tongzhang/contracts';
-import { buildApp } from '../../src/app.js';
+import { buildApp, type BuildAppOptions } from '../../src/app.js';
 import { createDatabase } from '../../src/db/client.js';
 import {
   authSessions,
@@ -13,6 +13,7 @@ import {
   invitations,
   ledgerMembers,
   ledgers,
+  notifications,
   operationLogs,
   settlementBatches,
   settlementTransfers,
@@ -25,12 +26,12 @@ export const testPassword = 'fixture-password-2026';
 export type TestAccount = EndpointOutput<'register'>['data'];
 
 /** Real HTTP accounts and explicitly owned ledger rows; no global table truncation. */
-export async function integrationFixture() {
+export async function integrationFixture(options?: BuildAppOptions) {
   const target = testDatabaseUrl();
   // Tag both pools so lock probes can distinguish this fixture from parallel suites.
   const config = { connectionString: target, application_name: `tongzhang-test-${randomUUID()}` };
   const db = createDatabase(config);
-  const app = await buildApp(testEnv, createDatabase(config));
+  const app = await buildApp(testEnv, createDatabase(config), options);
   const userIds: string[] = [];
   const ledgerIds: string[] = [];
   return {
@@ -88,6 +89,8 @@ export async function integrationFixture() {
         try {
           await db.orm.transaction(async (tx) => {
             if (userIds.length) {
+              await tx.delete(notifications).where(inArray(notifications.recipientUserId, userIds));
+              await tx.delete(notifications).where(inArray(notifications.actorUserId, userIds));
               await tx.delete(operationLogs).where(inArray(operationLogs.actorUserId, userIds));
               await tx.delete(idempotencyKeys).where(inArray(idempotencyKeys.userId, userIds));
             }
@@ -100,6 +103,7 @@ export async function integrationFixture() {
               : [];
             for (const row of owned) if (!ledgerIds.includes(row.id)) ledgerIds.push(row.id);
             if (ledgerIds.length) {
+              await tx.delete(notifications).where(inArray(notifications.ledgerId, ledgerIds));
               await tx.delete(operationLogs).where(inArray(operationLogs.ledgerId, ledgerIds));
               await tx
                 .delete(settlementTransfers)

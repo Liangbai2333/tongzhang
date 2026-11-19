@@ -388,6 +388,7 @@ export const settlementTransfers = pgTable(
   (t): PgTableExtraConfigValue[] => [
     primaryKey({ name: 'pk_settlement_transfers', columns: [t.id] }),
     unique('uq_settlement_transfers_batch_sequence').on(t.batchId, t.sequence),
+    unique('uq_settlement_transfers_ledger_id_id').on(t.ledgerId, t.id),
     check('ck_settlement_transfers_amount', sql`amount_cents > 0`),
     check('ck_settlement_transfers_sequence', sql`sequence BETWEEN 1 AND 11`),
     check('ck_settlement_transfers_parties', sql`payer_member_id <> payee_member_id`),
@@ -537,5 +538,62 @@ export const operationLogs = pgTable(
       .onUpdate('restrict'),
     index('ix_operation_logs_ledger_time').on(t.ledgerId, t.createdAt),
     index('ix_operation_logs_request').on(t.requestId),
+  ],
+);
+
+export const notifications = pgTable(
+  'notifications',
+  {
+    id: uuid('id').notNull().defaultRandom(),
+    recipientUserId: uuid('recipient_user_id').notNull(),
+    actorUserId: uuid('actor_user_id').notNull(),
+    type: varchar('type', { length: 32 }).notNull(),
+    ledgerId: uuid('ledger_id').notNull(),
+    transferId: uuid('transfer_id').notNull(),
+    amountCents: bigint('amount_cents', { mode: 'bigint' }).notNull(),
+    note: varchar('note', { length: 120 }),
+    readAt: timestamp('read_at', { withTimezone: true, mode: 'date' }),
+    createdAt: timestamp('created_at', { withTimezone: true, mode: 'date' }).notNull().defaultNow(),
+  },
+  (t): PgTableExtraConfigValue[] => [
+    primaryKey({ name: 'pk_notifications', columns: [t.id] }),
+    check('ck_notifications_type', sql`type IN ('SETTLEMENT_REMINDER')`),
+    check('ck_notifications_parties', sql`recipient_user_id <> actor_user_id`),
+    check('ck_notifications_amount', sql`amount_cents > 0`),
+    check('ck_notifications_note', sql`note IS NULL OR char_length(btrim(note)) BETWEEN 1 AND 120`),
+    check('ck_notifications_read_at', sql`read_at IS NULL OR read_at >= created_at`),
+    foreignKey({
+      name: 'fk_notifications_recipient_user_id',
+      columns: [t.recipientUserId],
+      foreignColumns: [users.id],
+    })
+      .onDelete('restrict')
+      .onUpdate('restrict'),
+    foreignKey({
+      name: 'fk_notifications_actor_user_id',
+      columns: [t.actorUserId],
+      foreignColumns: [users.id],
+    })
+      .onDelete('restrict')
+      .onUpdate('restrict'),
+    foreignKey({
+      name: 'fk_notifications_ledger_id',
+      columns: [t.ledgerId],
+      foreignColumns: [ledgers.id],
+    })
+      .onDelete('restrict')
+      .onUpdate('restrict'),
+    foreignKey({
+      name: 'fk_notifications_ledger_id_transfer_id',
+      columns: [t.ledgerId, t.transferId],
+      foreignColumns: [settlementTransfers.ledgerId, settlementTransfers.id],
+    })
+      .onDelete('restrict')
+      .onUpdate('restrict'),
+    index('ix_notifications_recipient_time').on(t.recipientUserId, t.createdAt.desc(), t.id.desc()),
+    index('ix_notifications_recipient_unread')
+      .on(t.recipientUserId, t.createdAt.desc(), t.id.desc())
+      .where(sql`read_at IS NULL`),
+    index('ix_notifications_transfer_time').on(t.ledgerId, t.transferId, t.createdAt.desc()),
   ],
 );
