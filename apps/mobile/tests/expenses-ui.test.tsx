@@ -617,4 +617,63 @@ describe('expense flow with isolated API callbacks, not native/database proof', 
     expect(screen.queryByRole('button', { name: '编辑消费' })).toBeNull();
     expect(screen.queryByRole('button', { name: '删除消费' })).toBeNull();
   });
+  it('blocks entering edit mode when ledger is frozen and recovers cleanly without writing', async () => {
+    const update = jest.mocked(expensesApi.updateExpense);
+    get.mockResolvedValueOnce({ data: { ...ledger, status: 'SETTLING' } });
+    await show(<ExpenseDetailScreen />);
+    await screen.findByText('食堂午餐');
+    await userEvent.press(screen.getByRole('button', { name: '编辑消费' }));
+    await screen.findByText('账本已冻结');
+    expect(screen.getByText('账本已进入结算或结清状态，无法继续编辑消费。')).toBeOnTheScreen();
+    expect(update).not.toHaveBeenCalled();
+
+    await userEvent.press(screen.getByRole('button', { name: '返回消费详情' }));
+    await screen.findByRole('header', { name: '消费详情' });
+  });
+  it('reuses the same idempotency key on explicit soft-delete retry after timeout and honors cancel', async () => {
+    const del = jest.mocked(expensesApi.deleteExpense);
+    del
+      .mockRejectedValueOnce(new ApiError('REQUEST_TIMEOUT', '请求超时'))
+      .mockResolvedValueOnce({ data: { deletedId: expenseId } });
+    await show(<ExpenseDetailScreen />);
+    await screen.findByText('食堂午餐');
+
+    // Cancel confirmation does not delete.
+    await userEvent.press(screen.getByRole('button', { name: '删除消费' }));
+    await screen.findByRole('header', { name: '确认删除消费？' });
+    await userEvent.press(screen.getByRole('button', { name: '取消' }));
+    await waitFor(() =>
+      expect(screen.queryByRole('header', { name: '确认删除消费？' })).toBeNull(),
+    );
+    expect(del).not.toHaveBeenCalled();
+
+    // Timeout enters uncertain state without auto-retrying; explicit retry reuses the same key.
+    await userEvent.press(screen.getByRole('button', { name: '删除消费' }));
+    await userEvent.press(screen.getByRole('button', { name: '确认删除' }));
+    await screen.findByText('网络中断，删除结果未确认。重试不会重复提交。');
+    expect(del).toHaveBeenCalledTimes(1);
+    expect(router.back).not.toHaveBeenCalled();
+
+    await userEvent.press(screen.getByRole('button', { name: '重试删除' }));
+    await waitFor(() => expect(router.back).toHaveBeenCalledTimes(1));
+    expect(del).toHaveBeenCalledTimes(2);
+    expect(del.mock.calls[1]).toEqual(del.mock.calls[0]);
+  });
+  it('handles 409 VERSION_CONFLICT on soft-delete without navigating away or auto-retrying', async () => {
+    const del = jest.mocked(expensesApi.deleteExpense);
+    del.mockRejectedValueOnce(new ApiError('VERSION_CONFLICT', '消费记录已更新', 409));
+    await show(<ExpenseDetailScreen />);
+    await screen.findByText('食堂午餐');
+    await userEvent.press(screen.getByRole('button', { name: '删除消费' }));
+    await userEvent.press(screen.getByRole('button', { name: '确认删除' }));
+    await screen.findByText('消费记录已在其他设备或会话中更新，请刷新最新内容后再操作。');
+    expect(del).toHaveBeenCalledTimes(1);
+    expect(router.back).not.toHaveBeenCalled();
+
+    await userEvent.press(screen.getByRole('button', { name: '刷新最新消费' }));
+    await waitFor(() =>
+      expect(screen.queryByRole('header', { name: '确认删除消费？' })).toBeNull(),
+    );
+    expect(detail).toHaveBeenCalledTimes(2);
+  });
 });

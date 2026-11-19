@@ -345,6 +345,33 @@ describe('real auth page interactions with isolated API callbacks', () => {
     await fireEvent(toggle, 'valueChange', false);
     await screen.findByText('网络连接失败');
     expect(profileApi.updatePreferences).toHaveBeenCalledTimes(2);
+    // Error must not sync an unconfirmed preference update.
+    expect(mockSyncUser).toHaveBeenCalledTimes(1);
+  });
+  it('rejects overly long usernames locally and preserves unsaved draft without syncing on API error', async () => {
+    jest
+      .mocked(profileApi.updateProfile)
+      .mockRejectedValueOnce(new ApiError('NETWORK_ERROR', '网络连接失败'));
+    await renderAccount();
+    await userEvent.press(screen.getByRole('button', { name: '账户信息' }));
+
+    await fireEvent.changeText(screen.getByLabelText('用户名'), '一'.repeat(31));
+    await userEvent.press(screen.getByRole('button', { name: '保存用户名' }));
+    expect(screen.getByText('用户名长度需为 2～30 个字符')).toBeOnTheScreen();
+    expect(profileApi.updateProfile).not.toHaveBeenCalled();
+
+    await fireEvent.changeText(screen.getByLabelText('用户名'), '失败保留名');
+    await userEvent.press(screen.getByRole('button', { name: '保存用户名' }));
+    await screen.findByText('网络连接失败');
+    expect(profileApi.updateProfile).toHaveBeenCalledTimes(1);
+    expect(mockSyncUser).not.toHaveBeenCalled();
+    expect(screen.getByLabelText('用户名')).toHaveDisplayValue('失败保留名');
+
+    // Closing and reopening account sheet resets the unsaved draft to the verified username.
+    await userEvent.press(screen.getByRole('button', { name: '关闭面板' }));
+    await waitFor(() => expect(screen.queryByRole('header', { name: '账户信息' })).toBeNull());
+    await userEvent.press(screen.getByRole('button', { name: '账户信息' }));
+    expect(screen.getByLabelText('用户名')).toHaveDisplayValue(mockAuth.user.username);
   });
   it('shows the verified user and requires logout confirmation', async () => {
     await renderAccount();
