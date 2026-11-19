@@ -1,0 +1,5 @@
+$ node scripts/check-env.mjs --tools-only
+[warn] Node: v24.22.2; repository 24.21.0
+[pass] pnpm: 12.6.0; repository 12.6.0
+[pass] Docker: 29.8.2
+[pass] Compose: 5.5.1
