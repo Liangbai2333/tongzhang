@@ -1,0 +1,40 @@
+$ pnpm build:shared && vitest run
+$ pnpm -r --filter "./packages/*" build
+$ tsc -p tsconfig.json
+$ tsc -p tsconfig.json
+
+ RUN  v5.0.4 <worktree>
+
+ ✓ apps/mobile/tests/auth-controller.test.ts (21 tests) 12ms
+ ✓ apps/server/tests/policy.test.ts (2 tests) 80ms
+ ✓ apps/mobile/tests/auth-session.test.ts (16 tests) 115ms
+ ✓ apps/server/tests/env.test.ts (7 tests) 8ms
+ ✓ packages/contracts/tests/business.test.ts (8 tests) 21ms
+ ✓ apps/server/tests/auth-tokens.test.ts (11 tests) 20ms
+ ✓ scripts/tests/environment.test.mjs (9 tests) 117ms
+ ✓ packages/contracts/tests/beta-negative.test.ts (21 tests) 37ms
+ ✓ apps/server/tests/images.test.ts (7 tests) 80ms
+ ✓ apps/server/tests/statistics.test.ts (10 tests) 7ms
+ ✓ packages/domain/tests/split.test.ts (2 tests) 3ms
+ ✓ packages/domain/tests/money.test.ts (8 tests) 3ms
+ ✓ apps/server/tests/balances.test.ts (3 tests) 10ms
+ ✓ scripts/tests/setup-env.test.mjs (4 tests) 397ms
+ ✓ scripts/tests/network-policy.test.mjs (3 tests) 2ms
+ ✓ apps/server/tests/mobile-config.test.ts (5 tests) 448ms
+ ✓ apps/server/tests/settlement.test.ts (5 tests) 9ms
+ ✓ apps/server/tests/ai-draft.test.ts (6 tests) 22ms
+ ✓ apps/server/tests/ai-draft-double.test.ts (3 tests) 47ms
+ ✓ apps/server/tests/expenses.test.ts (3 tests) 6ms
+ ✓ apps/server/tests/idempotency.test.ts (14 tests) 4ms
+ ✓ apps/server/tests/profile.test.ts (6 tests) 119ms
+ ✓ apps/server/tests/proxy.test.ts (2 tests) 123ms
+ ✓ apps/server/tests/app.test.ts (4 tests) 183ms
+ ✓ scripts/tests/deploy.test.mjs (2 tests) 2019ms
+   ✓ gates service updates on migration success (failure=false) 1646ms
+   ✓ gates service updates on migration success (failure=true) 373ms
+
+ Test Files  25 passed (25)
+      Tests  182 passed (182)
+   Start at  05:50:23
+   Duration  2.14s (import 41%, tests 36%, transform 22%, worker 1%)
+

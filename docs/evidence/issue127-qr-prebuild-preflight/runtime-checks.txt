@@ -1,0 +1,36 @@
+Build commit: 82c69aa84129d4efd223b14e223e9bc1d3053221
+Local APK SHA-256 (apps/mobile/android/app/build/outputs/apk/debug/app-debug.apk):
+282d9ce7d7102cb30bd49436249218ff099bada0ea1e1dfb8117923495cb8a5f
+Device base.apk SHA-256 (/data/app/~~5SHwqjZP6H78nJ0ssGwENA==/com.tongzhang.app-YM9KlYTBqGRRZ1ZyJ3swFg==/base.apk):
+282d9ce7d7102cb30bd49436249218ff099bada0ea1e1dfb8117923495cb8a5f
+Gradle result: BUILD SUCCESSFUL in 1m 25s (475 actionable tasks: 475 executed)
+
+AndroidManifest.xml permission check (post expo prebuild --platform android --no-install):
+  <uses-permission android:name="android.permission.CAMERA"/>
+  <uses-permission android:name="android.permission.RECORD_AUDIO" tools:node="remove"/>
+
+Device package permission check (post pm grant com.tongzhang.app android.permission.CAMERA):
+  android.permission.CAMERA: granted=true, flags=[ USER_SET|USER_FIXED|USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+  (android.permission.RECORD_AUDIO not requested)
+
+API HTTP log (isolated Fastify on 127.0.0.1:3374, PostgreSQL 17 beta127 on 127.0.0.1:35527):
+2026-11-19T13:15:58.659Z GET /health/ready 200
+2026-11-19T13:17:21.562Z POST /api/v1/auth/register 201
+2026-11-19T13:17:21.588Z POST /api/v1/auth/register 201
+2026-11-19T13:17:48.847Z POST /api/v1/auth/login 200
+2026-11-19T13:17:48.869Z POST /api/v1/ledgers 201
+2026-11-19T13:20:06.492Z POST /api/v1/auth/login 200
+2026-11-19T13:20:06.586Z GET /api/v1/me 200
+2026-11-19T13:20:06.828Z GET /api/v1/ledgers?limit=20&archived=false 200
+2026-11-19T13:21:02.854Z GET /api/v1/me 200
+2026-11-19T13:21:35.447Z GET /api/v1/me 200
+2026-11-19T13:21:50.735Z POST /api/v1/invitations/preview 200
+2026-11-19T13:22:01.151Z POST /api/v1/invitations/join 200
+2026-11-19T13:22:01.381Z GET /api/v1/ledgers/3aef5013-88c2-4969-9584-459e3769267e 200
+2026-11-19T13:22:15.760Z GET /api/v1/ledgers?limit=20&archived=false 200
+
+PostgreSQL snapshot (beta127, 15 public tables):
+ledgers: id=3aef5013-88c2-4969-9584-459e3769267e | name=扫码预检账本 | status=ACTIVE | version=2
+ledger_members: 2 rows (owner@beta127.test 小安, member@beta127.test 小白)
+invitations: code=L6GPPV | revoked_at=NULL | expires_at=2026-11-26 13:17:48.857+00
+operation_logs: LEDGER_CREATED=1 | MEMBER_JOINED=1
