@@ -790,13 +790,51 @@ it('keeps the unresolved archive attempt mounted while its ledger is refetched',
 });
 
 it('stays on manual join screen with prompt when camera permission is denied', async () => {
+  const { Linking } = jest.requireActual<typeof import('react-native')>('react-native');
+  const openSettingsSpy = jest.spyOn(Linking, 'openSettings').mockResolvedValue(undefined);
   mockCameraPermission = { granted: false, canAskAgain: false };
   mockRequestCameraPermission.mockResolvedValueOnce({ granted: false, canAskAgain: false });
   await show(<JoinLedgerScreen />);
   await userEvent.press(screen.getByRole('button', { name: '扫码加入' }));
   await screen.findByText('未获得相机权限，请直接在上方输入 6 位邀请码加入。');
-  expect(screen.getByRole('button', { name: '前往系统设置开启相机' })).toBeOnTheScreen();
+  const settingsBtn = screen.getByRole('button', { name: '前往系统设置开启相机' });
+  expect(settingsBtn).toBeOnTheScreen();
   expect(screen.queryByTestId('invite-qr-camera')).toBeNull();
+  expect(screen.getByLabelText('6 位邀请码')).toBeOnTheScreen();
+  await userEvent.press(settingsBtn);
+  expect(openSettingsSpy).toHaveBeenCalledTimes(1);
+  openSettingsSpy.mockRestore();
+});
+
+it('falls back to manual invite code preview and join after first-time camera denial (canAskAgain=true)', async () => {
+  mockCameraPermission = { granted: false, canAskAgain: true };
+  mockRequestCameraPermission.mockResolvedValueOnce({ granted: false, canAskAgain: true });
+  await show(<JoinLedgerScreen />);
+  await userEvent.press(screen.getByRole('button', { name: '扫码加入' }));
+  await screen.findByText('未获得相机权限，请直接在上方输入 6 位邀请码加入。');
+  expect(screen.queryByRole('button', { name: '前往系统设置开启相机' })).toBeNull();
+  expect(screen.queryByTestId('invite-qr-camera')).toBeNull();
+
+  // Manual code entry remains fully functional without leaving the page.
+  await fireEvent.changeText(screen.getByLabelText('6 位邀请码'), 'abc234');
+  await userEvent.press(screen.getByRole('button', { name: '查看账本' }));
+  await screen.findByText('确认加入这个账本？');
+  await userEvent.press(screen.getByRole('button', { name: '加入鼓山一日' }));
+  await waitFor(() =>
+    expect(router.replace).toHaveBeenCalledWith({
+      pathname: '/ledgers/[ledgerId]',
+      params: { ledgerId },
+    }),
+  );
+});
+
+it('closes QR scanner cleanly when switching back to manual code entry', async () => {
+  mockCameraPermission = { granted: true, canAskAgain: true };
+  await show(<JoinLedgerScreen />);
+  await userEvent.press(screen.getByRole('button', { name: '扫码加入' }));
+  await screen.findByTestId('invite-qr-camera');
+  await userEvent.press(screen.getByRole('button', { name: '改用手输邀请码' }));
+  await waitFor(() => expect(screen.queryByTestId('invite-qr-camera')).toBeNull());
   expect(screen.getByLabelText('6 位邀请码')).toBeOnTheScreen();
 });
 
