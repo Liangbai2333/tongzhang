@@ -13,6 +13,7 @@ import {
   invitations,
   ledgerMembers,
   ledgers,
+  notifications,
   operationLogs,
   settlementBatches,
   settlementTransfers,
@@ -88,6 +89,8 @@ export async function integrationFixture() {
         try {
           await db.orm.transaction(async (tx) => {
             if (userIds.length) {
+              await tx.delete(notifications).where(inArray(notifications.recipientUserId, userIds));
+              await tx.delete(notifications).where(inArray(notifications.actorUserId, userIds));
               await tx.delete(operationLogs).where(inArray(operationLogs.actorUserId, userIds));
               await tx.delete(idempotencyKeys).where(inArray(idempotencyKeys.userId, userIds));
             }
@@ -100,6 +103,7 @@ export async function integrationFixture() {
               : [];
             for (const row of owned) if (!ledgerIds.includes(row.id)) ledgerIds.push(row.id);
             if (ledgerIds.length) {
+              await tx.delete(notifications).where(inArray(notifications.ledgerId, ledgerIds));
               await tx.delete(operationLogs).where(inArray(operationLogs.ledgerId, ledgerIds));
               await tx
                 .delete(settlementTransfers)

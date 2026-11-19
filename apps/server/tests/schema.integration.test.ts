@@ -12,7 +12,7 @@ beforeAll(async () => {
   });
 });
 afterAll(async () => db.close());
-it('migrates all 14 tables and 112 columns and can migrate a second time', async () => {
+it('migrates all 15 tables and 122 columns and can migrate a second time', async () => {
   await migrate(db.orm, {
     migrationsFolder: fileURLToPath(new URL('../drizzle', import.meta.url)),
   });
@@ -22,8 +22,8 @@ it('migrates all 14 tables and 112 columns and can migrate a second time', async
   const columns = await db.pool.query(
     "select count(*)::int as count from information_schema.columns where table_schema='public'",
   );
-  expect(tables.rows[0].count).toBe(14);
-  expect(columns.rows[0].count).toBe(112);
+  expect(tables.rows[0].count).toBe(15);
+  expect(columns.rows[0].count).toBe(122);
 });
 it('enforces constraints and clears balances without changing expense totals', async () => {
   const client = await db.pool.connect();
