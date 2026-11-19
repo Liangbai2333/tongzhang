@@ -94,6 +94,14 @@ export default function BalancesScreen() {
                 {outstanding === 0n ? '已全部平衡' : yuan(outstanding.toString())}
               </Text>
             </View>
+            <Button
+              compact
+              title="查看支出统计"
+              variant="secondary"
+              onPress={() =>
+                router.push({ pathname: '/ledgers/[ledgerId]/statistics', params: { ledgerId } })
+              }
+            />
           </View>
           <Text style={ui.strong}>成员明细</Text>
           {members.map((member, i) => {

@@ -1,16 +1,21 @@
-import { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { useRef, useState } from 'react';
+import { StyleSheet, Switch, Text, View } from 'react-native';
 import { router } from 'expo-router';
+import { useQueryClient } from '@tanstack/react-query';
+import { updateProfileBodySchema } from '@tongzhang/contracts';
 import { Screen, ui } from '@/components/Screen';
 import { Button } from '@/components/Button';
+import { Field } from '@/components/Field';
 import { Sheet } from '@/components/Sheet';
 import { Touch } from '@/components/Touch';
+import { InlineError, requestErrorMessage } from '@/components/Feedback';
 import { useOnlineQuery } from '@/lib/use-online-query';
 import { FigmaAsset } from '@/icons/FigmaAsset';
 import { profileAssets } from '@/icons/profile-assets';
 import { useAuth } from '@/providers/AuthProvider';
 import { ledgersApi, ledgersKeys } from '@/features/ledgers';
 import { colors } from '@/theme/tokens';
+import { profileApi } from '../api';
 import { DocumentBody } from '../components/DocumentSheet';
 import { MenuGroup, SettingRow } from '../components/ProfileMenu';
 import { readingDocuments } from '../documents';
@@ -43,16 +48,93 @@ const panelTitles: Record<Exclude<ProfilePanel['kind'], 'closed' | 'document'>, 
 };
 
 export default function AccountScreen() {
-  const { user, operation, logout, restore } = useAuth();
+  const { user, operation, logout, restore, syncUser } = useAuth();
+  const client = useQueryClient();
   const [panel, setPanel] = useState<ProfilePanel>({ kind: 'closed' });
+  const [usernameDraft, setUsernameDraft] = useState('');
+  const [profileSaving, setProfileSaving] = useState(false);
+  const [profileError, setProfileError] = useState<string | null>(null);
+  const [profileSaved, setProfileSaved] = useState(false);
+  const [prefSaving, setPrefSaving] = useState(false);
+  const [prefError, setPrefError] = useState<string | null>(null);
+  const profileLocked = useRef(false);
+  const prefLocked = useRef(false);
   const current = useLedgerCount(user?.id, false);
   const history = useLedgerCount(user?.id, true);
-  const busy = operation !== null;
+  const busy = operation !== null || profileSaving || prefSaving;
   if (!user) return null;
   const initial = Array.from(user.username).at(-1);
   const close = () => {
-    if (!busy) setPanel({ kind: 'closed' });
+    if (!busy) {
+      setProfileError(null);
+      setProfileSaved(false);
+      setPrefError(null);
+      setPanel({ kind: 'closed' });
+    }
   };
+  const openAccount = () => {
+    setUsernameDraft(user.username);
+    setProfileError(null);
+    setProfileSaved(false);
+    setPanel({ kind: 'account' });
+  };
+  const openSettings = () => {
+    setPrefError(null);
+    setPanel({ kind: 'settings' });
+  };
+
+  async function saveUsername() {
+    if (!user || profileLocked.current || busy) return;
+    setProfileError(null);
+    setProfileSaved(false);
+    const trimmed = usernameDraft.trim();
+    const codePoints = Array.from(trimmed).length;
+    const parsed = updateProfileBodySchema.safeParse({ username: trimmed });
+    if (!parsed.success || codePoints < 2 || codePoints > 30 || trimmed.includes('\0')) {
+      setProfileError('用户名长度需为 2～30 个字符');
+      return;
+    }
+    profileLocked.current = true;
+    setProfileSaving(true);
+    try {
+      const result = await profileApi.updateProfile({
+        params: {},
+        query: {},
+        body: parsed.data,
+      });
+      syncUser?.(result.data);
+      setUsernameDraft(result.data.username);
+      setProfileSaved(true);
+      void client.invalidateQueries({ queryKey: ['user', user.id] });
+    } catch (cause) {
+      setProfileError(requestErrorMessage(cause));
+    } finally {
+      profileLocked.current = false;
+      setProfileSaving(false);
+    }
+  }
+
+  async function toggleNotification(next: boolean) {
+    if (!user || prefLocked.current || busy) return;
+    setPrefError(null);
+    prefLocked.current = true;
+    setPrefSaving(true);
+    try {
+      const result = await profileApi.updatePreferences({
+        params: {},
+        query: {},
+        body: { notificationEnabled: next },
+      });
+      syncUser?.({ notificationEnabled: result.data.notificationEnabled });
+      void client.invalidateQueries({ queryKey: ['user', user.id] });
+    } catch (cause) {
+      setPrefError(requestErrorMessage(cause));
+    } finally {
+      prefLocked.current = false;
+      setPrefSaving(false);
+    }
+  }
+
   const countText = (entry: typeof current, format: (count: string) => string) =>
     entry.count !== undefined ? format(entry.count) : entry.failed ? '暂时无法读取' : '正在读取';
   const title =
@@ -61,6 +143,7 @@ export default function AccountScreen() {
       : panel.kind === 'document'
         ? readingDocuments[panel.document].title
         : panelTitles[panel.kind];
+  const usernameChanged = usernameDraft.trim() !== user.username;
   return (
     <Screen
       title="我的"
@@ -141,13 +224,14 @@ export default function AccountScreen() {
             title: '账户信息',
             icon: profileAssets.user,
             value: user.username,
-            onPress: () => setPanel({ kind: 'account' }),
+            onPress: openAccount,
           },
           {
             key: 'settings',
             title: '设置',
             icon: profileAssets.settings,
-            onPress: () => setPanel({ kind: 'settings' }),
+            value: user.notificationEnabled ? '通知已开启' : '通知已关闭',
+            onPress: openSettings,
           },
           {
             key: 'about',
@@ -179,9 +263,33 @@ export default function AccountScreen() {
               </View>
               <Text style={ui.strong}>当前账号已在线核验</Text>
             </View>
-            <ReadonlyField label="用户名" value={user.username} />
+            <Field
+              label="用户名"
+              value={usernameDraft}
+              maxLength={30}
+              editable={!busy}
+              onChangeText={(value) => {
+                setUsernameDraft(value);
+                setProfileError(null);
+                setProfileSaved(false);
+              }}
+              placeholder="请输入 2～30 个字符的用户名"
+              error={profileError ?? undefined}
+            />
+            {profileSaved && (
+              <Text style={styles.savedHint}>用户名已更新，账本成员展示将同步刷新。</Text>
+            )}
+            <Button
+              compact
+              title="保存用户名"
+              loading={profileSaving}
+              disabled={busy || !usernameChanged}
+              onPress={() => {
+                void saveUsername();
+              }}
+            />
             <ReadonlyField label="邮箱" value={user.email} />
-            <Text style={ui.caption}>资料修改暂未开放。</Text>
+            <Text style={ui.caption}>邮箱暂不支持修改。</Text>
             <Button
               title="重新核验登录状态"
               variant="secondary"
@@ -196,7 +304,26 @@ export default function AccountScreen() {
         )}
         {panel.kind === 'settings' && (
           <View>
-            <SettingRow icon={profileAssets.bell} label="通知" value="暂未开放" />
+            <View style={styles.switchRow}>
+              <FigmaAsset asset={profileAssets.bell} />
+              <View style={ui.grow}>
+                <Text style={styles.switchLabel}>通知</Text>
+                <Text style={styles.caption}>
+                  {user.notificationEnabled ? '已开启站内提醒通知' : '已关闭站内提醒通知'}
+                </Text>
+              </View>
+              <Switch
+                accessibilityLabel="通知开关"
+                value={user.notificationEnabled}
+                disabled={busy}
+                trackColor={{ false: colors.border, true: colors.primary }}
+                thumbColor={colors.surface}
+                onValueChange={(next) => {
+                  void toggleNotification(next);
+                }}
+              />
+            </View>
+            <InlineError message={prefError} />
             <SettingRow icon={profileAssets.amount} label="记账货币" value="人民币 CNY" />
             <SettingRow
               icon={profileAssets.lock}
@@ -286,4 +413,13 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
     backgroundColor: colors.surface,
   },
+  savedHint: { fontSize: 13, lineHeight: 19, color: colors.success },
+  switchRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    minHeight: 52,
+    paddingVertical: 4,
+  },
+  switchLabel: { fontSize: 15, lineHeight: 22, color: colors.text },
 });

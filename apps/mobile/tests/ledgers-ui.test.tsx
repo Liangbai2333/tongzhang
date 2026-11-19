@@ -51,6 +51,20 @@ jest.mock('../src/features/images/receipt-files', () => ({
 }));
 jest.mock('../src/lib/api', () => ({ createIdempotencyKey: () => `key-${++mockKeyNumber}` }));
 jest.mock('expo-clipboard', () => ({ setStringAsync: jest.fn() }));
+const mockRequestCameraPermission =
+  jest.fn<() => Promise<{ granted: boolean; canAskAgain: boolean }>>();
+let mockCameraPermission: { granted: boolean; canAskAgain: boolean } | null = {
+  granted: false,
+  canAskAgain: true,
+};
+jest.mock('expo-camera', () => {
+  const React = jest.requireActual<typeof import('react')>('react');
+  const { View } = jest.requireActual<typeof import('react-native')>('react-native');
+  return {
+    useCameraPermissions: () => [mockCameraPermission, mockRequestCameraPermission],
+    CameraView: (props: Record<string, unknown>) => React.createElement(View, props),
+  };
+});
 jest.mock('react-native-qrcode-svg', () => () => null);
 jest.mock('expo-router', () => ({
   useIsFocused: () => true,
@@ -773,4 +787,53 @@ it('keeps the unresolved archive attempt mounted while its ledger is refetched',
   expect(archive.mock.calls[0]).toEqual(archive.mock.calls[1]);
   await view.unmount();
   client.clear();
+});
+
+it('stays on manual join screen with prompt when camera permission is denied', async () => {
+  mockCameraPermission = { granted: false, canAskAgain: false };
+  mockRequestCameraPermission.mockResolvedValueOnce({ granted: false, canAskAgain: false });
+  await show(<JoinLedgerScreen />);
+  await userEvent.press(screen.getByRole('button', { name: '扫码加入' }));
+  await screen.findByText('未获得相机权限，请直接在上方输入 6 位邀请码加入。');
+  expect(screen.getByRole('button', { name: '前往系统设置开启相机' })).toBeOnTheScreen();
+  expect(screen.queryByTestId('invite-qr-camera')).toBeNull();
+  expect(screen.getByLabelText('6 位邀请码')).toBeOnTheScreen();
+});
+
+it('scans valid invite QR into shared preview with 12-member check and rejects invalid QR payloads', async () => {
+  mockCameraPermission = { granted: true, canAskAgain: true };
+  const preview = jest.mocked(invitationsApi.previewJoin);
+  preview.mockResolvedValueOnce({
+    data: {
+      ledgerId,
+      name: '满员账本',
+      creatorName: '小安',
+      memberCount: 12,
+      alreadyMember: false,
+      canJoin: false,
+    },
+  });
+  await show(<JoinLedgerScreen />);
+  await userEvent.press(screen.getByRole('button', { name: '扫码加入' }));
+  const camera = await screen.findByTestId('invite-qr-camera');
+  await act(async () => {
+    camera.props.onBarcodeScanned({ type: 'qr', data: 'https://example.test/not-invite' });
+  });
+  await screen.findByText('不是有效的同账邀请二维码，请重新扫描或改用手输邀请码。');
+  expect(preview).not.toHaveBeenCalled();
+
+  await userEvent.press(screen.getByRole('button', { name: '重新扫描' }));
+  const rescanCamera = await screen.findByTestId('invite-qr-camera');
+  await act(async () => {
+    rescanCamera.props.onBarcodeScanned({ type: 'qr', data: 'tongzhang:invite:v1:K7M9P2' });
+  });
+  await screen.findByText('满员账本');
+  expect(preview).toHaveBeenCalledWith({
+    params: {},
+    query: {},
+    body: { code: 'K7M9P2' },
+  });
+  expect(screen.getByText('账本成员：12 / 12 人')).toBeOnTheScreen();
+  expect(screen.getByText('成员已满，暂时无法加入。')).toBeOnTheScreen();
+  expect(screen.getByRole('button', { name: '加入满员账本' })).toBeDisabled();
 });

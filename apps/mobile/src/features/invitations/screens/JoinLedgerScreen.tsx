@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
-import { Keyboard, StyleSheet, Text, View } from 'react-native';
+import { Keyboard, Linking, StyleSheet, Text, View } from 'react-native';
 import { router, Stack } from 'expo-router';
+import { useCameraPermissions } from 'expo-camera';
 import { inviteCodeSchema, type EndpointOutput } from '@tongzhang/contracts';
 import { useQueryClient } from '@tanstack/react-query';
 import { Screen, ui } from '@/components/Screen';
@@ -9,6 +10,7 @@ import { invitationAssets } from '@/icons/invitation-assets';
 import { colors } from '@/theme/tokens';
 import { InviteCodeField } from '../components/InviteCodeField';
 import { JoinInvitationHero } from '../components/JoinInvitationHero';
+import { QrScannerSheet } from '../components/QrScannerSheet';
 import { Button } from '@/components/Button';
 import { Sheet } from '@/components/Sheet';
 import { InlineError, requestErrorMessage } from '@/components/Feedback';
@@ -16,32 +18,44 @@ import { useAuth } from '@/providers/AuthProvider';
 import { useIdempotentWrite } from '@/lib/use-idempotent-write';
 import { ledgersKeys } from '@/features/ledgers/query-keys';
 import { invitationsApi } from '../api';
+import { parseInvitationPayload } from '../qr';
 
 type Preview = EndpointOutput<'previewJoin'>['data'] & { code: string };
 
 export default function JoinLedgerScreen() {
   const { user } = useAuth();
   const client = useQueryClient();
+  const [permission, requestPermission] = useCameraPermissions();
   const [code, setCode] = useState('');
   const [preview, setPreview] = useState<Preview | null>(null);
   const [checking, setChecking] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [scanning, setScanning] = useState(false);
+  const [scanError, setScanError] = useState<string | null>(null);
+  const [cameraNotice, setCameraNotice] = useState<string | null>(null);
+  const [cameraSettingsHint, setCameraSettingsHint] = useState(false);
   const checkingRef = useRef(false);
   const write = useIdempotentWrite();
   const busy = checking || write.busy;
-  async function check() {
+
+  async function check(overrideCode?: string) {
     if (checkingRef.current || busy) return;
     setError(null);
-    if (!inviteCodeSchema.safeParse(code).success) {
+    const target = (overrideCode ?? code).trim().toUpperCase();
+    if (!inviteCodeSchema.safeParse(target).success) {
       setError('请输入 6 位邀请码（不含 0、1、I、O）');
       return;
     }
     checkingRef.current = true;
     setChecking(true);
     try {
-      const result = await invitationsApi.previewJoin({ params: {}, query: {}, body: { code } });
+      const result = await invitationsApi.previewJoin({
+        params: {},
+        query: {},
+        body: { code: target },
+      });
       Keyboard.dismiss();
-      setPreview({ ...result.data, code });
+      setPreview({ ...result.data, code: target });
     } catch (cause) {
       setError(requestErrorMessage(cause));
     } finally {
@@ -49,11 +63,41 @@ export default function JoinLedgerScreen() {
       setChecking(false);
     }
   }
+
+  async function openScanner() {
+    if (busy || write.uncertain) return;
+    Keyboard.dismiss();
+    setCameraNotice(null);
+    setCameraSettingsHint(false);
+    setScanError(null);
+    const current = permission?.granted ? permission : await requestPermission();
+    if (!current.granted) {
+      setCameraNotice('未获得相机权限，请直接在上方输入 6 位邀请码加入。');
+      setCameraSettingsHint(!current.canAskAgain);
+      return;
+    }
+    setScanning(true);
+  }
+
+  function handleScanned(rawPayload: string) {
+    try {
+      const parsedCode = parseInvitationPayload(rawPayload.trim());
+      setScanError(null);
+      setScanning(false);
+      setCameraNotice(null);
+      setCode(parsedCode);
+      void check(parsedCode);
+    } catch {
+      setScanError('不是有效的同账邀请二维码，请重新扫描或改用手输邀请码。');
+    }
+  }
+
   function dismissPreview() {
     if (write.busy || write.uncertain) return;
     write.reset();
     setPreview(null);
   }
+
   async function join() {
     if (!preview || busy) return;
     if (preview.alreadyMember) {
@@ -72,6 +116,7 @@ export default function JoinLedgerScreen() {
       });
     }
   }
+
   return (
     <>
       <Stack.Screen options={{ gestureEnabled: !busy }} />
@@ -101,15 +146,48 @@ export default function JoinLedgerScreen() {
           }}
           error={error}
         />
+        <Button
+          title="扫码加入"
+          variant="secondary"
+          disabled={busy || write.uncertain}
+          onPress={() => {
+            void openScanner();
+          }}
+        />
+        {cameraNotice && (
+          <View style={styles.cameraDenied}>
+            <InlineError message={cameraNotice} />
+            {cameraSettingsHint && (
+              <Button
+                compact
+                title="前往系统设置开启相机"
+                variant="quiet"
+                onPress={() => {
+                  void Linking.openSettings();
+                }}
+              />
+            )}
+          </View>
+        )}
         <View style={styles.notice}>
           <FigmaAsset asset={invitationAssets.joinInfo} />
           <View style={ui.grow}>
             <Text style={styles.noticeTitle}>如何获取邀请码？</Text>
             <Text style={styles.noticeText}>
-              请账本创建者在账本中点「邀请成员」，把邀请码发给你。
+              请账本创建者在账本中点「邀请成员」，扫描邀请二维码或输入 6 位邀请码即可加入。
             </Text>
           </View>
         </View>
+        <QrScannerSheet
+          visible={scanning}
+          error={scanError}
+          onScanned={handleScanned}
+          onRetryScan={() => setScanError(null)}
+          onClose={() => {
+            setScanning(false);
+            setScanError(null);
+          }}
+        />
         <Sheet
           visible={preview !== null}
           title="确认加入这个账本？"
@@ -171,6 +249,14 @@ export default function JoinLedgerScreen() {
 
 const styles = StyleSheet.create({
   content: { paddingTop: 8, gap: 16 },
+  cameraDenied: {
+    borderRadius: 16,
+    padding: 12,
+    gap: 8,
+    backgroundColor: colors.surface,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
   notice: {
     flexDirection: 'row',
     alignItems: 'flex-start',

@@ -1,6 +1,39 @@
-import { allocateExpense, parseYuan, MAX_EXPENSE_CENTS } from '@tongzhang/domain';
+import { allocateExpense, formatYuan, parseYuan, MAX_EXPENSE_CENTS } from '@tongzhang/domain';
 import type { Category, CreateExpenseInput, EndpointOutput } from '@tongzhang/contracts';
+import { ApiError } from '@/lib/api-error';
 export type Ledger = EndpointOutput<'getLedger'>['data'];
+export type ExpenseDetail = EndpointOutput<'getExpense'>['data'];
+export type ExpenseWriteConflict = {
+  kind: 'version' | 'frozen';
+  message: string;
+  actionLabel: string;
+};
+export function expenseWriteConflict(error: unknown): ExpenseWriteConflict | null {
+  if (!(error instanceof ApiError)) return null;
+  if (error.code === 'VERSION_CONFLICT')
+    return {
+      kind: 'version',
+      message: '消费记录已在其他设备或会话中更新，请刷新最新内容后再操作。',
+      actionLabel: '刷新最新消费',
+    };
+  if (error.code === 'LEDGER_FROZEN')
+    return {
+      kind: 'frozen',
+      message: '账本已进入结算或结清状态，消费已冻结，无法继续编辑或删除。',
+      actionLabel: '刷新账本状态',
+    };
+  return null;
+}
+export function splitSettingsFromExpense(expense: ExpenseDetail): SplitSettings {
+  const memberIds = expense.splits.map((s) => s.memberId);
+  const values: Record<string, string> = {};
+  if (expense.splitMode === 'SHARES') {
+    for (const s of expense.splits) values[s.memberId] = String(s.shares ?? 1);
+  } else if (expense.splitMode === 'AMOUNT') {
+    for (const s of expense.splits) values[s.memberId] = formatYuan(BigInt(s.amountCents));
+  }
+  return { mode: expense.splitMode, memberIds, values };
+}
 export const categories: { value: Category; label: string }[] = [
   { value: 'DINING', label: '餐饮' },
   { value: 'TRANSPORT', label: '交通' },

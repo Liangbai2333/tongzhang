@@ -209,6 +209,16 @@ function LedgerPage({ ledgerId }: { ledgerId: string }) {
               compact
               labelStyle={{ fontSize: 14 }}
               style={ui.grow}
+              title="支出统计"
+              variant="secondary"
+              onPress={() =>
+                router.push({ pathname: '/ledgers/[ledgerId]/statistics', params: { ledgerId } })
+              }
+            />
+            <Button
+              compact
+              labelStyle={{ fontSize: 14 }}
+              style={ui.grow}
               title={ledger.status === 'ACTIVE' ? '结算' : '结算记录'}
               variant="secondary"
               icon={<FigmaAsset asset={expenseAssets.settle} />}

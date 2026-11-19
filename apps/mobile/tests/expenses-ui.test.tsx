@@ -28,7 +28,13 @@ let mockKeyNumber = 0;
 jest.mock('../src/providers/AuthProvider', () => ({ useAuth: () => ({ user: { id: userId } }) }));
 jest.mock('../src/features/ledgers/api', () => ({ ledgersApi: { getLedger: jest.fn() } }));
 jest.mock('../src/features/expenses/api', () => ({
-  expensesApi: { createExpense: jest.fn(), listExpenses: jest.fn(), getExpense: jest.fn() },
+  expensesApi: {
+    createExpense: jest.fn(),
+    listExpenses: jest.fn(),
+    getExpense: jest.fn(),
+    updateExpense: jest.fn(),
+    deleteExpense: jest.fn(),
+  },
 }));
 jest.mock('../src/features/images/api', () => ({
   imagesApi: { upload: jest.fn(), read: jest.fn() },
@@ -535,5 +541,80 @@ describe('expense flow with isolated API callbacks, not native/database proof', 
         values: { [userId]: '2', [otherId]: '1' },
       }).map((s) => s.amountCents),
     ).toEqual([6667n, 3333n]);
+  });
+  it('edits an active expense with version & idempotency key and handles 409 VERSION_CONFLICT without auto-retry', async () => {
+    const update = jest.mocked(expensesApi.updateExpense);
+    update
+      .mockRejectedValueOnce(new ApiError('VERSION_CONFLICT', '消费记录已更新', 409))
+      .mockResolvedValueOnce({
+        data: { ...expense, title: '晚餐聚餐', amountCents: '15000', version: 2 },
+      });
+    await show(<ExpenseDetailScreen />);
+    await screen.findByText('食堂午餐');
+    await userEvent.press(screen.getByRole('button', { name: '编辑消费' }));
+    await screen.findByRole('header', { name: '编辑消费' });
+
+    await fireEvent.changeText(screen.getByLabelText('消费名称'), '晚餐聚餐');
+    await fireEvent.changeText(screen.getByLabelText('消费金额'), '150.00');
+    await userEvent.press(screen.getByRole('button', { name: '保存修改' }));
+    await screen.findByText('消费记录已在其他设备或会话中更新，请刷新最新内容后再操作。');
+    expect(update).toHaveBeenCalledTimes(1);
+    expect(update.mock.calls[0]?.[0].body).toMatchObject({
+      title: '晚餐聚餐',
+      amountCents: '15000',
+      version: 1,
+    });
+    expect(update.mock.calls[0]?.[1]).toEqual({ idempotencyKey: 'expense-key-1' });
+
+    // Explicit refresh exits edit mode and reloads latest expense.
+    await userEvent.press(screen.getByRole('button', { name: '刷新最新消费' }));
+    await screen.findByRole('header', { name: '消费详情' });
+    expect(detail).toHaveBeenCalledTimes(2);
+
+    // Re-enter edit and succeed.
+    const updated = { ...expense, title: '晚餐聚餐', amountCents: '15000', version: 2 };
+    detail.mockResolvedValue({ data: updated });
+    await userEvent.press(screen.getByRole('button', { name: '编辑消费' }));
+    await screen.findByRole('header', { name: '编辑消费' });
+    await fireEvent.changeText(screen.getByLabelText('消费名称'), '晚餐聚餐');
+    await fireEvent.changeText(screen.getByLabelText('消费金额'), '150.00');
+    await userEvent.press(screen.getByRole('button', { name: '保存修改' }));
+    await screen.findByText('晚餐聚餐');
+    expect(update).toHaveBeenCalledTimes(2);
+  });
+  it('handles 409 LEDGER_FROZEN and soft-deletes an editable expense with confirmation', async () => {
+    const del = jest.mocked(expensesApi.deleteExpense);
+    del
+      .mockRejectedValueOnce(new ApiError('LEDGER_FROZEN', '账本已冻结', 409))
+      .mockResolvedValueOnce({ data: { deletedId: expenseId } });
+    await show(<ExpenseDetailScreen />);
+    await screen.findByText('食堂午餐');
+    await userEvent.press(screen.getByRole('button', { name: '删除消费' }));
+    await screen.findByRole('header', { name: '确认删除消费？' });
+    await userEvent.press(screen.getByRole('button', { name: '确认删除' }));
+    await screen.findByText('账本已进入结算或结清状态，消费已冻结，无法继续编辑或删除。');
+    expect(del).toHaveBeenCalledTimes(1);
+    expect(del.mock.calls[0]?.[0]).toEqual({
+      params: { ledgerId, expenseId },
+      query: { version: 1 },
+      body: undefined,
+    });
+
+    await userEvent.press(screen.getByRole('button', { name: '刷新账本状态' }));
+    await waitFor(() =>
+      expect(screen.queryByRole('header', { name: '确认删除消费？' })).toBeNull(),
+    );
+
+    // Confirm delete succeeds and navigates back.
+    await userEvent.press(screen.getByRole('button', { name: '删除消费' }));
+    await userEvent.press(screen.getByRole('button', { name: '确认删除' }));
+    await waitFor(() => expect(router.back).toHaveBeenCalledTimes(1));
+  });
+  it('hides edit and delete actions when canEdit is false', async () => {
+    detail.mockResolvedValueOnce({ data: { ...expense, canEdit: false } });
+    await show(<ExpenseDetailScreen />);
+    await screen.findByText('食堂午餐');
+    expect(screen.queryByRole('button', { name: '编辑消费' })).toBeNull();
+    expect(screen.queryByRole('button', { name: '删除消费' })).toBeNull();
   });
 });

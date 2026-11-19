@@ -17,7 +17,10 @@ import { sessionAdmission } from '@/lib/session-admission';
 
 type Controller = ReturnType<typeof createAuthController>;
 type Value = ReturnType<Controller['getSnapshot']> &
-  Pick<Controller, 'login' | 'register' | 'logout' | 'restore' | 'dismissNotice' | 'clearLocal'>;
+  Pick<
+    Controller,
+    'login' | 'register' | 'logout' | 'restore' | 'dismissNotice' | 'clearLocal' | 'syncUser'
+  >;
 const AuthContext = createContext<Value | null>(null);
 export function AuthProvider({ children }: PropsWithChildren) {
   const client = useQueryClient();
@@ -83,6 +86,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
         restore: controller.restore,
         dismissNotice: controller.dismissNotice,
         clearLocal: controller.clearLocal,
+        syncUser: controller.syncUser,
       }}
     >
       {children}

@@ -114,6 +114,11 @@ export function createAuthController(api: Dependencies) {
     dismissNotice() {
       update({ notice: null });
     },
+    syncUser(patch: Partial<UserSelf>) {
+      if (state.status !== 'authenticated' || !state.user) return;
+      if (patch.id && patch.id !== state.user.id) return;
+      update({ user: { ...state.user, ...patch } });
+    },
     login: (input: EndpointInput<'login'>) => signIn('login', input),
     register: (input: EndpointInput<'register'>) => signIn('register', input),
     restore(): Promise<void> {

@@ -7,16 +7,19 @@ import AccountScreen from '../src/features/profile/screens/AccountScreen';
 import { ApiError } from '../src/lib/api-error';
 import { createQueryClient } from '../src/lib/query-client';
 import { ledgersApi } from '../src/features/ledgers/api';
+import { profileApi } from '../src/features/profile/api';
 
 const mockLogin = jest.fn<() => Promise<void>>();
 const mockRegister = jest.fn<() => Promise<void>>();
 const mockLogout = jest.fn<() => Promise<void>>();
+const mockSyncUser = jest.fn();
 const mockAuth = {
   login: mockLogin,
   register: mockRegister,
   logout: mockLogout,
   clearLocal: jest.fn<() => Promise<void>>(),
   restore: jest.fn(),
+  syncUser: mockSyncUser,
   operation: null,
   notice: null,
   dismissNotice: jest.fn(),
@@ -29,6 +32,9 @@ const mockAuth = {
 };
 jest.mock('../src/providers/AuthProvider', () => ({ useAuth: () => mockAuth }));
 jest.mock('../src/features/ledgers/api', () => ({ ledgersApi: { listLedgers: jest.fn() } }));
+jest.mock('../src/features/profile/api', () => ({
+  profileApi: { updateProfile: jest.fn(), updatePreferences: jest.fn() },
+}));
 jest.mock('expo-router', () => ({
   useIsFocused: () => true,
   router: { canGoBack: () => false, replace: jest.fn(), push: jest.fn(), navigate: jest.fn() },
@@ -286,13 +292,59 @@ describe('real auth page interactions with isolated API callbacks', () => {
     );
     await waitFor(() => expect(spinner()).toBe(false));
   });
-  it('shows account details read-only and keeps explicit reverification', async () => {
-    await renderAccount();
+  it('edits username (2-30 chars), invalidates caches, keeps email read-only and explicit reverification', async () => {
+    const client = createQueryClient();
+    const invalidateSpy = jest.spyOn(client, 'invalidateQueries');
+    jest.mocked(profileApi.updateProfile).mockResolvedValueOnce({
+      data: { ...mockAuth.user, username: '新昵称' },
+    });
+    await render(
+      <QueryClientProvider client={client}>
+        <AccountScreen />
+      </QueryClientProvider>,
+    );
     await userEvent.press(screen.getByRole('button', { name: '账户信息' }));
-    expect(screen.getByText('资料修改暂未开放。')).toBeOnTheScreen();
-    expect(screen.getAllByText('测试用户').length).toBeGreaterThan(1);
+    expect(screen.getByText('邮箱暂不支持修改。')).toBeOnTheScreen();
+    await fireEvent.changeText(screen.getByLabelText('用户名'), '一');
+    await userEvent.press(screen.getByRole('button', { name: '保存用户名' }));
+    expect(screen.getByText('用户名长度需为 2～30 个字符')).toBeOnTheScreen();
+    expect(profileApi.updateProfile).not.toHaveBeenCalled();
+
+    await fireEvent.changeText(screen.getByLabelText('用户名'), '  新昵称  ');
+    await userEvent.press(screen.getByRole('button', { name: '保存用户名' }));
+    await screen.findByText('用户名已更新，账本成员展示将同步刷新。');
+    expect(profileApi.updateProfile).toHaveBeenCalledWith({
+      params: {},
+      query: {},
+      body: { username: '新昵称' },
+    });
+    expect(mockSyncUser).toHaveBeenCalledWith({ ...mockAuth.user, username: '新昵称' });
+    expect(invalidateSpy).toHaveBeenCalledWith({ queryKey: ['user', mockAuth.user.id] });
+
     await userEvent.press(screen.getByRole('button', { name: '重新核验登录状态' }));
     expect(mockAuth.restore).toHaveBeenCalledTimes(1);
+  });
+  it('saves notification preference toggle and shows error without auto-retrying on failure', async () => {
+    jest
+      .mocked(profileApi.updatePreferences)
+      .mockResolvedValueOnce({ data: { notificationEnabled: true } })
+      .mockRejectedValueOnce(new ApiError('NETWORK_ERROR', '网络连接失败'));
+    await renderAccount();
+    await userEvent.press(screen.getByRole('button', { name: '设置' }));
+    const toggle = screen.getByLabelText('通知开关');
+    await fireEvent(toggle, 'valueChange', true);
+    await waitFor(() =>
+      expect(profileApi.updatePreferences).toHaveBeenCalledWith({
+        params: {},
+        query: {},
+        body: { notificationEnabled: true },
+      }),
+    );
+    expect(mockSyncUser).toHaveBeenCalledWith({ notificationEnabled: true });
+
+    await fireEvent(toggle, 'valueChange', false);
+    await screen.findByText('网络连接失败');
+    expect(profileApi.updatePreferences).toHaveBeenCalledTimes(2);
   });
   it('shows the verified user and requires logout confirmation', async () => {
     await renderAccount();
