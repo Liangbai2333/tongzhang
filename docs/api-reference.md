@@ -16,7 +16,7 @@ Day7 固定交付候选 `df4d773` 的30项登记方法、路径、成功码、�
 
 ## 全量路径、请求与实际权限
 
-状态码列为**成功**码；未实现项只表示契约期望，实际为 501。无「键」的接口不要求业务幂等键。
+状态码列为**成功**码；当前 A01–A34 服务端均已接通。无「键」的接口不要求业务幂等键。
 
 | ID / 操作                | 方法与路径                                           | 请求 → 成功 data                                                                   | 实际权限 / 状态 / App 范围                                                                                                                                                                                                                       | 键   |
 | ------------------------ | ---------------------------------------------------- | ---------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---- |
@@ -48,14 +48,14 @@ Day7 固定交付候选 `df4d773` 的30项登记方法、路径、成功码、�
 | A26 settleLedger         | POST `L/settle`                                      | 无 body → `{ledgerId,status:"SETTLED",settledAt}`，200                             | 创建者、全部 PAID 且每人剩余净额 0；已结清可重复确认                                                                                                                                                                                             | 必需 |
 | A27 archiveLedger        | POST `L/archive`                                     | 无 body → `{ledgerId,archivedAt}`，200                                             | SETTLED 当前成员；只归档自己，重复保留原时间                                                                                                                                                                                                     | 必需 |
 | A28 updateProfile        | PATCH `/api/v1/me`                                   | `{username}` → UserSelf，200                                                       | 当前账号；持久化并写审计，邮箱保持只读；App 我的页用户名修改                                                                                                                                                                                     | —    |
-| A29 updatePreferences    | PATCH `/api/v1/me/preferences`                       | `{notificationEnabled:boolean}` → `{notificationEnabled}`，200                     | 当前账号；按绝对值持久化并写审计；App 设置页通知开关（提醒事件待开放）                                                                                                                                                                           | —    |
+| A29 updatePreferences    | PATCH `/api/v1/me/preferences`                       | `{notificationEnabled:boolean}` → `{notificationEnabled}`，200                     | 当前账号；按绝对值持久化并写审计，控制 A32 站内催还入库静默；App 设置页通知开关（App 站内提醒列表待接入）                                                                                                                                        | —    |
 | A30 refresh              | POST `/api/v1/auth/refresh`                          | `{refreshToken}` → TokenPair，200                                                  | 不需 Bearer；刷新令牌轮换，App 会话管理                                                                                                                                                                                                          | —    |
 | A31 parseExpenseDraft    | POST `L/expenses/ai-draft`                           | `{text?,receiptImageId?,referenceDate?}` → ExpenseDraft，200                       | ACTIVE 成员；若传 `receiptImageId` 须为本人未绑定 RECEIPT；仅返回经二次校验的草稿，不写库、不改账本 version；未配置密钥返 503，上游异常返 502（App 入口待接入）                                                                                  | —    |
 | A32 remindTransfer       | POST `L/settlement/transfers/:transferId/remind`     | `{note?}` → TransferReminderResult，200                                            | SETTLING 且转账 PENDING，仅该笔收款人或非付款人创建者可触发（付款人本人/无关成员 403）；同转账 6 小时冷却期拒绝（429 `REMINDER_COOLDOWN`）；遵守付款人 A29 通知偏好且响应与冷却不泄露该设置；不改动消费/转账金额与账本 version（App 入口待接入） | 必需 |
 | A33 listNotifications    | GET `/api/v1/me/notifications`                       | query `unreadOnly,limit,cursor` → NotificationItem[] + page，200                   | 当前账号；仅返回本人站内提醒，支持 `unreadOnly` 筛选与 `(createdAt,id)` 倒序分页，实时关联 `ledgerName` 与 `actorName`（App 提醒列表待接入）                                                                                                     | —    |
 | A34 markNotificationRead | POST `/api/v1/me/notifications/:notificationId/read` | 无 body → `{notificationId,readAt}`，200                                           | 当前账号且为提醒接收人本人（非本人 403 `FORBIDDEN`，不存在 404 `NOT_FOUND`）；重复标记保留首次 `readAt` 并写操作审计（App 待接入）                                                                                                               | —    |
 
-认证/参数/幂等校验先于未实现 handler，因此不合法请求可先返回 400/401，而非所有未开放接口请求都直接 501。
+认证/参数/幂等校验先于业务 handler 执行，因此不合法请求会先返回 400/401；各接口移动端入口是否已开放以上表「实际权限 / 状态 / App 范围」列为准。
 
 ## 输入字段核对
 
