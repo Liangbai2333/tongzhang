@@ -1,5 +1,4 @@
 import type { Handler } from '../../http/context.js';
-import { notReady } from '../../http/not-ready.js';
 import type { Orm } from '../../db/transaction.js';
 import { computeBalances, readLedgerSnapshot, toBalanceDto } from '../balances/index.js';
 
@@ -7,6 +6,7 @@ import { requireActive } from '../ledgers/index.js';
 import { SETTLEMENT_ALGORITHM, solveSettlement } from './solver.js';
 import { createStartSettlement } from './start.js';
 import { createGetSettlement, createMarkTransferPaid, createSettleLedger } from './progress.js';
+import { createRemindTransfer, type RemindTransferOptions } from './remind.js';
 
 export interface SettlementsService {
   previewSettlement: Handler<'previewSettlement'>;
@@ -17,7 +17,10 @@ export interface SettlementsService {
   settleLedger: Handler<'settleLedger'>;
 }
 
-export function createSettlementsService(db: Orm): SettlementsService {
+export function createSettlementsService(
+  db: Orm,
+  options?: { reminder?: RemindTransferOptions },
+): SettlementsService {
   return {
     /**
      * Read-only preview. It never writes batches/transfers, never bumps the version and never freezes.
@@ -55,7 +58,7 @@ export function createSettlementsService(db: Orm): SettlementsService {
     startSettlement: createStartSettlement(db),
     getSettlement: createGetSettlement(db),
     markTransferPaid: createMarkTransferPaid(db),
-    remindTransfer: notReady('remindTransfer'),
+    remindTransfer: createRemindTransfer(db, options?.reminder),
     settleLedger: createSettleLedger(db),
   };
 }
