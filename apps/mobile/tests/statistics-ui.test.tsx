@@ -181,4 +181,63 @@ describe('StatisticsScreen', () => {
     await show();
     await screen.findByText('账本消费天数超过上限，当前仅展示最近 2 天的按日趋势。');
   });
+
+  it('shows explicit error state on statistics failure and recovers on manual retry', async () => {
+    jest
+      .mocked(balancesApi.getStatistics)
+      .mockRejectedValueOnce(new Error('网络连接失败'))
+      .mockResolvedValueOnce({ data: gushanStatistics });
+    await show();
+    await screen.findByText('暂时无法读取支出统计');
+    expect(screen.queryByTestId('category-donut-svg')).toBeNull();
+
+    await userEvent.press(screen.getByRole('button', { name: '重试' }));
+    await screen.findByTestId('category-donut-svg');
+    expect(screen.getByTestId('daily-trend-svg')).toBeOnTheScreen();
+    expect(balancesApi.getStatistics).toHaveBeenCalledTimes(2);
+  });
+
+  it('renders single-category and settled read-only statistics with zero-paid member without NaN', async () => {
+    jest.mocked(ledgersApi.getLedger).mockResolvedValueOnce({
+      data: { ...ledger, status: 'SETTLED' },
+    });
+    jest.mocked(balancesApi.getStatistics).mockResolvedValueOnce({
+      data: {
+        expenseTotalCents: '10001',
+        expenseCount: 1,
+        categories: [
+          { category: 'DINING', amountCents: '10001', expenseCount: 1, percentage: '100.0' },
+        ],
+        dailyTrend: [{ date: '2026-11-18', amountCents: '10001', expenseCount: 1 }],
+        dailyTrendTruncated: false,
+        topExpenses: [
+          {
+            id: e1,
+            title: '聚餐',
+            amountCents: '10001',
+            category: 'DINING',
+            occurredOn: '2026-11-18',
+            payerMemberId: m1,
+            payerName: '小安',
+          },
+        ],
+        members: [
+          {
+            memberId: m1,
+            username: '小安',
+            paidCents: '10001',
+            sharedCents: '10001',
+            netCents: '0',
+          },
+          { memberId: m2, username: '小白', paidCents: '0', sharedCents: '0', netCents: '0' },
+        ],
+      },
+    });
+    await show();
+    await screen.findByTestId('category-donut-svg');
+    expect(screen.getByTestId('daily-trend-svg')).toBeOnTheScreen();
+    expect(screen.getByTestId(`member-bar-svg-${m2}`)).toBeOnTheScreen();
+    expect(screen.getByText('已结清')).toBeOnTheScreen();
+    expect(screen.getByText('鼓山一日 · 1 笔有效消费')).toBeOnTheScreen();
+  });
 });
