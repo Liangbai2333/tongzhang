@@ -1,7 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import { inArray } from 'drizzle-orm';
 import { authResultSchema, type EndpointOutput } from '@tongzhang/contracts';
-import { buildApp } from '../../src/app.js';
+import { buildApp, type BuildAppOptions } from '../../src/app.js';
 import { createDatabase } from '../../src/db/client.js';
 import {
   authSessions,
@@ -26,12 +26,12 @@ export const testPassword = 'fixture-password-2026';
 export type TestAccount = EndpointOutput<'register'>['data'];
 
 /** Real HTTP accounts and explicitly owned ledger rows; no global table truncation. */
-export async function integrationFixture() {
+export async function integrationFixture(options?: BuildAppOptions) {
   const target = testDatabaseUrl();
   // Tag both pools so lock probes can distinguish this fixture from parallel suites.
   const config = { connectionString: target, application_name: `tongzhang-test-${randomUUID()}` };
   const db = createDatabase(config);
-  const app = await buildApp(testEnv, createDatabase(config));
+  const app = await buildApp(testEnv, createDatabase(config), options);
   const userIds: string[] = [];
   const ledgerIds: string[] = [];
   return {

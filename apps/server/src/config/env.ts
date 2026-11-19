@@ -1,6 +1,20 @@
 import { z } from 'zod';
 import { fileURLToPath } from 'node:url';
 
+const httpUrlOrEmptySchema = z
+  .string()
+  .trim()
+  .default('')
+  .refine((value) => {
+    if (value === '') return true;
+    try {
+      const parsed = new URL(value);
+      return parsed.protocol === 'http:' || parsed.protocol === 'https:';
+    } catch {
+      return false;
+    }
+  });
+
 const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
   HOST: z.string().default('0.0.0.0'),
@@ -13,9 +27,19 @@ const envSchema = z.object({
   PGDATABASE: z.string().min(1),
   TRUST_PROXY: z.union([z.ipv4(), z.ipv6(), z.cidrv4(), z.cidrv6(), z.literal('')]).default(''),
   LOG_LEVEL: z.enum(['silent', 'fatal', 'error', 'warn', 'info', 'debug', 'trace']).default('info'),
+  AI_DRAFT_API_BASE_URL: httpUrlOrEmptySchema,
+  AI_DRAFT_API_KEY: z.string().trim().default(''),
+  AI_DRAFT_MODEL: z.string().trim().default(''),
+  AI_DRAFT_TIMEOUT_MS: z.coerce.number().int().min(1000).max(60000).default(15000),
 });
 
 export type Env = z.infer<typeof envSchema>;
+export interface AiDraftProviderConfig {
+  apiBaseUrl: string;
+  apiKey: string;
+  model: string;
+  timeoutMs: number;
+}
 export function readEnv(source: NodeJS.ProcessEnv = process.env): Env {
   const result = envSchema.safeParse(source);
   if (!result.success) {
@@ -34,6 +58,16 @@ export function databaseConfig(env: Env) {
     user: env.PGUSER,
     password: env.PGPASSWORD,
     database: env.PGDATABASE,
+  };
+}
+
+export function aiDraftConfig(env: Env): AiDraftProviderConfig | null {
+  if (!env.AI_DRAFT_API_BASE_URL || !env.AI_DRAFT_API_KEY || !env.AI_DRAFT_MODEL) return null;
+  return {
+    apiBaseUrl: env.AI_DRAFT_API_BASE_URL,
+    apiKey: env.AI_DRAFT_API_KEY,
+    model: env.AI_DRAFT_MODEL,
+    timeoutMs: env.AI_DRAFT_TIMEOUT_MS,
   };
 }
 
