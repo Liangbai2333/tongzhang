@@ -1,0 +1,19 @@
+      table_name      | row_count 
+----------------------+-----------
+ auth_refresh_tokens  |         0
+ auth_sessions        |         0
+ expense_images       |         0
+ expense_splits       |         0
+ expenses             |         0
+ idempotency_keys     |         0
+ image_assets         |         0
+ invitations          |         0
+ ledger_members       |         0
+ ledgers              |         0
+ notifications        |         0
+ operation_logs       |         0
+ settlement_batches   |         0
+ settlement_transfers |         0
+ users                |         0
+(15 rows)
+

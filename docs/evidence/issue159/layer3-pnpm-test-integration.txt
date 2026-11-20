@@ -1,0 +1,113 @@
+$ pnpm build:shared && vitest run --config vitest.integration.config.ts
+$ pnpm -r --filter "./packages/*" build
+$ tsc -p tsconfig.json
+$ tsc -p tsconfig.json
+
+ RUN  v5.0.4 <worktree>
+
+ ✓ apps/server/tests/b15-gushan-closure.integration.test.ts (2 tests) 1229ms
+   ✓ B15 closure: A16/A17 idempotency, soft-delete A21 conservation & Gushan 30000-cent benchmark (2)
+     ✓ replays A16/A17 idempotently (including after freeze) and rejects body/target conflicts with 409 IDEMPOTENCY_CONFLICT 655ms
+     ✓ runs the full 4-member 30000-cent Gushan benchmark from A16/A17 through A21 stats, 2-transfer 9000-cent settlement, settle and archive 573ms
+ ✓ apps/server/tests/ai-draft.integration.test.ts (4 tests) 1315ms
+   ✓ A31 AI expense draft (POST /api/v1/ledgers/:ledgerId/expenses/ai-draft) (4)
+     ✓ enforces auth, membership, ACTIVE status, and receipt ownership before invoking provider 616ms
+ ✓ apps/server/tests/auth.integration.test.ts (10 tests) 1358ms
+   ✓ real PostgreSQL dual-token authentication (10)
+     ✓ rejects unknown accounts and ambiguous usernames with independent contract expectations 425ms
+ ✓ apps/server/tests/ai-draft-notifications-fixture.integration.test.ts (4 tests) 1610ms
+   ✓ A31 AI draft Test Double and notifications isolated-DB fixture regressions (4)
+     ✓ parses text/receipt/dirty/502 via deterministic AI double with zero DB side effects until explicit A13 confirmation 387ms
+     ✓ exercises A32/A33/A34/A29 via notifications fixture with silent preference opt-out, cross-user isolation, and zero residual rows after close 515ms
+     ✓ intercepts cross-user receipt, cover image, bound receipt, non-member, and frozen ledger before invoking AI double and returns 503 cleanly 300ms
+     ✓ enforces transfer-level 6h cooldown across payee/creator, idempotent replay in cooldown, A29 opt-out/re-enable, and zero financial mutation 407ms
+ ✓ apps/server/tests/profile.integration.test.ts (8 tests) 1745ms
+   ✓ profile A28/A29 persistence, audit and QR invitation compatibility (issue 86) (5)
+     ✓ updates 2..30 character usernames with audit logs, keeps email read-only, and propagates across ledgers 533ms
+     ✓ verifies QR-scanned 6-char codes against A11/A12 7-day TTL, reset revocation and 12-member row lock 361ms
+ ✓ apps/server/tests/expense-profile-regression.integration.test.ts (4 tests) 1976ms
+   ✓ B15 Day 2 isolated-DB regressions for A16/A17 and A28/A29 (issue 109) (4)
+     ✓ rejects sequential stale versions and syncs A14 filters, keyset cursor and all read views 757ms
+     ✓ enforces 409 LEDGER_FROZEN on A16/A17 across real SETTLING and SETTLED states while A28/A29 propagate cleanly 799ms
+     ✓ serializes A23 startSettlement against concurrent A16 updateExpense on the ledger row lock 316ms
+ ✓ apps/server/tests/idempotency.integration.test.ts (11 tests) 2108ms
+   ✓ real PostgreSQL idempotency through an isolated HTTP adapter (11)
+     ✓ replays the exact success body without duplicating the ledger change or audit 365ms
+ ✓ apps/server/tests/images.integration.test.ts (10 tests) 2126ms
+   ✓ real image HTTP and database lifecycle (10)
+     ✓ uploads real jpeg bytes to bytea and restricts unbound reads to uploader 339ms
+ ✓ apps/server/tests/full-lifecycle.integration.test.ts (1 test) 901ms
+   ✓ preserves the 12000/6000 lifecycle through cover, receipt, settlement and personal history over TCP HTTP 900ms
+ ✓ apps/server/tests/statistics.integration.test.ts (9 tests) 2612ms
+   ✓ A21 getStatistics (4)
+     ✓ aggregates the 鼓山一日 30000-cent ledger and conserves totals against A20 574ms
+     ✓ excludes soft-deleted expenses and other ledgers 404ms
+   ✓ A21 after A16 edits and A17 soft deletes (issue 107) (5)
+     ✓ keeps every breakdown in sync after editing amount, category, date and split, then soft-deleting 368ms
+     ✓ conserves an indivisible edited amount down to the last cent 321ms
+ ✓ apps/server/tests/b17-gates-and-capacity.integration.test.ts (2 tests) 775ms
+   ✓ B17 isolated-DB regressions: 12th-seat row-lock race & 401 backend gates (2)
+     ✓ allows exactly 1 of 3 concurrent joiners to take the 12th seat and leaves loser idempotency keys unconsumed 500ms
+ ✓ apps/server/tests/ledgers.integration.test.ts (12 tests) 2682ms
+   ✓ createLedger / list / detail / members (7)
+     ✓ makes the creator a member, issues an invitation and reads the same data everywhere 353ms
+   ✓ invitations: preview, join and reset (5)
+     ✓ never exceeds 12 members, including concurrent joins for the last seats 321ms
+ ✓ apps/server/tests/schema.integration.test.ts (3 tests) 344ms
+ ✓ apps/server/tests/ledger-invitation-regression.integration.test.ts (11 tests) 2701ms
+   ✓ independent ledger and invitation HTTP/PostgreSQL regressions (issue 18) (11)
+     ✓ keeps preview read-only and returns complete, consistent contracts to both accounts 511ms
+     ✓ allows exactly one of two blocked joiners to take the twelfth seat 373ms
+     ✓ cleans API-created accounts and ledgers while preserving another fixture in the same test database 318ms
+ ✓ apps/server/tests/database.integration.test.ts (1 test) 101ms
+ ✓ apps/server/tests/notifications.integration.test.ts (6 tests) 2804ms
+   ✓ notifications table constraints, A33/A34 endpoints and A29 preference alignment (issue 122) (4)
+     ✓ enforces check constraints and composite (ledger_id, transfer_id) foreign key in PostgreSQL 675ms
+     ✓ isolates A33 notifications per user, filters unreadOnly, paginates ties and reflects A28 actor renames 445ms
+     ✓ restricts A34 markNotificationRead to recipient, preserves first readAt, rejects cross-user/body/unauth 340ms
+   ✓ A32 -> notifications -> A33/A34 end-to-end linkage (issue 138) (2)
+     ✓ links A32 reminders to A33 pagination/unreadOnly/A28 rename and A34 recipient-only idempotent read 708ms
+     ✓ silently skips A32 notification delivery when A29 notification_enabled=false and resumes after re-enabling 335ms
+ ✓ apps/server/tests/cover-cleanup.integration.test.ts (14 tests) 2862ms
+   ✓ Issue #29 cover transaction and real two-account acceptance (4)
+     ✓ uploads, creates, joins and reads a cover, then saves/replays/queries 12000 cents with 6000 each 620ms
+ ✓ apps/server/tests/settlement-reminder.integration.test.ts (7 tests) 2869ms
+   ✓ A32 remindTransfer integration (7)
+     ✓ enforces auth, idempotency header, membership, role, and self-reminder boundaries 585ms
+     ✓ delivers reminder, enforces cooldown & idempotency, and leaves financial state untouched 428ms
+     ✓ rejects ACTIVE ledgers, PAID transfers, and SETTLED ledgers while preserving idempotent replay 411ms
+     ✓ rejects cross-ledger transfer IDs and invalid payloads without side effects 446ms
+     ✓ serializes concurrent reminders on the same transfer and isolates idempotency scopes 425ms
+     ✓ links A29 silence, cooldown parity, A33/A34 read flow, and Gushan conservation 314ms
+ ✓ apps/server/tests/access.integration.test.ts (2 tests) 342ms
+ ✓ apps/server/tests/archive.integration.test.ts (4 tests) 989ms
+   ✓ personal archive and history (4)
+     ✓ paginates only the caller's archived memberships without mixing current or other-member history 547ms
+ ✓ apps/server/tests/expense-concurrency.integration.test.ts (3 tests) 906ms
+   ✓ B15 concurrent A16/A17 on isolated PostgreSQL (3)
+     ✓ resolves a concurrent edit and delete of one expense to exactly one winner 499ms
+ ✓ apps/server/tests/balances.integration.test.ts (7 tests) 1437ms
+   ✓ balances and read-only settlement preview (7)
+     ✓ returns integer-string balances summing to zero and a single 6000 transfer 355ms
+ ✓ apps/server/tests/settlements.integration.test.ts (13 tests) 3517ms
+   ✓ formal settlement on real PostgreSQL (13)
+     ✓ keeps preview read-only, persists the server plan and freezes subsequent expense writes 557ms
+     ✓ saves the four-member acceptance ledger as one batch with two ordered transfer snapshots 431ms
+     ✓ serializes concurrent duplicate requests including uppercase UUIDs into one batch and exact replay 337ms
+ ✓ apps/server/tests/settlement-progress.integration.test.ts (17 tests) 4208ms
+   ✓ settlement progress, registration and closing on real PostgreSQL (17)
+     ✓ reads the saved snapshot, registers both payments, and closes without changing expense totals 773ms
+     ✓ keeps the formal settlement readable after personal archive in the real closing flow 391ms
+     ✓ returns explicit missing errors and rejects anonymous, nonmembers, cross-ledger transfers and invalid writes 327ms
+     ✓ allows only the payer or creator and never treats payee or other members as registrars 344ms
+     ✓ preserves the first registrar when payer and creator race on a pending transfer: payer-first 391ms
+ ✓ apps/server/tests/expenses.integration.test.ts (32 tests) 5464ms
+   ✓ createExpense (15)
+     ✓ splits 12000 cents into 6000 + 6000 and commits everything together 406ms
+     ✓ persists and replays exact AMOUNT splits when the payer is outside the split 306ms
+
+ Test Files  25 passed (25)
+      Tests  197 passed (197)
+   Start at  06:45:20
+   Duration  6.71s (tests 72%, import 23%, transform 5%)
+

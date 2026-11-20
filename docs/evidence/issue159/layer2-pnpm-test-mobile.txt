@@ -1,0 +1,121 @@
+$ pnpm build:shared && pnpm --filter @tongzhang/mobile test
+$ pnpm -r --filter "./packages/*" build
+$ tsc -p tsconfig.json
+$ tsc -p tsconfig.json
+$ jest --maxWorkers=4
+PASS iOS tests/b17-401-gates.test.tsx
+PASS iOS tests/b13-panels-ui.test.tsx
+PASS Android tests/settlements-ui.test.tsx (7.377 s)
+PASS Android tests/ai-draft-reminder-prep.test.tsx
+PASS Android tests/auth-provider.test.tsx
+PASS Android tests/auth-ui.test.tsx (8.371 s)
+PASS Android tests/statistics-ui.test.tsx
+PASS Android tests/feedback.test.tsx
+PASS Android tests/receipt-files.test.tsx
+PASS Android tests/auth-navigation.test.tsx
+PASS Android tests/images-api.test.tsx
+PASS Android tests/auth-api.test.tsx
+PASS Android tests/session-token.test.tsx
+PASS Android tests/write-recovery.test.tsx
+PASS Android tests/expenses-ui.test.tsx (13.253 s)
+PASS Android tests/ledgers-ui.test.tsx (15.155 s)
+  ● Console
+
+    console.error
+      An update to LedgerListScreen inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      at ../../node_modules/.pnpm/react-reconciler@0.33.0_react@19.2.3/node_modules/react-reconciler/cjs/react-reconciler.development.js:16307:19
+      at runWithFiberInDEV (../../node_modules/.pnpm/react-reconciler@0.33.0_react@19.2.3/node_modules/react-reconciler/cjs/react-reconciler.development.js:2508:13)
+      at warnIfUpdatesNotWrappedWithActDEV (../../node_modules/.pnpm/react-reconciler@0.33.0_react@19.2.3/node_modules/react-reconciler/cjs/react-reconciler.development.js:16306:9)
+      at scheduleUpdateOnFiber (../../node_modules/.pnpm/react-reconciler@0.33.0_react@19.2.3/node_modules/react-reconciler/cjs/react-reconciler.development.js:14070:11)
+      at forceStoreRerender (../../node_modules/.pnpm/react-reconciler@0.33.0_react@19.2.3/node_modules/react-reconciler/cjs/react-reconciler.development.js:5935:24)
+      at ../../node_modules/.pnpm/react-reconciler@0.33.0_react@19.2.3/node_modules/react-reconciler/cjs/react-reconciler.development.js:5920:11
+      at ../../node_modules/.pnpm/@tanstack+query-core@5.104.2/node_modules/@tanstack/query-core/src/notifyManager.ts:92:11
+      at notifyFn (../../node_modules/.pnpm/@tanstack+query-core@5.104.2/node_modules/@tanstack/query-core/src/notifyManager.ts:30:5)
+      at ../../node_modules/.pnpm/@tanstack+query-core@5.104.2/node_modules/@tanstack/query-core/src/notifyManager.ts:53:13
+          at Array.forEach (<anonymous>)
+      at ../../node_modules/.pnpm/@tanstack+query-core@5.104.2/node_modules/@tanstack/query-core/src/notifyManager.ts:52:25
+      at batchNotifyFn (../../node_modules/.pnpm/@tanstack+query-core@5.104.2/node_modules/@tanstack/query-core/src/notifyManager.ts:33:5)
+      at Timeout._onTimeout (../../node_modules/.pnpm/@tanstack+query-core@5.104.2/node_modules/@tanstack/query-core/src/notifyManager.ts:51:9)
+
+    console.error
+      An update to LedgerListScreen inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      28 |   const [archived, setArchived] = useState(view === 'archived');
+      29 |   useEffect(() => {
+    > 30 |     setArchived(view === 'archived');
+         |     ^
+      31 |   }, [view]);
+      32 |   const selectArchived = (next: boolean) => {
+      33 |     setArchived(next);
+
+      at ../../node_modules/.pnpm/react-reconciler@0.33.0_react@19.2.3/node_modules/react-reconciler/cjs/react-reconciler.development.js:16307:19
+      at runWithFiberInDEV (../../node_modules/.pnpm/react-reconciler@0.33.0_react@19.2.3/node_modules/react-reconciler/cjs/react-reconciler.development.js:2508:13)
+      at warnIfUpdatesNotWrappedWithActDEV (../../node_modules/.pnpm/react-reconciler@0.33.0_react@19.2.3/node_modules/react-reconciler/cjs/react-reconciler.development.js:16306:9)
+      at scheduleUpdateOnFiber (../../node_modules/.pnpm/react-reconciler@0.33.0_react@19.2.3/node_modules/react-reconciler/cjs/react-reconciler.development.js:14070:11)
+      at dispatchSetStateInternal (../../node_modules/.pnpm/react-reconciler@0.33.0_react@19.2.3/node_modules/react-reconciler/cjs/react-reconciler.development.js:6784:13)
+      at dispatchSetState (../../node_modules/.pnpm/react-reconciler@0.33.0_react@19.2.3/node_modules/react-reconciler/cjs/react-reconciler.development.js:6741:7)
+      at setArchived (src/features/ledgers/screens/LedgerListScreen.tsx:30:5)
+      at Object.react_stack_bottom_frame (../../node_modules/.pnpm/react-reconciler@0.33.0_react@19.2.3/node_modules/react-reconciler/cjs/react-reconciler.development.js:17681:20)
+      at runWithFiberInDEV (../../node_modules/.pnpm/react-reconciler@0.33.0_react@19.2.3/node_modules/react-reconciler/cjs/react-reconciler.development.js:2508:13)
+      at commitHookEffectListMount (../../node_modules/.pnpm/react-reconciler@0.33.0_react@19.2.3/node_modules/react-reconciler/cjs/react-reconciler.development.js:10861:29)
+      at commitHookPassiveMountEffects (../../node_modules/.pnpm/react-reconciler@0.33.0_react@19.2.3/node_modules/react-reconciler/cjs/react-reconciler.development.js:10948:11)
+      at commitPassiveMountOnFiber (../../node_modules/.pnpm/react-reconciler@0.33.0_react@19.2.3/node_modules/react-reconciler/cjs/react-reconciler.development.js:12979:13)
+      at recursivelyTraversePassiveMountEffects (../../node_modules/.pnpm/react-reconciler@0.33.0_react@19.2.3/node_modules/react-reconciler/cjs/react-reconciler.development.js:12934:11)
+      at commitPassiveMountOnFiber (../../node_modules/.pnpm/react-reconciler@0.33.0_react@19.2.3/node_modules/react-reconciler/cjs/react-reconciler.development.js:13213:11)
+      at recursivelyTraversePassiveMountEffects (../../node_modules/.pnpm/react-reconciler@0.33.0_react@19.2.3/node_modules/react-reconciler/cjs/react-reconciler.development.js:12934:11)
+      at commitPassiveMountOnFiber (../../node_modules/.pnpm/react-reconciler@0.33.0_react@19.2.3/node_modules/react-reconciler/cjs/react-reconciler.development.js:12971:11)
+      at recursivelyTraversePassiveMountEffects (../../node_modules/.pnpm/react-reconciler@0.33.0_react@19.2.3/node_modules/react-reconciler/cjs/react-reconciler.development.js:12934:11)
+      at commitPassiveMountOnFiber (../../node_modules/.pnpm/react-reconciler@0.33.0_react@19.2.3/node_modules/react-reconciler/cjs/react-reconciler.development.js:13014:11)
+      at flushPassiveEffects (../../node_modules/.pnpm/react-reconciler@0.33.0_react@19.2.3/node_modules/react-reconciler/cjs/react-reconciler.development.js:15982:9)
+      at flushPendingEffects (../../node_modules/.pnpm/react-reconciler@0.33.0_react@19.2.3/node_modules/react-reconciler/cjs/react-reconciler.development.js:15892:14)
+      at flushSpawnedWork (../../node_modules/.pnpm/react-reconciler@0.33.0_react@19.2.3/node_modules/react-reconciler/cjs/react-reconciler.development.js:15856:44)
+      at commitRoot (../../node_modules/.pnpm/react-reconciler@0.33.0_react@19.2.3/node_modules/react-reconciler/cjs/react-reconciler.development.js:15587:9)
+      at commitRootWhenReady (../../node_modules/.pnpm/react-reconciler@0.33.0_react@19.2.3/node_modules/react-reconciler/cjs/react-reconciler.development.js:14467:7)
+      at performWorkOnRoot (../../node_modules/.pnpm/react-reconciler@0.33.0_react@19.2.3/node_modules/react-reconciler/cjs/react-reconciler.development.js:14384:15)
+      at performSyncWorkOnRoot (../../node_modules/.pnpm/react-reconciler@0.33.0_react@19.2.3/node_modules/react-reconciler/cjs/react-reconciler.development.js:3350:7)
+      at flushSyncWorkAcrossRoots_impl (../../node_modules/.pnpm/react-reconciler@0.33.0_react@19.2.3/node_modules/react-reconciler/cjs/react-reconciler.development.js:3192:21)
+      at processRootScheduleInMicrotask (../../node_modules/.pnpm/react-reconciler@0.33.0_react@19.2.3/node_modules/react-reconciler/cjs/react-reconciler.development.js:3231:9)
+      at ../../node_modules/.pnpm/react-reconciler@0.33.0_react@19.2.3/node_modules/react-reconciler/cjs/react-reconciler.development.js:3370:17
+      at ../../node_modules/.pnpm/test-renderer@1.2.0_@types+react@19.2.18_react@19.2.3/node_modules/test-renderer/src/reconciler.ts:479:7
+
+PASS iOS tests/auth-ui.test.tsx (8.785 s)
+PASS iOS tests/settlements-ui.test.tsx (7.588 s)
+PASS Android tests/b13-panels-ui.test.tsx
+PASS iOS tests/expenses-ui.test.tsx (12.843 s)
+PASS Android tests/b17-401-gates.test.tsx
+PASS iOS tests/statistics-ui.test.tsx
+PASS iOS tests/write-recovery.test.tsx
+PASS iOS tests/feedback.test.tsx
+PASS iOS tests/auth-navigation.test.tsx
+PASS iOS tests/auth-provider.test.tsx
+PASS iOS tests/ai-draft-reminder-prep.test.tsx
+PASS iOS tests/images-api.test.tsx
+PASS iOS tests/receipt-files.test.tsx
+PASS iOS tests/auth-api.test.tsx
+PASS iOS tests/session-token.test.tsx
+PASS iOS tests/ledgers-ui.test.tsx (14.306 s)
+
+Test Suites: 32 passed, 32 total
+Tests:       330 passed, 330 total
+Snapshots:   0 total
+Time:        25.241 s
+Ran all test suites in 2 projects.
