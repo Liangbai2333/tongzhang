@@ -4,11 +4,14 @@ import { render, screen, userEvent, waitFor } from '@testing-library/react-nativ
 import { router } from 'expo-router';
 import type { EndpointOutput, NotificationItem } from '@tongzhang/contracts';
 import CreateExpenseScreen from '../src/features/expenses/screens/CreateExpenseScreen';
+import { ExpenseForm } from '../src/features/expenses/components/ExpenseForm';
 import SettlementRecordScreen from '../src/features/settlements/screens/SettlementRecordScreen';
 import AccountScreen from '../src/features/profile/screens/AccountScreen';
 import LedgerListScreen from '../src/features/ledgers/screens/LedgerListScreen';
 import { ledgersApi } from '../src/features/ledgers/api';
 import { expensesApi } from '../src/features/expenses/api';
+import { imagesApi } from '../src/features/images/api';
+import { selectReceipt } from '../src/features/images/receipt-files';
 import { settlementsApi } from '../src/features/settlements/api';
 import { profileApi } from '../src/features/profile/api';
 import { ApiError } from '../src/lib/api-error';
@@ -22,6 +25,7 @@ const batchId = '00000000-0000-4000-8000-000000000005';
 const notificationId1 = '00000000-0000-4000-8000-000000000006';
 const notificationId2 = '00000000-0000-4000-8000-000000000007';
 const expenseId = '00000000-0000-4000-8000-000000000008';
+const receiptImageId = '00000000-0000-4000-8000-000000000009';
 
 let mockUserId = creatorId;
 let mockKeyNumber = 0;
@@ -336,6 +340,182 @@ describe('B13 ExpenseForm AI draft helper (A31 -> ExpenseForm -> manual A13)', (
     expect(await screen.findByText(/账本已进入结算或结清状态/)).toBeOnTheScreen();
     await userEvent.press(screen.getByRole('button', { name: '刷新账本状态' }));
     expect(await screen.findByText('账本已冻结，无法新增消费。')).toBeOnTheScreen();
+  });
+
+  it('reuses a single uploaded receipt across A31 AMOUNT draft prefill and manual A13 createExpense', async () => {
+    jest.mocked(ledgersApi.getLedger).mockResolvedValue({ data: makeLedger('ACTIVE') });
+    jest.mocked(selectReceipt).mockResolvedValue({
+      uri: 'file:///cache/receipt-1.jpg',
+      byteSize: 4096,
+    });
+    jest.mocked(imagesApi.upload).mockResolvedValue({
+      data: {
+        imageId: receiptImageId,
+        mimeType: 'image/jpeg',
+        byteSize: 4096,
+        width: 100,
+        height: 100,
+      },
+    });
+    jest.mocked(expensesApi.parseExpenseDraft).mockResolvedValue({
+      data: {
+        title: '收据识别消费',
+        amountCents: '12000',
+        category: 'DINING',
+        occurredOn: '2026-11-20',
+        payerMemberId: creatorId,
+        note: '扫码账单',
+        receiptImageId,
+        splitMode: 'AMOUNT',
+        splits: [
+          { memberId: creatorId, amountCents: '12000' },
+          { memberId, amountCents: '0' },
+        ],
+        warnings: ['按收据金额拆分，请核对'],
+      },
+    });
+    jest.mocked(expensesApi.createExpense).mockResolvedValue({
+      data: {
+        id: expenseId,
+        ledgerId,
+        title: '收据识别消费',
+        amountCents: '12000',
+        category: 'DINING',
+        occurredOn: '2026-11-20',
+        payerMemberId: creatorId,
+        payerName: '小安',
+        version: 1,
+        recorderMemberId: creatorId,
+        recorderName: '小安',
+        splitMode: 'AMOUNT',
+        splits: [
+          { memberId: creatorId, username: '小安', shares: null, amountCents: '12000' },
+          { memberId, username: '小白', shares: null, amountCents: '0' },
+        ],
+        note: '扫码账单',
+        receiptImageId,
+        createdAt: timestamp,
+        updatedAt: timestamp,
+        canEdit: true,
+      },
+    });
+
+    await renderWithQuery(<CreateExpenseScreen />);
+    await screen.findByText('AI 辅助填写');
+
+    await userEvent.press(screen.getByRole('button', { name: '从相册选择' }));
+    expect(await screen.findByText('已添加收据')).toBeOnTheScreen();
+
+    await userEvent.press(screen.getByRole('button', { name: 'AI 生成草稿' }));
+    await userEvent.press(screen.getByRole('button', { name: '生成消费草稿' }));
+
+    expect(
+      await screen.findByText(/AI 草稿已回填，请核对后手动点击「保存消费」/),
+    ).toBeOnTheScreen();
+    expect(screen.getByText(/按收据金额拆分，请核对/)).toBeOnTheScreen();
+    expect(screen.getByLabelText('消费金额')).toHaveDisplayValue('120.00');
+    expect(screen.getByLabelText('消费名称')).toHaveDisplayValue('收据识别消费');
+    expect(imagesApi.upload).toHaveBeenCalledTimes(1);
+    expect(imagesApi.upload).toHaveBeenCalledWith(
+      { kind: 'RECEIPT', ledgerId },
+      expect.objectContaining({ uri: 'file:///cache/receipt-1.jpg', type: 'image/jpeg' }),
+    );
+    expect(expensesApi.parseExpenseDraft).toHaveBeenCalledTimes(1);
+    const parseCall = jest.mocked(expensesApi.parseExpenseDraft).mock.calls[0]![0];
+    expect(parseCall.params).toEqual({ ledgerId });
+    expect(parseCall.body.receiptImageId).toBe(receiptImageId);
+    expect(parseCall.body.text).toBeUndefined();
+    expect(expensesApi.createExpense).not.toHaveBeenCalled();
+
+    await userEvent.press(screen.getByRole('button', { name: '保存消费' }));
+    await waitFor(() => expect(expensesApi.createExpense).toHaveBeenCalledTimes(1));
+    expect(expensesApi.createExpense).toHaveBeenCalledWith(
+      expect.objectContaining({
+        params: { ledgerId },
+        body: expect.objectContaining({
+          amountCents: '12000',
+          splitMode: 'AMOUNT',
+          splits: [
+            { memberId: creatorId, amountCents: '12000' },
+            { memberId, amountCents: '0' },
+          ],
+          receiptImageId,
+        }),
+      }),
+      { idempotencyKey: 'b13-key-1' },
+    );
+    expect(imagesApi.upload).toHaveBeenCalledTimes(1);
+  });
+
+  it('preserves existing ExpenseForm inputs when draft returns null fields alongside warnings', async () => {
+    jest.mocked(ledgersApi.getLedger).mockResolvedValue({ data: makeLedger('ACTIVE') });
+    jest.mocked(expensesApi.parseExpenseDraft).mockResolvedValue({
+      data: {
+        title: null,
+        amountCents: null,
+        category: 'DINING',
+        occurredOn: null,
+        payerMemberId: null,
+        note: null,
+        receiptImageId: null,
+        splitMode: 'EQUAL',
+        splits: [],
+        warnings: ['未能识别有效金额，请手动填写'],
+      },
+    });
+
+    await renderWithQuery(<CreateExpenseScreen />);
+    await screen.findByText('AI 辅助填写');
+
+    await userEvent.type(screen.getByLabelText('消费金额'), '66.50');
+    await userEvent.type(screen.getByLabelText('消费名称'), '手工标题');
+    await userEvent.type(screen.getByLabelText('备注（选填）'), '保留的手工备注');
+
+    await userEvent.press(screen.getByRole('button', { name: 'AI 生成草稿' }));
+    await userEvent.type(screen.getByLabelText('消费描述'), '不太清楚金额');
+    await userEvent.press(screen.getByRole('button', { name: '生成消费草稿' }));
+
+    expect(
+      await screen.findByText(/AI 草稿已回填，请核对后手动点击「保存消费」/),
+    ).toBeOnTheScreen();
+    expect(screen.getByText(/未能识别有效金额，请手动填写/)).toBeOnTheScreen();
+    expect(screen.getByLabelText('消费金额')).toHaveDisplayValue('66.50');
+    expect(screen.getByLabelText('消费名称')).toHaveDisplayValue('手工标题');
+    expect(screen.getByLabelText('备注（选填）')).toHaveDisplayValue('保留的手工备注');
+    expect(expensesApi.createExpense).not.toHaveBeenCalled();
+  });
+
+  it('hides the AI draft entry when ExpenseForm is in edit mode', async () => {
+    const editableExpense: EndpointOutput<'getExpense'>['data'] = {
+      id: expenseId,
+      ledgerId,
+      title: '已保存消费',
+      amountCents: '12000',
+      category: 'DINING',
+      occurredOn: '2026-11-20',
+      payerMemberId: creatorId,
+      payerName: '小安',
+      version: 1,
+      recorderMemberId: creatorId,
+      recorderName: '小安',
+      splitMode: 'EQUAL',
+      splits: [
+        { memberId: creatorId, username: '小安', shares: null, amountCents: '6000' },
+        { memberId, username: '小白', shares: null, amountCents: '6000' },
+      ],
+      note: '原备注',
+      receiptImageId: null,
+      createdAt: timestamp,
+      updatedAt: timestamp,
+      canEdit: true,
+    };
+
+    await renderWithQuery(
+      <ExpenseForm ledger={makeLedger('ACTIVE')} userId={creatorId} expense={editableExpense} />,
+    );
+    expect(await screen.findByLabelText('消费名称')).toHaveDisplayValue('已保存消费');
+    expect(screen.queryByText('AI 辅助填写')).toBeNull();
+    expect(screen.queryByRole('button', { name: 'AI 生成草稿' })).toBeNull();
   });
 });
 
