@@ -29,12 +29,13 @@ afterEach(async () => {
   await Promise.all(openFixtures.splice(0).map((f) => f.close()));
 });
 
-async function uploadReceipt(
+async function uploadImage(
   fixture: Awaited<ReturnType<typeof integrationFixture>>,
   account: TestAccount,
+  kind: 'RECEIPT' | 'COVER' = 'RECEIPT',
 ) {
   const bytes = await imageBytes('png');
-  const form = imageMultipart(bytes, 'image/png', [['kind', 'RECEIPT']]);
+  const form = imageMultipart(bytes, 'image/png', [['kind', kind]]);
   const res = await fixture.app.inject({
     method: 'POST',
     url: '/api/v1/images',
@@ -44,6 +45,11 @@ async function uploadReceipt(
   expect(res.statusCode).toBe(201);
   return res.json().data.imageId as string;
 }
+
+const uploadReceipt = (
+  fixture: Awaited<ReturnType<typeof integrationFixture>>,
+  account: TestAccount,
+) => uploadImage(fixture, account, 'RECEIPT');
 
 describe('A31 AI draft Test Double and notifications isolated-DB fixture regressions', () => {
   it('parses text/receipt/dirty/502 via deterministic AI double with zero DB side effects until explicit A13 confirmation', async () => {
@@ -311,6 +317,267 @@ describe('A31 AI draft Test Double and notifications isolated-DB fixture regress
       expect(remMembers).toHaveLength(0);
       expect(remLogs).toHaveLength(0);
       expect(remIdem).toHaveLength(0);
+      expect(remUsers).toHaveLength(0);
+    } finally {
+      await probeDb.close();
+    }
+  });
+
+  it('intercepts cross-user receipt, cover image, bound receipt, non-member, and frozen ledger before invoking AI double and returns 503 cleanly', async () => {
+    const aiDouble = createDeterministicAiDraftDouble('valid-equal');
+    const fixture = await integrationFixture({ aiDraftProvider: aiDouble });
+    let ledgerId: string | undefined;
+    const ownedUserIds: string[] = [];
+
+    try {
+      const owner = await fixture.register('小安');
+      const friend = await fixture.register('小白');
+      const outsider = await fixture.register('外人');
+      ownedUserIds.push(owner.user.id, friend.user.id, outsider.user.id);
+      ledgerId = await fixture.ledger(owner, [friend]);
+
+      const friendReceiptId = await uploadReceipt(fixture, friend);
+      const ownerCoverId = await uploadImage(fixture, owner, 'COVER');
+      const ownerReceiptId = await uploadReceipt(fixture, owner);
+
+      // 1. Cross-user receipt image is blocked (403 FORBIDDEN) and AI provider is NEVER invoked.
+      const crossUserRes = await fixture.app.inject({
+        method: 'POST',
+        url: `/api/v1/ledgers/${ledgerId}/expenses/ai-draft`,
+        headers: { authorization: `Bearer ${owner.accessToken}` },
+        payload: { text: '用他人收据尝试解析', receiptImageId: friendReceiptId },
+      });
+      expect(crossUserRes.statusCode).toBe(403);
+      expect(crossUserRes.json().error.code).toBe('FORBIDDEN');
+      expect(aiDouble.calls).toHaveLength(0);
+
+      // 2. Non-receipt (COVER) image is blocked (400 IMAGE_INVALID) before invoking AI provider.
+      const coverRes = await fixture.app.inject({
+        method: 'POST',
+        url: `/api/v1/ledgers/${ledgerId}/expenses/ai-draft`,
+        headers: { authorization: `Bearer ${owner.accessToken}` },
+        payload: { text: '用封面图解析', receiptImageId: ownerCoverId },
+      });
+      expect(coverRes.statusCode).toBe(400);
+      expect(coverRes.json().error.code).toBe('IMAGE_INVALID');
+      expect(aiDouble.calls).toHaveLength(0);
+
+      // 3. Non-member is blocked (403 FORBIDDEN) before invoking AI provider.
+      const outsiderRes = await fixture.app.inject({
+        method: 'POST',
+        url: `/api/v1/ledgers/${ledgerId}/expenses/ai-draft`,
+        headers: { authorization: `Bearer ${outsider.accessToken}` },
+        payload: { text: '越权解析' },
+      });
+      expect(outsiderRes.statusCode).toBe(403);
+      expect(outsiderRes.json().error.code).toBe('FORBIDDEN');
+      expect(aiDouble.calls).toHaveLength(0);
+
+      // 4. Unconfigured / unavailable provider returns 503 AI_DRAFT_UNAVAILABLE with zero DB writes.
+      aiDouble.enqueueScenario('unavailable-503');
+      const unavailableRes = await fixture.app.inject({
+        method: 'POST',
+        url: `/api/v1/ledgers/${ledgerId}/expenses/ai-draft`,
+        headers: { authorization: `Bearer ${owner.accessToken}` },
+        payload: { text: '服务未配置场景', receiptImageId: ownerReceiptId },
+      });
+      expect(unavailableRes.statusCode).toBe(503);
+      expect(unavailableRes.json().error.code).toBe('AI_DRAFT_UNAVAILABLE');
+      expect(aiDouble.calls).toHaveLength(1);
+
+      // Bind ownerReceiptId to a real expense via A13, then verify bound receipt is rejected (400 IMAGE_INVALID).
+      const memberRows = await fixture.db.orm
+        .select()
+        .from(ledgerMembers)
+        .where(eq(ledgerMembers.ledgerId, ledgerId));
+      const ownerMemberId = memberRows.find((m) => m.userId === owner.user.id)!.id;
+      const friendMemberId = memberRows.find((m) => m.userId === friend.user.id)!.id;
+      const createdExpense = await fixture.app.inject({
+        method: 'POST',
+        url: `/api/v1/ledgers/${ledgerId}/expenses`,
+        headers: {
+          authorization: `Bearer ${owner.accessToken}`,
+          'idempotency-key': randomUUID(),
+        },
+        payload: {
+          title: '已绑定收据的消费',
+          amountCents: '4000',
+          category: 'DINING',
+          occurredOn: '2026-11-19',
+          payerMemberId: ownerMemberId,
+          splitMode: 'EQUAL',
+          splits: [{ memberId: ownerMemberId }, { memberId: friendMemberId }],
+          receiptImageId: ownerReceiptId,
+        },
+      });
+      expect(createdExpense.statusCode).toBe(201);
+
+      const boundReceiptRes = await fixture.app.inject({
+        method: 'POST',
+        url: `/api/v1/ledgers/${ledgerId}/expenses/ai-draft`,
+        headers: { authorization: `Bearer ${owner.accessToken}` },
+        payload: { text: '复用已绑定收据', receiptImageId: ownerReceiptId },
+      });
+      expect(boundReceiptRes.statusCode).toBe(400);
+      expect(boundReceiptRes.json().error.code).toBe('IMAGE_INVALID');
+      expect(aiDouble.calls).toHaveLength(1);
+
+      // 5. Freezing the ledger (SETTLING) blocks A31 (409 LEDGER_FROZEN) before invoking AI provider.
+      const detail = await fixture.app.inject({
+        method: 'GET',
+        url: `/api/v1/ledgers/${ledgerId}`,
+        headers: { authorization: `Bearer ${owner.accessToken}` },
+      });
+      const expectedVersion = endpoints.getLedger.response.parse(detail.json()).data.version;
+      const freezeRes = await fixture.app.inject({
+        method: 'POST',
+        url: `/api/v1/ledgers/${ledgerId}/settlement`,
+        headers: {
+          authorization: `Bearer ${owner.accessToken}`,
+          'idempotency-key': randomUUID(),
+        },
+        payload: { expectedVersion },
+      });
+      expect(freezeRes.statusCode).toBe(201);
+
+      const frozenParseRes = await fixture.app.inject({
+        method: 'POST',
+        url: `/api/v1/ledgers/${ledgerId}/expenses/ai-draft`,
+        headers: { authorization: `Bearer ${owner.accessToken}` },
+        payload: { text: '冻结后尝试解析' },
+      });
+      expect(frozenParseRes.statusCode).toBe(409);
+      expect(frozenParseRes.json().error.code).toBe('LEDGER_FROZEN');
+      expect(aiDouble.calls).toHaveLength(1);
+    } finally {
+      await fixture.close();
+    }
+
+    const probeDb = createDatabase({ connectionString: testDatabaseUrl() });
+    try {
+      const [remLedgers, remUsers] = await Promise.all([
+        ledgerId
+          ? probeDb.orm.select().from(ledgers).where(eq(ledgers.id, ledgerId))
+          : Promise.resolve([]),
+        probeDb.orm.select().from(users).where(inArray(users.id, ownedUserIds)),
+      ]);
+      expect(remLedgers).toHaveLength(0);
+      expect(remUsers).toHaveLength(0);
+    } finally {
+      await probeDb.close();
+    }
+  });
+
+  it('enforces transfer-level 6h cooldown across payee/creator, idempotent replay in cooldown, A29 opt-out/re-enable, and zero financial mutation', async () => {
+    const fixture = await integrationFixture();
+    const scenario = await seedSettlingReminderScenario(fixture, {
+      ledgerName: 'Day4催还冷却回归账本',
+    });
+
+    try {
+      const transfer = scenario.transfers[0]!;
+      const [ledgerBefore] = await fixture.db.orm
+        .select()
+        .from(ledgers)
+        .where(eq(ledgers.id, scenario.ledgerId));
+
+      // 1. Payee sends initial reminder -> 200 with exact 6-hour cooldown window.
+      const firstKey = randomUUID();
+      const firstRes = await scenario.remind(scenario.payee, transfer.id, firstKey);
+      expect(firstRes.statusCode).toBe(200);
+      const firstData = endpoints.remindTransfer.response.parse(firstRes.json()).data;
+      expect(Date.parse(firstData.cooldownEndsAt) - Date.parse(firstData.remindedAt)).toBe(
+        DEFAULT_REMINDER_COOLDOWN_MS,
+      );
+
+      // 2. Same Idempotency-Key replay during cooldown returns cached 200 without duplicating notification.
+      const replayRes = await scenario.remind(scenario.payee, transfer.id, firstKey);
+      expect(replayRes.statusCode).toBe(200);
+      expect(endpoints.remindTransfer.response.parse(replayRes.json()).data).toEqual(firstData);
+
+      // 3. Even switching actor to creator (owner) with a fresh key is blocked by transfer-level 6h cooldown.
+      await fixture.db.orm
+        .update(operationLogs)
+        .set({ createdAt: new Date(Date.now() - DEFAULT_REMINDER_COOLDOWN_MS + 30_000) })
+        .where(eq(operationLogs.ledgerId, scenario.ledgerId));
+      const ownerInCooldown = await scenario.remind(scenario.owner, transfer.id);
+      expect(ownerInCooldown.statusCode).toBe(429);
+      expect(ownerInCooldown.json().error.code).toBe('REMINDER_COOLDOWN');
+
+      // 4. Payer disables A29; once 6h expires, owner's remind returns identical 200 shape,
+      // writes ZERO new notifications, yet still starts a new 6h cooldown window.
+      expect((await scenario.setNotificationEnabled(scenario.payer, false)).statusCode).toBe(200);
+      await fixture.db.orm
+        .update(operationLogs)
+        .set({ createdAt: new Date(Date.now() - DEFAULT_REMINDER_COOLDOWN_MS - 5_000) })
+        .where(eq(operationLogs.ledgerId, scenario.ledgerId));
+
+      const silentRes = await scenario.remind(scenario.owner, transfer.id);
+      expect(silentRes.statusCode).toBe(200);
+      const silentData = endpoints.remindTransfer.response.parse(silentRes.json()).data;
+      expect(Date.parse(silentData.cooldownEndsAt) - Date.parse(silentData.remindedAt)).toBe(
+        DEFAULT_REMINDER_COOLDOWN_MS,
+      );
+
+      // Immediate repeat after silent reminder is still blocked with 429 REMINDER_COOLDOWN (no preference leak).
+      const afterSilentRepeat = await scenario.remind(scenario.payee, transfer.id);
+      expect(afterSilentRepeat.statusCode).toBe(429);
+      expect(afterSilentRepeat.json().error.code).toBe('REMINDER_COOLDOWN');
+
+      // Only the initial 1 notification exists while A29 was off.
+      const notifsWhileOff = endpoints.listNotifications.response.parse(
+        (await scenario.listNotifications(scenario.payer)).json(),
+      ).data;
+      expect(notifsWhileOff).toHaveLength(1);
+
+      // 5. Re-enabling A29 + expiring cooldown restores delivery to A33 inbox.
+      expect((await scenario.setNotificationEnabled(scenario.payer, true)).statusCode).toBe(200);
+      await fixture.db.orm
+        .update(operationLogs)
+        .set({ createdAt: new Date(Date.now() - DEFAULT_REMINDER_COOLDOWN_MS - 5_000) })
+        .where(eq(operationLogs.ledgerId, scenario.ledgerId));
+
+      const resumedRes = await scenario.remind(scenario.owner, transfer.id);
+      expect(resumedRes.statusCode).toBe(200);
+      const notifsAfterReEnable = endpoints.listNotifications.response.parse(
+        (await scenario.listNotifications(scenario.payer, { unreadOnly: true })).json(),
+      ).data;
+      expect(notifsAfterReEnable).toHaveLength(2);
+
+      // 6. Ledger version, status, and transfer amount/status are completely untouched by reminders.
+      const [[ledgerAfter], [transferAfter]] = await Promise.all([
+        fixture.db.orm.select().from(ledgers).where(eq(ledgers.id, scenario.ledgerId)),
+        fixture.db.orm
+          .select()
+          .from(settlementTransfers)
+          .where(eq(settlementTransfers.id, transfer.id)),
+      ]);
+      expect(ledgerAfter?.version).toBe(ledgerBefore?.version);
+      expect(ledgerAfter?.status).toBe('SETTLING');
+      expect(transferAfter?.amountCents).toBe(6000n);
+      expect(transferAfter?.status).toBe('PENDING');
+    } finally {
+      await fixture.close();
+    }
+
+    const ownedUserIds = [
+      scenario.owner.user.id,
+      scenario.payee.user.id,
+      scenario.payer.user.id,
+      scenario.outsider.user.id,
+    ];
+    const probeDb = createDatabase({ connectionString: testDatabaseUrl() });
+    try {
+      const [remNotifs, remLedgers, remUsers] = await Promise.all([
+        probeDb.orm
+          .select()
+          .from(notifications)
+          .where(eq(notifications.ledgerId, scenario.ledgerId)),
+        probeDb.orm.select().from(ledgers).where(eq(ledgers.id, scenario.ledgerId)),
+        probeDb.orm.select().from(users).where(inArray(users.id, ownedUserIds)),
+      ]);
+      expect(remNotifs).toHaveLength(0);
+      expect(remLedgers).toHaveLength(0);
       expect(remUsers).toHaveLength(0);
     } finally {
       await probeDb.close();
