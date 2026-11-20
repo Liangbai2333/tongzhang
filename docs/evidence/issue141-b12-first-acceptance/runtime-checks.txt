@@ -1,0 +1,56 @@
+Build commit: b859ba929f00be1c23cd83cb4da3328e36ee2209 (short: b859ba9)
+Local APK size: 99547334 bytes
+Local APK SHA-256 (apps/mobile/android/app/build/outputs/apk/debug/app-debug.apk):
+3cbcb6a31d70efbc3cf2c081410a22d15af66ff29d8991aec3b3960230eac806
+Device base.apk SHA-256 (/data/app/~~j9K206z7Bawb6hlyLl-rEQ==/com.tongzhang.app-KxYJb64eNByI-Tu2fp9GLA==/base.apk):
+3cbcb6a31d70efbc3cf2c081410a22d15af66ff29d8991aec3b3960230eac806
+
+Failure build log (clean shell without ANDROID_HOME):
+  File: build-failed-missing-sdk.txt
+  Result: BUILD FAILED in 19s (SDK location not found; confirms first-screen ANDROID_HOME requirement)
+Success build log (JDK 17 Corretto 17.0.20.1 + ANDROID_HOME):
+  File: build-success-jdk17.txt
+  Result: BUILD SUCCESSFUL in 1m 26s (475 actionable tasks: 443 executed, 32 up-to-date)
+Install log:
+  File: adb-install-success.txt
+  Result: Performing Streamed Install -> Success
+
+AndroidManifest.xml permission check (post expo prebuild --platform android --no-install):
+  <uses-permission android:name="android.permission.CAMERA"/>
+  <uses-permission android:name="android.permission.RECORD_AUDIO" tools:node="remove"/>
+
+Device package permission check (during denial -> after pm grant):
+  Denied permanently: android.permission.CAMERA: granted=false, flags=[ USER_SET|USER_FIXED|USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+  After pm grant:     android.permission.CAMERA: granted=true, flags=[ USER_SET|USER_FIXED|USER_SENSITIVE_WHEN_GRANTED|USER_SENSITIVE_WHEN_DENIED]
+  (android.permission.RECORD_AUDIO not requested)
+
+API HTTP log (isolated Fastify on localhost:3300, PostgreSQL 17 tongzhang_b12 on 127.0.0.1:35541):
+2026-11-20T08:20:24.446Z GET /health/ready 200
+2026-11-20T08:20:25.215Z GET /health/ready 200
+2026-11-20T08:27:16.858Z POST /api/v1/auth/register 201  (b12member API setup)
+2026-11-20T08:31:14.899Z POST /api/v1/auth/register 201  (b12owner in-app registration)
+2026-11-20T08:31:15.865Z GET /api/v1/me 200
+2026-11-20T08:31:16.991Z GET /api/v1/ledgers?limit=20&archived=false 200
+2026-11-20T08:31:41.202Z GET /api/v1/ledgers?limit=50&archived=false 200
+2026-11-20T08:31:41.202Z GET /api/v1/ledgers?limit=50&archived=true 200
+2026-11-20T08:31:48.228Z GET /api/v1/me 200  (explicit online session re-verification)
+2026-11-20T08:33:01.178Z GET /api/v1/ledgers?limit=20&archived=false 200
+2026-11-20T08:34:28.151Z POST /api/v1/ledgers 201  (B12-Acceptance created)
+2026-11-20T08:34:28.615Z GET /api/v1/ledgers/1131e45c-6cea-47ef-9b2b-70b14424baf4/invitation 200
+2026-11-20T08:34:28.618Z GET /api/v1/ledgers/1131e45c-6cea-47ef-9b2b-70b14424baf4 200
+2026-11-20T08:34:59.663Z POST /api/v1/auth/logout 200
+2026-11-20T08:36:30.151Z POST /api/v1/auth/login 200  (b12member in-app login)
+2026-11-20T08:36:30.399Z GET /api/v1/me 200
+2026-11-20T08:36:30.860Z GET /api/v1/ledgers?limit=20&archived=false 200
+2026-11-20T08:37:22.203Z GET /api/v1/me 200
+2026-11-20T08:37:29.533Z GET /api/v1/me 200
+2026-11-20T08:37:59.519Z POST /api/v1/invitations/preview 200
+2026-11-20T08:38:32.753Z POST /api/v1/invitations/join 200
+2026-11-20T08:38:33.221Z GET /api/v1/ledgers/1131e45c-6cea-47ef-9b2b-70b14424baf4 200
+2026-11-20T08:38:53.653Z GET /api/v1/ledgers?limit=20&archived=false 200
+
+PostgreSQL snapshot (tongzhang_b12, 15 public tables):
+ledgers: id=1131e45c-6cea-47ef-9b2b-70b14424baf4 | name=B12-Acceptance | status=ACTIVE | version=2
+ledger_members: 2 rows (owner@b12.test b12owner, member@b12.test b12member; archived_at=NULL)
+invitations: code=XD3EHF | revoked_at=NULL | expires_at=2026-11-27 08:34:28.171+00
+operation_logs: LEDGER_CREATED=1 | MEMBER_JOINED=1

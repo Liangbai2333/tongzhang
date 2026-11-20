@@ -1,0 +1,4 @@
+[pass] Node: v24.21.0; repository 24.21.0
+[pass] pnpm: 12.6.0; repository 12.6.0
+[pass] Docker: 29.8.2
+[pass] Compose: 5.5.1
