@@ -34,6 +34,7 @@ jest.mock('../src/features/expenses/api', () => ({
     getExpense: jest.fn(),
     updateExpense: jest.fn(),
     deleteExpense: jest.fn(),
+    parseExpenseDraft: jest.fn(),
   },
 }));
 jest.mock('../src/features/images/api', () => ({

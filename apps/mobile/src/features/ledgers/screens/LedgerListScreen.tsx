@@ -15,6 +15,7 @@ import { ledgersApi } from '../api';
 import { ledgersKeys } from '../query-keys';
 import { LedgerCover } from '../components/LedgerCover';
 import { LedgerActionsMenu } from '../components/LedgerActionsMenu';
+import { NotificationsSheet } from '@/features/profile/components/NotificationsSheet';
 import { netColor, remaining, statusLabels, yuan } from '../presentation';
 
 export default function LedgerListScreen() {
@@ -25,6 +26,7 @@ export default function LedgerListScreen() {
     view?: 'archived' | 'current';
   }>();
   const [menu, setMenu] = useState(false);
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [archived, setArchived] = useState(view === 'archived');
   useEffect(() => {
     setArchived(view === 'archived');
@@ -105,16 +107,26 @@ export default function LedgerListScreen() {
         <View style={styles.filter}>
           <Text style={ui.caption}>{archived ? '已归档账本' : '全部账本'}</Text>
         </View>
-        {archived && (
+        <View style={ui.row}>
           <Touch
-            accessibilityLabel="返回当前账本"
+            accessibilityRole="button"
+            accessibilityLabel="站内提醒"
             style={styles.refresh}
-            disabled={query.isFetching}
-            onPress={() => selectArchived(false)}
+            onPress={() => setNotificationsOpen(true)}
           >
-            <Text style={ui.caption}>返回当前账本</Text>
+            <Text style={ui.caption}>站内提醒</Text>
           </Touch>
-        )}
+          {archived && (
+            <Touch
+              accessibilityLabel="返回当前账本"
+              style={styles.refresh}
+              disabled={query.isFetching}
+              onPress={() => selectArchived(false)}
+            >
+              <Text style={ui.caption}>返回当前账本</Text>
+            </Touch>
+          )}
+        </View>
       </View>
       {loading || failed ? (
         <RequestState
@@ -217,6 +229,11 @@ export default function LedgerListScreen() {
         </>
       )}
       <LedgerActionsMenu visible={menu} onClose={() => setMenu(false)} />
+      <NotificationsSheet
+        visible={notificationsOpen}
+        userId={user!.id}
+        onClose={() => setNotificationsOpen(false)}
+      />
     </Screen>
   );
 }

@@ -17,6 +17,7 @@ import { ledgersApi, ledgersKeys } from '@/features/ledgers';
 import { colors } from '@/theme/tokens';
 import { profileApi } from '../api';
 import { DocumentBody } from '../components/DocumentSheet';
+import { NotificationsSheet } from '../components/NotificationsSheet';
 import { MenuGroup, SettingRow } from '../components/ProfileMenu';
 import { readingDocuments } from '../documents';
 import type { ProfilePanel } from '../model';
@@ -41,7 +42,10 @@ function useLedgerCount(userId: string | undefined, archived: boolean) {
   return { query, count, failed: query.isError };
 }
 
-const panelTitles: Record<Exclude<ProfilePanel['kind'], 'closed' | 'document'>, string> = {
+const panelTitles: Record<
+  Exclude<ProfilePanel['kind'], 'closed' | 'document' | 'notifications'>,
+  string
+> = {
   account: '账户信息',
   settings: '设置',
   'logout-confirm': '退出登录？',
@@ -138,7 +142,7 @@ export default function AccountScreen() {
   const countText = (entry: typeof current, format: (count: string) => string) =>
     entry.count !== undefined ? format(entry.count) : entry.failed ? '暂时无法读取' : '正在读取';
   const title =
-    panel.kind === 'closed'
+    panel.kind === 'closed' || panel.kind === 'notifications'
       ? ''
       : panel.kind === 'document'
         ? readingDocuments[panel.document].title
@@ -227,6 +231,13 @@ export default function AccountScreen() {
             onPress: openAccount,
           },
           {
+            key: 'notifications',
+            title: '站内提醒',
+            icon: profileAssets.bell,
+            value: '待还催还',
+            onPress: () => setPanel({ kind: 'notifications' }),
+          },
+          {
             key: 'settings',
             title: '设置',
             icon: profileAssets.settings,
@@ -250,7 +261,7 @@ export default function AccountScreen() {
         <Text style={styles.logoutText}>退出登录</Text>
       </Touch>
       <Sheet
-        visible={panel.kind !== 'closed'}
+        visible={panel.kind !== 'closed' && panel.kind !== 'notifications'}
         title={title}
         contentKey={panel.kind === 'document' ? panel.document : panel.kind}
         onClose={close}
@@ -355,6 +366,11 @@ export default function AccountScreen() {
           </>
         )}
       </Sheet>
+      <NotificationsSheet
+        visible={panel.kind === 'notifications'}
+        userId={user.id}
+        onClose={close}
+      />
     </Screen>
   );
 }

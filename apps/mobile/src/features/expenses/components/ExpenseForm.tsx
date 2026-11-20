@@ -41,6 +41,8 @@ import { ChoiceSheet } from './ChoiceSheet';
 import { DateSheet } from './DateSheet';
 import { SplitEditorSheet } from './SplitEditorSheet';
 import { ExpenseRow, MemberAvatar, expenseStyles } from './ExpenseUI';
+import { AiDraftSheet } from './AiDraftSheet';
+import type { AppliedExpenseDraft } from '../ai-draft';
 
 type ExpenseFormProps = {
   ledger: Ledger;
@@ -49,6 +51,7 @@ type ExpenseFormProps = {
   onCancel?: () => void;
   onSaved?: (saved: ExpenseDetail) => void;
   onConflictRefresh?: (kind: ExpenseWriteConflict['kind']) => void;
+  onRefreshLedger?: () => void;
 };
 
 export function ExpenseForm({
@@ -58,6 +61,7 @@ export function ExpenseForm({
   onCancel,
   onSaved,
   onConflictRefresh,
+  onRefreshLedger,
 }: ExpenseFormProps) {
   const editing = expense !== undefined;
   const client = useQueryClient();
@@ -81,8 +85,10 @@ export function ExpenseForm({
     expense?.receiptImageId ?? null,
   );
   const [panel, setPanel] = useState<
-    'category' | 'payer' | 'date' | 'split' | 'receipt' | 'discard' | null
+    'category' | 'payer' | 'date' | 'split' | 'receipt' | 'discard' | 'ai-draft' | null
   >(null);
+  const [draftApplied, setDraftApplied] = useState(false);
+  const [draftWarnings, setDraftWarnings] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const locked = useRef(false);
@@ -106,6 +112,7 @@ export function ExpenseForm({
         amount ||
         note ||
         receipt.value ||
+        existingReceiptId !== null ||
         category !== 'DINING' ||
         date !== initialDate.current ||
         payer !== ledger.myMemberId ||
@@ -231,6 +238,20 @@ export function ExpenseForm({
       setSubmitting(false);
     }
   }
+  function applyDraft(applied: AppliedExpenseDraft) {
+    setTitle(applied.values.title);
+    setAmount(applied.values.amount);
+    setCategory(applied.values.category);
+    setDate(applied.values.date);
+    setPayer(applied.values.payer);
+    setNote(applied.values.note);
+    setSplit(applied.values.split);
+    setExistingReceiptId(applied.values.existingReceiptId);
+    setDraftWarnings(applied.warnings);
+    setDraftApplied(true);
+    setError(null);
+    setPanel(null);
+  }
   const hasReceipt = Boolean(receipt.value || existingReceiptId);
   return (
     <>
@@ -293,6 +314,44 @@ export function ExpenseForm({
           </>
         }
       >
+        {!editing && (
+          <View style={s.aiCard}>
+            <View style={ui.between}>
+              <View style={ui.grow}>
+                <Text style={ui.strong}>AI 辅助填写</Text>
+                <Text style={ui.caption}>一句话或收据生成草稿，仅回填表单，需核对后手动保存。</Text>
+              </View>
+              <Button
+                compact
+                title="AI 生成草稿"
+                variant="secondary"
+                disabled={disabled}
+                onPress={() => open('ai-draft')}
+              />
+            </View>
+            {draftApplied && (
+              <View style={s.draftNotice}>
+                <View style={ui.between}>
+                  <Text accessibilityLiveRegion="polite" style={s.draftNoticeTitle}>
+                    AI 草稿已回填，请核对后手动点击「保存消费」
+                  </Text>
+                  <Touch
+                    accessibilityRole="button"
+                    accessibilityLabel="收起草稿提示"
+                    onPress={() => setDraftApplied(false)}
+                  >
+                    <Text style={ui.caption}>收起</Text>
+                  </Touch>
+                </View>
+                {draftWarnings.map((warning, index) => (
+                  <Text key={`${index}-${warning}`} style={s.draftWarning}>
+                    · {warning}
+                  </Text>
+                ))}
+              </View>
+            )}
+          </View>
+        )}
         <View style={s.amountCard}>
           <Text style={expenseStyles.label}>消费金额</Text>
           <View style={s.amountRow}>
@@ -495,6 +554,28 @@ export function ExpenseForm({
             existingReceiptId && <ReceiptImage imageId={existingReceiptId} />
           )}
         </Sheet>
+        {!editing && (
+          <AiDraftSheet
+            visible={panel === 'ai-draft'}
+            ledger={ledger}
+            referenceDate={date}
+            currentValues={{
+              title,
+              amount,
+              category,
+              date,
+              payer,
+              note,
+              split,
+              existingReceiptId,
+            }}
+            hasSelectedReceipt={receipt.value !== null}
+            uploadReceipt={receipt.upload}
+            onApplyDraft={applyDraft}
+            onRefreshLedger={onRefreshLedger}
+            onClose={() => setPanel(null)}
+          />
+        )}
         <Sheet
           visible={panel === 'discard'}
           title={editing ? '放弃未保存的修改？' : '放弃未保存的消费？'}
@@ -513,6 +594,34 @@ export function ExpenseForm({
 }
 
 const s = StyleSheet.create({
+  aiCard: {
+    backgroundColor: colors.primarySoft,
+    borderRadius: 20,
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    gap: 8,
+  },
+  draftNotice: {
+    backgroundColor: colors.surface,
+    borderRadius: 14,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    gap: 4,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
+  draftNoticeTitle: {
+    flex: 1,
+    fontSize: 13,
+    lineHeight: 19,
+    fontWeight: '700',
+    color: colors.warning,
+  },
+  draftWarning: {
+    fontSize: 12,
+    lineHeight: 18,
+    color: colors.text,
+  },
   amountCard: {
     backgroundColor: colors.surface,
     borderRadius: 24,

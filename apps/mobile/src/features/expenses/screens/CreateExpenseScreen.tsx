@@ -43,5 +43,13 @@ export default function CreateExpenseScreen() {
         <Text style={ui.body}>账本已冻结，无法新增消费。</Text>
       </Screen>
     );
-  return <ExpenseForm ledger={query.data.data} userId={user!.id} />;
+  return (
+    <ExpenseForm
+      ledger={query.data.data}
+      userId={user!.id}
+      onRefreshLedger={() => {
+        void query.refetch();
+      }}
+    />
+  );
 }
