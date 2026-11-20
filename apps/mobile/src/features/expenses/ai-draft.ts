@@ -204,6 +204,7 @@ export function aiDraftErrorFeedback(error: unknown): AiDraftErrorFeedback {
         autoRetry: false,
         manualRetryAllowed: false,
       };
+    case 'NETWORK_UNAVAILABLE':
     case 'REQUEST_TIMEOUT':
     case 'NETWORK_ERROR':
       return {

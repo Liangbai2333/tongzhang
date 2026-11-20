@@ -12,6 +12,7 @@ import { sessionAdmission } from './session-admission';
 export type JsonOperation = Exclude<Operation, 'uploadImage' | 'getImage'>;
 export interface CallOptions {
   idempotencyKey?: string;
+  timeoutMs?: number;
 }
 /** Generate once per submitted form, retain this key when the result is unknown. */
 export const createIdempotencyKey = () => randomUUID();
@@ -40,6 +41,7 @@ export async function callOperation<K extends JsonOperation>(
       token,
       body: parsed.data.body,
       idempotencyKey: options.idempotencyKey,
+      ...(options.timeoutMs !== undefined ? { timeoutMs: options.timeoutMs } : {}),
     });
   };
   return (await (endpoint.authenticated

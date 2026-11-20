@@ -234,6 +234,17 @@ describe('B13 client prep: A31 AI draft prefill & error mapping', () => {
       autoRetry: false,
       manualRetryAllowed: true,
     });
+
+    const offline = aiDraftErrorFeedback(
+      new ApiError('NETWORK_UNAVAILABLE', '网络未连接，请联网后重试'),
+    );
+    expect(offline).toMatchObject({
+      kind: 'network',
+      actionLabel: '手动重试解析',
+      preservesForm: true,
+      autoRetry: false,
+      manualRetryAllowed: true,
+    });
   });
 });
 
@@ -301,6 +312,16 @@ describe('B13 client prep: A32 settlement reminder permissions & error mapping',
       autoRetry: false,
     });
     expect(validation.message).toContain('120');
+
+    const retryExpired = reminderErrorFeedback(
+      new ApiError('RETRY_WINDOW_EXPIRED', '超过 24 小时'),
+    );
+    expect(retryExpired).toMatchObject({
+      kind: 'retry_expired',
+      actionLabel: '刷新结算页',
+      preservesIdempotencyKey: false,
+      autoRetry: false,
+    });
   });
 });
 
