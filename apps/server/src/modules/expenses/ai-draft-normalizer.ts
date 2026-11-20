@@ -30,12 +30,14 @@ function parseCentsValue(
   if (rawCents !== undefined && rawCents !== null) {
     if (typeof rawCents !== 'string') return { value: null, invalid: true };
     const trimmed = rawCents.trim();
-    const schema = allowZero ? nonnegativeMoneySchema : expenseMoneySchema;
-    const parsed = schema.safeParse(trimmed);
-    if (!parsed.success) return { value: null, invalid: true };
-    const cents = BigInt(parsed.data);
-    if (cents > MAX_EXPENSE_CENTS) return { value: null, invalid: true };
-    return { value: cents, invalid: false };
+    if (trimmed !== '') {
+      const schema = allowZero ? nonnegativeMoneySchema : expenseMoneySchema;
+      const parsed = schema.safeParse(trimmed);
+      if (!parsed.success) return { value: null, invalid: true };
+      const cents = BigInt(parsed.data);
+      if (cents > MAX_EXPENSE_CENTS) return { value: null, invalid: true };
+      return { value: cents, invalid: false };
+    }
   }
   if (rawYuan !== undefined && rawYuan !== null) {
     if (typeof rawYuan !== 'string') return { value: null, invalid: true };
@@ -43,6 +45,7 @@ function parseCentsValue(
       .trim()
       .replace(/^[¥￥]\s*/, '')
       .replace(/\s*元$/, '');
+    if (cleaned === '') return { value: null, invalid: false };
     try {
       const cents = parseYuan(cleaned);
       if ((!allowZero && cents <= 0n) || cents < 0n || cents > MAX_EXPENSE_CENTS) {
@@ -130,10 +133,25 @@ function normalizeSplits(
   splitMode: ExpenseDraft['splitMode'];
   splits: ExpenseDraft['splits'];
 } {
+  const normalizedMode =
+    typeof rawSplitMode === 'string' ? rawSplitMode.trim().toUpperCase() : rawSplitMode;
   const requestedMode =
-    rawSplitMode === 'SHARES' || rawSplitMode === 'AMOUNT' || rawSplitMode === 'EQUAL'
-      ? rawSplitMode
+    normalizedMode === 'SHARES' || normalizedMode === 'AMOUNT' || normalizedMode === 'EQUAL'
+      ? normalizedMode
       : 'EQUAL';
+  if (
+    rawSplitMode !== undefined &&
+    rawSplitMode !== null &&
+    rawSplitMode !== '' &&
+    normalizedMode !== 'SHARES' &&
+    normalizedMode !== 'AMOUNT' &&
+    normalizedMode !== 'EQUAL'
+  ) {
+    warnings.push('分摊方式无法识别，已切换为均分，请核对');
+  }
+  if (rawSplits !== undefined && rawSplits !== null && !Array.isArray(rawSplits)) {
+    warnings.push('分摊成员格式无效，已清空分摊列表，请核对');
+  }
   const items = Array.isArray(rawSplits) ? rawSplits : [];
   const seen = new Set<string>();
   const validItems: { memberId: string; raw: Record<string, unknown> }[] = [];
@@ -237,10 +255,11 @@ function collectWarnings(rawWarnings: unknown, generated: readonly string[]): st
     seen.add(trimmed);
     result.push(trimmed);
   };
+  // Prioritize server-generated degradation warnings so upstream warning floods cannot evict them.
+  for (const item of generated) push(item);
   if (Array.isArray(rawWarnings)) {
     for (const item of rawWarnings) if (typeof item === 'string') push(item);
   }
-  for (const item of generated) push(item);
   return result;
 }
 

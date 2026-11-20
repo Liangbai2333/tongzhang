@@ -1,6 +1,8 @@
 import { describe, expect, it, vi } from 'vitest';
-import { expenseDraftSchema } from '@tongzhang/contracts';
+import { MAX_AI_DRAFT_WARNINGS, expenseDraftSchema } from '@tongzhang/contracts';
+import { aiDraftConfig, readEnv } from '../src/config/env.js';
 import {
+  createAiDraftProvider,
   createOpenAiCompatibleAiDraftProvider,
   createUnconfiguredAiDraftProvider,
   normalizeAiDraftOutput,
@@ -177,6 +179,144 @@ describe('normalizeAiDraftOutput', () => {
       }
     }
   });
+
+  it('degrades malformed SHARES, out-of-range AMOUNT, unknown splitMode, and non-array splits with warnings', () => {
+    const badShares = normalizeAiDraftOutput(
+      {
+        title: '包车',
+        amountCents: '6000',
+        category: 'TRANSPORT',
+        splitMode: ' shares ',
+        splits: [
+          { memberId: an, shares: 0 },
+          { memberId: chen, shares: 1.5 },
+        ],
+      },
+      { names: gushanNames, receiptImageId: null },
+    );
+    expect(badShares.splitMode).toBe('EQUAL');
+    expect(badShares.splits).toEqual([{ memberId: an }, { memberId: chen }]);
+    expect(badShares.warnings).toContain('按份分摊信息不完整，已切换为均分，请核对');
+
+    const overflowDerivedAmount = normalizeAiDraftOutput(
+      {
+        title: '超限分摊',
+        amountCents: null,
+        category: 'OTHER',
+        splitMode: ' amount ',
+        splits: [
+          { memberId: an, amountCents: '600000000' },
+          { memberId: bai, amountCents: '600000000' },
+        ],
+      },
+      { names: gushanNames, receiptImageId: null },
+    );
+    expect(overflowDerivedAmount.splitMode).toBe('EQUAL');
+    expect(overflowDerivedAmount.amountCents).toBeNull();
+    expect(overflowDerivedAmount.warnings).toContain(
+      '按金额分摊合计与总金额不一致，已切换为均分，请核对',
+    );
+
+    const zeroAmountSplit = normalizeAiDraftOutput(
+      {
+        title: '免单含零分摊',
+        amountCents: '',
+        amountYuan: '120.00',
+        category: 'DINING',
+        splitMode: 'AMOUNT',
+        splits: [
+          { memberId: an, amountCents: '0' },
+          { memberId: bai, amountCents: '4000' },
+          { memberId: chen, amountCents: '4000' },
+          { memberId: ding, amountCents: '4000' },
+        ],
+      },
+      { names: gushanNames, receiptImageId: null },
+    );
+    expect(expenseDraftSchema.parse(zeroAmountSplit)).toBeTruthy();
+    expect(zeroAmountSplit.splitMode).toBe('AMOUNT');
+    expect(zeroAmountSplit.amountCents).toBe('12000');
+    expect(zeroAmountSplit.splits).toEqual([
+      { memberId: an, amountCents: '0' },
+      { memberId: bai, amountCents: '4000' },
+      { memberId: chen, amountCents: '4000' },
+      { memberId: ding, amountCents: '4000' },
+    ]);
+
+    const badModeAndSplits = normalizeAiDraftOutput(
+      {
+        title: '异常模式',
+        amountYuan: '12.345',
+        category: 'DINING',
+        splitMode: 'PERCENTAGE',
+        splits: 'everyone',
+      },
+      { names: gushanNames, receiptImageId: null },
+    );
+    expect(badModeAndSplits.amountCents).toBeNull();
+    expect(badModeAndSplits.splitMode).toBe('EQUAL');
+    expect(badModeAndSplits.splits).toEqual([]);
+    expect(badModeAndSplits.warnings).toContain('未能识别有效金额，请手动填写');
+    expect(badModeAndSplits.warnings).toContain('分摊方式无法识别，已切换为均分，请核对');
+    expect(badModeAndSplits.warnings).toContain('分摊成员格式无效，已清空分摊列表，请核对');
+  });
+
+  it('avoids guessing ambiguous duplicate usernames and prioritizes server warnings under flood', () => {
+    const duplicateNames = new Map([
+      [an, '小安'],
+      [bai, '小安'],
+      [chen, '小陈'],
+    ]);
+    const flooded = normalizeAiDraftOutput(
+      {
+        title: 'a'.repeat(80),
+        amountCents: '0',
+        category: 'INVALID',
+        occurredOn: 'not-a-date',
+        payerName: '小安',
+        splitMode: 'EQUAL',
+        splits: [{ name: '小安' }, { memberId: chen }, { memberId: chen.toUpperCase() }],
+        note: 'b'.repeat(600),
+        warnings: [
+          ...Array.from({ length: 15 }, (_, i) => `模型告警-${i}-${'x'.repeat(220)}`),
+          123,
+          null,
+        ],
+      },
+      { names: duplicateNames, receiptImageId: receiptId, referenceDate: '2026-11-19' },
+    );
+    expect(expenseDraftSchema.parse(flooded)).toBeTruthy();
+    expect(flooded.title?.length).toBe(60);
+    expect(flooded.note?.length).toBe(500);
+    expect(flooded.amountCents).toBeNull();
+    expect(flooded.payerMemberId).toBeNull();
+    expect(flooded.splits).toEqual([{ memberId: chen }]);
+    expect(flooded.receiptImageId).toBe(receiptId);
+    expect(flooded.occurredOn).toBe('2026-11-19');
+    expect(flooded.warnings).toHaveLength(MAX_AI_DRAFT_WARNINGS);
+    expect(flooded.warnings.every((w) => w.length <= 200)).toBe(true);
+    expect(flooded.warnings).toContain('标题过长已截断，请核对');
+    expect(flooded.warnings).toContain('未能识别有效金额，请手动填写');
+    expect(flooded.warnings).toContain('未能匹配账本付款人，请手动选择');
+    expect(flooded.warnings).toContain('已过滤非本账本或重复的分摊成员，请核对');
+
+    const empty = normalizeAiDraftOutput(
+      {},
+      { names: gushanNames, receiptImageId: null, referenceDate: '2026-11-19' },
+    );
+    expect(expenseDraftSchema.parse(empty)).toEqual({
+      title: null,
+      amountCents: null,
+      category: 'OTHER',
+      occurredOn: '2026-11-19',
+      payerMemberId: null,
+      splitMode: 'EQUAL',
+      splits: [],
+      note: null,
+      receiptImageId: null,
+      warnings: [],
+    });
+  });
 });
 
 describe('AI draft providers', () => {
@@ -267,5 +407,103 @@ describe('AI draft providers', () => {
       expect((error as AppError).statusCode).toBe(502);
       expect((error as AppError).message).not.toContain('sk-secret-key');
     }
+  });
+
+  it('supports multimodal array content, JPEG receipt-only requests, and partial-env 503 fallback', async () => {
+    const baseEnv = {
+      NODE_ENV: 'test',
+      PGHOST: '127.0.0.1',
+      PGPORT: '35432',
+      PGUSER: 'tongzhang',
+      PGPASSWORD: 'secret',
+      PGDATABASE: 'tongzhang',
+      AUTH_JWT_SECRET: 'ab'.repeat(32),
+    };
+    for (const partial of [
+      { AI_DRAFT_API_BASE_URL: 'https://llm.example.test/v1', AI_DRAFT_MODEL: 'm' },
+      { AI_DRAFT_API_BASE_URL: 'https://llm.example.test/v1', AI_DRAFT_API_KEY: 'sk-only' },
+      { AI_DRAFT_API_KEY: 'sk-only', AI_DRAFT_MODEL: 'm' },
+    ]) {
+      const provider = createAiDraftProvider(aiDraftConfig(readEnv({ ...baseEnv, ...partial })));
+      await expect(
+        provider.parse({
+          text: '晚餐 60 元',
+          members: [{ memberId: an, username: '小安' }],
+          currentMemberId: an,
+        }),
+      ).rejects.toMatchObject({ code: 'AI_DRAFT_UNAVAILABLE', statusCode: 503 });
+    }
+
+    const fetchMock = vi.fn<typeof fetch>();
+    fetchMock
+      .mockResolvedValueOnce(
+        new Response(
+          JSON.stringify({
+            choices: [
+              {
+                message: {
+                  content: [
+                    { type: 'text', text: '{"title":"门票",' },
+                    { type: 'text', text: '"amountYuan":"120.00","category":"TICKET"}' },
+                  ],
+                },
+              },
+            ],
+          }),
+          { status: 200, headers: { 'Content-Type': 'application/json' } },
+        ),
+      )
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify({ choices: [] }), {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' },
+        }),
+      )
+      .mockResolvedValueOnce(
+        new Response(JSON.stringify({ choices: [{ message: { content: null } }] }), {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' },
+        }),
+      );
+
+    const provider = createOpenAiCompatibleAiDraftProvider(
+      {
+        apiBaseUrl: 'https://llm.example.test/v1',
+        apiKey: 'sk-jpeg-secret',
+        model: 'vision-model',
+        timeoutMs: 5000,
+      },
+      fetchMock,
+    );
+
+    const parsed = await provider.parse({
+      receiptImage: {
+        imageId: receiptId,
+        mimeType: 'image/jpeg',
+        content: new Uint8Array([0xff, 0xd8, 0xff, 0xe0]),
+      },
+      members: [{ memberId: an, username: '小安' }],
+      currentMemberId: an,
+    });
+    expect(parsed).toEqual({ title: '门票', amountYuan: '120.00', category: 'TICKET' });
+    const body = String(fetchMock.mock.calls[0]?.[1]?.body ?? '');
+    expect(body).toContain('data:image/jpeg;base64,');
+    expect(body).toContain('\\"hasReceiptImage\\":true');
+
+    await expect(
+      provider.parse({
+        text: '空 choices',
+        members: [{ memberId: an, username: '小安' }],
+        currentMemberId: an,
+      }),
+    ).rejects.toMatchObject({ code: 'AI_DRAFT_UPSTREAM_ERROR', statusCode: 502 });
+
+    await expect(
+      provider.parse({
+        text: 'null content',
+        members: [{ memberId: an, username: '小安' }],
+        currentMemberId: an,
+      }),
+    ).rejects.toMatchObject({ code: 'AI_DRAFT_UPSTREAM_ERROR', statusCode: 502 });
   });
 });
