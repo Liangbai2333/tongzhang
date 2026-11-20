@@ -165,10 +165,12 @@ describe('B17 mobile 401 three-gate regressions (iOS & Android)', () => {
     expect(screen.getByTestId('draft-value')).toHaveTextContent('鼓山食堂 120 元');
     expect(sendWrite).toHaveBeenCalledTimes(1);
 
-    // User manually submits after recovery -> succeeds once.
+    // User manually submits after recovery -> succeeds once reusing the exact same Idempotency-Key.
     await userEvent.press(screen.getByRole('button', { name: '手动提交' }));
     expect(await screen.findByTestId('saved-count')).toHaveTextContent('1');
     expect(sendWrite).toHaveBeenCalledTimes(2);
+    expect(sendWrite.mock.calls[0]?.[0]).toBe('gate-401-key-1');
+    expect(sendWrite.mock.calls[1]?.[0]).toBe('gate-401-key-1');
   });
 
   it('Gate 3: cross-account re-login clears prior query memory and late 200 during offline gate is discarded', async () => {
