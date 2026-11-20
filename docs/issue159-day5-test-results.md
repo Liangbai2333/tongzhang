@@ -31,7 +31,7 @@
 | [b13-panels-ui.test.tsx](../apps/mobile/tests/b13-panels-ui.test.tsx)                                         | Layer 2 | 补充 **B13** 双端（iOS / Android）组件回归：基于 `ai-draft.ts`、`reminder.ts`、`notifications.ts` 与 `useIdempotentWrite` 验证 AI 草稿回填面板（整数分转元回填、不自动调用 `A13` 保存、`503` 失败保留输入且禁自动重试）、结算页催还面板（权限可见性、6 小时冷却禁用、超时保留原幂等键并仅在手动重试时复用同键）、站内提醒列表（幂等已读、`403` 禁自动重试与跳转 `/ledgers/[ledgerId]/settlement`）                                           |
 | [b17-401-gates.test.tsx](../apps/mobile/tests/b17-401-gates.test.tsx)                                         | Layer 2 | 推进 **B17** 双端（iOS / Android）`401` 三条门禁回归：基于真实 `AuthProvider`、`useIdempotentWrite` 与 `QueryClient` 验证（1）真实 `401` 进入 `reauthentication` 门禁保留内存草稿与原幂等键且零自动重发；（2）同账号重登经 `getMe` 在线核验恢复后仍需手动提交并复用原键落库一次；（3）跨账号重登清空上一账号 Query 缓存，且断网门禁期间迟到的 `getMe` `200` 响应被丢弃不解锁业务区                                                           |
 
-> 说明：截至本单创建时，[#153](https://github.com/Liangbai2333/tongzhang/issues/153)（`B13` 移动端生产页面面板接入与 `B14` 独立 APK 构建）尚未合入 `main`。因此 `b13-panels-ui.test.tsx` 当前基于 `main` 已合入的 `B13` 客户端模块与交互面板夹具完成双端组件回归，待 `#153` 合入 `main` 后将在 `B17` Day 6 补齐面向生产页面的挂载断言。
+> 说明：截至本单创建时，[#153](https://github.com/Liangbai2333/tongzhang/issues/153)（`B13` 移动端生产页面面板接入与 `B14` 独立 APK 构建）尚未合入 `main`。因此 `b13-panels-ui.test.tsx` 基于 `B13` 客户端模块与交互面板夹具完成双端组件回归；在合入 `PR #161`（`3b844b6`，生产页面挂载 `AiDraftSheet`、`RemindTransferSheet`、`NotificationsSheet` 及 `ai-draft-reminder-ui.test.tsx` 双端 20 项）并补强 `b17-401-gates.test.tsx` 同幂等键断言后，合并提交复跑 `pnpm test:mobile` 为 **34 个套件（iOS / Android 各 17）、350 项测试全部通过**。
 
 ## 待完成（需人工）
 
