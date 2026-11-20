@@ -14,6 +14,10 @@ x-server: &server
     AUTH_JWT_SECRET: ${AUTH_JWT_SECRET:?Set a random 64-character lowercase hex signing secret}
     LOG_LEVEL: ${LOG_LEVEL:-info}
     TRUST_PROXY: ${PROXY_SUBNET:-172.30.0.0/28}
+    AI_DRAFT_API_BASE_URL: ${AI_DRAFT_API_BASE_URL:-}
+    AI_DRAFT_API_KEY: ${AI_DRAFT_API_KEY:-}
+    AI_DRAFT_MODEL: ${AI_DRAFT_MODEL:-}
+    AI_DRAFT_TIMEOUT_MS: ${AI_DRAFT_TIMEOUT_MS:-15000}
   networks: [backend, proxy]
 
 services:
