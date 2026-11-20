@@ -17,6 +17,7 @@ export type ReminderErrorKind =
   | 'forbidden'
   | 'validation'
   | 'unauthenticated'
+  | 'retry_expired'
   | 'uncertain'
   | 'unknown';
 
@@ -116,6 +117,14 @@ export function reminderErrorFeedback(error: unknown): ReminderErrorFeedback {
         kind: 'unauthenticated',
         message: '登录状态已失效，同账号重新核验后将保留当前备注与原请求标识，需手动再次确认发送。',
         preservesIdempotencyKey: true,
+        autoRetry: false,
+      };
+    case 'RETRY_WINDOW_EXPIRED':
+      return {
+        kind: 'retry_expired',
+        message: error.message || '本次催还尝试已超过 24 小时，请刷新结算页后重新操作。',
+        actionLabel: '刷新结算页',
+        preservesIdempotencyKey: false,
         autoRetry: false,
       };
     case 'REQUEST_TIMEOUT':
