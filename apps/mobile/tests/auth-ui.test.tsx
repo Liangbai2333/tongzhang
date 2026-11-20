@@ -33,7 +33,12 @@ const mockAuth = {
 jest.mock('../src/providers/AuthProvider', () => ({ useAuth: () => mockAuth }));
 jest.mock('../src/features/ledgers/api', () => ({ ledgersApi: { listLedgers: jest.fn() } }));
 jest.mock('../src/features/profile/api', () => ({
-  profileApi: { updateProfile: jest.fn(), updatePreferences: jest.fn() },
+  profileApi: {
+    updateProfile: jest.fn(),
+    updatePreferences: jest.fn(),
+    listNotifications: jest.fn(),
+    markNotificationRead: jest.fn(),
+  },
 }));
 jest.mock('expo-router', () => ({
   useIsFocused: () => true,

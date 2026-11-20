@@ -27,6 +27,7 @@ jest.mock('../src/features/settlements/api', () => ({
     startSettlement: jest.fn(),
     getSettlement: jest.fn(),
     markTransferPaid: jest.fn(),
+    remindTransfer: jest.fn(),
     settleLedger: jest.fn(),
   },
 }));
