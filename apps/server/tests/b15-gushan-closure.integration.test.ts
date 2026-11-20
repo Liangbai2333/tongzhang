@@ -259,18 +259,28 @@ describe('B15 closure: A16/A17 idempotency, soft-delete A21 conservation & Gusha
     ).data;
     expect(stats.expenseTotalCents).toBe('30000');
     expect(stats.expenseCount).toBe(3);
+    expect(stats.dailyTrendTruncated).toBe(false);
     expect(stats.categories).toEqual([
       { category: 'DINING', amountCents: '12000', expenseCount: 1, percentage: '40.0' },
       { category: 'TICKET', amountCents: '12000', expenseCount: 1, percentage: '40.0' },
       { category: 'TRANSPORT', amountCents: '6000', expenseCount: 1, percentage: '20.0' },
     ]);
+    expect(stats.categories.reduce((sum, c) => sum + BigInt(c.amountCents), 0n)).toBe(30000n);
+    expect(stats.categories.reduce((sum, c) => sum + c.expenseCount, 0)).toBe(3);
     expect(stats.dailyTrend).toEqual([
       { date: '2026-11-15', amountCents: '24000', expenseCount: 2 },
       { date: '2026-11-16', amountCents: '6000', expenseCount: 1 },
     ]);
-    expect(stats.topExpenses.map((e) => e.id).sort()).toEqual(
-      [canteen.id, ticket.id, fare.id].sort(),
-    );
+    expect(stats.dailyTrend.reduce((sum, d) => sum + BigInt(d.amountCents), 0n)).toBe(30000n);
+    expect(stats.dailyTrend.reduce((sum, d) => sum + d.expenseCount, 0)).toBe(3);
+    const tiedTopIds = [canteen.id, ticket.id].sort();
+    expect(stats.topExpenses.map((e) => e.id)).toEqual([...tiedTopIds, fare.id]);
+    expect(stats.topExpenses.find((e) => e.id === canteen.id)).toMatchObject({
+      title: '食堂',
+      amountCents: '12000',
+      category: 'DINING',
+      occurredOn: '2026-11-15',
+    });
     const byMember = Object.fromEntries(stats.members.map((m) => [m.memberId, m]));
     expect(byMember[an!.memberId]).toMatchObject({
       paidCents: '12000',
@@ -296,6 +306,22 @@ describe('B15 closure: A16/A17 idempotency, soft-delete A21 conservation & Gusha
     expect(stats.members.reduce((sum, m) => sum + BigInt(m.sharedCents), 0n)).toBe(30000n);
     expect(stats.members.reduce((sum, m) => sum + BigInt(m.netCents), 0n)).toBe(0n);
 
+    // Cross-check A20 balances in ACTIVE state against A21 statistics.
+    const balancesActive = parseOk(
+      await fixture.app.inject({
+        url: `/api/v1/ledgers/${ledger.ledgerId}/balances`,
+        headers: bearer(ding!),
+      }),
+      endpoints.getBalances.response,
+    ).data;
+    expect(balancesActive.expenseTotalCents).toBe('30000');
+    const byMemberId = <T extends { memberId: string }>(rows: readonly T[]) =>
+      [...rows].sort((a, b) => a.memberId.localeCompare(b.memberId));
+    expect(byMemberId(stats.members)).toEqual(
+      byMemberId(balancesActive.members.map(({ remainingNetCents: _remaining, ...m }) => m)),
+    );
+    expect(balancesActive.members.every((m) => m.remainingNetCents === m.netCents)).toBe(true);
+
     // A22 settlement preview: strictly read-only, exact minimum 2 transfers totaling 9000 cents.
     const versionBeforePreview = await ledgerVersion(ledger.ledgerId);
     const preview = parseOk(
@@ -314,13 +340,15 @@ describe('B15 closure: A16/A17 idempotency, soft-delete A21 conservation & Gusha
     expect(
       preview.transfers
         .map((t) => [t.payerMemberId, t.payeeMemberId, t.amountCents])
-        .sort((a, b) => a[2]!.localeCompare(b[2]!)),
+        .sort((a, b) =>
+          BigInt(a[2]!) < BigInt(b[2]!) ? -1 : BigInt(a[2]!) > BigInt(b[2]!) ? 1 : 0,
+        ),
     ).toEqual([
       [chen!.memberId, an!.memberId, '3000'],
       [ding!.memberId, bai!.memberId, '6000'],
     ]);
 
-    // A23 freeze -> SETTLING -> A25 mark both transfers paid -> A26 settle -> SETTLED.
+    // A23 freeze -> SETTLING -> A24 netSnapshot -> A25 mark both transfers paid -> A26 settle -> SETTLED.
     const settlement = parseOk(
       await fixture.app.inject({
         method: 'POST',
@@ -338,6 +366,27 @@ describe('B15 closure: A16/A17 idempotency, soft-delete A21 conservation & Gusha
       transferCount: 2,
       progress: { totalCount: 2, paidCount: 0 },
     });
+    const frozenDetails = parseOk(
+      await fixture.app.inject({
+        url: `/api/v1/ledgers/${ledger.ledgerId}/settlement`,
+        headers: bearer(bai!),
+      }),
+      endpoints.getSettlement.response,
+    ).data;
+    expect(frozenDetails.progress).toEqual({
+      paidCount: 0,
+      totalCount: 2,
+      remainingCents: '9000',
+    });
+    expect(byMemberId(frozenDetails.netSnapshot)).toEqual(
+      byMemberId([
+        { memberId: an!.memberId, netCents: '3000' },
+        { memberId: bai!.memberId, netCents: '6000' },
+        { memberId: chen!.memberId, netCents: '-3000' },
+        { memberId: ding!.memberId, netCents: '-6000' },
+      ]),
+    );
+    expect(frozenDetails.netSnapshot.reduce((sum, n) => sum + BigInt(n.netCents), 0n)).toBe(0n);
 
     for (const transfer of settlement.batch.transfers) {
       parseOk(
@@ -372,6 +421,9 @@ describe('B15 closure: A16/A17 idempotency, soft-delete A21 conservation & Gusha
     expect(balancesAfter.expenseTotalCents).toBe('30000');
     expect(balancesAfter.members.every((m) => m.remainingNetCents === '0')).toBe(true);
     expect(balancesAfter.members.reduce((sum, m) => sum + BigInt(m.netCents), 0n)).toBe(0n);
+    expect(byMemberId(stats.members)).toEqual(
+      byMemberId(balancesAfter.members.map(({ remainingNetCents: _remaining, ...m }) => m)),
+    );
 
     const statsAfter = parseOk(
       await fixture.app.inject({
@@ -397,7 +449,7 @@ describe('B15 closure: A16/A17 idempotency, soft-delete A21 conservation & Gusha
       'LEDGER_FROZEN',
     );
 
-    // A27 personal archive affects only the archiver; other members' snapshots remain identical.
+    // A27 personal archive affects only the archiver; other members' ledger/balances/stats remain identical.
     parseOk(
       await fixture.app.inject({
         method: 'POST',
@@ -406,6 +458,30 @@ describe('B15 closure: A16/A17 idempotency, soft-delete A21 conservation & Gusha
       }),
       endpoints.archiveLedger.response,
     );
+    const dingLedger = parseOk(
+      await fixture.app.inject({
+        url: `/api/v1/ledgers/${ledger.ledgerId}`,
+        headers: bearer(ding!),
+      }),
+      endpoints.getLedger.response,
+    ).data;
+    expect(dingLedger.archivedAt).not.toBeNull();
+    const anLedger = parseOk(
+      await fixture.app.inject({
+        url: `/api/v1/ledgers/${ledger.ledgerId}`,
+        headers: bearer(an!),
+      }),
+      endpoints.getLedger.response,
+    ).data;
+    expect(anLedger.archivedAt).toBeNull();
+    const balancesAfterArchive = parseOk(
+      await fixture.app.inject({
+        url: `/api/v1/ledgers/${ledger.ledgerId}/balances`,
+        headers: bearer(an!),
+      }),
+      endpoints.getBalances.response,
+    ).data;
+    expect(balancesAfterArchive).toEqual(balancesAfter);
     const statsAfterArchive = parseOk(
       await fixture.app.inject({
         url: `/api/v1/ledgers/${ledger.ledgerId}/statistics`,
