@@ -1,10 +1,11 @@
 import { randomUUID } from 'node:crypto';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
-import { asc, eq } from 'drizzle-orm';
+import { and, asc, eq } from 'drizzle-orm';
 import type { z } from 'zod';
 import { endpoints, errorResponseSchema } from '@tongzhang/contracts';
 import { ledgerMembers, notifications, operationLogs } from '../src/db/schema/index.js';
 import { deliverSettlementReminderNotification } from '../src/modules/profile/index.js';
+import { DEFAULT_REMINDER_COOLDOWN_MS } from '../src/modules/settlements/remind.js';
 import { integrationFixture, type TestAccount } from './fixtures/integration.js';
 
 type Response = { statusCode: number; body: string; json: () => unknown };
@@ -617,6 +618,465 @@ describe('notifications table constraints, A33/A34 endpoints and A29 preference 
     expect(unreadAfterResume[0]).toMatchObject({
       id: resumed.notificationId,
       note: null,
+      readAt: null,
+    });
+  });
+});
+
+async function expireReminderCooldown(ledgerId: string, transferId: string) {
+  await fixture.db.orm
+    .update(operationLogs)
+    .set({ createdAt: new Date(Date.now() - DEFAULT_REMINDER_COOLDOWN_MS - 60_000) })
+    .where(
+      and(
+        eq(operationLogs.ledgerId, ledgerId),
+        eq(operationLogs.action, 'TRANSFER_REMINDED'),
+        eq(operationLogs.targetId, transferId),
+      ),
+    );
+}
+
+describe('A32 -> notifications -> A33/A34 end-to-end linkage (issue 138)', () => {
+  it('links A32 reminders to A33 pagination/unreadOnly/A28 rename and A34 recipient-only idempotent read', async () => {
+    const [an, bai, chen, ding, stranger] = await Promise.all(
+      ['小安', '小白', '小陈', '小丁', '无关路人'].map((name) => fixture.register(name)),
+    );
+
+    // 1. Seed Gushan 4-person baseline (30000 cents -> chen->an 3000, ding->bai 6000) in SETTLING.
+    const gushanCreated = success(
+      await fixture.app.inject({
+        method: 'POST',
+        url: '/api/v1/ledgers',
+        headers: authHeaders(an!, randomUUID()),
+        payload: { name: '鼓山一日', coverKey: 'mountain' },
+      }),
+      endpoints.createLedger.response,
+      201,
+    ).data;
+    const gushanLedgerId = gushanCreated.ledger.id;
+    for (const member of [bai!, chen!, ding!]) {
+      success(
+        await fixture.app.inject({
+          method: 'POST',
+          url: '/api/v1/invitations/join',
+          headers: authHeaders(member, randomUUID()),
+          payload: { code: gushanCreated.invitation.code },
+        }),
+        endpoints.joinLedger.response,
+      );
+    }
+    const members = await fixture.db.orm
+      .select()
+      .from(ledgerMembers)
+      .where(eq(ledgerMembers.ledgerId, gushanLedgerId));
+    const memberIdOf = (acc: TestAccount) => members.find((m) => m.userId === acc.user.id)!.id;
+    const allIds = [memberIdOf(an!), memberIdOf(bai!), memberIdOf(chen!), memberIdOf(ding!)];
+    for (const [payerMemberId, title, amountCents, participants] of [
+      [allIds[0]!, '鼓山食堂', '12000', allIds],
+      [allIds[1]!, '鼓山门票', '12000', allIds],
+      [allIds[2]!, '鼓山车费', '6000', [allIds[0]!, allIds[2]!]],
+    ] as const) {
+      success(
+        await fixture.app.inject({
+          method: 'POST',
+          url: `/api/v1/ledgers/${gushanLedgerId}/expenses`,
+          headers: authHeaders(an!, randomUUID()),
+          payload: {
+            title,
+            amountCents,
+            category: 'DINING',
+            occurredOn: '2026-11-19',
+            payerMemberId,
+            splitMode: 'EQUAL',
+            splits: participants.map((memberId) => ({ memberId })),
+          },
+        }),
+        endpoints.createExpense.response,
+        201,
+      );
+    }
+    const gushanPreview = success(
+      await fixture.app.inject({
+        url: `/api/v1/ledgers/${gushanLedgerId}/settlement-preview`,
+        headers: authHeaders(an!),
+      }),
+      endpoints.previewSettlement.response,
+    ).data;
+    const gushanBatch = success(
+      await fixture.app.inject({
+        method: 'POST',
+        url: `/api/v1/ledgers/${gushanLedgerId}/settlement`,
+        headers: authHeaders(an!, randomUUID()),
+        payload: { expectedVersion: gushanPreview.ledgerVersion },
+      }),
+      endpoints.startSettlement.response,
+      201,
+    ).data.batch;
+    const chenToAn = gushanBatch.transfers.find(
+      (t) => t.payerMemberId === allIds[2] && t.payeeMemberId === allIds[0],
+    )!;
+    const dingToBai = gushanBatch.transfers.find(
+      (t) => t.payerMemberId === allIds[3] && t.payeeMemberId === allIds[1],
+    )!;
+
+    // 2. Seed a second SETTLING ledger where ding also owes an 4000 cents.
+    const secondLedger = await seedSettlingTransfer(an!, ding!, '海边夜宵', '8000');
+
+    // 3. Trigger real A32 reminders:
+    //    - bai reminds ding (6000 cents, with trimmed note + idempotent replay)
+    //    - an reminds chen (3000 cents, no note)
+    //    - an reminds ding on secondLedger (4000 cents, no note)
+    //    - after cooldown expires, an (creator) reminds ding on gushanLedger (6000 cents)
+    const firstKey = randomUUID();
+    const remind1 = success(
+      await fixture.app.inject({
+        method: 'POST',
+        url: `/api/v1/ledgers/${gushanLedgerId}/settlement/transfers/${dingToBai.id}/remind`,
+        headers: authHeaders(bai!, firstKey),
+        payload: { note: '  方便时转一下鼓山门票  ' },
+      }),
+      endpoints.remindTransfer.response,
+    ).data;
+    // Idempotent replay with same key does not insert a duplicate notification.
+    const remind1Replay = success(
+      await fixture.app.inject({
+        method: 'POST',
+        url: `/api/v1/ledgers/${gushanLedgerId}/settlement/transfers/${dingToBai.id}/remind`,
+        headers: authHeaders(bai!, firstKey),
+        payload: { note: '  方便时转一下鼓山门票  ' },
+      }),
+      endpoints.remindTransfer.response,
+    ).data;
+    expect(remind1Replay).toEqual(remind1);
+
+    success(
+      await fixture.app.inject({
+        method: 'POST',
+        url: `/api/v1/ledgers/${gushanLedgerId}/settlement/transfers/${chenToAn.id}/remind`,
+        headers: authHeaders(an!, randomUUID()),
+        payload: {},
+      }),
+      endpoints.remindTransfer.response,
+    );
+
+    success(
+      await fixture.app.inject({
+        method: 'POST',
+        url: `/api/v1/ledgers/${secondLedger.ledgerId}/settlement/transfers/${secondLedger.transferId}/remind`,
+        headers: authHeaders(an!, randomUUID()),
+        payload: {},
+      }),
+      endpoints.remindTransfer.response,
+    );
+
+    await expireReminderCooldown(gushanLedgerId, dingToBai.id);
+    success(
+      await fixture.app.inject({
+        method: 'POST',
+        url: `/api/v1/ledgers/${gushanLedgerId}/settlement/transfers/${dingToBai.id}/remind`,
+        headers: authHeaders(an!, randomUUID()),
+        payload: { note: '创建者二次提醒' },
+      }),
+      endpoints.remindTransfer.response,
+    );
+
+    // 4. Cross-user isolation on A33: actors and stranger see 0; chen sees only chen's 1; ding sees 3.
+    for (const emptyUser of [an!, bai!, stranger!]) {
+      const inbox = success(
+        await fixture.app.inject({
+          url: '/api/v1/me/notifications',
+          headers: authHeaders(emptyUser),
+        }),
+        endpoints.listNotifications.response,
+      );
+      expect(inbox).toEqual({ data: [], page: { nextCursor: null } });
+    }
+
+    const chenInbox = success(
+      await fixture.app.inject({
+        url: '/api/v1/me/notifications?unreadOnly=true',
+        headers: authHeaders(chen!),
+      }),
+      endpoints.listNotifications.response,
+    );
+    expect(chenInbox.data).toHaveLength(1);
+    expect(chenInbox.data[0]).toMatchObject({
+      type: 'SETTLEMENT_REMINDER',
+      ledgerId: gushanLedgerId,
+      ledgerName: '鼓山一日',
+      transferId: chenToAn.id,
+      actorUserId: an!.user.id,
+      actorName: '小安',
+      amountCents: '3000',
+      note: null,
+      readAt: null,
+    });
+
+    // 5. Ding paginates across 3 real A32 reminders with limit=2 (zero duplicates/omissions).
+    const page1 = success(
+      await fixture.app.inject({
+        url: '/api/v1/me/notifications?limit=2',
+        headers: authHeaders(ding!),
+      }),
+      endpoints.listNotifications.response,
+    );
+    expect(page1.data).toHaveLength(2);
+    expect(page1.page.nextCursor).toBeTruthy();
+
+    const page2 = success(
+      await fixture.app.inject({
+        url: `/api/v1/me/notifications?limit=2&cursor=${encodeURIComponent(page1.page.nextCursor!)}`,
+        headers: authHeaders(ding!),
+      }),
+      endpoints.listNotifications.response,
+    );
+    expect(page2.data).toHaveLength(1);
+    expect(page2.page.nextCursor).toBeNull();
+
+    const allDingItems = [...page1.data, ...page2.data];
+    expect(new Set(allDingItems.map((i) => i.id)).size).toBe(3);
+    expect(allDingItems.map((i) => ({ amountCents: i.amountCents, note: i.note }))).toEqual([
+      { amountCents: '6000', note: '创建者二次提醒' },
+      { amountCents: '4000', note: null },
+      { amountCents: '6000', note: '方便时转一下鼓山门票' },
+    ]);
+    const baiNotification = allDingItems[2]!;
+    expect(baiNotification).toMatchObject({
+      ledgerId: gushanLedgerId,
+      ledgerName: '鼓山一日',
+      transferId: dingToBai.id,
+      actorUserId: bai!.user.id,
+      actorName: '小白',
+      amountCents: '6000',
+      note: '方便时转一下鼓山门票',
+      readAt: null,
+    });
+
+    // 6. A28 actor rename reflects immediately on bai's notification without altering an's rows.
+    success(
+      await fixture.app.inject({
+        method: 'PATCH',
+        url: '/api/v1/me',
+        headers: authHeaders(bai!),
+        payload: { username: '小白改名版' },
+      }),
+      endpoints.updateProfile.response,
+    );
+    const afterRename = success(
+      await fixture.app.inject({
+        url: '/api/v1/me/notifications',
+        headers: authHeaders(ding!),
+      }),
+      endpoints.listNotifications.response,
+    ).data;
+    expect(afterRename.find((i) => i.id === baiNotification.id)?.actorName).toBe('小白改名版');
+    expect(
+      afterRename.filter((i) => i.actorUserId === an!.user.id).every((i) => i.actorName === '小安'),
+    ).toBe(true);
+
+    // 7. A34 rejects non-recipients (actor, creator, fellow member, stranger) with 403 FORBIDDEN.
+    for (const nonRecipient of [bai!, an!, chen!, stranger!]) {
+      rejected(
+        await fixture.app.inject({
+          method: 'POST',
+          url: `/api/v1/me/notifications/${baiNotification.id}/read`,
+          headers: authHeaders(nonRecipient),
+        }),
+        403,
+        'FORBIDDEN',
+      );
+    }
+
+    // 8. Recipient marks read idempotently; unreadOnly=true excludes it while unreadOnly=false keeps it.
+    const readOnce = success(
+      await fixture.app.inject({
+        method: 'POST',
+        url: `/api/v1/me/notifications/${baiNotification.id}/read`,
+        headers: authHeaders(ding!),
+      }),
+      endpoints.markNotificationRead.response,
+    ).data;
+    const readTwice = success(
+      await fixture.app.inject({
+        method: 'POST',
+        url: `/api/v1/me/notifications/${baiNotification.id}/read`,
+        headers: authHeaders(ding!),
+      }),
+      endpoints.markNotificationRead.response,
+    ).data;
+    expect(readTwice).toEqual(readOnce);
+
+    const unreadPage1 = success(
+      await fixture.app.inject({
+        url: '/api/v1/me/notifications?unreadOnly=true&limit=1',
+        headers: authHeaders(ding!),
+      }),
+      endpoints.listNotifications.response,
+    );
+    expect(unreadPage1.data).toHaveLength(1);
+    expect(unreadPage1.page.nextCursor).toBeTruthy();
+
+    const unreadPage2 = success(
+      await fixture.app.inject({
+        url: `/api/v1/me/notifications?unreadOnly=true&limit=1&cursor=${encodeURIComponent(unreadPage1.page.nextCursor!)}`,
+        headers: authHeaders(ding!),
+      }),
+      endpoints.listNotifications.response,
+    );
+    expect(unreadPage2.data).toHaveLength(1);
+    expect(unreadPage2.page.nextCursor).toBeNull();
+    expect([...unreadPage1.data, ...unreadPage2.data].map((i) => i.id)).toEqual([
+      allDingItems[0]!.id,
+      allDingItems[1]!.id,
+    ]);
+
+    const fullAfterRead = success(
+      await fixture.app.inject({
+        url: '/api/v1/me/notifications?unreadOnly=false',
+        headers: authHeaders(ding!),
+      }),
+      endpoints.listNotifications.response,
+    ).data;
+    expect(fullAfterRead).toHaveLength(3);
+    expect(fullAfterRead.find((i) => i.id === baiNotification.id)?.readAt).toBe(readOnce.readAt);
+  });
+
+  it('silently skips A32 notification delivery when A29 notification_enabled=false and resumes after re-enabling', async () => {
+    const owner = await fixture.register('静默收款人');
+    const payer = await fixture.register('静默付款人');
+    const seeded = await seedSettlingTransfer(owner, payer, '静默开关账本', '10000');
+
+    // 1. Default enabled -> A32 delivers 1 unread notification.
+    const firstRemind = success(
+      await fixture.app.inject({
+        method: 'POST',
+        url: `/api/v1/ledgers/${seeded.ledgerId}/settlement/transfers/${seeded.transferId}/remind`,
+        headers: authHeaders(owner, randomUUID()),
+        payload: { note: '开启时催还' },
+      }),
+      endpoints.remindTransfer.response,
+    ).data;
+    expect(Object.keys(firstRemind).sort()).toEqual([
+      'cooldownEndsAt',
+      'ledgerId',
+      'remindedAt',
+      'transferId',
+    ]);
+
+    const initialUnread = success(
+      await fixture.app.inject({
+        url: '/api/v1/me/notifications?unreadOnly=true',
+        headers: authHeaders(payer),
+      }),
+      endpoints.listNotifications.response,
+    ).data;
+    expect(initialUnread).toHaveLength(1);
+    const firstNotificationId = initialUnread[0]!.id;
+
+    // 2. Disable A29 notification_enabled -> A32 after cooldown returns 200 without leaking opt-out,
+    //    still enforces 429 cooldown, and inserts zero new notification rows.
+    success(
+      await fixture.app.inject({
+        method: 'PATCH',
+        url: '/api/v1/me/preferences',
+        headers: authHeaders(payer),
+        payload: { notificationEnabled: false },
+      }),
+      endpoints.updatePreferences.response,
+    );
+    await expireReminderCooldown(seeded.ledgerId, seeded.transferId);
+
+    const silentRemind = success(
+      await fixture.app.inject({
+        method: 'POST',
+        url: `/api/v1/ledgers/${seeded.ledgerId}/settlement/transfers/${seeded.transferId}/remind`,
+        headers: authHeaders(owner, randomUUID()),
+        payload: { note: '关闭期间不应落库' },
+      }),
+      endpoints.remindTransfer.response,
+    ).data;
+    expect(Object.keys(silentRemind).sort()).toEqual([
+      'cooldownEndsAt',
+      'ledgerId',
+      'remindedAt',
+      'transferId',
+    ]);
+
+    rejected(
+      await fixture.app.inject({
+        method: 'POST',
+        url: `/api/v1/ledgers/${seeded.ledgerId}/settlement/transfers/${seeded.transferId}/remind`,
+        headers: authHeaders(owner, randomUUID()),
+        payload: {},
+      }),
+      429,
+      'REMINDER_COOLDOWN',
+    );
+
+    const stillOne = success(
+      await fixture.app.inject({
+        url: '/api/v1/me/notifications?unreadOnly=true',
+        headers: authHeaders(payer),
+      }),
+      endpoints.listNotifications.response,
+    ).data;
+    expect(stillOne.map((i) => i.id)).toEqual([firstNotificationId]);
+
+    // Pre-existing notification remains markable read while disabled.
+    success(
+      await fixture.app.inject({
+        method: 'POST',
+        url: `/api/v1/me/notifications/${firstNotificationId}/read`,
+        headers: authHeaders(payer),
+      }),
+      endpoints.markNotificationRead.response,
+    );
+    expect(
+      success(
+        await fixture.app.inject({
+          url: '/api/v1/me/notifications?unreadOnly=true',
+          headers: authHeaders(payer),
+        }),
+        endpoints.listNotifications.response,
+      ).data,
+    ).toEqual([]);
+
+    // 3. Re-enable A29 -> A32 after cooldown resumes inserting into payer's unread list.
+    success(
+      await fixture.app.inject({
+        method: 'PATCH',
+        url: '/api/v1/me/preferences',
+        headers: authHeaders(payer),
+        payload: { notificationEnabled: true },
+      }),
+      endpoints.updatePreferences.response,
+    );
+    await expireReminderCooldown(seeded.ledgerId, seeded.transferId);
+
+    success(
+      await fixture.app.inject({
+        method: 'POST',
+        url: `/api/v1/ledgers/${seeded.ledgerId}/settlement/transfers/${seeded.transferId}/remind`,
+        headers: authHeaders(owner, randomUUID()),
+        payload: { note: '恢复后新催还' },
+      }),
+      endpoints.remindTransfer.response,
+    );
+
+    const resumedUnread = success(
+      await fixture.app.inject({
+        url: '/api/v1/me/notifications?unreadOnly=true',
+        headers: authHeaders(payer),
+      }),
+      endpoints.listNotifications.response,
+    ).data;
+    expect(resumedUnread).toHaveLength(1);
+    expect(resumedUnread[0]).toMatchObject({
+      ledgerId: seeded.ledgerId,
+      transferId: seeded.transferId,
+      actorUserId: owner.user.id,
+      amountCents: '5000',
+      note: '恢复后新催还',
       readAt: null,
     });
   });
