@@ -293,6 +293,14 @@ describe('B13 client prep: A32 settlement reminder permissions & error mapping',
       preservesIdempotencyKey: false,
       autoRetry: false,
     });
+
+    const validation = reminderErrorFeedback(new ApiError('VALIDATION_ERROR', '', 400));
+    expect(validation).toMatchObject({
+      kind: 'validation',
+      preservesIdempotencyKey: false,
+      autoRetry: false,
+    });
+    expect(validation.message).toContain('120');
   });
 });
 

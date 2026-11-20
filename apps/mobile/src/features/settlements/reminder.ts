@@ -1,4 +1,4 @@
-import type { LedgerStatus } from '@tongzhang/contracts';
+import { MAX_REMINDER_NOTE_LENGTH, type LedgerStatus } from '@tongzhang/contracts';
 import { ApiError } from '@/lib/api-error';
 
 export type MemberRole = 'CREATOR' | 'MEMBER';
@@ -105,7 +105,9 @@ export function reminderErrorFeedback(error: unknown): ReminderErrorFeedback {
     case 'VALIDATION_ERROR':
       return {
         kind: 'validation',
-        message: error.message || '请检查催还备注内容（非纯空白且不超过 200 字）。',
+        message:
+          error.message ||
+          `请检查催还备注内容（非纯空白且不超过 ${MAX_REMINDER_NOTE_LENGTH} 字）。`,
         preservesIdempotencyKey: false,
         autoRetry: false,
       };
