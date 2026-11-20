@@ -22,6 +22,15 @@ const batchId = '00000000-0000-4000-8000-000000000005';
 const notificationId1 = '00000000-0000-4000-8000-000000000006';
 const notificationId2 = '00000000-0000-4000-8000-000000000007';
 const expenseId = '00000000-0000-4000-8000-000000000008';
+const chenId = '00000000-0000-4000-8000-000000000009';
+const dingId = '00000000-0000-4000-8000-000000000010';
+
+const userNames: Record<string, string> = {
+  [creatorId]: '小安',
+  [memberId]: '小白',
+  [chenId]: '小陈',
+  [dingId]: '小丁',
+};
 
 let mockUserId = creatorId;
 let mockKeyNumber = 0;
@@ -30,7 +39,7 @@ jest.mock('../src/providers/AuthProvider', () => ({
   useAuth: () => ({
     user: {
       id: mockUserId,
-      username: mockUserId === creatorId ? '小安' : '小白',
+      username: userNames[mockUserId] ?? '小白',
       email: 'user@example.test',
       notificationEnabled: true,
     },
@@ -374,6 +383,11 @@ describe('B13 SettlementRecordScreen remind-confirm sheet (A32)', () => {
     );
     expect(await screen.findByText('已发送站内催还提醒，6 小时内不可重复催还。')).toBeOnTheScreen();
     expect(screen.getByRole('button', { name: '已催还（冷却中）' })).toBeDisabled();
+    expect(screen.getByText('0 / 1 笔已登记')).toBeOnTheScreen();
+    expect(screen.getByText('待登记 ¥60.00')).toBeOnTheScreen();
+    expect(screen.getByText('¥60.00')).toBeOnTheScreen();
+    expect(settlementsApi.markTransferPaid).not.toHaveBeenCalled();
+    expect(settlementsApi.settleLedger).not.toHaveBeenCalled();
   });
 
   it('hides remind button for the payer of the transfer', async () => {
@@ -387,6 +401,256 @@ describe('B13 SettlementRecordScreen remind-confirm sheet (A32)', () => {
     await renderWithQuery(<SettlementRecordScreen ledger={settlingLedger} />);
     await screen.findByText('待完成转账');
     expect(screen.queryByRole('button', { name: '提醒对方' })).toBeNull();
+  });
+
+  it('enforces full role and lifecycle visibility matrix across 4-member ledger states', async () => {
+    const fourMemberLedger = (
+      status: 'SETTLING' | 'SETTLED',
+      myMemberId: string,
+    ): EndpointOutput<'getLedger'>['data'] => ({
+      ...makeLedger(status, myMemberId),
+      memberCount: 4,
+      expenseTotalCents: '30000',
+      members: [
+        {
+          id: creatorId,
+          userId: creatorId,
+          username: '小安',
+          role: 'CREATOR',
+          joinedAt: timestamp,
+          netCents: '3000',
+          remainingNetCents: status === 'SETTLED' ? '0' : '3000',
+        },
+        {
+          id: memberId,
+          userId: memberId,
+          username: '小白',
+          role: 'MEMBER',
+          joinedAt: timestamp,
+          netCents: '6000',
+          remainingNetCents: status === 'SETTLED' ? '0' : '6000',
+        },
+        {
+          id: chenId,
+          userId: chenId,
+          username: '小陈',
+          role: 'MEMBER',
+          joinedAt: timestamp,
+          netCents: '-3000',
+          remainingNetCents: status === 'SETTLED' ? '0' : '-3000',
+        },
+        {
+          id: dingId,
+          userId: dingId,
+          username: '小丁',
+          role: 'MEMBER',
+          joinedAt: timestamp,
+          netCents: '-6000',
+          remainingNetCents: status === 'SETTLED' ? '0' : '-6000',
+        },
+      ],
+    });
+    const chenToBaiSettlement = (
+      ledgerStatus: 'SETTLING' | 'SETTLED',
+      transferStatus: 'PENDING' | 'PAID',
+      payerMemberId = chenId,
+    ): EndpointOutput<'getSettlement'>['data'] => ({
+      ...makeSettlement(ledgerStatus, transferStatus),
+      transfers: [
+        {
+          ...makeSettlement(ledgerStatus, transferStatus).transfers[0]!,
+          payerMemberId,
+          payeeMemberId: memberId,
+        },
+      ],
+    });
+
+    // 1. Non-payer creator (小安) sees enabled remind button on SETTLING + PENDING
+    mockUserId = creatorId;
+    const creatorLedger = fourMemberLedger('SETTLING', creatorId);
+    jest.mocked(ledgersApi.getLedger).mockResolvedValue({ data: creatorLedger });
+    jest
+      .mocked(settlementsApi.getSettlement)
+      .mockResolvedValue({ data: chenToBaiSettlement('SETTLING', 'PENDING', chenId) });
+    const creatorView = await renderWithQuery(<SettlementRecordScreen ledger={creatorLedger} />);
+    expect(await screen.findByRole('button', { name: '提醒对方' })).toBeEnabled();
+    await creatorView.unmount();
+
+    // 2. Unrelated non-creator member (小丁) has no remind button
+    mockUserId = dingId;
+    const outsiderLedger = fourMemberLedger('SETTLING', dingId);
+    jest.mocked(ledgersApi.getLedger).mockResolvedValue({ data: outsiderLedger });
+    jest
+      .mocked(settlementsApi.getSettlement)
+      .mockResolvedValue({ data: chenToBaiSettlement('SETTLING', 'PENDING', chenId) });
+    const outsiderView = await renderWithQuery(<SettlementRecordScreen ledger={outsiderLedger} />);
+    await screen.findByText('待完成转账');
+    expect(screen.queryByRole('button', { name: '提醒对方' })).toBeNull();
+    await outsiderView.unmount();
+
+    // 3. Creator who is ALSO the payer (小安 -> 小白) cannot remind themselves
+    mockUserId = creatorId;
+    jest.mocked(ledgersApi.getLedger).mockResolvedValue({ data: creatorLedger });
+    jest
+      .mocked(settlementsApi.getSettlement)
+      .mockResolvedValue({ data: chenToBaiSettlement('SETTLING', 'PENDING', creatorId) });
+    const payerCreatorView = await renderWithQuery(
+      <SettlementRecordScreen ledger={creatorLedger} />,
+    );
+    await screen.findByText('待完成转账');
+    expect(screen.queryByRole('button', { name: '提醒对方' })).toBeNull();
+    await payerCreatorView.unmount();
+
+    // 4. SETTLING + PAID transfer hides remind button even for payee/creator
+    jest
+      .mocked(settlementsApi.getSettlement)
+      .mockResolvedValue({ data: chenToBaiSettlement('SETTLING', 'PAID', chenId) });
+    const paidView = await renderWithQuery(<SettlementRecordScreen ledger={creatorLedger} />);
+    await screen.findByText('全部转账已登记');
+    expect(screen.queryByRole('button', { name: '提醒对方' })).toBeNull();
+    await paidView.unmount();
+
+    // 5. SETTLED ledger hides remind button completely
+    const settledLedger = fourMemberLedger('SETTLED', creatorId);
+    jest.mocked(ledgersApi.getLedger).mockResolvedValue({ data: settledLedger });
+    jest
+      .mocked(settlementsApi.getSettlement)
+      .mockResolvedValue({ data: chenToBaiSettlement('SETTLED', 'PAID', chenId) });
+    const settledView = await renderWithQuery(<SettlementRecordScreen ledger={settledLedger} />);
+    await screen.findByText('结算记录');
+    expect(screen.queryByRole('button', { name: '提醒对方' })).toBeNull();
+    await settledView.unmount();
+  });
+
+  it('preserves note and exact Idempotency-Key across 401 UNAUTHENTICATED without auto-retry or mutating balances', async () => {
+    const settlingLedger = makeLedger('SETTLING', creatorId);
+    jest.mocked(ledgersApi.getLedger).mockResolvedValue({ data: settlingLedger });
+    jest.mocked(settlementsApi.getSettlement).mockResolvedValue({
+      data: makeSettlement('SETTLING', 'PENDING'),
+    });
+    jest
+      .mocked(settlementsApi.remindTransfer)
+      .mockRejectedValueOnce(new ApiError('UNAUTHENTICATED', '请重新登录', 401))
+      .mockResolvedValueOnce({
+        data: {
+          ledgerId,
+          transferId,
+          remindedAt: '2026-11-20T08:00:00.000Z',
+          cooldownEndsAt: '2099-11-20T14:00:00.000Z',
+        },
+      });
+
+    await renderWithQuery(<SettlementRecordScreen ledger={settlingLedger} />);
+    await userEvent.press(await screen.findByRole('button', { name: '提醒对方' }));
+    await userEvent.type(screen.getByLabelText('催还备注（选填）'), '请核对车费');
+    await userEvent.press(screen.getByRole('button', { name: '确认发送提醒' }));
+
+    expect(
+      await screen.findByText(/登录状态已失效，同账号重新核验后将保留当前备注与原请求标识/),
+    ).toBeOnTheScreen();
+    expect(settlementsApi.remindTransfer).toHaveBeenCalledTimes(1);
+    expect(screen.getByLabelText('催还备注（选填）')).toHaveDisplayValue('请核对车费');
+
+    // Manual resubmission after re-auth reuses the exact same Idempotency-Key and body
+    await userEvent.press(screen.getByRole('button', { name: '确认发送提醒' }));
+    await waitFor(() => expect(settlementsApi.remindTransfer).toHaveBeenCalledTimes(2));
+    expect(settlementsApi.remindTransfer).toHaveBeenNthCalledWith(
+      2,
+      {
+        params: { ledgerId, transferId },
+        query: {},
+        body: { note: '请核对车费' },
+      },
+      { idempotencyKey: 'b13-key-1' },
+    );
+    expect(await screen.findByRole('button', { name: '已催还（冷却中）' })).toBeDisabled();
+    expect(screen.getByText('0 / 1 笔已登记')).toBeOnTheScreen();
+    expect(screen.getByText('待登记 ¥60.00')).toBeOnTheScreen();
+    expect(settlementsApi.markTransferPaid).not.toHaveBeenCalled();
+    expect(settlementsApi.settleLedger).not.toHaveBeenCalled();
+  });
+
+  it('unlocks sheet cleanly when manual retry after uncertain timeout hits 429 REMINDER_COOLDOWN', async () => {
+    const settlingLedger = makeLedger('SETTLING', creatorId);
+    jest.mocked(ledgersApi.getLedger).mockResolvedValue({ data: settlingLedger });
+    jest.mocked(settlementsApi.getSettlement).mockResolvedValue({
+      data: makeSettlement('SETTLING', 'PENDING'),
+    });
+    jest
+      .mocked(settlementsApi.remindTransfer)
+      .mockRejectedValueOnce(new ApiError('REQUEST_TIMEOUT', 'timeout'))
+      .mockRejectedValueOnce(new ApiError('REMINDER_COOLDOWN', 'cooldown', 429));
+
+    await renderWithQuery(<SettlementRecordScreen ledger={settlingLedger} />);
+    await userEvent.press(await screen.findByRole('button', { name: '提醒对方' }));
+    await userEvent.type(screen.getByLabelText('催还备注（选填）'), '请核对转账');
+    await userEvent.press(screen.getByRole('button', { name: '确认发送提醒' }));
+
+    expect(await screen.findByText(/网络或服务响应不确定，已保留原请求标识/)).toBeOnTheScreen();
+    expect(screen.getByRole('button', { name: '取消' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: '刷新结算页核对' })).toBeEnabled();
+
+    await userEvent.press(screen.getByRole('button', { name: '手动重试催还' }));
+    expect(await screen.findByText(/6 小时催还冷却期内/)).toBeOnTheScreen();
+    expect(screen.queryByText(/关闭通知|notificationEnabled/)).toBeNull();
+    expect(screen.queryByRole('button', { name: '手动重试催还' })).toBeNull();
+    expect(screen.queryByRole('button', { name: '刷新结算页核对' })).toBeNull();
+
+    const refreshBtn = screen.getByRole('button', { name: '刷新结算页' });
+    const cancelBtn = screen.getByRole('button', { name: '取消' });
+    expect(refreshBtn).toBeEnabled();
+    expect(cancelBtn).toBeEnabled();
+
+    await userEvent.press(refreshBtn);
+    await waitFor(() => expect(screen.queryByText('发送待还提醒')).toBeNull());
+    expect(settlementsApi.getSettlement).toHaveBeenCalledTimes(2);
+    expect(settlementsApi.remindTransfer).toHaveBeenCalledTimes(2);
+  });
+
+  it('closes sheet on verifySettlementState once transfer is PAID and suppresses duplicate refresh buttons on 409 state change', async () => {
+    const settlingLedger = makeLedger('SETTLING', creatorId);
+    jest.mocked(ledgersApi.getLedger).mockResolvedValue({ data: settlingLedger });
+    jest
+      .mocked(settlementsApi.getSettlement)
+      .mockResolvedValueOnce({ data: makeSettlement('SETTLING', 'PENDING') })
+      .mockResolvedValueOnce({ data: makeSettlement('SETTLING', 'PAID') })
+      .mockResolvedValueOnce({ data: makeSettlement('SETTLING', 'PAID') });
+    jest
+      .mocked(settlementsApi.remindTransfer)
+      .mockRejectedValueOnce(new ApiError('REQUEST_TIMEOUT', 'timeout'));
+
+    const paidView = await renderWithQuery(<SettlementRecordScreen ledger={settlingLedger} />);
+    await userEvent.press(await screen.findByRole('button', { name: '提醒对方' }));
+    await userEvent.press(screen.getByRole('button', { name: '确认发送提醒' }));
+    expect(await screen.findByRole('button', { name: '刷新结算页核对' })).toBeEnabled();
+
+    await userEvent.press(screen.getByRole('button', { name: '刷新结算页核对' }));
+    await waitFor(() => expect(screen.queryByText('发送待还提醒')).toBeNull());
+    expect(await screen.findByText('全部转账已登记')).toBeOnTheScreen();
+    expect(settlementsApi.remindTransfer).toHaveBeenCalledTimes(1);
+    await paidView.unmount();
+
+    // Retry after timeout hitting 409 LEDGER_STATE_INVALID shows only one refresh button and enabled cancel
+    jest.mocked(ledgersApi.getLedger).mockResolvedValue({ data: settlingLedger });
+    jest.mocked(settlementsApi.getSettlement).mockResolvedValue({
+      data: makeSettlement('SETTLING', 'PENDING'),
+    });
+    jest
+      .mocked(settlementsApi.remindTransfer)
+      .mockRejectedValueOnce(new ApiError('REQUEST_TIMEOUT', 'timeout'))
+      .mockRejectedValueOnce(new ApiError('LEDGER_STATE_INVALID', '已结清', 409));
+
+    await renderWithQuery(<SettlementRecordScreen ledger={settlingLedger} />);
+    await userEvent.press(await screen.findByRole('button', { name: '提醒对方' }));
+    await userEvent.press(screen.getByRole('button', { name: '确认发送提醒' }));
+    expect(await screen.findByRole('button', { name: '手动重试催还' })).toBeEnabled();
+
+    await userEvent.press(screen.getByRole('button', { name: '手动重试催还' }));
+    expect(await screen.findByText(/账本或转账状态已变更/)).toBeOnTheScreen();
+    expect(screen.getByRole('button', { name: '刷新结算页' })).toBeEnabled();
+    expect(screen.queryByRole('button', { name: '刷新结算页核对' })).toBeNull();
+    expect(screen.queryByRole('button', { name: '手动重试催还' })).toBeNull();
+    expect(screen.getByRole('button', { name: '取消' })).toBeEnabled();
   });
 
   it('preserves note and Idempotency-Key across uncertain timeout and forbids auto-retry', async () => {
