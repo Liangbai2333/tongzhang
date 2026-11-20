@@ -46,8 +46,19 @@ export function RemindTransferSheet({
   const [checkError, setCheckError] = useState<string | null>(null);
   const checkingLock = useRef(false);
   const mounted = useRef(true);
-  const locked = write.busy || write.uncertain || checking;
   const feedback = write.error ? reminderErrorFeedback(write.error) : null;
+  const isCooldown = feedback?.kind === 'cooldown';
+  // Terminal server rejections during an uncertain retry prove the original key did not leave
+  // an ambiguous state, so allow refreshing/closing instead of locking the modal.
+  const needsRefresh =
+    feedback !== null &&
+    (feedback.kind === 'state_invalid' ||
+      feedback.kind === 'idempotency_conflict' ||
+      feedback.kind === 'not_found' ||
+      feedback.kind === 'retry_expired' ||
+      (write.uncertain && (feedback.kind === 'cooldown' || feedback.kind === 'forbidden')));
+  const canDismiss = !write.busy && !checking && (!write.uncertain || needsRefresh);
+  const locked = write.busy || write.uncertain || checking;
 
   useEffect(() => {
     mounted.current = true;
@@ -57,9 +68,9 @@ export function RemindTransferSheet({
   }, []);
 
   useEffect(() => {
-    const subscription = BackHandler.addEventListener('hardwareBackPress', () => locked);
+    const subscription = BackHandler.addEventListener('hardwareBackPress', () => !canDismiss);
     return () => subscription.remove();
-  }, [locked]);
+  }, [canDismiss]);
 
   const trimmed = note.trim();
   const body = trimmed ? { note: trimmed } : {};
@@ -104,12 +115,6 @@ export function RemindTransferSheet({
     }
   }
 
-  const needsRefresh =
-    feedback !== null &&
-    (feedback.kind === 'state_invalid' ||
-      feedback.kind === 'idempotency_conflict' ||
-      feedback.kind === 'not_found');
-
   return (
     <Sheet
       visible
@@ -117,7 +122,7 @@ export function RemindTransferSheet({
       variant="join"
       hideClose
       onClose={() => {
-        if (!locked) onCancel();
+        if (canDismiss) onCancel();
       }}
     >
       <View
@@ -160,7 +165,7 @@ export function RemindTransferSheet({
           onPress={onRefresh}
         />
       )}
-      {!needsRefresh && feedback?.kind !== 'cooldown' && (
+      {!needsRefresh && !isCooldown && (
         <Button
           compact
           style={{ borderRadius: 12 }}
@@ -173,7 +178,7 @@ export function RemindTransferSheet({
           }}
         />
       )}
-      {write.uncertain && (
+      {write.uncertain && !needsRefresh && (
         <Button
           compact
           style={{ borderRadius: 12 }}
@@ -192,7 +197,7 @@ export function RemindTransferSheet({
         labelStyle={{ fontSize: 15, lineHeight: 22, fontWeight: '700' }}
         title="取消"
         variant="outlined"
-        disabled={locked}
+        disabled={!canDismiss}
         onPress={onCancel}
       />
     </Sheet>
