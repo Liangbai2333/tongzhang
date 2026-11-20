@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { BackHandler, Text, View } from 'react-native';
 import {
   MAX_REMINDER_NOTE_LENGTH,
@@ -7,7 +7,7 @@ import {
 } from '@tongzhang/contracts';
 import { Button } from '@/components/Button';
 import { Field } from '@/components/Field';
-import { InlineError } from '@/components/Feedback';
+import { InlineError, requestErrorMessage } from '@/components/Feedback';
 import { ui } from '@/components/Screen';
 import { Sheet } from '@/components/Sheet';
 import { yuan } from '@/features/ledgers/presentation';
@@ -42,8 +42,19 @@ export function RemindTransferSheet({
 }: RemindTransferSheetProps) {
   const write = useIdempotentWrite();
   const [note, setNote] = useState('');
-  const locked = write.busy || write.uncertain;
+  const [checking, setChecking] = useState(false);
+  const [checkError, setCheckError] = useState<string | null>(null);
+  const checkingLock = useRef(false);
+  const mounted = useRef(true);
+  const locked = write.busy || write.uncertain || checking;
   const feedback = write.error ? reminderErrorFeedback(write.error) : null;
+
+  useEffect(() => {
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
+    };
+  }, []);
 
   useEffect(() => {
     const subscription = BackHandler.addEventListener('hardwareBackPress', () => locked);
@@ -54,7 +65,8 @@ export function RemindTransferSheet({
   const body = trimmed ? { note: trimmed } : {};
 
   async function submit() {
-    if (write.busy) return;
+    if (write.busy || checkingLock.current) return;
+    setCheckError(null);
     const result = await write.submit(body, (key) =>
       settlementsApi.remindTransfer(
         { params: { ledgerId, transferId: transfer.id }, query: {}, body },
@@ -62,6 +74,34 @@ export function RemindTransferSheet({
       ),
     );
     if (result) onSuccess(result.data);
+  }
+
+  async function verifySettlementState() {
+    if (write.busy || checkingLock.current || !mounted.current) return;
+    checkingLock.current = true;
+    setChecking(true);
+    setCheckError(null);
+    try {
+      const result = await settlementsApi.getSettlement({
+        params: { ledgerId },
+        query: {},
+        body: undefined,
+      });
+      if (!mounted.current) return;
+      const latest = result.data.transfers.find((item) => item.id === transfer.id);
+      if (result.data.ledgerStatus !== 'SETTLING' || !latest || latest.status !== 'PENDING') {
+        onRefresh();
+        return;
+      }
+      setCheckError(
+        '该笔转账仍为待还状态；为保留原请求标识避免重复触发冷却，请点击「手动重试催还」完成确认。',
+      );
+    } catch (cause) {
+      if (mounted.current) setCheckError(requestErrorMessage(cause));
+    } finally {
+      checkingLock.current = false;
+      if (mounted.current) setChecking(false);
+    }
   }
 
   const needsRefresh =
@@ -109,13 +149,14 @@ export function RemindTransferSheet({
         onChangeText={setNote}
       />
       <InlineError message={feedback?.message ?? null} />
+      <InlineError message={checkError} />
       {needsRefresh && (
         <Button
           compact
           style={{ borderRadius: 12 }}
           title={feedback.actionLabel ?? '刷新结算页'}
           variant="secondary"
-          disabled={write.busy}
+          disabled={write.busy || checking}
           onPress={onRefresh}
         />
       )}
@@ -126,6 +167,7 @@ export function RemindTransferSheet({
           labelStyle={{ fontSize: 15, lineHeight: 22, fontWeight: '700' }}
           title={write.uncertain ? (feedback?.actionLabel ?? '手动重试催还') : '确认发送提醒'}
           loading={write.busy}
+          disabled={checking}
           onPress={() => {
             void submit();
           }}
@@ -137,8 +179,11 @@ export function RemindTransferSheet({
           style={{ borderRadius: 12 }}
           title="刷新结算页核对"
           variant="secondary"
+          loading={checking}
           disabled={write.busy}
-          onPress={onRefresh}
+          onPress={() => {
+            void verifySettlementState();
+          }}
         />
       )}
       <Button

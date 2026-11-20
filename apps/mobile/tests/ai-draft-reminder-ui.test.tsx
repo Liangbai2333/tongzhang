@@ -415,6 +415,11 @@ describe('B13 SettlementRecordScreen remind-confirm sheet (A32)', () => {
     expect(await screen.findByText(/网络或服务响应不确定，已保留原请求标识/)).toBeOnTheScreen();
     expect(settlementsApi.remindTransfer).toHaveBeenCalledTimes(1);
 
+    // Reconciling while transfer is still SETTLING + PENDING keeps sheet mounted to preserve key/note
+    await userEvent.press(screen.getByRole('button', { name: '刷新结算页核对' }));
+    expect(await screen.findByText(/该笔转账仍为待还状态；为保留原请求标识/)).toBeOnTheScreen();
+    expect(settlementsApi.remindTransfer).toHaveBeenCalledTimes(1);
+
     // Manual retry reuses the exact same Idempotency-Key
     await userEvent.press(screen.getByRole('button', { name: '手动重试催还' }));
     await waitFor(() => expect(settlementsApi.remindTransfer).toHaveBeenCalledTimes(2));
