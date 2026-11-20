@@ -3,18 +3,20 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { eq } from 'drizzle-orm';
 import type { z } from 'zod';
 import { endpoints, errorResponseSchema } from '@tongzhang/contracts';
-import { idempotencyKeys, ledgers } from '../src/db/schema/index.js';
+import { expenseImages, idempotencyKeys, imageAssets, ledgers } from '../src/db/schema/index.js';
 import { integrationFixture } from './fixtures/integration.js';
 import {
   createExpense,
   deleteExpenseRequest,
   expenseBody,
+  raceExpenseWrites,
   readExpenseRow,
   readSoftDeletedExpenses,
   seedMultiMemberLedger,
   updateExpenseRequest,
   type SeededMember,
 } from './fixtures/expenses.js';
+import { imageBytes, imageMultipart } from './fixtures/images.js';
 
 type Response = { statusCode: number; json: () => unknown };
 let fixture: Awaited<ReturnType<typeof integrationFixture>>;
@@ -44,6 +46,24 @@ const bearer = (member: SeededMember, key?: string) => ({
 
 const ledgerVersion = async (ledgerId: string) =>
   (await fixture.db.orm.select().from(ledgers).where(eq(ledgers.id, ledgerId)))[0]!.version;
+
+async function uploadReceipt(actor: SeededMember, ledgerId: string) {
+  const bytes = await imageBytes('png');
+  const multipart = imageMultipart(bytes, 'image/png', [
+    ['kind', 'RECEIPT'],
+    ['ledgerId', ledgerId],
+  ]);
+  const res = await fixture.app.inject({
+    method: 'POST',
+    url: '/api/v1/images',
+    headers: {
+      authorization: `Bearer ${actor.account.accessToken}`,
+      ...multipart.headers,
+    },
+    payload: multipart.payload,
+  });
+  return parseOk(res, endpoints.uploadImage.response, 201).data.imageId;
+}
 
 describe('B15 closure: A16/A17 idempotency, soft-delete A21 conservation & Gushan 30000-cent benchmark', () => {
   it('replays A16/A17 idempotently (including after freeze) and rejects body/target conflicts with 409 IDEMPOTENCY_CONFLICT', async () => {
@@ -394,5 +414,197 @@ describe('B15 closure: A16/A17 idempotency, soft-delete A21 conservation & Gusha
       endpoints.getStatistics.response,
     ).data;
     expect(statsAfterArchive).toEqual(stats);
+  });
+
+  it('covers A16 same-tx receipt rebinding across idempotency replay/conflict, concurrent version race, and SETTLING freeze', async () => {
+    const ledger = await seedMultiMemberLedger(fixture, ['小安', '小白']);
+    const { 小安: an } = ledger.byName;
+    const receipt1 = await uploadReceipt(an!, ledger.ledgerId);
+    const created = parseOk(
+      await fixture.app.inject({
+        method: 'POST',
+        url: `/api/v1/ledgers/${ledger.ledgerId}/expenses`,
+        headers: bearer(an!, randomUUID()),
+        payload: {
+          ...expenseBody(ledger, { title: '收据初始', amountCents: '8000', payer: an! }),
+          receiptImageId: receipt1,
+        },
+      }),
+      endpoints.createExpense.response,
+      201,
+    ).data;
+    expect(created.receiptImageId).toBe(receipt1);
+    expect(
+      await fixture.db.orm
+        .select()
+        .from(expenseImages)
+        .where(eq(expenseImages.expenseId, created.id)),
+    ).toHaveLength(1);
+    expect(
+      (await fixture.db.orm.select().from(imageAssets).where(eq(imageAssets.id, receipt1)))[0]!
+        .ledgerId,
+    ).toBe(ledger.ledgerId);
+
+    const patch = updateExpenseRequest(fixture, ledger);
+    const receipt2 = await uploadReceipt(an!, ledger.ledgerId);
+    const swapKey = randomUUID();
+    const swapBody = {
+      ...expenseBody(ledger, { title: '收据换绑', amountCents: '9000', payer: an! }, 1),
+      receiptImageId: receipt2,
+    };
+    const swapped = parseOk(
+      await patch(an!, created.id, swapBody, swapKey),
+      endpoints.updateExpense.response,
+    );
+    expect(swapped.data).toMatchObject({
+      id: created.id,
+      version: 2,
+      receiptImageId: receipt2,
+    });
+    expect(
+      await fixture.db.orm.select().from(imageAssets).where(eq(imageAssets.id, receipt1)),
+    ).toHaveLength(0);
+    expect(
+      (
+        await fixture.db.orm
+          .select()
+          .from(expenseImages)
+          .where(eq(expenseImages.expenseId, created.id))
+      ).map((row) => row.imageId),
+    ).toEqual([receipt2]);
+    expect(
+      (await fixture.db.orm.select().from(imageAssets).where(eq(imageAssets.id, receipt2)))[0]!
+        .ledgerId,
+    ).toBe(ledger.ledgerId);
+
+    // Exact replay returns cached 200 without bumping ledger or expense version.
+    const versionAfterSwap = await ledgerVersion(ledger.ledgerId);
+    const replayed = parseOk(
+      await patch(an!, created.id, swapBody, swapKey),
+      endpoints.updateExpense.response,
+    );
+    expect(replayed).toEqual(swapped);
+    expect(await ledgerVersion(ledger.ledgerId)).toBe(versionAfterSwap);
+    expect((await readExpenseRow(fixture, created.id))!.version).toBe(2);
+
+    // Same key with a different receiptImageId fails with 409 IDEMPOTENCY_CONFLICT and keeps receipt3 unbound.
+    const receipt3 = await uploadReceipt(an!, ledger.ledgerId);
+    expectErr(
+      await patch(
+        an!,
+        created.id,
+        {
+          ...expenseBody(ledger, { title: '收据换绑', amountCents: '9000', payer: an! }, 1),
+          receiptImageId: receipt3,
+        },
+        swapKey,
+      ),
+      409,
+      'IDEMPOTENCY_CONFLICT',
+    );
+    expect(
+      (await fixture.db.orm.select().from(imageAssets).where(eq(imageAssets.id, receipt3)))[0]!
+        .ledgerId,
+    ).toBeNull();
+    expect(
+      (
+        await fixture.db.orm
+          .select()
+          .from(expenseImages)
+          .where(eq(expenseImages.expenseId, created.id))
+      ).map((row) => row.imageId),
+    ).toEqual([receipt2]);
+
+    // Concurrent version race on receipt rebinding: exactly one succeeds, replaced receipt2 is deleted, loser receipt stays unbound.
+    const raceReceiptA = await uploadReceipt(an!, ledger.ledgerId);
+    const raceReceiptB = await uploadReceipt(an!, ledger.ledgerId);
+    const [resA, resB] = await raceExpenseWrites(fixture, ledger, [
+      () =>
+        patch(an!, created.id, {
+          ...expenseBody(ledger, { title: '并发换绑A', amountCents: '9100', payer: an! }, 2),
+          receiptImageId: raceReceiptA,
+        }),
+      () =>
+        patch(an!, created.id, {
+          ...expenseBody(ledger, { title: '并发换绑B', amountCents: '9200', payer: an! }, 2),
+          receiptImageId: raceReceiptB,
+        }),
+    ]);
+    expect([resA!.statusCode, resB!.statusCode].sort()).toEqual([200, 409]);
+    const winnerRes = resA!.statusCode === 200 ? resA! : resB!;
+    const loserRes = resA!.statusCode === 200 ? resB! : resA!;
+    expectErr(loserRes, 409, 'VERSION_CONFLICT');
+    const winnerDto = parseOk(winnerRes, endpoints.updateExpense.response).data;
+    expect(winnerDto.version).toBe(3);
+    const winnerReceipt = winnerDto.receiptImageId!;
+    const loserReceipt = winnerReceipt === raceReceiptA ? raceReceiptB : raceReceiptA;
+    expect([raceReceiptA, raceReceiptB]).toContain(winnerReceipt);
+    expect(
+      (
+        await fixture.db.orm
+          .select()
+          .from(expenseImages)
+          .where(eq(expenseImages.expenseId, created.id))
+      ).map((row) => row.imageId),
+    ).toEqual([winnerReceipt]);
+    expect(
+      (await fixture.db.orm.select().from(imageAssets).where(eq(imageAssets.id, winnerReceipt)))[0]!
+        .ledgerId,
+    ).toBe(ledger.ledgerId);
+    expect(
+      await fixture.db.orm.select().from(imageAssets).where(eq(imageAssets.id, receipt2)),
+    ).toHaveLength(0);
+    expect(
+      (await fixture.db.orm.select().from(imageAssets).where(eq(imageAssets.id, loserReceipt)))[0]!
+        .ledgerId,
+    ).toBeNull();
+
+    // Freeze via real A23: fresh A16 rebinding fails with 409 LEDGER_FROZEN, leaves receipt3 unbound, and writes no idempotency key.
+    const freezeVersion = await ledgerVersion(ledger.ledgerId);
+    parseOk(
+      await fixture.app.inject({
+        method: 'POST',
+        url: `/api/v1/ledgers/${ledger.ledgerId}/settlement`,
+        headers: bearer(an!, randomUUID()),
+        payload: { expectedVersion: freezeVersion },
+      }),
+      endpoints.startSettlement.response,
+      201,
+    );
+    const anKeysBeforeFreeze = await fixture.db.orm
+      .select()
+      .from(idempotencyKeys)
+      .where(eq(idempotencyKeys.userId, an!.account.user.id));
+    expectErr(
+      await patch(
+        an!,
+        created.id,
+        {
+          ...expenseBody(ledger, { title: '冻结换绑', amountCents: '9500', payer: an! }, 3),
+          receiptImageId: receipt3,
+        },
+        randomUUID(),
+      ),
+      409,
+      'LEDGER_FROZEN',
+    );
+    expect(
+      (await fixture.db.orm.select().from(imageAssets).where(eq(imageAssets.id, receipt3)))[0]!
+        .ledgerId,
+    ).toBeNull();
+    expect(
+      (
+        await fixture.db.orm
+          .select()
+          .from(expenseImages)
+          .where(eq(expenseImages.expenseId, created.id))
+      ).map((row) => row.imageId),
+    ).toEqual([winnerReceipt]);
+    expect(
+      await fixture.db.orm
+        .select()
+        .from(idempotencyKeys)
+        .where(eq(idempotencyKeys.userId, an!.account.user.id)),
+    ).toHaveLength(anKeysBeforeFreeze.length);
   });
 });

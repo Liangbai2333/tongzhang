@@ -234,6 +234,17 @@ describe('B13 client prep: A31 AI draft prefill & error mapping', () => {
       autoRetry: false,
       manualRetryAllowed: true,
     });
+
+    const offline = aiDraftErrorFeedback(
+      new ApiError('NETWORK_UNAVAILABLE', '网络未连接，请联网后重试'),
+    );
+    expect(offline).toMatchObject({
+      kind: 'network',
+      actionLabel: '手动重试解析',
+      preservesForm: true,
+      autoRetry: false,
+      manualRetryAllowed: true,
+    });
   });
 });
 

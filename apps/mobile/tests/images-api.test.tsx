@@ -6,6 +6,7 @@ const { convertFormDataAsync } = jest.requireActual<
   typeof import('expo/src/winter/fetch/convertFormData')
 >('expo/src/winter/fetch/convertFormData');
 import { imagesApi } from '../src/features/images/api';
+import { expensesApi } from '../src/features/expenses/api';
 import { requestJson } from '../src/lib/http';
 import { sessionAdmission } from '../src/lib/session-admission';
 import { callOperation } from '../src/lib/api';
@@ -84,5 +85,23 @@ describe('image multipart transport with the installed SDK 57 encoder', () => {
     expect(ascii).toContain('name="file"; filename="receipt.jpg"');
     expect(ascii).toContain('content-type: image/jpeg');
     expect(ascii).not.toContain('file:///cache/receipt.jpg');
+  });
+  it('routes A31 parseExpenseDraft with an extended 30000ms client timeout', async () => {
+    const ledgerId = '00000000-0000-4000-8000-000000000002';
+    await expensesApi.parseExpenseDraft({
+      params: { ledgerId },
+      query: {},
+      body: { text: '食堂 120 元' },
+    });
+    expect(requestJson).toHaveBeenCalledTimes(1);
+    const call = jest.mocked(requestJson).mock.calls[0]!;
+    expect(call[0]).toBe(`/api/v1/ledgers/${ledgerId}/expenses/ai-draft`);
+    expect(call[2]).toEqual({
+      method: 'POST',
+      token: 'test-access-token',
+      body: { text: '食堂 120 元' },
+      idempotencyKey: undefined,
+      timeoutMs: 30000,
+    });
   });
 });
