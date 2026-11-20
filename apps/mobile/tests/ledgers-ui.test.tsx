@@ -45,6 +45,9 @@ jest.mock('../src/features/invitations/api', () => ({
 jest.mock('../src/features/images/api', () => ({
   imagesApi: { upload: jest.fn(), read: jest.fn() },
 }));
+jest.mock('../src/features/profile/api', () => ({
+  profileApi: { listNotifications: jest.fn(), markNotificationRead: jest.fn() },
+}));
 jest.mock('../src/features/images/receipt-files', () => ({
   selectReceipt: jest.fn(),
   removeReceiptFile: jest.fn(),

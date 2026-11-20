@@ -4,6 +4,7 @@ import { SettledSummary } from '../components/SettledSummary';
 import { router, Stack } from 'expo-router';
 import { useQueryClient } from '@tanstack/react-query';
 import { SettlementActionSheet } from '../components/SettlementActionSheet';
+import { RemindTransferSheet } from '../components/RemindTransferSheet';
 import { ArchiveLedgerSheet } from '@/features/ledgers/components/ArchiveLedgerSheet';
 import { useRef, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
@@ -22,8 +23,15 @@ import { colors } from '@/theme/tokens';
 import { settlementsApi } from '../api';
 import { settlementsKeys } from '../query-keys';
 import { settlementAssets } from '../assets';
+import { canRemindTransfer, isReminderInCooldown } from '../reminder';
 
 type Settlement = EndpointOutput<'startSettlement'>['data']['batch'];
+type SettlementAction =
+  | { kind: 'paid'; transfer: Settlement['transfers'][number] }
+  | { kind: 'remind'; transfer: Settlement['transfers'][number] }
+  | { kind: 'settle' }
+  | { kind: 'archive' }
+  | null;
 
 /** Read the saved batch, never recompute a preview for a frozen ledger. */
 export default function SettlementRecordScreen({
@@ -35,9 +43,8 @@ export default function SettlementRecordScreen({
 }) {
   const { user } = useAuth();
   const client = useQueryClient();
-  const [action, setAction] = useState<
-    Settlement['transfers'][number] | 'settle' | 'archive' | null
-  >(null);
+  const [action, setAction] = useState<SettlementAction>(null);
+  const [cooldowns, setCooldowns] = useState<Record<string, string>>({});
   const query = useOnlineQuery(
     [...settlementsKeys.ledger(user!.id, ledger.id), 'record'],
     async () => {
@@ -69,6 +76,9 @@ export default function SettlementRecordScreen({
   const settled = record?.ledgerStatus === 'SETTLED';
   const currentLedger = query.data?.ledger ?? ledger;
   const creator = currentLedger.creatorUserId === user!.id;
+  const myRole =
+    currentLedger.members.find((member) => member.id === currentLedger.myMemberId)?.role ??
+    (creator ? 'CREATOR' : 'MEMBER');
   const canSettle =
     record?.ledgerStatus === 'SETTLING' &&
     creator &&
@@ -142,7 +152,7 @@ export default function SettlementRecordScreen({
                     <Button
                       title="确认整本结清"
                       disabled={!canSettle || action !== null}
-                      onPress={() => setAction('settle')}
+                      onPress={() => setAction({ kind: 'settle' })}
                     />
                   ) : (
                     <Text style={ui.caption}>全部登记后，由账本创建者确认结清。</Text>
@@ -156,7 +166,7 @@ export default function SettlementRecordScreen({
                 <Button
                   title="归档账本"
                   icon={<FigmaAsset asset={completionAssets.archiveButton} />}
-                  onPress={() => setAction('archive')}
+                  onPress={() => setAction({ kind: 'archive' })}
                 />
               )}
               {currentLedger.archivedAt && <Text style={ui.caption}>已归档，仅供查看</Text>}
@@ -284,10 +294,31 @@ export default function SettlementRecordScreen({
                           variant="secondary"
                           icon={<FigmaAsset asset={settlementAssets.check} />}
                           disabled={action !== null}
-                          onPress={() => setAction(transfer)}
+                          onPress={() => setAction({ kind: 'paid', transfer })}
                           style={{ paddingHorizontal: 8 }}
                         />
                       )}
+                    {canRemindTransfer(
+                      record.ledgerStatus,
+                      transfer,
+                      currentLedger.myMemberId,
+                      myRole,
+                    ) && (
+                      <Button
+                        compact
+                        title={
+                          isReminderInCooldown(cooldowns[transfer.id] ?? null)
+                            ? '已催还（冷却中）'
+                            : '提醒对方'
+                        }
+                        variant="secondary"
+                        disabled={
+                          action !== null || isReminderInCooldown(cooldowns[transfer.id] ?? null)
+                        }
+                        onPress={() => setAction({ kind: 'remind', transfer })}
+                        style={{ paddingHorizontal: 10 }}
+                      />
+                    )}
                     <Touch
                       accessibilityRole="button"
                       accessibilityLabel={`复制第 ${transfer.sequence} 笔转账信息`}
@@ -382,12 +413,12 @@ export default function SettlementRecordScreen({
           </>
         )}
       </Screen>
-      {action !== null && action !== 'archive' && (
+      {(action?.kind === 'paid' || action?.kind === 'settle') && (
         <SettlementActionSheet
           ledgerId={ledger.id}
           ledgerName={ledger.name}
           transferCount={record?.transferCount ?? 0}
-          transfer={action === 'settle' ? null : action}
+          transfer={action.kind === 'paid' ? action.transfer : null}
           name={name}
           onCancel={() => setAction(null)}
           onDone={() => {
@@ -397,7 +428,25 @@ export default function SettlementRecordScreen({
           }}
         />
       )}
-      {action === 'archive' && (
+      {action?.kind === 'remind' && (
+        <RemindTransferSheet
+          ledgerId={ledger.id}
+          transfer={action.transfer}
+          name={name}
+          onCancel={() => setAction(null)}
+          onRefresh={() => {
+            setAction(null);
+            void query.refetch();
+          }}
+          onSuccess={(result) => {
+            setCooldowns((prev) => ({ ...prev, [result.transferId]: result.cooldownEndsAt }));
+            setAction(null);
+            setNotice('已发送站内催还提醒，6 小时内不可重复催还。');
+            void client.invalidateQueries({ queryKey: ['user', user!.id, 'notifications'] });
+          }}
+        />
+      )}
+      {action?.kind === 'archive' && (
         <ArchiveLedgerSheet
           ledger={currentLedger}
           userId={user!.id}
