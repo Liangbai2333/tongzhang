@@ -43,6 +43,10 @@ Compose 的 `--env-file` 给 `${变量}` 提供值，只有 `environment` 显式
 | `AUTH_JWT_SECRET`                      | 由 `setup:env` 生成 | 32 随机字节的 64 位小写 hex；服务端签发 JWT，禁止进入移动端 |
 | `LOG_LEVEL`                            | `info`              | 服务端日志级别                                              |
 | `TRUST_PROXY`                          | 空                  | 本机不信任转发头；生产只信任专用代理网段                    |
+| `AI_DRAFT_API_BASE_URL`                | 空（可选）          | OpenAI 兼容解析地址；仅存服务端环境，留空时 A31 返 503      |
+| `AI_DRAFT_API_KEY`                     | 空（可选）          | 大模型 API 密钥；仅存服务端 `.env` / 生产 Compose，禁入前端 |
+| `AI_DRAFT_MODEL`                       | 空（可选）          | AI 辅助记账模型标识；与上述两项齐备时启用 A31               |
+| `AI_DRAFT_TIMEOUT_MS`                  | `15000`             | 上游解析超时毫秒数（1000–60000）                            |
 
 生产只定义一次 `POSTGRES_USER`、`POSTGRES_PASSWORD`、`POSTGRES_DB`，Compose 将其分别映射给 PostgreSQL 和 API 的 `PG*` 变量。密码直接传给数据库驱动，无需 URL 编码。含 `$` 的 dotenv 值用单引号包裹，其他引号按 dotenv 规则转义。
 
@@ -60,22 +64,22 @@ Compose 的 `--env-file` 给 `${变量}` 提供值，只有 `environment` 显式
 
 根目录 `package.json` 按初始化、开发、构建与导出、数据库、检查与格式化、测试排列。日常从仓库根目录运行下列命令：
 
-| 类别       | 命令                                                        | 职责                                                                      |
-| ---------- | ----------------------------------------------------------- | ------------------------------------------------------------------------- |
-| 初始化     | `setup`、`setup:env`                                        | 完整开发初始化 / 仅创建缺失的应用环境文件                                 |
-| 开发       | `dev`、`dev:ios`、`dev:android`                             | 启动共享包监听、API 和 Metro；可指定打开的平台                            |
-| 单独开发   | `dev:shared`、`dev:server`、`dev:mobile`                    | 共享包监听 / 服务端及共享包监听 / Metro                                   |
-| 构建       | `build:shared`、`build:server`                              | 编译共享包 / 先编译共享包再编译服务端                                     |
-| 原生构建   | `build:ios`、`build:android`                                | 先编译共享包，再 Prebuild、编译安装开发客户端，不启动 Metro               |
-| 导出       | `export:mobile`                                             | 先编译共享包，再导出 Android / iOS JavaScript 包                          |
-| 数据库启停 | `up:db`、`down:db`                                          | 启动 / 停止开发数据库，保留数据卷                                         |
-| 图片清理   | `cleanup:images`                                            | 编译服务端并清理超过 24 小时、未绑定且无引用的临时图片                    |
-| 数据库迁移 | `generate:db`、`migrate:db`                                 | 生成待审查的迁移文件 / 应用已提交的迁移                                   |
-| 静态检查   | `check`、`typecheck`、`lint`、`check:format`                | 完整静态检查 / 类型检查 / ESLint / 格式检查                               |
-| 环境检查   | `check:env`                                                 | 只读检查工具链、数据库及 API；支持 --tools-only、--ios、--android、--json |
-| 移动端检查 | `check:mobile-deps`、`doctor:mobile`                        | Expo 依赖兼容性检查 / Expo Doctor                                         |
-| 格式化     | `format`                                                    | 用 Prettier 改写格式                                                      |
-| 测试       | `test`、`test:mobile`、`test:integration`、`test:container` | 纯逻辑测试 / 移动端组件测试 / 专用数据库集成测试 / 已构建镜像验证         |
+| 类别       | 命令                                                        | 职责                                                                       |
+| ---------- | ----------------------------------------------------------- | -------------------------------------------------------------------------- |
+| 初始化     | `setup`、`setup:env`                                        | 完整开发初始化 / 仅创建缺失的应用环境文件                                  |
+| 开发       | `dev`、`dev:ios`、`dev:android`                             | 启动共享包监听、API 和 Metro；可指定打开的平台                             |
+| 单独开发   | `dev:shared`、`dev:server`、`dev:mobile`                    | 共享包监听 / 服务端及共享包监听 / Metro                                    |
+| 构建       | `build:shared`、`build:server`                              | 编译共享包 / 先编译共享包再编译服务端                                      |
+| 原生构建   | `build:ios`、`build:android`、`build:apk`                   | Prebuild 编译安装开发客户端 / 构建内嵌 Bundle 独立 APK 与 `SHA256SUMS.txt` |
+| 导出       | `export:mobile`                                             | 先编译共享包，再导出 Android / iOS JavaScript 包                           |
+| 数据库启停 | `up:db`、`down:db`                                          | 启动 / 停止开发数据库，保留数据卷                                          |
+| 图片清理   | `cleanup:images`                                            | 编译服务端并清理超过 24 小时、未绑定且无引用的临时图片                     |
+| 数据库迁移 | `generate:db`、`migrate:db`                                 | 生成待审查的迁移文件 / 应用已提交的迁移                                    |
+| 静态检查   | `check`、`typecheck`、`lint`、`check:format`                | 完整静态检查 / 类型检查 / ESLint / 格式检查                                |
+| 环境检查   | `check:env`                                                 | 只读检查工具链、数据库及 API；支持 --tools-only、--ios、--android、--json  |
+| 移动端检查 | `check:mobile-deps`、`doctor:mobile`                        | Expo 依赖兼容性检查 / Expo Doctor                                          |
+| 格式化     | `format`                                                    | 用 Prettier 改写格式                                                       |
+| 测试       | `test`、`test:mobile`、`test:integration`、`test:container` | 纯逻辑测试 / 移动端组件测试 / 专用数据库集成测试 / 已构建镜像验证          |
 
 工作区依赖不会自动触发共享包构建；需要先后执行的步骤由脚本中的 `&&` 明确串联。根目录 `build:ios` 调用移动端包的同名命令，不会递归调用自身，因为 `--filter @tongzhang/mobile` 已选择目标包。旧命令名不保留别名，避免出现重复入口。
 
@@ -142,6 +146,13 @@ Android 也可保留 `http://localhost:3300`，配合 `adb reverse tcp:3300 tcp:
 修改 `apps/mobile/.env` 后重启 Metro并重新载入 App。若改变 API 端口，同步更新移动端地址。所有地址都指向 API；本项目没有 Web 应用。
 
 `APP_VARIANT=development` 允许开发 HTTP；`production` 禁止原生明文通信。preview 和 production 的 EAS profile 显式设置生产 variant，缺失或无效的 HTTPS API 地址会在读取 app config 时失败。EAS environments 分别为 development / preview / production，需要在 Expo 项目中设置各自的 `EXPO_PUBLIC_API_BASE_URL`。目前尚未绑定 Expo 项目、签名或执行云构建。
+
+脱离本机 Metro 的独立 Android APK 可使用本机 JDK 17 + Android SDK 执行 `build:apk`（先用 `--preflight` 自检配置与 `infra/` 文件，实际构建会执行 `APP_VARIANT=production` Prebuild、Gradle `assembleRelease` 打包内嵌 JS Bundle，并在 `dist/android/` 输出 APK 与 `SHA256SUMS.txt`）：
+
+```bash
+pnpm build:apk --preflight --api-url https://api.example.com
+EXPO_PUBLIC_API_BASE_URL=https://api.example.com pnpm build:apk
+```
 
 ## 4. 迁移、检查与测试
 

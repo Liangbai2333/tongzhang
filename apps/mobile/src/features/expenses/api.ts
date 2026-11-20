@@ -5,4 +5,5 @@ export const expensesApi = {
   getExpense: operationClient('getExpense'),
   updateExpense: operationClient('updateExpense'),
   deleteExpense: operationClient('deleteExpense'),
+  parseExpenseDraft: operationClient('parseExpenseDraft'),
 };

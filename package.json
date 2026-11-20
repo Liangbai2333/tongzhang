@@ -20,6 +20,7 @@
     "build:server": "pnpm build:shared && pnpm --filter @tongzhang/server build",
     "build:ios": "pnpm build:shared && pnpm --filter @tongzhang/mobile build:ios",
     "build:android": "pnpm build:shared && pnpm --filter @tongzhang/mobile build:android",
+    "build:apk": "node scripts/build-android-apk.mjs",
     "export:mobile": "pnpm build:shared && pnpm --filter @tongzhang/mobile export",
     "up:db": "docker compose --env-file apps/server/.env -f infra/compose.dev.yml up -d --wait",
     "down:db": "docker compose --env-file apps/server/.env -f infra/compose.dev.yml down",
