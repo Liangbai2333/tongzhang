@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { router } from 'expo-router';
 import { useInfiniteQuery, useQueryClient } from '@tanstack/react-query';
@@ -35,6 +35,30 @@ export function NotificationsSheet({ visible, userId, onClose }: NotificationsSh
   const [readOverrides, setReadOverrides] = useState<Record<string, string>>({});
   const [markingId, setMarkingId] = useState<string | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
+  const mountedRef = useRef(true);
+  const activeUserIdRef = useRef(userId);
+  const markingLockRef = useRef(false);
+
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (activeUserIdRef.current === userId) return;
+    activeUserIdRef.current = userId;
+    markingLockRef.current = false;
+    setUnreadOnly(false);
+    setReadOverrides({});
+    setMarkingId(null);
+    setActionError(null);
+  }, [userId]);
+
+  useEffect(() => {
+    if (!visible) setActionError(null);
+  }, [visible]);
 
   const query = useInfiniteQuery({
     queryKey: profileKeys.notifications(userId, unreadOnly),
@@ -51,6 +75,7 @@ export function NotificationsSheet({ visible, userId, onClose }: NotificationsSh
     initialPageParam: undefined as string | undefined,
     getNextPageParam: (last) => last.page.nextCursor ?? undefined,
     enabled: visible,
+    staleTime: 0,
     retry: false,
     gcTime: 0,
   });
@@ -68,9 +93,11 @@ export function NotificationsSheet({ visible, userId, onClose }: NotificationsSh
     .filter((item) => (!unreadOnly ? true : item.readAt === null));
 
   async function openNotification(item: NotificationItem) {
-    if (markingId !== null) return;
+    if (markingLockRef.current || markingId !== null) return;
+    const requestUserId = userId;
     setActionError(null);
     if (item.readAt === null) {
+      markingLockRef.current = true;
       setMarkingId(item.id);
       try {
         const result = await profileApi.markNotificationRead({
@@ -78,18 +105,25 @@ export function NotificationsSheet({ visible, userId, onClose }: NotificationsSh
           query: {},
           body: undefined,
         });
+        if (!mountedRef.current || activeUserIdRef.current !== requestUserId) return;
         setReadOverrides((prev) => ({
           ...prev,
           [result.data.notificationId]: prev[result.data.notificationId] ?? result.data.readAt,
         }));
-        void client.invalidateQueries({ queryKey: ['user', userId, 'notifications'] });
+        void client.invalidateQueries({ queryKey: ['user', requestUserId, 'notifications'] });
       } catch (cause) {
-        setActionError(notificationErrorFeedback(cause).message);
+        if (mountedRef.current && activeUserIdRef.current === requestUserId) {
+          setActionError(notificationErrorFeedback(cause).message);
+        }
         return;
       } finally {
-        setMarkingId(null);
+        if (mountedRef.current && activeUserIdRef.current === requestUserId) {
+          markingLockRef.current = false;
+          setMarkingId(null);
+        }
       }
     }
+    if (!mountedRef.current || activeUserIdRef.current !== requestUserId) return;
     onClose();
     router.push(notificationTargetRoute(item));
   }
@@ -104,7 +138,7 @@ export function NotificationsSheet({ visible, userId, onClose }: NotificationsSh
       visible={visible}
       title="站内提醒"
       onClose={() => {
-        if (markingId === null) onClose();
+        if (!markingLockRef.current && markingId === null) onClose();
       }}
     >
       <View style={ui.between}>
