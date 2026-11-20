@@ -301,6 +301,16 @@ describe('B13 client prep: A32 settlement reminder permissions & error mapping',
       autoRetry: false,
     });
     expect(validation.message).toContain('120');
+
+    const retryExpired = reminderErrorFeedback(
+      new ApiError('RETRY_WINDOW_EXPIRED', '超过 24 小时'),
+    );
+    expect(retryExpired).toMatchObject({
+      kind: 'retry_expired',
+      actionLabel: '刷新结算页',
+      preservesIdempotencyKey: false,
+      autoRetry: false,
+    });
   });
 });
 
