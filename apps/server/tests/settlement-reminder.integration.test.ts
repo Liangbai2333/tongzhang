@@ -124,11 +124,23 @@ async function financialSnapshot(ledgerId: string, token: string) {
     .select()
     .from(expenseSplits)
     .where(eq(expenseSplits.ledgerId, ledgerId));
-  const statsRes = await fixture.app.inject({
-    url: `/api/v1/ledgers/${ledgerId}/statistics`,
-    headers: { authorization: `Bearer ${token}` },
-  });
+  const [statsRes, balancesRes, settlementRes] = await Promise.all([
+    fixture.app.inject({
+      url: `/api/v1/ledgers/${ledgerId}/statistics`,
+      headers: { authorization: `Bearer ${token}` },
+    }),
+    fixture.app.inject({
+      url: `/api/v1/ledgers/${ledgerId}/balances`,
+      headers: { authorization: `Bearer ${token}` },
+    }),
+    fixture.app.inject({
+      url: `/api/v1/ledgers/${ledgerId}/settlement`,
+      headers: { authorization: `Bearer ${token}` },
+    }),
+  ]);
   expect(statsRes.statusCode).toBe(200);
+  expect(balancesRes.statusCode).toBe(200);
+  expect(settlementRes.statusCode).toBe(200);
   return {
     ledger: {
       status: ledger!.status,
@@ -139,6 +151,8 @@ async function financialSnapshot(ledgerId: string, token: string) {
     transfers,
     expenses: expRows,
     splits: splitRows,
+    balances: balancesRes.json().data,
+    settlement: settlementRes.json().data,
     statistics: statsRes.json().data,
   };
 }
@@ -382,6 +396,17 @@ describe('A32 remindTransfer integration', () => {
     expect(paidReject.statusCode).toBe(409);
     expect(paidReject.json().error.code).toBe('LEDGER_STATE_INVALID');
 
+    // Replaying the original key while transfer is PAID (before SETTLED) returns cached 200
+    const replayAfterPaid = await remind(
+      s.ledgerId,
+      s.dingToBai.id,
+      s.bai.accessToken,
+      {},
+      savedKey,
+    );
+    expect(replayAfterPaid.statusCode).toBe(200);
+    expect(replayAfterPaid.json().data).toEqual(okRes.json().data);
+
     // Mark remaining transfer PAID and settle ledger -> SETTLED rejects new reminder with 409
     const markChen = await fixture.app.inject({
       method: 'POST',
@@ -397,6 +422,8 @@ describe('A32 remindTransfer integration', () => {
     });
     expect(settleRes.statusCode).toBe(200);
 
+    const beforeSettledChecks = await financialSnapshot(s.ledgerId, s.an.accessToken);
+
     const settledReject = await remind(s.ledgerId, s.chenToAn.id, s.an.accessToken);
     expect(settledReject.statusCode).toBe(409);
     expect(settledReject.json().error.code).toBe('LEDGER_STATE_INVALID');
@@ -411,5 +438,250 @@ describe('A32 remindTransfer integration', () => {
     );
     expect(replayAfterSettled.statusCode).toBe(200);
     expect(replayAfterSettled.json().data).toEqual(okRes.json().data);
+
+    // Same key with different body after SETTLED -> 409 IDEMPOTENCY_CONFLICT
+    const conflictAfterSettled = await remind(
+      s.ledgerId,
+      s.dingToBai.id,
+      s.bai.accessToken,
+      { note: '结清后换体' },
+      savedKey,
+    );
+    expect(conflictAfterSettled.statusCode).toBe(409);
+    expect(conflictAfterSettled.json().error.code).toBe('IDEMPOTENCY_CONFLICT');
+
+    expect(await financialSnapshot(s.ledgerId, s.an.accessToken)).toEqual(beforeSettledChecks);
+  });
+
+  it('rejects cross-ledger transfer IDs and invalid payloads without side effects', async () => {
+    const s1 = await seedGushanSettling();
+    const s2 = await seedGushanSettling();
+    const before = await financialSnapshot(s1.ledgerId, s1.an.accessToken);
+
+    // Valid transferId from another ledger -> 404 TRANSFER_NOT_FOUND
+    const crossLedger = await remind(s1.ledgerId, s2.dingToBai.id, s1.an.accessToken);
+    expect(crossLedger.statusCode).toBe(404);
+    expect(crossLedger.json().error.code).toBe('TRANSFER_NOT_FOUND');
+
+    // Non-UUID idempotency key -> 400 VALIDATION_ERROR
+    const badKey = await remind(s1.ledgerId, s1.dingToBai.id, s1.bai.accessToken, {}, 'not-a-uuid');
+    expect(badKey.statusCode).toBe(400);
+    expect(badKey.json().error.code).toBe('VALIDATION_ERROR');
+
+    // Blank / overlong note and unknown extra fields -> 400 VALIDATION_ERROR
+    for (const payload of [
+      { note: '   ' },
+      { note: '催'.repeat(121) },
+      { note: '正常备注', extraField: true },
+    ]) {
+      const invalid = await remind(s1.ledgerId, s1.dingToBai.id, s1.bai.accessToken, payload);
+      expect(invalid.statusCode).toBe(400);
+      expect(invalid.json().error.code).toBe('VALIDATION_ERROR');
+    }
+
+    // Leading/trailing whitespace in note is trimmed before persistence
+    const trimmed = await remind(s1.ledgerId, s1.dingToBai.id, s1.bai.accessToken, {
+      note: '  请方便时转一下  ',
+    });
+    expect(trimmed.statusCode).toBe(200);
+    const dingList = await fixture.app.inject({
+      url: '/api/v1/me/notifications?unreadOnly=true',
+      headers: { authorization: `Bearer ${s1.ding.accessToken}` },
+    });
+    expect(dingList.statusCode).toBe(200);
+    expect(endpoints.listNotifications.response.parse(dingList.json()).data[0]?.note).toBe(
+      '请方便时转一下',
+    );
+
+    expect(await financialSnapshot(s1.ledgerId, s1.an.accessToken)).toEqual(before);
+  });
+
+  it('serializes concurrent reminders on the same transfer and isolates idempotency scopes', async () => {
+    const s = await seedGushanSettling();
+    const before = await financialSnapshot(s.ledgerId, s.an.accessToken);
+
+    // Payee and non-payer creator race on the same transfer with different keys -> 1x 200, 1x 429
+    const keyPayee = randomUUID();
+    const keyCreator = randomUUID();
+    const [r1, r2] = await Promise.all([
+      remind(s.ledgerId, s.dingToBai.id, s.bai.accessToken, { note: '收款人催还' }, keyPayee),
+      remind(s.ledgerId, s.dingToBai.id, s.an.accessToken, { note: '创建者催还' }, keyCreator),
+    ]);
+    const statuses = [r1.statusCode, r2.statusCode].sort();
+    expect(statuses).toEqual([200, 429]);
+    const rejected = r1.statusCode === 429 ? r1 : r2;
+    expect(rejected.json().error.code).toBe('REMINDER_COOLDOWN');
+
+    // Exactly one notification and one TRANSFER_REMINDED audit row exist for dingToBai
+    const dingNotifs = await fixture.db.orm
+      .select()
+      .from(notifications)
+      .where(eq(notifications.transferId, s.dingToBai.id));
+    expect(dingNotifs).toHaveLength(1);
+    const remindLogs = await fixture.db.orm
+      .select()
+      .from(operationLogs)
+      .where(
+        and(
+          eq(operationLogs.ledgerId, s.ledgerId),
+          eq(operationLogs.action, 'TRANSFER_REMINDED'),
+          eq(operationLogs.targetId, s.dingToBai.id),
+        ),
+      );
+    expect(remindLogs).toHaveLength(1);
+
+    // Same user concurrent replay with the same key returns identical 200 without duplicate writes
+    const sharedKey = randomUUID();
+    const [c1, c2] = await Promise.all([
+      remind(s.ledgerId, s.chenToAn.id, s.an.accessToken, { note: '并发重放' }, sharedKey),
+      remind(s.ledgerId, s.chenToAn.id, s.an.accessToken, { note: '并发重放' }, sharedKey),
+    ]);
+    expect(c1.statusCode).toBe(200);
+    expect(c2.statusCode).toBe(200);
+    expect(c2.json().data).toEqual(c1.json().data);
+
+    const chenNotifs = await fixture.db.orm
+      .select()
+      .from(notifications)
+      .where(eq(notifications.transferId, s.chenToAn.id));
+    expect(chenNotifs).toHaveLength(1);
+
+    // Another authorized user reusing the same key on the same transfer does NOT replay; hits cooldown
+    const winnerKey = r1.statusCode === 200 ? keyPayee : keyCreator;
+    const otherToken = r1.statusCode === 200 ? s.an.accessToken : s.bai.accessToken;
+    const crossUserSameKey = await remind(s.ledgerId, s.dingToBai.id, otherToken, {}, winnerKey);
+    expect(crossUserSameKey.statusCode).toBe(429);
+    expect(crossUserSameKey.json().error.code).toBe('REMINDER_COOLDOWN');
+
+    // Same user reusing the same key on a DIFFERENT transfer succeeds independently
+    const expiredAt = new Date(Date.now() - DEFAULT_REMINDER_COOLDOWN_MS - 1000);
+    await fixture.db.orm
+      .update(operationLogs)
+      .set({ createdAt: expiredAt })
+      .where(
+        and(
+          eq(operationLogs.ledgerId, s.ledgerId),
+          eq(operationLogs.action, 'TRANSFER_REMINDED'),
+          eq(operationLogs.targetId, s.dingToBai.id),
+        ),
+      );
+    const sameKeyDifferentTransfer = await remind(
+      s.ledgerId,
+      s.dingToBai.id,
+      s.an.accessToken,
+      { note: '并发重放' },
+      sharedKey,
+    );
+    expect(sameKeyDifferentTransfer.statusCode).toBe(200);
+    expect(sameKeyDifferentTransfer.json().data.transferId).toBe(s.dingToBai.id);
+
+    expect(await financialSnapshot(s.ledgerId, s.an.accessToken)).toEqual(before);
+  });
+
+  it('links A29 silence, cooldown parity, A33/A34 read flow, and Gushan conservation', async () => {
+    const s = await seedGushanSettling();
+    const before = await financialSnapshot(s.ledgerId, s.an.accessToken);
+    expect(before.balances.expenseTotalCents).toBe('30000');
+    expect(before.settlement.transferTotalCents).toBe('9000');
+    expect(before.settlement.progress).toEqual({
+      paidCount: 0,
+      totalCount: 2,
+      remainingCents: '9000',
+    });
+
+    // Disable notifications for 小丁, send silent reminder, replay, and verify cooldown parity
+    const disableRes = await fixture.app.inject({
+      method: 'PATCH',
+      url: '/api/v1/me/preferences',
+      headers: { authorization: `Bearer ${s.ding.accessToken}` },
+      payload: { notificationEnabled: false },
+    });
+    expect(disableRes.statusCode).toBe(200);
+
+    const silentKey = randomUUID();
+    const silentRes = await remind(
+      s.ledgerId,
+      s.dingToBai.id,
+      s.bai.accessToken,
+      { note: '静默期提醒' },
+      silentKey,
+    );
+    expect(silentRes.statusCode).toBe(200);
+    const silentReplay = await remind(
+      s.ledgerId,
+      s.dingToBai.id,
+      s.bai.accessToken,
+      { note: '静默期提醒' },
+      silentKey,
+    );
+    expect(silentReplay.statusCode).toBe(200);
+    expect(silentReplay.json().data).toEqual(silentRes.json().data);
+
+    const silentCooldown = await remind(s.ledgerId, s.dingToBai.id, s.an.accessToken);
+    expect(silentCooldown.statusCode).toBe(429);
+    expect(silentCooldown.json().error.code).toBe('REMINDER_COOLDOWN');
+
+    // Compare cooldown error shape against enabled transfer (chenToAn) -> indistinguishable
+    const enabledRes = await remind(s.ledgerId, s.chenToAn.id, s.an.accessToken);
+    expect(enabledRes.statusCode).toBe(200);
+    const enabledCooldown = await remind(s.ledgerId, s.chenToAn.id, s.an.accessToken);
+    expect(enabledCooldown.statusCode).toBe(429);
+    expect(silentCooldown.json().error).toEqual(enabledCooldown.json().error);
+    expect(Object.keys(silentRes.json().data).sort()).toEqual(
+      Object.keys(enabledRes.json().data).sort(),
+    );
+
+    // Re-enable A29 for 小丁, expire cooldown, deliver reminder, then read via A33 & A34
+    const enableRes = await fixture.app.inject({
+      method: 'PATCH',
+      url: '/api/v1/me/preferences',
+      headers: { authorization: `Bearer ${s.ding.accessToken}` },
+      payload: { notificationEnabled: true },
+    });
+    expect(enableRes.statusCode).toBe(200);
+
+    await fixture.db.orm
+      .update(operationLogs)
+      .set({ createdAt: new Date(Date.now() - DEFAULT_REMINDER_COOLDOWN_MS - 1000) })
+      .where(
+        and(
+          eq(operationLogs.ledgerId, s.ledgerId),
+          eq(operationLogs.action, 'TRANSFER_REMINDED'),
+          eq(operationLogs.targetId, s.dingToBai.id),
+        ),
+      );
+
+    const deliveredRes = await remind(s.ledgerId, s.dingToBai.id, s.an.accessToken, {
+      note: '开启后催还',
+    });
+    expect(deliveredRes.statusCode).toBe(200);
+
+    const unreadRes = await fixture.app.inject({
+      url: '/api/v1/me/notifications?unreadOnly=true',
+      headers: { authorization: `Bearer ${s.ding.accessToken}` },
+    });
+    expect(unreadRes.statusCode).toBe(200);
+    const unreadItems = endpoints.listNotifications.response.parse(unreadRes.json()).data;
+    expect(unreadItems).toHaveLength(1);
+    expect(unreadItems[0]).toMatchObject({
+      type: 'SETTLEMENT_REMINDER',
+      ledgerId: s.ledgerId,
+      transferId: s.dingToBai.id,
+      actorUserId: s.an.user.id,
+      amountCents: '6000',
+      note: '开启后催还',
+      readAt: null,
+    });
+
+    const readRes = await fixture.app.inject({
+      method: 'POST',
+      url: `/api/v1/me/notifications/${unreadItems[0]!.id}/read`,
+      headers: { authorization: `Bearer ${s.ding.accessToken}` },
+    });
+    expect(readRes.statusCode).toBe(200);
+    expect(endpoints.markNotificationRead.response.parse(readRes.json()).data.readAt).toBeTruthy();
+
+    // Financial state & Gushan conservation remain strictly untouched across the entire flow
+    expect(await financialSnapshot(s.ledgerId, s.an.accessToken)).toEqual(before);
   });
 });
