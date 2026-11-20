@@ -4,5 +4,6 @@ export const settlementsApi = {
   startSettlement: operationClient('startSettlement'),
   getSettlement: operationClient('getSettlement'),
   markTransferPaid: operationClient('markTransferPaid'),
+  remindTransfer: operationClient('remindTransfer'),
   settleLedger: operationClient('settleLedger'),
 };
