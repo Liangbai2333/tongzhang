@@ -1,0 +1,8 @@
+env: load .env
+env: export APP_VARIANT EXPO_PUBLIC_API_BASE_URL
+- Creating native directory (./android)
+✔ Created native directory
+- Updating package.json
+✔ Updated package.json | no changes
+- Running prebuild
+✔ Finished prebuild
