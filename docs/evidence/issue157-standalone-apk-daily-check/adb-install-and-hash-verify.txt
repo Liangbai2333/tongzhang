@@ -1,0 +1,22 @@
+=== 1. Pre-install clean environment check ===
+$ lsof -i :8081 -i :3300
+(no process listening on 8081 or 3300)
+
+$ adb -s emulator-5584 reverse --list
+(empty - no adb reverse configured)
+
+$ adb -s emulator-5584 shell getprop ro.build.version.release / sdk / abi
+release=17 sdk=37 abi=arm64-v8a
+
+$ adb -s emulator-5584 shell pm path com.tongzhang.app
+(not installed)
+
+=== 2. Install standalone Release APK ===
+$ adb -s emulator-5584 install -r dist/android/tongzhang-e09353c-standalone.apk
+Performing Streamed Install
+Success
+
+=== 3. Verify device base.apk SHA-256 ===
+device_base_apk=/data/app/~~YjkIRA11_XsUS5prNaSvHA==/com.tongzhang.app-KrfdiXWwwLveAQT5UjrAXg==/base.apk
+device_sha256=4e844e5a985af0e5db0a52ebc35fbb8850cbb63d741c743a11739b26d897a241  /data/app/~~YjkIRA11_XsUS5prNaSvHA==/com.tongzhang.app-KrfdiXWwwLveAQT5UjrAXg==/base.apk
+host_sha256=4e844e5a985af0e5db0a52ebc35fbb8850cbb63d741c743a11739b26d897a241  /Users/liangbai/Homework/tongzhang/dist/android/tongzhang-e09353c-standalone.apk
