@@ -1,0 +1,12 @@
+=== 1. Confirm no Metro / no adb reverse before cold start ===
+(no process listening on 8081 or 3300)
+adb reverse --list: (empty)
+
+=== 2. Cold start com.tongzhang.app/.MainActivity ===
+Starting: Intent { cmp=com.tongzhang.app/.MainActivity }
+Status: ok
+LaunchState: COLD
+Activity: com.tongzhang.app/.MainActivity
+TotalTime: 5085
+WaitTime: 5114
+Complete
