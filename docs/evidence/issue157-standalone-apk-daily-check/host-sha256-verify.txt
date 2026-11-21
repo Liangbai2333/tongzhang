@@ -1,0 +1,12 @@
+$ cd dist/android && shasum -a 256 -c SHA256SUMS.txt
+tongzhang-e09353c-standalone.apk: OK
+
+$ cat dist/android/SHA256SUMS.txt
+4e844e5a985af0e5db0a52ebc35fbb8850cbb63d741c743a11739b26d897a241  tongzhang-e09353c-standalone.apk
+
+$ ls -l dist/android/tongzhang-e09353c-standalone.apk dist/android/SHA256SUMS.txt
+-rw-r--r--@ 1 liangbai  staff         99 Nov 21 03:26 dist/android/SHA256SUMS.txt
+-rw-r--r--@ 1 liangbai  staff  136831819 Nov 21 03:26 dist/android/tongzhang-e09353c-standalone.apk
+
+$ shasum -a 256 dist/android/tongzhang-e09353c-standalone.apk
+4e844e5a985af0e5db0a52ebc35fbb8850cbb63d741c743a11739b26d897a241  dist/android/tongzhang-e09353c-standalone.apk
