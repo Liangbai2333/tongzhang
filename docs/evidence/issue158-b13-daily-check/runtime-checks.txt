@@ -1,0 +1,45 @@
+=== Commit & Native Client Attribution ===
+Server / Metro JS commit: e09353cf51e63ed2eddbb5e9688c27597b2ac04a
+Native dev client APK base commit: b859ba9 (B12, zero native diff to e09353c)
+Host APK SHA-256:   3cbcb6a31d70efbc3cf2c081410a22d15af66ff29d8991aec3b3960230eac806
+Device APK SHA-256: 3cbcb6a31d70efbc3cf2c081410a22d15af66ff29d8991aec3b3960230eac806
+Emulator: Medium_Phone_API_37.0 (emulator-5562, Android 17 / API 37, arm64-v8a, 1080x2400)
+AI_DRAFT_API_BASE_URL: http://127.0.0.1:3398 (local OpenAI-compatible fixture stub)
+
+=== Health Check ===
+{"data":{"status":"ok","database":"connected"}}
+
+=== AI Draft Non-Persistence Check (before manual save) ===
+expenses_before_manual_save=0
+
+=== PostgreSQL 17 Final Snapshot (beta158) ===
+                  id                  |       name       |  status  | version 
+--------------------------------------+------------------+----------+---------
+ aed393e0-6bf3-42f3-ae80-66bf0bf50311 | 鼓山一日-B13核对 | SETTLING |       4
+(1 row)
+
+                  id                  |  title   | amount_cents | category | split_mode | version | deleted_at 
+--------------------------------------+----------+--------------+----------+------------+---------+------------
+ d46e98af-cb78-4203-bd35-2bfd6773561b | 鼓山门票 |        12000 | TICKET   | EQUAL      |       1 | 
+(1 row)
+
+                  id                  | amount_cents | status  
+--------------------------------------+--------------+---------
+ 6831c4d1-ee81-4902-bc5e-60ee7e14d9d0 |         6000 | PENDING
+(1 row)
+
+                  id                  | recipient | actor |        type         | amount_cents |          note          | is_read 
+--------------------------------------+-----------+-------+---------------------+--------------+------------------------+---------
+ 33011cb2-9460-48e2-959a-0f5a87ad5920 | 小白      | 小安  | SETTLEMENT_REMINDER |         6000 | Please confirm 60 yuan | t
+(1 row)
+
+       action       | count 
+--------------------+-------
+ EXPENSE_CREATED    |     1
+ LEDGER_CREATED     |     1
+ MEMBER_JOINED      |     1
+ NOTIFICATION_READ  |     1
+ SETTLEMENT_STARTED |     1
+ TRANSFER_REMINDED  |     1
+(6 rows)
+
