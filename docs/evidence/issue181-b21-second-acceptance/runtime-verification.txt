@@ -1,0 +1,22 @@
+=== Post-Run Isolation & Read-State Verification ===
+2026-11-26T13:12:06Z
+=== Local Port 3300/8081 Check (Post-Run) ===
+OK: no process listening on TCP 3300 or 8081
+=== ADB Reverse Rules (Post-Run) ===
+adb reverse --list: <empty>
+=== Verify Notification Marked Read (A34) ===
+TAP (back from settlement): (111, 137) text="" desc="返回"
+TAP (reopen notifications): (943, 463) text="" desc="站内提醒"
+TAP (filter unread only): (335, 1899) text="" desc="仅看未读"
+  [Button] text="" desc="关闭面板遮罩" [0,0][1080,2400]
+  [View] text="站内提醒" desc="" [63,1737][870,1808]
+  [Button] text="" desc="关闭面板" [902,1715][1017,1830]
+  [Button] text="" desc="全部" [63,1872][207,1967]
+  [TextView] text="全部" desc="" [100,1895][170,1943]
+  [Button] text="" desc="仅看未读" [228,1872][441,1967]
+  [TextView] text="仅看未读" desc="" [265,1895][405,1943]
+  [Button] text="" desc="刷新提醒" [847,1872][1017,1967]
+  [TextView] text="刷新提醒" desc="" [868,1895][996,1943]
+  [View] text="暂无未读提醒" desc="" [115,2061][964,2132]
+  [TextView] text="所有待还提醒都已查看。" desc="" [115,2164][964,2222]
+UNREAD_EMPTY_AFTER_A34=true

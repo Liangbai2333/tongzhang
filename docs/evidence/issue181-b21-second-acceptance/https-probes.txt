@@ -1,0 +1,27 @@
+=== Timestamp ===
+2026-11-26T12:47:03Z
+=== GET /health/ready ===
+HTTP/2 200 
+alt-svc: h3=":443"; ma=2592000
+content-type: application/json; charset=utf-8
+date: Thu, 26 Nov 2026 12:47:03 GMT
+via: 1.1 Caddy
+content-length: 47
+
+{"data":{"status":"ok","database":"connected"}}
+=== GET /api/v1/system/info ===
+HTTP/2 200 
+alt-svc: h3=":443"; ma=2592000
+content-type: application/json; charset=utf-8
+date: Thu, 26 Nov 2026 12:47:03 GMT
+via: 1.1 Caddy
+content-length: 79
+
+{"data":{"name":"同账","currency":"CNY","minorUnit":2,"maxLedgerMembers":12}}
+=== Embedded Bundle Check ===
+  4023444  01-01-1981 01:01   assets/index.android.bundle
+Embedded API URL occurrences:
+Server secret leak check (AI_DRAFT_API_KEY / JWT_SECRET / DATABASE_URL):
+ZERO_SERVER_SECRETS_FOUND
+=== Embedded URL in Hermes Bundle ===
+https://tongzhang.worldboot.net
