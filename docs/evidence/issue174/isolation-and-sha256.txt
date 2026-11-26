@@ -1,0 +1,21 @@
+=== Timestamp ===
+2026-11-26T09:25:00Z
+=== Local Ports 3300/8081 ===
+NONE_LISTENING
+=== adb reverse --list ===
+
+=== Pre-install pm path ===
+=== Host APK SHA-256 ===
+ece352d613919d11512b8cef74f3a711671d0d6f0065c50d9f42104f471fae54  /Users/liangbai/Homework/tongzhang/dist/android/tongzhang-ef3cf86-standalone.apk
+=== Device base.apk path ===
+/data/app/~~XNvnYhM23WFNOi2nLK-k4w==/com.tongzhang.app-8PP3HvA6Mxk_8B_gYEKCCw==/base.apk
+=== Device base.apk SHA-256 ===
+ece352d613919d11512b8cef74f3a711671d0d6f0065c50d9f42104f471fae54  /data/app/~~XNvnYhM23WFNOi2nLK-k4w==/com.tongzhang.app-8PP3HvA6Mxk_8B_gYEKCCw==/base.apk
+=== Cold Launch ===
+Starting: Intent { cmp=com.tongzhang.app/.MainActivity }
+Status: ok
+LaunchState: COLD
+Activity: com.tongzhang.app/.MainActivity
+TotalTime: 1458
+WaitTime: 1509
+Complete
