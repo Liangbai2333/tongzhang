@@ -1,0 +1,77 @@
+=== 1. Ledger terminal state, version, profile/prefs, and personal archive isolation ===
+                  id                  |   name   | status  | version | username | notification_enabled | is_creator | archived 
+--------------------------------------+----------+---------+---------+----------+----------------------+------------+----------
+ 5599d18e-1f96-4599-8cea-c24d4c27ac5e | 鼓山一日 | SETTLED |      12 | 小安     | t                    | t          | t
+ 5599d18e-1f96-4599-8cea-c24d4c27ac5e | 鼓山一日 | SETTLED |      12 | 小白174  | f                    | f          | f
+ 5599d18e-1f96-4599-8cea-c24d4c27ac5e | 鼓山一日 | SETTLED |      12 | 小陈     | t                    | f          | f
+ 5599d18e-1f96-4599-8cea-c24d4c27ac5e | 鼓山一日 | SETTLED |      12 | 小丁     | t                    | f          | f
+(4 rows)
+
+=== 2. Active vs soft-deleted expenses ===
+     title     | category  | amount_cents | split_mode | version | is_soft_deleted 
+---------------+-----------+--------------+------------+---------+-----------------
+ Gushan ticket | TICKET    |        14000 | EQUAL      |       2 | t
+ 食堂          | DINING    |        12000 | EQUAL      |       1 | f
+ 鼓山门票      | TICKET    |        12000 | EQUAL      |       1 | f
+ 车费          | TRANSPORT |         6000 | EQUAL      |       1 | f
+(4 rows)
+
+=== 3. Active expense total and expense_splits conservation ===
+ active_expenses | active_expense_total_cents | active_split_rows | active_split_total_cents 
+-----------------+----------------------------+-------------------+--------------------------
+               3 |                      30000 |                10 |                    30000
+(1 row)
+
+=== 4. Settlement batch and PAID transfers ===
+ source_version | algorithm_version | expense_total_cents | transfer_total_cents | transfer_count | sequence | payer |  payee  | amount_cents | status 
+----------------+-------------------+---------------------+----------------------+----------------+----------+-------+---------+--------------+--------
+             10 | zero-sum-dp-v1    |               30000 |                 9000 |              2 |        1 | 小陈  | 小安    |         3000 | PAID
+             10 | zero-sum-dp-v1    |               30000 |                 9000 |              2 |        2 | 小丁  | 小白174 |         6000 | PAID
+(2 rows)
+
+=== 5. Notifications (read_at non-null) and operation_logs ===
+        type         | is_read | has_created_at 
+---------------------+---------+----------------
+ SETTLEMENT_REMINDER | t       | t
+(1 row)
+
+       action       | cnt 
+--------------------+-----
+ EXPENSE_CREATED    |   4
+ EXPENSE_DELETED    |   1
+ EXPENSE_UPDATED    |   1
+ LEDGER_ARCHIVED    |   1
+ LEDGER_CREATED     |   1
+ LEDGER_SETTLED     |   1
+ MEMBER_JOINED      |   3
+ NOTIFICATION_READ  |   1
+ SETTLEMENT_STARTED |   1
+ TRANSFER_PAID      |   2
+ TRANSFER_REMINDED  |   1
+(11 rows)
+
+=== 6. Post-verification cleanup of temporary #174 test accounts and ledger ===
+BEGIN
+DELETE 1
+DELETE 19
+DELETE 2
+DELETE 1
+DELETE 14
+DELETE 4
+DELETE 1
+DELETE 4
+DELETE 1
+DELETE 16
+DELETE 17
+DELETE 4
+COMMIT
+ remaining_174_users 
+---------------------
+                   0
+(1 row)
+
+ remaining_174_ledgers 
+-----------------------
+                     0
+(1 row)
+
