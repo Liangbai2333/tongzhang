@@ -331,8 +331,12 @@ export function ExpenseForm({
             </View>
             {draftApplied && (
               <View style={s.draftNotice}>
-                <View style={ui.between}>
-                  <Text accessibilityLiveRegion="polite" style={s.draftNoticeTitle}>
+                <View style={s.draftNoticeHeader}>
+                  <Text
+                    accessibilityLiveRegion="polite"
+                    numberOfLines={1}
+                    style={s.draftNoticeTitle}
+                  >
                     AI 草稿已回填，请核对后手动点击「保存消费」
                   </Text>
                   <Touch
@@ -604,16 +608,22 @@ const s = StyleSheet.create({
   draftNotice: {
     backgroundColor: colors.surface,
     borderRadius: 14,
-    paddingHorizontal: 12,
+    paddingHorizontal: 10,
     paddingVertical: 10,
     gap: 4,
     borderWidth: 1,
     borderColor: colors.border,
   },
+  draftNoticeHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 6,
+  },
   draftNoticeTitle: {
     flex: 1,
-    fontSize: 13,
-    lineHeight: 19,
+    fontSize: 12,
+    lineHeight: 18,
     fontWeight: '700',
     color: colors.warning,
   },

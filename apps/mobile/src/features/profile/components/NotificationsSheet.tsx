@@ -14,6 +14,7 @@ import { colors } from '@/theme/tokens';
 import { profileApi } from '../api';
 import {
   applyNotificationRead,
+  formatNotificationTime,
   notificationErrorFeedback,
   notificationTargetRoute,
 } from '../notifications';
@@ -230,7 +231,7 @@ export function NotificationsSheet({ visible, userId, onClose }: NotificationsSh
                 </Text>
                 {item.note && <Text style={ui.caption}>备注：{item.note}</Text>}
                 <Text style={ui.caption}>
-                  {new Date(item.createdAt).toLocaleString()} · 点击查看结算页
+                  {formatNotificationTime(item.createdAt)} · 点击查看结算页
                 </Text>
               </Touch>
             );

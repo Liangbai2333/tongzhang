@@ -11,6 +11,17 @@ export type NotificationErrorFeedback = {
   autoRetry: false;
 };
 
+/**
+ * Format notification timestamp deterministically as `YYYY-MM-DD HH:mm`
+ * regardless of the host OS / device display language.
+ */
+export function formatNotificationTime(iso: string): string {
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) return iso;
+  const pad = (n: number) => String(n).padStart(2, '0');
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}`;
+}
+
 /** Deep link target for an in-app settlement reminder item (A33 -> settlement screen). */
 export function notificationTargetRoute(item: Pick<NotificationItem, 'ledgerId'>) {
   return {

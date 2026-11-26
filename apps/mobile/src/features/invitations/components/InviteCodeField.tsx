@@ -8,11 +8,13 @@ export function InviteCodeField({
   value,
   onChangeText,
   disabled,
+  overlayOpen = false,
   error,
 }: {
   value: string;
   onChangeText: (value: string) => void;
   disabled: boolean;
+  overlayOpen?: boolean;
   error: string | null;
 }) {
   const [focused, setFocused] = useState(false);
@@ -39,29 +41,31 @@ export function InviteCodeField({
               key={i}
               style={[
                 styles.cell,
-                focused && i === Math.min(value.length, 5) && styles.currentCell,
+                focused && !overlayOpen && i === Math.min(value.length, 5) && styles.currentCell,
               ]}
             >
               <Text style={styles.character}>{value[i] ?? ''}</Text>
             </View>
           ))}
         </View>
-        <TextInput
-          accessibilityLabel="6 位邀请码"
-          accessibilityHint="输入或粘贴六位字母和数字邀请码"
-          value={value}
-          onChangeText={onChangeText}
-          maxLength={6}
-          autoCapitalize="characters"
-          autoCorrect={false}
-          autoComplete="off"
-          editable={!disabled}
-          caretHidden
-          style={styles.input}
-          onFocus={() => setFocused(true)}
-          onBlur={() => setFocused(false)}
-          underlineColorAndroid="transparent"
-        />
+        {!overlayOpen && (
+          <TextInput
+            accessibilityLabel="6 位邀请码"
+            accessibilityHint="输入或粘贴六位字母和数字邀请码"
+            value={value}
+            onChangeText={onChangeText}
+            maxLength={6}
+            autoCapitalize="characters"
+            autoCorrect={false}
+            autoComplete="off"
+            editable={!disabled}
+            caretHidden
+            style={styles.input}
+            onFocus={() => setFocused(true)}
+            onBlur={() => setFocused(false)}
+            underlineColorAndroid="transparent"
+          />
+        )}
       </View>
       <InlineError message={error} />
     </View>
@@ -104,9 +108,10 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     left: 0,
+    opacity: 0,
     color: 'transparent',
     backgroundColor: 'transparent',
-    fontSize: 24,
+    fontSize: 1,
   },
   error: { borderColor: colors.danger },
   disabled: { opacity: 0.45 },

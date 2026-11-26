@@ -140,6 +140,7 @@ export default function JoinLedgerScreen() {
         <InviteCodeField
           value={code}
           disabled={busy || write.uncertain}
+          overlayOpen={preview !== null || scanning}
           onChangeText={(value) => {
             setCode(value.trim().toUpperCase());
             setError(null);

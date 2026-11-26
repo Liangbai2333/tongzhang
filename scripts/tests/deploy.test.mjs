@@ -66,3 +66,45 @@ if (args.includes('images -q server')) console.log('sha256:test');
     }
   },
 );
+
+it('includes optional compose.host.yml and honors DEPLOY_PULL_POLICY=never', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'tongzhang-deploy-host-test-'));
+  try {
+    const bin = join(dir, 'bin');
+    mkdirSync(bin);
+    copyFileSync(new URL('../../infra/deploy.sh', import.meta.url), join(dir, 'deploy.sh'));
+    writeFileSync(join(dir, '.env'), '# Test fixture\n');
+    writeFileSync(join(dir, 'compose.host.yml'), 'services: {}\n');
+    writeFileSync(
+      join(bin, 'docker'),
+      `#!/usr/bin/env node
+const fs = require('node:fs');
+const args = process.argv.slice(2).join(' ');
+fs.appendFileSync(process.env.PROBE_LOG, args + '\\n');
+if (args.includes('pg_dump')) console.log('test-backup');
+if (args.includes('printenv API_DOMAIN')) console.log('api.example.com');
+if (args.includes('images -q server')) console.log('sha256:test');
+`,
+      { mode: 0o755 },
+    );
+    writeFileSync(join(bin, 'curl'), '#!/bin/sh\nprintf "https-check\\n" >> "$PROBE_LOG"\n', {
+      mode: 0o755,
+    });
+    const log = join(dir, 'calls.log');
+    const result = spawnSync('bash', [join(dir, 'deploy.sh')], {
+      env: {
+        ...process.env,
+        PATH: `${bin}:${process.env.PATH}`,
+        PROBE_LOG: log,
+        DEPLOY_PULL_POLICY: 'never',
+      },
+      encoding: 'utf8',
+    });
+    expect(result.status).toBe(0);
+    const calls = readFileSync(log, 'utf8');
+    expect(calls).toContain('compose.host.yml');
+    expect(calls).not.toContain('pull postgres server caddy');
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});

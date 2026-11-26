@@ -7,10 +7,18 @@ env_file="${1:-$infra_dir/.env}"
 if [ ! -f "$env_file" ]; then echo 'Missing deployment .env; copy infra/.env.example and configure it.' >&2; exit 1; fi
 command -v curl >/dev/null
 compose=(docker compose --env-file "$env_file" -f "$infra_dir/compose.prod.yml")
+if [ -f "$infra_dir/compose.host.yml" ]; then
+  compose+=(-f "$infra_dir/compose.host.yml")
+fi
 "${compose[@]}" config --quiet
 if ! mkdir "$infra_dir/.deploy.lock"; then echo 'Another deployment is running; inspect it before removing a stale lock.' >&2; exit 1; fi
 trap 'rmdir "$infra_dir/.deploy.lock"' EXIT
-"${compose[@]}" pull postgres server caddy
+pull_policy="${DEPLOY_PULL_POLICY:-always}"
+if [ "$pull_policy" = "always" ]; then
+  "${compose[@]}" pull postgres server caddy
+elif [ "$pull_policy" != "never" ]; then
+  "${compose[@]}" pull --policy "$pull_policy" postgres server caddy
+fi
 "${compose[@]}" up -d --wait --wait-timeout 90 postgres
 mkdir -p "$infra_dir/backups"
 backup="$infra_dir/backups/$(date -u +%Y%m%dT%H%M%SZ)-$$.dump"
