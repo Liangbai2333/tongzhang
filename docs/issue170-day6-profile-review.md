@@ -17,14 +17,14 @@
 
 GitHub 状态于本次复核读取。PR 合并与 Issue 关闭是仓库事实，不自动证明缓冲池 12 点已经通过双关口核销。
 
-| 项目                        | 实际关联与主线证据                                                                                                                                  | 当前归属与状态                                 | 待补证据                                   |
-| --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------- | ------------------------------------------ |
-| D-142-01 邀请码残影         | #169 / [PR #189](https://github.com/Liangbai2333/tongzhang/pull/189)，InviteCodeField 遮罩时卸载输入框                                              | #169 已关闭、PR 已合并；归入既有 B20，不另估点 | 指定成员复核与整项核销确认                 |
-| D-158-01 提醒时间格式       | #169 / PR #189，formatNotificationTime 与 b20-ui-fixes.test.tsx                                                                                     | 同上；本次复核范围包含此项                     | 线上独立 APK 英文系统语言设备实操          |
-| D-158-02 AI 回填提示折行    | #169 / PR #189，ExpenseForm 单行约束                                                                                                                | 同上；业务主作者交叉复核由 #171 记录           | 最终候选屏幕实操与指定成员复核             |
-| 催还集成快照无序偶发        | [#172](https://github.com/Liangbai2333/tongzhang/issues/172) 已关闭；settlement-reminder.integration.test.ts 的 financialSnapshot 使用主键 ORDER BY | 既有 B20 返工关联；不重复登记成新缺陷          | 本次隔离库复跑尚未完成，不能沿用历史通过数 |
-| 消费与 AI 边界联调          | [#171](https://github.com/Liangbai2333/tongzhang/issues/171)                                                                                        | 独立任务记录；未由本单宣告完成                 | 真实线上/隔离库证据与业务主作者批注        |
-| P-158-01 跨页面冷却按钮状态 | 已于 [#158](issue158-b13-daily-check-and-survey-batch1.md) 按推迟归档并写入 [known-limitations](known-limitations.md)                               | 保持推迟；本次未新增推迟项，不扩 A24           | 无新增实施或核销声明                       |
+| 项目                        | 实际关联与主线证据                                                                                                                                  | 当前归属与状态                                 | 待补证据                            |
+| --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------- | ----------------------------------- |
+| D-142-01 邀请码残影         | #169 / [PR #189](https://github.com/Liangbai2333/tongzhang/pull/189)，InviteCodeField 遮罩时卸载输入框                                              | #169 已关闭、PR 已合并；归入既有 B20，不另估点 | 指定成员复核与整项核销确认          |
+| D-158-01 提醒时间格式       | #169 / PR #189，formatNotificationTime 与 b20-ui-fixes.test.tsx                                                                                     | 同上；本次复核范围包含此项                     | 线上独立 APK 英文系统语言设备实操   |
+| D-158-02 AI 回填提示折行    | #169 / PR #189，ExpenseForm 单行约束                                                                                                                | 同上；业务主作者交叉复核由 #171 记录           | 最终候选屏幕实操与指定成员复核      |
+| 催还集成快照无序偶发        | [#172](https://github.com/Liangbai2333/tongzhang/issues/172) 已关闭；settlement-reminder.integration.test.ts 的 financialSnapshot 使用主键 ORDER BY | 既有 B20 返工关联；不重复登记成新缺陷          | 本次隔离库复跑通过，见第 4 节       |
+| 消费与 AI 边界联调          | [#171](https://github.com/Liangbai2333/tongzhang/issues/171)                                                                                        | 独立任务记录；未由本单宣告完成                 | 真实线上/隔离库证据与业务主作者批注 |
+| P-158-01 跨页面冷却按钮状态 | 已于 [#158](issue158-b13-daily-check-and-survey-batch1.md) 按推迟归档并写入 [known-limitations](known-limitations.md)                               | 保持推迟；本次未新增推迟项，不扩 A24           | 无新增实施或核销声明                |
 
 ## 3. 个人资料与提醒源码复核
 
@@ -46,7 +46,7 @@ GitHub 状态于本次复核读取。PR 合并与 Issue 关闭是仓库事实，
 - 静态检查：`pnpm check` 通过（共享包构建、全工作区 TypeScript、ESLint 零告警、Prettier）。原始输出保留在工作区 `work/check.log`，不冒充历史验收证据。
 - 第一层无数据库：`pnpm test`，26 个文件、195 项通过。输出 `work/test.log`。
 - 第二层移动端组件：`pnpm --filter @tongzhang/mobile test --watch=false --runTestsByPath tests/notifications-cross-check.test.tsx tests/b17-401-gates.test.tsx tests/b20-ui-fixes.test.tsx`，iOS / Android 共 6 个套件、20 项通过。输出 `work/mobile.log`。首次尝试额外传 `--runInBand` 与项目自带 `--maxWorkers=4` 冲突、未运行测试，去掉冲突参数后以上结果通过；未声称全量移动端测试通过。
-- 第三层隔离 PostgreSQL：未执行；未发现 Docker 或专用 TEST_DATABASE_URL，禁止连接未知共享库或线上库执行测试。
+- 第三层隔离 PostgreSQL：使用仅监听本机的 PostgreSQL 17.12 专用库执行迁移和 `pnpm test:integration`，25 个文件、199 项通过。未连接共享库或线上库。
 - 第四层原生/线上：未安装或操作独立 APK，未执行线上注册、多账号切换及站会/现场调查；无可交付的新截图或哈希。
 
 ## 5. 完成边界
