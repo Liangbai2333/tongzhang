@@ -1,0 +1,58 @@
+                  id                  |      name       |  status  | version | username  | notification_enabled | archived 
+--------------------------------------+-----------------+----------+---------+-----------+----------------------+----------
+ cb062d53-8cf4-43cc-9729-894f02ac1094 | B21SecondAccept | SETTLING |       4 | b21owner  | t                    | f
+ cb062d53-8cf4-43cc-9729-894f02ac1094 | B21SecondAccept | SETTLING |       4 | b21member | t                    | f
+(2 rows)
+
+     title     | category | amount_cents | split_mode | version | is_soft_deleted 
+---------------+----------+--------------+------------+---------+-----------------
+ Hotpot dinner | DINING   |        18000 | EQUAL      |       1 | f
+(1 row)
+
+ split_total_cents | split_count 
+-------------------+-------------
+             18000 |           2
+(1 row)
+
+ source_version | algorithm_version | expense_total_cents | transfer_total_cents | transfer_count | sequence | amount_cents | status  
+----------------+-------------------+---------------------+----------------------+----------------+----------+--------------+---------
+              3 | zero-sum-dp-v1    |               18000 |                 9000 |              1 |        1 |         9000 | PENDING
+(1 row)
+
+        type         | is_read 
+---------------------+---------
+ SETTLEMENT_REMINDER | t
+(1 row)
+
+       action       | cnt 
+--------------------+-----
+ EXPENSE_CREATED    |   1
+ LEDGER_CREATED     |   1
+ MEMBER_JOINED      |   1
+ NOTIFICATION_READ  |   1
+ SETTLEMENT_STARTED |   1
+ TRANSFER_REMINDED  |   1
+(6 rows)
+
+BEGIN
+TRUNCATE TABLE
+COMMIT
+      table_name      | row_count 
+----------------------+-----------
+ auth_refresh_tokens  |         0
+ auth_sessions        |         0
+ expense_images       |         0
+ expense_splits       |         0
+ expenses             |         0
+ idempotency_keys     |         0
+ image_assets         |         0
+ invitations          |         0
+ ledger_members       |         0
+ ledgers              |         0
+ notifications        |         0
+ operation_logs       |         0
+ settlement_batches   |         0
+ settlement_transfers |         0
+ users                |         0
+(15 rows)
+
