@@ -1,0 +1,17 @@
+$ pnpm build:shared && pnpm typecheck && pnpm lint && pnpm check:format
+$ pnpm -r --filter "./packages/*" build
+$ tsc -p tsconfig.json
+$ tsc -p tsconfig.json
+$ pnpm -r typecheck
+packages/domain typecheck$ tsc -p tsconfig.json --noEmit
+packages/domain typecheck: Done
+packages/contracts typecheck$ tsc -p tsconfig.json --noEmit
+packages/contracts typecheck: Done
+apps/mobile typecheck$ tsc --noEmit
+apps/server typecheck$ tsc -p tsconfig.json --noEmit && tsc -p tsconfig.tools.json
+apps/mobile typecheck: Done
+apps/server typecheck: Done
+$ eslint . --max-warnings=0
+$ prettier --check .
+Checking formatting...
+All matched files use Prettier code style!
