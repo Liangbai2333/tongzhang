@@ -1,0 +1,25 @@
+{
+  "sourceBaseline": "5646e7065339b34eb1b4f36f29b62b38dd15fb75",
+  "releaseTag": "beta-day6-20261121",
+  "apk": "tongzhang-ef3cf86-standalone.apk",
+  "bytes": 136832199,
+  "releaseAssetSha256": "ece352d613919d11512b8cef74f3a711671d0d6f0065c50d9f42104f471fae54",
+  "hostSha256": "ece352d613919d11512b8cef74f3a711671d0d6f0065c50d9f42104f471fae54",
+  "deviceBaseApkSha256": "ece352d613919d11512b8cef74f3a711671d0d6f0065c50d9f42104f471fae54",
+  "embeddedBundleBytes": 4023444,
+  "embeddedApiBaseUrl": "https://tongzhang.worldboot.net",
+  "secretKeyStringsPresent": false,
+  "localApiListening": false,
+  "metroListening": false,
+  "adbReverseMappings": [],
+  "coldStartLaunchState": "COLD",
+  "coldStartTotalTimeMs": 901,
+  "cloudHttpsJourneyVerified": [
+    "welcome-cold-start",
+    "register-and-online-session",
+    "login-verification",
+    "create-ledger-and-qr-invitation",
+    "scanner-entry-and-camera-denial-fallback",
+    "english-locale-notification-timestamp-D-158-01"
+  ]
+}
