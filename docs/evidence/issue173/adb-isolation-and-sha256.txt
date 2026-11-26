@@ -1,0 +1,31 @@
+$ shasum -a 256 -c dist/android/SHA256SUMS.txt
+tongzhang-ef3cf86-standalone.apk: OK
+
+$ lsof -iTCP:3300 -iTCP:8081 -sTCP:LISTEN || echo "no local API or Metro listening"
+no local API or Metro listening
+
+$ adb reverse --remove-all && adb reverse --list
+(empty)
+
+$ adb shell pm path com.tongzhang.app || true
+(not installed)
+
+$ adb install -r dist/android/tongzhang-ef3cf86-standalone.apk
+Performing Streamed Install
+Success
+
+$ APK_PATH=$(adb shell pm path com.tongzhang.app | tr -d '\r' | sed 's/^package://')
+$ echo "APK_PATH=$APK_PATH"
+APK_PATH=/data/app/~~Me4R9INjlP4rNTLjG2PCQQ==/com.tongzhang.app-MzHywNy1O-PwR5WLPyP9Fg==/base.apk
+
+$ adb shell sha256sum "$APK_PATH"
+ece352d613919d11512b8cef74f3a711671d0d6f0065c50d9f42104f471fae54  /data/app/~~Me4R9INjlP4rNTLjG2PCQQ==/com.tongzhang.app-MzHywNy1O-PwR5WLPyP9Fg==/base.apk
+
+$ adb shell am start -W -n com.tongzhang.app/.MainActivity
+Starting: Intent { cmp=com.tongzhang.app/.MainActivity }
+Status: ok
+LaunchState: COLD
+Activity: com.tongzhang.app/.MainActivity
+TotalTime: 901
+WaitTime: 902
+Complete
