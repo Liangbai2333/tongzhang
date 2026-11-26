@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
-import { and, eq } from 'drizzle-orm';
+import { and, asc, eq } from 'drizzle-orm';
 import { endpoints } from '@tongzhang/contracts';
 import {
   expenseSplits,
@@ -111,19 +111,28 @@ async function seedGushanSettling() {
 async function financialSnapshot(ledgerId: string, token: string) {
   const db = fixture.db.orm;
   const [ledger] = await db.select().from(ledgers).where(eq(ledgers.id, ledgerId));
+  // Explicit deterministic ORDER BY: PostgreSQL physical heap order can change after FOR UPDATE
+  // row locks, causing toEqual(before) snapshot comparisons to flake intermittently.
   const batches = await db
     .select()
     .from(settlementBatches)
-    .where(eq(settlementBatches.ledgerId, ledgerId));
+    .where(eq(settlementBatches.ledgerId, ledgerId))
+    .orderBy(asc(settlementBatches.id));
   const transfers = await db
     .select()
     .from(settlementTransfers)
-    .where(eq(settlementTransfers.ledgerId, ledgerId));
-  const expRows = await db.select().from(expenses).where(eq(expenses.ledgerId, ledgerId));
+    .where(eq(settlementTransfers.ledgerId, ledgerId))
+    .orderBy(asc(settlementTransfers.sequence), asc(settlementTransfers.id));
+  const expRows = await db
+    .select()
+    .from(expenses)
+    .where(eq(expenses.ledgerId, ledgerId))
+    .orderBy(asc(expenses.id));
   const splitRows = await db
     .select()
     .from(expenseSplits)
-    .where(eq(expenseSplits.ledgerId, ledgerId));
+    .where(eq(expenseSplits.ledgerId, ledgerId))
+    .orderBy(asc(expenseSplits.expenseId), asc(expenseSplits.memberId));
   const [statsRes, balancesRes, settlementRes] = await Promise.all([
     fixture.app.inject({
       url: `/api/v1/ledgers/${ledgerId}/statistics`,
