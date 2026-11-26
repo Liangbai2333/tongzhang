@@ -1,0 +1,22 @@
+# Cloud Public HTTPS Live Health Probe
+TIMESTAMP_UTC=2026-11-26T13:43:49Z
+
+$ curl -sS -i https://tongzhang.worldboot.net/health/ready
+HTTP/2 200 
+alt-svc: h3=":443"; ma=2592000
+content-type: application/json; charset=utf-8
+date: Thu, 26 Nov 2026 13:43:50 GMT
+via: 1.1 Caddy
+content-length: 47
+
+{"data":{"status":"ok","database":"connected"}}
+
+$ curl -sS -i https://tongzhang.worldboot.net/api/v1/system/info
+HTTP/2 200 
+alt-svc: h3=":443"; ma=2592000
+content-type: application/json; charset=utf-8
+date: Thu, 26 Nov 2026 13:43:50 GMT
+via: 1.1 Caddy
+content-length: 79
+
+{"data":{"name":"同账","currency":"CNY","minorUnit":2,"maxLedgerMembers":12}}

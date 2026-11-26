@@ -1,6 +1,6 @@
 # 当前接口索引
 
-Day7 固定交付候选 `df4d773` 的30项登记方法、路径、成功码、认证、幂等和路由已重新对照通过，见 [最终交付核对](day7-delivery-acceptance.md)。Beta B01 在共享契约扩充 `A21` 多维支出统计并新增 `A31`–`A34` 共 34 项登记接口，规划见 [Beta 冲刺基线](beta-sprint-plan.md)。当前 `main`（Beta Day 5 功能冻结基线 `4cf346c`）前后端均已接通全部 34 项登记接口（含 `A16`、`A17`、`A21`、`A28`、`A29`、`A31`、`A32`、`A33`、`A34`），Beta Day 5（`B13` / `B15`，[PR #161](https://github.com/Liangbai2333/tongzhang/pull/161)–[PR #165](https://github.com/Liangbai2333/tongzhang/pull/165)）已完成记账页 AI 草稿回填、结算页一键催还、站内提醒列表与消费改删/多维统计跨层回归，其余接口范围见各行「实际权限 / 状态 / App 范围」列。此前完整字段与service走查见 [#61历史结果](issue61-candidate-documentation-validation.md#30-项接口走查)；Day7已有UUID规范化、公共游标及校验细化，不再声称实现与Day5完全未变。UUID经契约规范化为小写，接口形状和下表登记保持一致；不把后续工程改动自动计入固定包原生验收。
+Day7 固定交付候选 `df4d773` 的30项登记方法、路径、成功码、认证、幂等和路由已重新对照通过，见 [最终交付核对](day7-delivery-acceptance.md)。Beta B01 在共享契约扩充 `A21` 多维支出统计并新增 `A31`–`A34` 共 34 项登记接口，规划见 [Beta 冲刺基线](beta-sprint-plan.md)。当前最终封板候选（锁定最终行为提交 `ef3cf86`）前后端均已接通全部 34 项登记接口（含 `A16`、`A17`、`A21`、`A28`、`A29`、`A31`、`A32`、`A33`、`A34`），并已通过三路模块封板一致性核验（[#178](issue178-day7-standup-profile-seal.md)、[#179](issue179-expenses-ai-seal-audit.md)、[#180](issue180-settlement-statistics-seal.md)）、`B21` 独立 APK 第二次正式验收（[#181](issue181-b21-second-acceptance.md)）、四层全量封板回归（[#183](issue183-day7-final-four-layer-tests.md)）及 `B22` 交付审计脚本 `34/34` 零偏差封板（[#184](issue184-b22-delivery-seal.md)），其余接口范围见各行「实际权限 / 状态 / App 范围」列。此前完整字段与service走查见 [#61历史结果](issue61-candidate-documentation-validation.md#30-项接口走查)；Day7已有UUID规范化、公共游标及校验细化，不再声称实现与Day5完全未变。UUID经契约规范化为小写，接口形状和下表登记保持一致；不把后续工程改动自动计入固定包原生验收。
 
 ## 通用协议与安全边界
 

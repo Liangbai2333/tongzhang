@@ -1,0 +1,13 @@
+# Behavior SHA vs Seal Base Diff Verification
+BEHAVIOR_SHA=ef3cf8607bff38444bd580cb69fcbc2abe7ade05
+SEAL_BASE_SHA=e74f3ee74457305fc355b3f0936ba83dc6c9c75c
+
+$ git diff --stat ef3cf86..HEAD -- apps/ packages/ infra/
+ apps/server/tests/ai-draft-double.test.ts          |  7 ++-
+ apps/server/tests/ai-draft.test.ts                 | 37 ++++++++++++++-
+ .../b17-gates-and-capacity.integration.test.ts     | 54 ++++++++++++++++++++++
+ .../tests/settlement-reminder.integration.test.ts  | 19 ++++++--
+ 4 files changed, 110 insertions(+), 7 deletions(-)
+
+$ git diff --stat ef3cf86..HEAD -- apps/mobile/src apps/server/src apps/server/drizzle packages/ infra/
+(0 lines changed in production code, contracts, domain, migrations, and infra)
