@@ -1,0 +1,16 @@
+PG_VERSION|PostgreSQL 17.11 on aarch64-unknown-linux-musl, compiled by gcc (Alpine 15.2.0) 15.2.0, 64-bit
+POST|auth_refresh_tokens|0
+POST|auth_sessions|0
+POST|expense_images|0
+POST|expense_splits|0
+POST|expenses|0
+POST|idempotency_keys|0
+POST|image_assets|0
+POST|invitations|0
+POST|ledger_members|0
+POST|ledgers|0
+POST|notifications|0
+POST|operation_logs|0
+POST|settlement_batches|0
+POST|settlement_transfers|0
+POST|users|0

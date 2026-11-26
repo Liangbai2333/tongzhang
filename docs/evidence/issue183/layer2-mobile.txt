@@ -1,0 +1,49 @@
+$ pnpm build:shared && pnpm --filter @tongzhang/mobile test
+$ pnpm -r --filter "./packages/*" build
+$ tsc -p tsconfig.json
+$ tsc -p tsconfig.json
+$ jest --maxWorkers=4
+PASS iOS tests/ai-draft-reminder-ui.test.tsx (12.364 s)
+PASS Android tests/ai-draft-reminder-ui.test.tsx (12.491 s)
+PASS iOS tests/ledgers-ui.test.tsx (19.358 s)
+PASS Android tests/ledgers-ui.test.tsx (19.496 s)
+PASS Android tests/notifications-cross-check.test.tsx
+PASS iOS tests/notifications-cross-check.test.tsx
+PASS iOS tests/expenses-ui.test.tsx (13.417 s)
+PASS Android tests/expenses-ui.test.tsx (13.607 s)
+PASS Android tests/settlements-ui.test.tsx (7.371 s)
+PASS iOS tests/settlements-ui.test.tsx (7.2 s)
+PASS Android tests/b13-panels-ui.test.tsx
+PASS iOS tests/b13-panels-ui.test.tsx
+PASS Android tests/ai-draft-reminder-prep.test.tsx
+PASS iOS tests/ai-draft-reminder-prep.test.tsx
+PASS iOS tests/auth-provider.test.tsx
+PASS Android tests/auth-provider.test.tsx
+PASS Android tests/statistics-ui.test.tsx
+PASS iOS tests/statistics-ui.test.tsx
+PASS Android tests/b17-401-gates.test.tsx
+PASS iOS tests/b17-401-gates.test.tsx
+PASS iOS tests/auth-ui.test.tsx (8.637 s)
+PASS Android tests/auth-ui.test.tsx (8.663 s)
+PASS Android tests/auth-navigation.test.tsx
+PASS Android tests/feedback.test.tsx
+PASS iOS tests/feedback.test.tsx
+PASS iOS tests/auth-navigation.test.tsx
+PASS iOS tests/images-api.test.tsx
+PASS Android tests/images-api.test.tsx
+PASS Android tests/receipt-files.test.tsx
+PASS iOS tests/receipt-files.test.tsx
+PASS Android tests/b20-ui-fixes.test.tsx
+PASS Android tests/auth-api.test.tsx
+PASS iOS tests/b20-ui-fixes.test.tsx
+PASS iOS tests/auth-api.test.tsx
+PASS iOS tests/session-token.test.tsx
+PASS Android tests/session-token.test.tsx
+PASS Android tests/write-recovery.test.tsx
+PASS iOS tests/write-recovery.test.tsx
+
+Test Suites: 38 passed, 38 total
+Tests:       382 passed, 382 total
+Snapshots:   0 total
+Time:        36.353 s
+Ran all test suites in 2 projects.
