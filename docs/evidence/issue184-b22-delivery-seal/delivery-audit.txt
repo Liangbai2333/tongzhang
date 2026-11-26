@@ -1,10 +1,10 @@
-# Issue #184 (B22) Formal Delivery Contract & Link Audit Output
-TIMESTAMP_UTC=2026-11-26T15:12:00Z
+# Issue #184 / #177 Formal Delivery Contract & Link Audit Output
+TIMESTAMP_UTC=2026-11-26T15:19:00Z
 BEHAVIOR_SHA=ef3cf8607bff38444bd580cb69fcbc2abe7ade05
-SEAL_BASE_SHA=35c5562011a1afc2ededf290ed033bda3ec83f44
+SEAL_BASE_SHA=4c99b842b621bc7fb0107002b2a47a6bd8df6135
 COMMAND=pnpm check:delivery
 
 [delivery-audit] API 契约核对: contracts=34, api-reference=34, failures=0
-[delivery-audit] Markdown 链接核对: files=109, links=2069, anchors=73, failures=0
+[delivery-audit] Markdown 链接核对: files=110, links=2133, anchors=74, failures=0
 [delivery-audit] 过期 501 残留核对: activeDocs=7, failures=0
 [delivery-audit] 全部核对通过（零偏差、零断链、零过期 501 残留）。
