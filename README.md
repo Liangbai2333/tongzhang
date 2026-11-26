@@ -67,7 +67,7 @@ pnpm export:mobile
 - [完整 App 操作手册](docs/app-user-guide.md)：安装登录、独立 APK 校验安装、双账号完整路径、AI 辅助填写、站内催还提醒、图片权限与显式恢复。
 - [34 项接口索引（A01–A34）](docs/api-reference.md)：请求/响应字段、权限、整数分字符串、成员 ID、幂等、冷却与版本冲突。
 - [已知限制](docs/known-limitations.md)、[Beta 冲刺规划](docs/beta-sprint-plan.md)与 [#49 逐项验收](docs/issue49-documentation-validation.md)：能力边界、冲刺计划、新截图、实际版本与遗留项。
-- [Beta 最终交付封板与收官证据索引（#184）](docs/issue184-b22-delivery-seal.md)、[第二次正式验收（#181）](docs/issue181-b21-second-acceptance.md)与 [四层封板回归基线（#183）](docs/issue183-day7-final-four-layer-tests.md)：Behavior SHA / Docs SHA 锁定、交付契约链接审计输出、置顶随笔索引与收官证据目录。
+- [Beta 140 点归零终审（#177）](docs/issue177-beta-final-seal-and-burndown-zero.md)、[最终交付封板与收官证据索引（#184）](docs/issue184-b22-delivery-seal.md)、[第二次正式验收（#181）](docs/issue181-b21-second-acceptance.md)与 [四层封板回归基线（#183）](docs/issue183-day7-final-four-layer-tests.md)：Behavior SHA / Docs SHA 锁定、140 点归零台账、交付契约链接审计输出、置顶随笔索引与收官证据目录。
 
 ## 历史验收与设计资料
 
