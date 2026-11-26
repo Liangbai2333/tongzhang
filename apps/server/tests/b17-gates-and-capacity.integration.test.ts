@@ -150,6 +150,60 @@ describe('B17 isolated-DB regressions: 12th-seat row-lock race & 401 backend gat
     expect(previewFull).toMatchObject({ memberCount: 12, canJoin: false });
   });
 
+  it('rejects a 13th sequential join with 409 MEMBER_LIMIT_REACHED and does not consume the idempotency key', async () => {
+    const owner = await fixture.register('满员创建者');
+    const thirteenth = await fixture.register('第十三人');
+    const created = parseOk(
+      await fixture.app.inject({
+        method: 'POST',
+        url: '/api/v1/ledgers',
+        headers: headers(owner, randomUUID()),
+        payload: { name: '第十三人满员回归', coverKey: 'plain' },
+      }),
+      endpoints.createLedger.response,
+      201,
+    ).data;
+
+    const seededUsers = await Promise.all(
+      Array.from({ length: 11 }, (_, idx) => fixture.seedUser(`已满员成员${idx + 2}`)),
+    );
+    await fixture.db.orm
+      .insert(ledgerMembers)
+      .values(seededUsers.map((userId) => ({ ledgerId: created.ledger.id, userId })));
+
+    const joinKey = randomUUID();
+    const refused = await fixture.app.inject({
+      method: 'POST',
+      url: '/api/v1/invitations/join',
+      headers: headers(thirteenth, joinKey),
+      payload: { code: created.invitation.code },
+    });
+    // Issue #175 wording "LEDGER_MEMBER_LIMIT" maps to the locked contract code MEMBER_LIMIT_REACHED.
+    expectErr(refused, 409, 'MEMBER_LIMIT_REACHED');
+
+    const memberRows = await fixture.db.orm
+      .select()
+      .from(ledgerMembers)
+      .where(eq(ledgerMembers.ledgerId, created.ledger.id));
+    expect(memberRows).toHaveLength(12);
+    const storedKey = await fixture.db.orm
+      .select()
+      .from(idempotencyKeys)
+      .where(eq(idempotencyKeys.key, joinKey));
+    expect(storedKey).toHaveLength(0);
+
+    const previewFull = parseOk(
+      await fixture.app.inject({
+        method: 'POST',
+        url: '/api/v1/invitations/preview',
+        headers: headers(thirteenth),
+        payload: { code: created.invitation.code },
+      }),
+      endpoints.previewJoin.response,
+    ).data;
+    expect(previewFull).toMatchObject({ memberCount: 12, canJoin: false });
+  });
+
   it('rejects revoked tokens with 401 UNAUTHENTICATED across Beta endpoints A16/A17/A21/A28/A29/A31/A32/A33/A34 with zero writes', async () => {
     const ledger = await seedMultiMemberLedger(fixture, ['小安', '小白']);
     const { 小安: an, 小白: bai } = ledger.byName;
