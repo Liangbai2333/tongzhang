@@ -1,6 +1,6 @@
 # Behavior SHA vs Seal Base Diff Verification
 BEHAVIOR_SHA=ef3cf8607bff38444bd580cb69fcbc2abe7ade05
-SEAL_BASE_SHA=e74f3ee74457305fc355b3f0936ba83dc6c9c75c
+SEAL_BASE_SHA=35c5562011a1afc2ededf290ed033bda3ec83f44
 
 $ git diff --stat ef3cf86..HEAD -- apps/ packages/ infra/
  apps/server/tests/ai-draft-double.test.ts          |  7 ++-
