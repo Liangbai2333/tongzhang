@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { MAX_AI_DRAFT_WARNINGS, expenseDraftSchema } from '@tongzhang/contracts';
+import { MAX_AI_DRAFT_WARNINGS, MAX_EXPENSE_CENTS, expenseDraftSchema } from '@tongzhang/contracts';
 import { aiDraftConfig, readEnv } from '../src/config/env.js';
 import {
   createAiDraftProvider,
@@ -146,6 +146,41 @@ describe('normalizeAiDraftOutput', () => {
     expect(floatRejected.amountCents).toBeNull();
     expect(floatRejected.warnings).toContain('未能识别有效金额，请手动填写');
   });
+
+  it.each([
+    ['negative cents', { amountCents: '-1' }],
+    ['zero cents', { amountCents: '0' }],
+    ['overflow cents', { amountCents: (MAX_EXPENSE_CENTS + 1n).toString() }],
+    ['negative yuan', { amountYuan: '-0.01' }],
+    ['overflow yuan', { amountYuan: '10000000.00' }],
+    ['invalid cents with valid yuan', { amountCents: '-1', amountYuan: '120.00' }],
+  ])('clears %s without guessing a replacement total', (_label, amount) => {
+    const draft = normalizeAiDraftOutput(
+      { ...amount, splitMode: 'EQUAL', splits: [{ memberId: an }] },
+      { names: gushanNames, receiptImageId: null },
+    );
+    expect(draft.amountCents).toBeNull();
+    expect(draft.warnings).toContain('未能识别有效金额，请手动填写');
+    expect(expenseDraftSchema.parse(draft)).toEqual(draft);
+  });
+
+  it.each(['-1', (MAX_EXPENSE_CENTS + 1n).toString()])(
+    'degrades invalid AMOUNT split %s without changing a valid total',
+    (amountCents) => {
+      const draft = normalizeAiDraftOutput(
+        {
+          amountCents: '12000',
+          splitMode: 'AMOUNT',
+          splits: [{ memberId: an, amountCents }],
+        },
+        { names: gushanNames, receiptImageId: null },
+      );
+      expect(draft.amountCents).toBe('12000');
+      expect(draft.splitMode).toBe('EQUAL');
+      expect(draft.splits).toEqual([{ memberId: an }]);
+      expect(draft.warnings).toContain('按金额分摊合计与总金额不一致，已切换为均分，请核对');
+    },
+  );
 
   it('derives total amount from conserved AMOUNT splits when total is omitted', () => {
     const derived = normalizeAiDraftOutput(

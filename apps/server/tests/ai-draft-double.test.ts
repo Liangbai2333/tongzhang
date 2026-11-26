@@ -119,6 +119,7 @@ describe('A31 deterministic AI draft Test Double (no DB, no network)', () => {
       },
       { kind: 'http-error', status: 500 },
       { kind: 'invalid-json', body: 'not-json' },
+      { kind: 'json-content', content: '{"amountCents":' },
       { kind: 'hang-until-abort' },
     ]);
 
@@ -148,7 +149,11 @@ describe('A31 deterministic AI draft Test Double (no DB, no network)', () => {
       code: 'AI_DRAFT_UPSTREAM_ERROR',
       statusCode: 502,
     });
-    expect(requests).toHaveLength(4);
+    await expect(provider.parse(baseRequest)).rejects.toMatchObject({
+      code: 'AI_DRAFT_UPSTREAM_ERROR',
+      statusCode: 502,
+    });
+    expect(requests).toHaveLength(5);
   });
 
   it('normalizes blank amountCents fallback, case/whitespace splitMode, degraded AMOUNT/SHARES, warning priority, and forged receiptImageId', () => {
