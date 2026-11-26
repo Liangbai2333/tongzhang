@@ -4,7 +4,7 @@
 
 当前可在真实 API / PostgreSQL 上完成注册登录、在线会话核验、自定义封面建账、邀请码加入、消费与收据、余额和结算预览、正式冻结、整笔已还登记、创建者结清、个人归档与历史只读查看。Day7 固定交付候选 `df4d773` 已完成独立 Android 新安装与完整主路径验收，见 [最终验收、安装包与启动说明](docs/day7-delivery-acceptance.md)；Beta Day 4 第一次干净环境独立安装验收见 [#141](docs/issue141-b12-first-acceptance.md)（`b859ba9`）。后续工程细化不自动包含在历史交付包的验收结论中。Day6 双账号 Android 模拟器主链及 401 同账号核验恢复见 [#58/#59](docs/issues58-59-final-acceptance.md)，原生兼容性、权限和冷启动增量复测见 [#60](docs/issue60-native-candidate-validation.md)；历史证据保留各自版本，不代表本次重新执行。
 
-消费修改/删除（A16/A17）、应用内扫码加入、个人资料修改（A28）、通知偏好保存（A29）、多维支出统计图表（A21）、记账页 AI 辅助填写草稿回填（A31）以及结算页一键催还与站内提醒列表（A32–A34）前后端均已接通（A01–A34 全部 34 项登记接口可用，AI 草稿仅回填可编辑表单不直写库，模型凭据仅驻服务端）。已还只是人工登记，不改变消费；个人归档只影响本人。脱离 Metro 的独立 Release Android APK 构建与 `SHA256SUMS.txt` 校验脚本已就绪（`pnpm build:apk`），真实云端 HTTPS 部署、独立 APK 实机交付、发布签名包、物理真机与 iOS 当前完整主链尚未完成验收。完整边界见[已知限制](docs/known-limitations.md)。
+消费修改/删除（A16/A17）、应用内扫码加入、个人资料修改（A28）、通知偏好保存（A29）、多维支出统计图表（A21）、记账页 AI 辅助填写草稿回填（A31）以及结算页一键催还与站内提醒列表（A32–A34）前后端均已接通（A01–A34 全部 34 项登记接口可用，AI 草稿仅回填可编辑表单不直写库，模型凭据仅驻服务端）。已还只是人工登记，不改变消费；个人归档只影响本人。Beta Day 6 已完成阿里云公网 HTTPS 部署（`https://tongzhang.worldboot.net`，`/health/ready = 200`、`/api/v1/system/info = 200`，见 [#169](docs/issue169-b14-https-b20-ui-fixes.md)），并发布内嵌线上域名的脱离 Metro 独立 Release Android APK [`beta-day6-20261121`](https://github.com/Liangbai2333/tongzhang/releases/tag/beta-day6-20261121)（`tongzhang-ef3cf86-standalone.apk`，`SHA256SUMS.txt` 校验值 `ece352d613919d11512b8cef74f3a711671d0d6f0065c50d9f42104f471fae54`），且已在无 Metro、无 `adb reverse` 干净环境完成三方 SHA-256 一致性与公网首链当天核对（见 [#173](docs/issue173-standalone-apk-https-daily-check.md)）。以上属 Day 6 当天核对，第二次正式验收（`B21`）、四人全链路与组外调查收口（`#174`）、应用商店发布签名包、物理真机与 iOS 当前完整主链尚未完成验收。完整边界见[已知限制](docs/known-limitations.md)。
 
 ## 快速开始
 
@@ -45,6 +45,7 @@ scripts             环境初始化、开发进程编排与容器验证
 ```bash
 pnpm check
 pnpm check:env --tools-only
+pnpm check:delivery
 pnpm test
 pnpm test:mobile
 pnpm build:server
@@ -59,7 +60,7 @@ pnpm export:mobile
 - 生产只维护服务器上的 `infra/.env`，由 Compose 分别注入 PostgreSQL、API 和 Caddy。API 不读取生产环境文件，也不在启动时迁移。
 - 普通 CI 负责检查和测试；手动运行 **Publish server image** 发布已验证镜像，在服务器执行 `bash infra/deploy.sh` 完成备份、迁移与健康验收。
 - 脱离 Metro 的独立 Release Android APK 通过 `pnpm build:apk` 构建（输出 `dist/android/tongzhang-<shortSha>-standalone.apk` 与 `SHA256SUMS.txt`），下载校验与安装见 [完整 App 操作手册](docs/app-user-guide.md#独立-android-apk-下载校验与安装)。
-- 变量清单、发布和恢复步骤见 [开发与部署说明](docs/development.md)。真实云端 HTTPS 部署与正式独立 APK 实机交付仍由 `B14`（[#153](https://github.com/Liangbai2333/tongzhang/issues/153) / [#157](https://github.com/Liangbai2333/tongzhang/issues/157)）推进。
+- 变量清单、发布和恢复步骤见 [开发与部署说明](docs/development.md)。Beta Day 6 `B14`（[#169](docs/issue169-b14-https-b20-ui-fixes.md) / [#173](docs/issue173-standalone-apk-https-daily-check.md)）已完成公网 HTTPS 部署（`https://tongzhang.worldboot.net`）与独立 Release Android APK（`tongzhang-ef3cf86-standalone.apk`，Release [`beta-day6-20261121`](https://github.com/Liangbai2333/tongzhang/releases/tag/beta-day6-20261121)）三方 SHA-256 及首链当天核对；最终候选第二次正式验收（`B21`）与交付封板（`B22`）于 Day 7 执行。
 
 ## 当前操作与接口
 

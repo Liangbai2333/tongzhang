@@ -2,11 +2,11 @@
 
 Day7 固定交付候选 `df4d773` 的新安装、完整原生流程、下载包与可复现启动说明见 [最终交付](day7-delivery-acceptance.md)。以下Day6引用保留历史归属；后续工程细化不自动继承原生验收结果。
 
-文档按 `1d5709f`（2026-10-29）源码复核基础主链，Day7 当前验证与交付边界见 [最终复核记录](day7-final-review.md)。完整双账号原生路径仍引用 [Day6 #58/#59](issues58-59-final-acceptance.md)，冷启动与权限证据见 [#60](issue60-native-candidate-validation.md)；个人中心及界面增量截图来自 [PR #80](https://github.com/Liangbai2333/tongzhang/pull/80)；底部标签、回到前台的核验遮罩和统计卡入口按 [PR #83](https://github.com/Liangbai2333/tongzhang/pull/83) 更新；消费编辑与软删除、应用内扫码加入、个人中心用户名修改与通知开关、多维支出统计图表已按 Beta Day 3 [PR #131](https://github.com/Liangbai2333/tongzhang/pull/131) 当前移动端真实源码同步；记账页 AI 辅助填写、结算页一键催还与个人中心/首页站内提醒列表已按 Beta Day 5 [PR #161](https://github.com/Liangbai2333/tongzhang/pull/161)（及边界加固 [PR #163](https://github.com/Liangbai2333/tongzhang/pull/163)、[PR #164](https://github.com/Liangbai2333/tongzhang/pull/164)、[PR #165](https://github.com/Liangbai2333/tongzhang/pull/165)）当前移动端真实源码（基线 `4cf346c`）同步，独立 Android APK 构建、校验与安装流程已按 [build-android-apk.mjs](../scripts/build-android-apk.mjs) 对齐。以上增量更新均不代表重新完成整条原生主链验收，脱离 Metro 的云端 HTTPS 服务与独立 APK 实机交付以 `B14` 实际产物及校验记录为准。接口见[索引](api-reference.md)，能力边界见[已知限制](known-limitations.md)。
+文档按 `1d5709f`（2026-10-29）源码复核基础主链，Day7 当前验证与交付边界见 [最终复核记录](day7-final-review.md)。完整双账号原生路径仍引用 [Day6 #58/#59](issues58-59-final-acceptance.md)，冷启动与权限证据见 [#60](issue60-native-candidate-validation.md)；个人中心及界面增量截图来自 [PR #80](https://github.com/Liangbai2333/tongzhang/pull/80)；底部标签、回到前台的核验遮罩和统计卡入口按 [PR #83](https://github.com/Liangbai2333/tongzhang/pull/83) 更新；消费编辑与软删除、应用内扫码加入、个人中心用户名修改与通知开关、多维支出统计图表已按 Beta Day 3 [PR #131](https://github.com/Liangbai2333/tongzhang/pull/131) 当前移动端真实源码同步；记账页 AI 辅助填写、结算页一键催还与个人中心/首页站内提醒列表已按 Beta Day 5 [PR #161](https://github.com/Liangbai2333/tongzhang/pull/161)（及边界加固 [PR #163](https://github.com/Liangbai2333/tongzhang/pull/163)、[PR #164](https://github.com/Liangbai2333/tongzhang/pull/164)、[PR #165](https://github.com/Liangbai2333/tongzhang/pull/165)）源码同步；Beta Day 6 已按 [#169](issue169-b14-https-b20-ui-fixes.md)（`B14` 云端 HTTPS `https://tongzhang.worldboot.net` 上线、`B20` 三项界面缺陷 `D-142-01` / `D-158-01` / `D-158-02` 修复与独立 APK `tongzhang-ef3cf86-standalone.apk` 发布）与 [#173](issue173-standalone-apk-https-daily-check.md)（无 Metro、无 `adb reverse` 干净环境三方 SHA-256 与首链当天核对）更新线上地址与独立 APK 校验信息。以上增量更新与 Day 6 当天核对均不替代 Day 7 `B21` 第二次正式验收。接口见[索引](api-reference.md)，能力边界见[已知限制](known-limitations.md)。
 
 ## 安装、启动与登录
 
-开发者按[成员环境配置](environment-setup.md)安装工具，在仓库根依次执行 `pnpm install --frozen-lockfile`、`pnpm setup`、`pnpm build:android`（iOS 使用 `pnpm build:ios`）、`pnpm dev:android` / `pnpm dev:ios`。首次必须先安装原生开发客户端；Expo Go、JS 导出均不代替此步骤。原生依赖、app config、config plugin 或原生资源变化后重新构建安装；仅文档或兼容的 JS 改动不要求重建。`dev` 不安装、不迁移，新迁移另跑 `pnpm migrate:db`。本机开发调试使用开发客户端；面向未配置开发环境的测试设备使用脱离 Metro 的独立 Release Android APK（见下节校验与安装步骤），当前真实云端 HTTPS 部署与正式独立 APK 产物及校验值仍在 `B14`（[#153](https://github.com/Liangbai2333/tongzhang/issues/153) / [#157](https://github.com/Liangbai2333/tongzhang/issues/157)）交付中，项目尚未发布应用商店签名包。
+开发者按[成员环境配置](environment-setup.md)安装工具，在仓库根依次执行 `pnpm install --frozen-lockfile`、`pnpm setup`、`pnpm build:android`（iOS 使用 `pnpm build:ios`）、`pnpm dev:android` / `pnpm dev:ios`。首次必须先安装原生开发客户端；Expo Go、JS 导出均不代替此步骤。原生依赖、app config、config plugin 或原生资源变化后重新构建安装；仅文档或兼容的 JS 改动不要求重建。`dev` 不安装、不迁移，新迁移另跑 `pnpm migrate:db`。本机开发调试使用开发客户端；面向未配置开发环境的测试设备使用脱离 Metro 的独立 Release Android APK（见下节下载、校验与安装步骤），当前已上线公网 HTTPS 服务 `https://tongzhang.worldboot.net` 并发布 Day 6 独立包体 [`beta-day6-20261121`](https://github.com/Liangbai2333/tongzhang/releases/tag/beta-day6-20261121)，项目尚未发布应用商店签名包。
 
 `apps/mobile/.env` 中 API 地址不带 `/api/v1`：iOS 模拟器用 `http://localhost:3300`；Android 模拟器用 `http://10.0.2.2:3300`，或 `http://localhost:3300` 配合 `adb reverse tcp:3300 tcp:3300`；物理真机经局域网使用电脑 IP。真机的 localhost 指手机自身，USB reverse 时才转向电脑。API 与 Metro 是两个端口，改变 API 地址/端口后重启 Metro并重新载入 App；端口转发在设备重启后重设。preview/production 必须使用 HTTPS，改变原生网络配置需要重建。详见[地址与配置](development.md#3-移动端地址与发布配置)；多人各用一台手机联调见[实机多人联调](multi-device-testing.md)。
 
@@ -14,15 +14,17 @@ Day7 固定交付候选 `df4d773` 的新安装、完整原生流程、下载包�
 
 ### 独立 Android APK 下载校验与安装
 
-- **产物与前提**：通过 `EXPO_PUBLIC_API_BASE_URL=https://<线上API域名> pnpm build:apk`（先可用 `pnpm build:apk --preflight --api-url https://<线上API域名>` 自检，强制 `APP_VARIANT=production` 关闭原生明文 HTTP、拒绝回环地址与 `EXPO_PUBLIC_` 密钥、要求本机 JDK 17 与 `ANDROID_HOME`）执行 Prebuild 与 Gradle `assembleRelease` 打包内嵌 JS Bundle，输出 `dist/android/tongzhang-<shortSha>-standalone.apk` 与同目录 `SHA256SUMS.txt`（格式 `<64位小写SHA-256>  <文件名>`）。当前真实云端 HTTPS 域名与正式独立 APK 哈希待 `B14`（[#153](https://github.com/Liangbai2333/tongzhang/issues/153) / [#157](https://github.com/Liangbai2333/tongzhang/issues/157)）交付后登记，获取正式发布产物后按下列步骤校验并安装：
+- **产物与前提**：通过 `EXPO_PUBLIC_API_BASE_URL=https://tongzhang.worldboot.net pnpm build:apk`（先可用 `pnpm build:apk --preflight --api-url https://tongzhang.worldboot.net` 自检，强制 `APP_VARIANT=production` 关闭原生明文 HTTP、拒绝回环地址与 `EXPO_PUBLIC_` 密钥、要求本机 JDK 17 与 `ANDROID_HOME`）执行 Prebuild 与 Gradle `assembleRelease` 打包内嵌 JS Bundle，输出 `dist/android/tongzhang-<shortSha>-standalone.apk` 与同目录 `SHA256SUMS.txt`（格式 `<64位小写SHA-256>  <文件名>`）。当前 Day 6 最新已核对包体发布于 GitHub Prerelease [`beta-day6-20261121`](https://github.com/Liangbai2333/tongzhang/releases/tag/beta-day6-20261121)（源码短哈希 `ef3cf86`，内嵌公网 HTTPS 地址 `https://tongzhang.worldboot.net`，见 [#169](issue169-b14-https-b20-ui-fixes.md) 与 [#173](issue173-standalone-apk-https-daily-check.md)；若 Day 7 `B21` 锁定新候选提交并重打包将同步更新）：
+  - **APK 文件名**：`tongzhang-ef3cf86-standalone.apk`（`136,832,199` 字节）
+  - **`SHA256SUMS.txt` 校验值**：`ece352d613919d11512b8cef74f3a711671d0d6f0065c50d9f42104f471fae54  tongzhang-ef3cf86-standalone.apk`
 - **校验 `SHA256SUMS.txt`**（禁止跳过校验或安装哈希不匹配的 APK）：
-  - Linux：`sha256sum -c SHA256SUMS.txt`（核对输出 `<APK文件名>: OK`）
-  - macOS：`shasum -a 256 -c SHA256SUMS.txt`（核对输出 `<APK文件名>: OK`）
-  - Windows PowerShell：`(Get-FileHash .\tongzhang-<shortSha>-standalone.apk -Algorithm SHA256).Hash.ToLower()`，逐位比对 `SHA256SUMS.txt` 中对应文件的 64 位小写哈希。
+  - Linux：`sha256sum -c SHA256SUMS.txt`（核对输出 `tongzhang-ef3cf86-standalone.apk: OK`）
+  - macOS：`shasum -a 256 -c SHA256SUMS.txt`（核对输出 `tongzhang-ef3cf86-standalone.apk: OK`）
+  - Windows PowerShell：`(Get-FileHash .\tongzhang-ef3cf86-standalone.apk -Algorithm SHA256).Hash.ToLower()`，逐位比对 `SHA256SUMS.txt` 中对应文件的 64 位小写哈希。
 - **安装与启动**：
   - Android 真机直接安装：下载已校验的 APK 至手机，在系统提示允许安装未知来源应用后完成安装并直接打开，无需本机 Metro、数据库或 `adb reverse`。
-  - ADB 安装（真机或模拟器）：执行 `adb install -r tongzhang-<shortSha>-standalone.apk`；若设备曾安装不同签名的旧开发客户端导致 `INSTALL_FAILED_UPDATE_INCOMPATIBLE`，先执行 `adb uninstall com.tongzhang.app` 再重新安装。
-  - 启动核对：直接进入欢迎页注册或登录真实账号，确认直连内置 HTTPS API 读写账本；断网或服务不可达时应显示显式报错与手动重试，不展示离线假数据。
+  - ADB 安装（真机或模拟器）：执行 `adb install -r tongzhang-ef3cf86-standalone.apk`；若设备曾安装不同签名的旧开发客户端导致 `INSTALL_FAILED_UPDATE_INCOMPATIBLE`，先执行 `adb uninstall com.tongzhang.app` 再重新安装。
+  - 启动核对：直接进入欢迎页注册或登录真实账号，确认直连内置 `https://tongzhang.worldboot.net` 读写账本；断网或服务不可达时应显示显式报错与手动重试，不展示离线假数据。
 
 ### 个人中心修改用户名与通知开关
 
