@@ -1,0 +1,36 @@
+=== Timestamp (UTC) ===
+2026-11-26T12:47:24Z
+=== Local Port Isolation Check (3300 API / 8081 Metro) ===
+OK: no process listening on TCP 3300 or 8081
+=== ADB Devices & Reverse Rules ===
+List of devices attached
+emulator-5554          device product:sdk_gphone64_arm64 model:sdk_gphone64_arm64 device:emu64a transport_id:3
+
+adb reverse --list: <empty>
+=== Emulator Properties ===
+ro.build.version.release=17
+ro.build.version.sdk=37
+ro.product.cpu.abi=arm64-v8a
+persist.sys.locale=
+=== Pre-Install Clean Check ===
+OK: com.tongzhang.app not installed
+=== Host SHA256SUMS.txt Verification ===
+ece352d613919d11512b8cef74f3a711671d0d6f0065c50d9f42104f471fae54  tongzhang-ef3cf86-standalone.apk
+tongzhang-ef3cf86-standalone.apk: OK
+=== Clean ADB Install ===
+Performing Streamed Install
+Success
+=== Device base.apk Path & SHA-256 ===
+Device APK path: /data/app/~~3tYO_fH50Ocr4w3uhogdWA==/com.tongzhang.app-DLtd_zWUw-mbp7SMEi4vvA==/base.apk
+GitHub Release SHA-256 : ece352d613919d11512b8cef74f3a711671d0d6f0065c50d9f42104f471fae54
+Host Download  SHA-256 : ece352d613919d11512b8cef74f3a711671d0d6f0065c50d9f42104f471fae54
+Device base.apk SHA-256: ece352d613919d11512b8cef74f3a711671d0d6f0065c50d9f42104f471fae54
+THREE-WAY SHA-256 MATCH: PASS
+=== Cold Start Launch ===
+Starting: Intent { cmp=com.tongzhang.app/.MainActivity }
+Status: ok
+LaunchState: COLD
+Activity: com.tongzhang.app/.MainActivity
+TotalTime: 4481
+WaitTime: 4492
+Complete
